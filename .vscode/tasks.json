@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile",
+            "type": "shell",
+            "command": "javac",
+            "args": [ /* "-cp", "lib/gson/gson-2.11.0.jar", */
+            "src\\*.java",
+            "-d", "out"
+            ]
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "java",
+            "args": [ /* "-cp", "lib\\gson\\gson-2.11.0.jar\\", */
+            "-cp", "out\\",
+            "Main"]
+        },
+        {
+            "label": "Build JAR",
+            "type": "shell",
+            "command": "jar",
+            "args": [ "cfm", "out/KitchenMate.jar", "Manifest.txt",
+            "-C", "out", "."]
+        },
+        {
+            "label": "Run JAR",
+            "type": "shell",
+            "command": "java",
+            "args": [ "--module-path", "lib/javafx-sdk-23/lib/",
+                "--add-modules","javafx.controls,javafx.fxml",
+                "-jar", "out/KitchenMate.jar"]
+        },
+    ]
+}
+
+//javac -cp "lib/javafx-sdk-23/lib/*;lib/gson/*" src/*.java -d out
