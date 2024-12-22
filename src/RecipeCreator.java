@@ -2,27 +2,34 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 public class RecipeCreator extends VBox {
     
     private Label title;
+    private TextField recipeName;
+    private TextField portions;
     private VBox container;
     private Button button1;
-    private TextArea textArea;
+    private TextArea instructions;
     private Button button2;
     
-    public RecipeCreator(double arg0, Label title, VBox container, IngredientHBox firstIngredient, Button button1,
-            TextArea textArea, Button button2) {
-        super(arg0);
-        this.title = new Label("Create a new recipe");
+    public RecipeCreator(double spacing) {
+        super(spacing);
+        this.title = new Label("CREATE A NEW RECIPE");
+        this.recipeName = new TextField();
+        this.portions = new TextField();
         this.container = new VBox(10);
-        this.button1 = new Button("Add ingredient");
-        this.textArea = new TextArea();
-        this.button2 = new Button("Save recipe");
+        this.button1 = new Button("ADD NEW INGREDIENT");
+        this.instructions = new TextArea();
+        this.button2 = new Button("SAVE RECIPE");
 
-        this.getChildren().addAll(title, container, button1, textArea, button2);
+        recipeName.setPromptText("Enter recipe name");
+        portions.setPromptText("How many portions?");
+        instructions.setPromptText("Write instructions here");
+        this.getChildren().addAll(title,recipeName,portions, container, button1, instructions, button2);
     }
 
     public Label getTitle() {
@@ -37,13 +44,23 @@ public class RecipeCreator extends VBox {
         return button1;
     }
 
-    public TextArea getTextArea() {
-        return textArea;
+    public TextArea getInstructions() {
+        return instructions;
     }
 
     public Button getButton2() {
         return button2;
     }
+
+    public TextField getRecipeName() {
+        return recipeName;
+    }
+
+    public TextField getPortions() {
+        return portions;
+    }
+
+    
 
 }
 
@@ -51,13 +68,18 @@ class IngredientHBox extends HBox{
 
     private TextField ingredient;
     private TextField quantity;
+    private ChoiceBox<String> unit;
     
     public IngredientHBox(double spacing) {
         super(spacing);
         this.ingredient = new TextField();
         this.quantity = new TextField();
+        this.unit = new ChoiceBox<String>();
 
-        this.getChildren().addAll(ingredient, quantity);
+        unit.getItems().addAll("kg", "g", "litre", "dl");
+        ingredient.setPromptText("Ingredient");
+        quantity.setPromptText("Quantity");
+        this.getChildren().addAll(ingredient, quantity, unit);
     }
 
     public TextField getIngredient() {
@@ -67,4 +89,29 @@ class IngredientHBox extends HBox{
     public TextField getQuantity() {
         return quantity;
     }
+
+    public ChoiceBox<String> getUnit() {
+        return unit;
+    }
+}
+
+class RecipeHBox extends HBox{
+
+    private Label recipeName;
+    private Label ingredientAmount;
+    private Label portions;
+    
+    public RecipeHBox(double spacing, String recipeString, String amountString, String portionsString) {
+        super(spacing);
+        this.recipeName = new Label(recipeString);
+        this.ingredientAmount = new Label(amountString);
+        this.portions = new Label(portionsString);
+
+        this.getChildren().addAll(recipeName, ingredientAmount, portions);
+    }
+
+
+    
+
+    
 }
