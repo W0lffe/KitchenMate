@@ -23,7 +23,7 @@ public class Main extends Application{
         //Create scene for main menu
         root = Interface.init();
         main = new Scene(root, WIDTH, HEIGHT);
-        
+       
         primaryStage.setTitle("KitchenMate");
         primaryStage.setScene(main);
         primaryStage.show();

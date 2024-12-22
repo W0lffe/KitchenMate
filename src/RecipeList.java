@@ -7,10 +7,13 @@ public class RecipeList {
         VBox rootContainer = Main.root.getRootCenter();
 
         for (Recipe recipeInList  : Recipe.recipeList) {
-            String amount = String.valueOf(recipeInList.getIngredientAmount());
-            String quantity = String.valueOf(recipeInList.getPortions());
+            String amount = "Ingredients: " + String.valueOf(recipeInList.getIngredientAmount());
+            String quantity = "Portions: " + String.valueOf(recipeInList.getPortions());
 
-            rootContainer.getChildren().add(new RecipeHBox(10, recipeInList.getName(), amount, quantity));
+            VBox container = new VBox();
+
+            container.getChildren().add(new RecipeHBox(10, recipeInList.getName(), amount, quantity));
+            rootContainer.getChildren().addAll(container);
         }
 
     }
