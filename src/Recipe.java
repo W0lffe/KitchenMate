@@ -6,7 +6,6 @@ import javafx.scene.control.TextField;;
 
 public class Recipe {
     
-    public static ArrayList<Recipe> recipeList = new ArrayList<>();
     private String name;
     private int portions;
     private int ingredientAmount;
@@ -74,6 +73,7 @@ public class Recipe {
     }
 
     public static void createRecipe(){
+
         TextField status = Interface.getStatusField();
         ArrayList<String> ingredients = new ArrayList<String>();
         VBox rootContainer = Main.root.getRootCenter();
@@ -88,19 +88,65 @@ public class Recipe {
         });
 
         creator.getButton2().setOnAction(e -> {       
+            
+            String recipe;
+            int portions;
 
-            String recipe = creator.getRecipeName().getText();
-            int portions = Integer.parseInt(creator.getPortions().getText());
+            try {
+                recipe = creator.getRecipeName().getText();
+                if (recipe.isEmpty()) {
+                    status.setText("Recipe needs a name!");
+                    return;
+                }
+                
+                portions = Integer.parseInt(creator.getPortions().getText());
+                if (portions <= 0) {
+                    status.setText("Set portions quantity!");
+                    return;
+                }
+
+            } catch (NumberFormatException error) {
+                status.setText("Invalid number for portions!");
+                return;
+            }
+
             int ingredientAmount = 0;
             String instructions = creator.getInstructions().getText();
+
+            if (instructions == null || instructions.isEmpty()) {
+                instructions = "Instructions not specified!";
+            }
 
             for (Node node : creator.getContainer().getChildren()) {
                 if (node instanceof IngredientHBox) {
                     IngredientHBox ingredientBox = (IngredientHBox) node;
 
-                    String ingredient = ingredientBox.getIngredient().getText();
-                    String quantity = ingredientBox.getQuantity().getText();
-                    String unit = ingredientBox.getUnit().getValue();
+                    String ingredient;
+                    String quantity;
+                    String unit;
+
+                    try {
+                        ingredient = ingredientBox.getIngredient().getText();
+                        if (ingredient.isEmpty()) {
+                            status.setText("Please set name for ingredient!");
+                            return;
+                        }
+
+                        quantity = ingredientBox.getQuantity().getText();
+                        if (quantity.isEmpty()) {
+                            status.setText("Please set value for ingredient quantity!");
+                            return;
+                        }
+
+                        unit = ingredientBox.getUnit().getValue();
+                        if (unit == null || unit.isEmpty()) {
+                            status.setText("Please select unit value!");
+                            return;
+                        }
+                    } catch (Exception error) {
+                        status.setText("");
+                        return;
+                    }
                     
                     String sum = ingredient + " " + quantity + " " + unit;
                 
@@ -109,23 +155,24 @@ public class Recipe {
                 }
             }
 
-            if(!recipe.isEmpty() && portions != 0 && ingredientAmount != 0 && !ingredients.isEmpty()){
-                Recipe newRecipe = new Recipe(recipe, portions, ingredientAmount, ingredients, instructions);
-                recipeList.add(newRecipe);
-
-                ingredients.clear();
-                status.setText("Recipe created successfully!");
-
-                rootContainer.getChildren().remove(creator);
-            }
-            else{
-                status.setText("Recipe cant be created!");
-            }
-
+                if(!recipe.isEmpty() && !ingredients.isEmpty()){
+                    Recipe newRecipe = new Recipe(recipe, portions, ingredientAmount, ingredients, instructions);
+                    
+                    saveRecipe(newRecipe);
+                    ingredients.clear();
+                    status.setText("Recipe created successfully!");
+    
+                    rootContainer.getChildren().remove(creator);
+                }
+                else{
+                    status.setText("Recipe cant be created!");
+                }
+        
         });
 
+    }
 
-
+    private static void saveRecipe(Recipe recipeToSave){
 
     }
 
