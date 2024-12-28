@@ -9,7 +9,17 @@ As this is a work in progress, certain features are still being developed, and p
 ### To run the program
 
 In Visual Studio Code:
-* Run task using tasks.json tasks, Compile -> Build JAR -> Run JAR
+* ~~Run task using tasks.json tasks, Compile -> Build JAR -> Run JAR~~
+
+**Compile**
+```
+javac -cp "lib/javafx-sdk-23/lib/*;lib/gson/*" src/*.java -d out
+```
+**Run**
+```
+java --module-path "lib/javafx-sdk-23/lib/" --add-modules javafx.controls,javafx.fxml -cp "out;lib/gson/*" Main
+```
+
 
 ## Brief
 #### Objective:
@@ -30,7 +40,7 @@ This project will involve creating and manipulating various recipes and shopping
 * [ ] Delete recipes
 * [ ] Browse created recipes
 * [ ] Connections to Server
-    * [ ] POST
+    * [x] POST
     * [ ] GET
 * [ ] UI (Implementing JavaFX from the beginning)
 * [ ] Add recipe ingredients to shopping list
