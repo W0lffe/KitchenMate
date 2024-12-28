@@ -59,7 +59,13 @@ public class Recipe {
         this.instructions = instructions;
     }
 
+    @Override
+    public String toString() {
+        return "Recipe [name=" + name + ", portions=" + portions + ", ingredientAmount=" + ingredientAmount
+                + ", ingredients=" + ingredients + ", instructions=" + instructions + "]";
+    }
 
+    
     public static void createRecipe(){
 
         TextField status = Interface.getStatusField();

@@ -13,6 +13,16 @@ if($directoryInit["Error"]){
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     postRecipes($recipePath);
 }
+else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+    $method = $_GET['method'];
+
+    if($method == "recipes"){
+        getData($recipePath, "Fetch recipes");
+    }
+    else if($method == "shoplist"){
+        getData($shoplistPath, "Fetch shoppinglist");
+    }
+}
 
 
 
@@ -59,7 +69,23 @@ function initRecipeDir($recipeDirName){
     else{
         return ["Error: " => "Failed to create directory!"];
     }
+}
 
-    
+function getData($file_path, $operation){
+
+    if(file_exists($file_path)){
+
+        $data = file_get_contents($file_path);
+
+        if(!empty($data)){
+            echo json_encode(["Operation" => $operation, "Status" => "Success: Data fetched!", "Data" => json_decode($data,true)]);
+        }
+        else{
+            echo json_encode(["Operation" => $operation, "Status" => "Failed: File is empty!"]);  
+        }
+    }
+    else{
+        echo json_encode(["Operation" => $operation, "Status" => "Failed: File does not exist!"]);
+    }
 }
 ?>

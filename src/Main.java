@@ -10,9 +10,12 @@ public class Main extends Application{
     /**@description Reference to primary stage created in Main*/
     public static Stage primaryStage;
 
+    /**@description Final definitions for width of window */
     public static final int WIDTH = 1200;
+    /**@description Final definitions for height of window */
     public static final int HEIGHT = 600;
 
+    /**@description Reference to root of Interface created in Main */
     public static Interface root;
 
      @Override
@@ -24,6 +27,7 @@ public class Main extends Application{
         root = Interface.init();
         main = new Scene(root, WIDTH, HEIGHT);
        
+        //Set scene
         primaryStage.setTitle("KitchenMate");
         primaryStage.setScene(main);
         primaryStage.show();
