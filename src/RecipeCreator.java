@@ -1,16 +1,20 @@
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
+
 
 public class RecipeCreator extends VBox {
     
     private Label title;
     private TextField recipeName;
     private TextField portions;
+    private ScrollPane scrollpane;
     private VBox container;
     private Button button1;
     private TextArea instructions;
@@ -21,15 +25,23 @@ public class RecipeCreator extends VBox {
         this.title = new Label("CREATE A NEW RECIPE");
         this.recipeName = new TextField();
         this.portions = new TextField();
-        this.container = new VBox(10);
+        this.scrollpane = new ScrollPane();
         this.button1 = new Button("ADD NEW INGREDIENT");
         this.instructions = new TextArea();
         this.button2 = new Button("SAVE RECIPE");
 
+        container = new VBox(10);
+        container.setPrefSize(800, 200);
+        container.setAlignment(Pos.TOP_CENTER);
+        scrollpane.setFitToWidth(true);
+        scrollpane.setContent(container);
+
+        this.instructions.setMaxSize(300, 100);
+
         recipeName.setPromptText("Enter recipe name");
         portions.setPromptText("How many portions?");
         instructions.setPromptText("Write instructions here");
-        this.getChildren().addAll(title,recipeName,portions, container, button1, instructions, button2);
+        this.getChildren().addAll(title,recipeName,portions, scrollpane, button1, instructions, button2);
     }
 
     public Label getTitle() {
@@ -79,6 +91,11 @@ class IngredientHBox extends HBox{
         unit.getItems().addAll("kg", "g", "litre", "dl");
         ingredient.setPromptText("Ingredient");
         quantity.setPromptText("Quantity");
+
+        this.unit.setPrefSize(50, 10); // Set preferred size
+        this.unit.setMaxSize(50, 10); // Ensure maximum size
+        this.unit.setMinWidth(50); 
+
         this.getChildren().addAll(ingredient, quantity, unit);
     }
 
@@ -110,8 +127,6 @@ class RecipeHBox extends HBox{
         this.getChildren().addAll(recipeName, ingredientAmount, portions);
     }
 
-
-    
 
     
 }

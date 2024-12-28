@@ -1,4 +1,5 @@
 import javafx.geometry.Pos;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -9,6 +10,7 @@ public class Interface extends BorderPane {
     private VBox left;
     private VBox right;
     private VBox center;
+    private static TextField status;
     
     public Interface(VBox top, VBox bottom, VBox left, VBox right, VBox center) {
         this.top = top;
@@ -57,26 +59,33 @@ public class Interface extends BorderPane {
     
         naviBar.getButton1().setOnAction(event -> Recipe.createRecipe());
         naviBar.getButton2().setOnAction(event -> RecipeList.showRecipes());
+        naviBar.setAlignment(Pos.TOP_CENTER);
 
         VBox left = new VBox();
         left.setPrefSize(Main.WIDTH/6, 400);
-        left.setAlignment(Pos.CENTER);
+        left.setAlignment(Pos.TOP_CENTER);
         left.getChildren().add(naviBar);
     
+        TextField statusField = new TextField();
+        statusField.setMaxSize(Main.WIDTH/4, 20);
+        statusField.setEditable(false);
+        status = statusField;
+
         VBox top = new VBox();
         top.setPrefSize(Main.WIDTH, Main.HEIGHT/6);
         top.setAlignment(Pos.CENTER);
+        top.getChildren().addAll(statusField);
 
         VBox right = new VBox();
         right.setPrefSize(Main.WIDTH/6, 400);
         right.setAlignment(Pos.CENTER);
 
         VBox bottom = new VBox();
-        bottom.setPrefSize(Main.WIDTH, Main.HEIGHT/6);
+        bottom.setMaxSize(Main.WIDTH, Main.HEIGHT/10);
         bottom.setAlignment(Pos.CENTER);
 
         VBox center = new VBox();
-        naviBar.setPrefSize(800, 400);
+        center.setPrefSize(800, 500);
         center.setAlignment(Pos.TOP_CENTER);
 
         Interface root = new Interface(top, bottom, left, right, center);
@@ -84,6 +93,12 @@ public class Interface extends BorderPane {
 
         return root;
     }
+
+    public static TextField getStatusField(){
+        return status;
+    }
+
+
     
 }
 

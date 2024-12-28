@@ -1,7 +1,8 @@
 import java.util.ArrayList;
-
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.TextField;;
+
 
 public class Recipe {
     
@@ -73,7 +74,7 @@ public class Recipe {
     }
 
     public static void createRecipe(){
-
+        TextField status = Interface.getStatusField();
         ArrayList<String> ingredients = new ArrayList<String>();
         VBox rootContainer = Main.root.getRootCenter();
 
@@ -113,8 +114,12 @@ public class Recipe {
                 recipeList.add(newRecipe);
 
                 ingredients.clear();
+                status.setText("Recipe created successfully!");
 
                 rootContainer.getChildren().remove(creator);
+            }
+            else{
+                status.setText("Recipe cant be created!");
             }
 
         });
