@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ScrollPane;
 
-
 public class RecipeCreator extends VBox {
     
     private Label title;
@@ -71,9 +70,7 @@ public class RecipeCreator extends VBox {
     public TextField getPortions() {
         return portions;
     }
-
-    
-
+ 
 }
 
 class IngredientHBox extends HBox{

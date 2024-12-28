@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.TextField;;
-
+import javafx.scene.control.TextField;
 
 public class Recipe {
     
@@ -60,17 +59,6 @@ public class Recipe {
         this.instructions = instructions;
     }
 
-    @Override
-    public String toString() {
-                return "Recipe [" +
-                "name='" + name + '\'' +
-                ", portions=" + portions +
-                ", ingredientAmount=" + ingredientAmount +
-                ", ingredients=" + ingredients +
-                ", instructions=" + instructions +
-                "]"
-                ;
-    }
 
     public static void createRecipe(){
 
@@ -158,9 +146,9 @@ public class Recipe {
                 if(!recipe.isEmpty() && !ingredients.isEmpty()){
                     Recipe newRecipe = new Recipe(recipe, portions, ingredientAmount, ingredients, instructions);
                     
-                    saveRecipe(newRecipe);
+                    String message = HTTP.saveRecipe(newRecipe);
                     ingredients.clear();
-                    status.setText("Recipe created successfully!");
+                    status.setText(message);
     
                     rootContainer.getChildren().remove(creator);
                 }
@@ -171,9 +159,4 @@ public class Recipe {
         });
 
     }
-
-    private static void saveRecipe(Recipe recipeToSave){
-
-    }
-
 }

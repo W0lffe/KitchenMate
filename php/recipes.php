@@ -3,22 +3,22 @@
 $recipeDirName = "Recipes";
 $recipePath = "$recipeDirName/recipes.json";
 
+$directoryInit = initRecipeDir($recipeDirName);
+
+if($directoryInit["Error"]){
+    echo json_encode($directoryInit, true);
+}
+
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    postRecipes();
+    postRecipes($recipePath);
 }
 
 
 
-function postRecipes(){
-    if(!is_dir($recipeDirName)){
-        $response = initRecipeDir();
-        echo json_encode($response);
-    }
-    else{
-        echo json_encode(["Success: " => "Directory created!"]);
-    }
-
-    $recipeToSave = file_get_contents("php://input");
+function postRecipes($recipePath){
+  
+    $recipeFromClient = file_get_contents("php://input");
 
     $recipeArray = [];
 
@@ -28,15 +28,30 @@ function postRecipes(){
         $recipeArray = json_decode($existingRecipes, true);
     }
 
-    $recipeArray[] = $recipeToSave;
+    $nextIdForRecipe = 1;
+    if(!($recipeArray)){
 
-    $newData = json_encode($recipeArray, JSON_PRETTY_PRINT);
+        $idsInArray = array_column(recipeArray);
+        $nextIdForRecipe = max($idsInArray) + 1;
+    }
 
-    file_put_contents($recipePath, $newData);
+    $newRecipe = json_decode($recipeFromClient, true);
+    $newRecipe['id'] = $nextIdForRecipe;
+
+    $recipeArray[] = $newRecipe;
+
+    $encodedRecipes = json_encode($recipeArray, JSON_PRETTY_PRINT);
+
+    if(file_put_contents($recipePath, $encodedRecipes)){
+        echo json_encode(["Operation" => "Save data","Status " => "Data saved"]);
+    } else {
+        echo json_encode(["Operation" => "Save data","Status" => "Failed to save data"]);
+    }    
 }
 
 
-function initRecipeDir(){
+
+function initRecipeDir($recipeDirName){
 
     if(mkdir($recipeDirName, 0765, true)){
         return ["Success: " => "Directory created!"];
