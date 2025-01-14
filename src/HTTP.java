@@ -14,7 +14,7 @@ import com.google.gson.JsonElement;
 
 public class HTTP {
     
-    private static String URL = ""; //URL to server here!
+    private static String URL = "/recipes.php"; //URL to server here!
     private static Gson gson = new Gson();
 
     public static String saveRecipe(Recipe recipeToSave){
@@ -83,7 +83,7 @@ public class HTTP {
                     JsonObject object = jsonElement.getAsJsonObject();
 
                     listToReturn.add(gson.fromJson(object, Recipe.class));
-                    //System.out.println(gson.fromJson(object, Recipe.class));
+                    System.out.println(gson.fromJson(object, Recipe.class));
                 }
             }
             else{

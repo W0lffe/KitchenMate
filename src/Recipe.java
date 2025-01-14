@@ -70,7 +70,11 @@ public class Recipe {
 
         TextField status = Interface.getStatusField();
         ArrayList<String> ingredients = new ArrayList<String>();
+        
         VBox rootContainer = Main.root.getRootCenter();
+        if(!rootContainer.getChildren().isEmpty()){
+            rootContainer.getChildren().clear();
+        }
 
         RecipeCreator creator = new RecipeCreator(10);
         creator.getContainer().getChildren().add(new IngredientHBox(10));

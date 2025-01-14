@@ -2,7 +2,7 @@
 
 ## State of Project
 
-Currently the project is in starting point. Basic recipe creation is implemented.
+Currently the project is in starting point. Basic recipe creation is implemented and also browsing created recipes as a list so far.
 
 As this is a work in progress, certain features are still being developed, and program may contain bugs or issues.
 
@@ -33,15 +33,18 @@ This project will involve creating and manipulating various recipes and shopping
 ### So far planned functionality:
 
 #### In Java:
-* [ ] Create recipes
-    * [x] Ingredients with quantities and units
-    * [ ] Instructions
+* [X] Create recipes
+    * [X] Ingredients with quantities and units
+    * [X] Instructions
 * [ ] Modify created recipes
 * [ ] Delete recipes
 * [ ] Browse created recipes
-* [ ] Connections to Server
-    * [x] POST
-    * [ ] GET
+    * [X] List
+    * [ ] Sorting
+    * [ ] Search
+* [X] Connections to Server
+    * [X] POST
+    * [X] GET
 * [ ] UI (Implementing JavaFX from the beginning)
 * [ ] Add recipe ingredients to shopping list
 * [ ] Shopping list view
