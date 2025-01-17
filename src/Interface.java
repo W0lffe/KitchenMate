@@ -83,9 +83,10 @@ public class Interface extends BorderPane {
     public static Interface init(){
 
         //Create navigation bar
-        Navigation naviBar = new Navigation(20, "Navigation", "CREATE A RECIPE", "BROWSE RECIPES", "CREATE A SHOPPING LIST");
+        Navigation naviBar = new Navigation(20, "Navigation", "CREATE A RECIPE", "BROWSE RECIPES", "SHOPPING LIST");
         naviBar.getButton1().setOnAction(event -> Recipe.createRecipe());
         naviBar.getButton2().setOnAction(event -> RecipeList.showRecipes());
+        naviBar.getButton3().setOnAction(event -> ShoppingList.showShoppingList());
         naviBar.setAlignment(Pos.TOP_CENTER);
 
         //Create left container

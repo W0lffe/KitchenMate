@@ -78,22 +78,31 @@ class IngredientHBox extends HBox{
     private TextField ingredient;
     private TextField quantity;
     private ChoiceBox<String> unit;
+    private Button remove;
     
-    public IngredientHBox(double spacing) {
+    public IngredientHBox(double spacing, RecipeCreator parent) {
         super(spacing);
         this.ingredient = new TextField();
         this.quantity = new TextField();
         this.unit = new ChoiceBox<String>();
-
+        this.remove = new Button("Remove");
+        
         unit.getItems().addAll("kg", "g", "litre", "dl");
         ingredient.setPromptText("Ingredient");
         quantity.setPromptText("Quantity");
 
-        this.unit.setPrefSize(50, 10); // Set preferred size
-        this.unit.setMaxSize(50, 10); // Ensure maximum size
-        this.unit.setMinWidth(50); 
+        this.unit.setPrefSize(50, 10); 
 
-        this.getChildren().addAll(ingredient, quantity, unit);
+        this.remove.setOnAction(e -> {
+            if (parent.getContainer().getChildren().size() > 1) {
+                parent.getContainer().getChildren().remove(this);
+            }
+            else{
+                Interface.getStatusField().setText("You must have atleast one ingredient!");
+            }
+        });
+
+        this.getChildren().addAll(ingredient, quantity, unit, remove);
     }
 
     public TextField getIngredient() {
@@ -107,23 +116,5 @@ class IngredientHBox extends HBox{
     public ChoiceBox<String> getUnit() {
         return unit;
     }
-}
-
-class RecipeHBox extends HBox{
-
-    private Label recipeName;
-    private Label ingredientAmount;
-    private Label portions;
-    
-    public RecipeHBox(double spacing, String recipeString, String amountString, String portionsString) {
-        super(spacing);
-        this.recipeName = new Label(recipeString);
-        this.ingredientAmount = new Label(amountString);
-        this.portions = new Label(portionsString);
-
-        this.getChildren().addAll(recipeName, ingredientAmount, portions);
-    }
-
-
     
 }

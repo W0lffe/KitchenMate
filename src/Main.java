@@ -33,6 +33,10 @@ public class Main extends Application{
         primaryStage.show();
 
     }
+
+    public static Interface getRoot(){
+        return root;
+    }
     public static void main(String[] args) {
         launch(args);
     }

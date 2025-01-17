@@ -77,12 +77,11 @@ public class Recipe {
         }
 
         RecipeCreator creator = new RecipeCreator(10);
-        creator.getContainer().getChildren().add(new IngredientHBox(10));
+        creator.getContainer().getChildren().add(new IngredientHBox(10, creator));
         rootContainer.getChildren().add(creator);
 
         creator.getButton1().setOnAction(e -> {
-            creator.getContainer().getChildren().add(new IngredientHBox(10));
-        
+            creator.getContainer().getChildren().add(new IngredientHBox(10, creator));
         });
 
         creator.getButton2().setOnAction(e -> {       
