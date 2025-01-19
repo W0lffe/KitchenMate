@@ -77,7 +77,7 @@ public class HTTP {
 
                 JsonObject jsonObject = JsonParser.parseString(response.toString()).getAsJsonObject();
                 JsonArray jsonArray = jsonObject.getAsJsonArray("Data");
-                //System.out.println(jsonArray);
+                System.out.println(jsonArray);
 
                 for (JsonElement jsonElement : jsonArray) {
                     JsonObject object = jsonElement.getAsJsonObject();

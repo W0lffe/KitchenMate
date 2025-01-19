@@ -10,6 +10,7 @@ public class Recipe {
     private int ingredientAmount;
     private ArrayList<String> ingredients;
     private String instructions;
+    private int id;
     
     public Recipe(String name, int portions, int ingredientAmount, ArrayList<String> ingredients, String instructions) {
         this.name = name;
@@ -17,6 +18,10 @@ public class Recipe {
         this.ingredientAmount = ingredientAmount;
         this.ingredients = ingredients;
         this.instructions = instructions;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -168,4 +173,5 @@ public class Recipe {
         });
 
     }
+
 }

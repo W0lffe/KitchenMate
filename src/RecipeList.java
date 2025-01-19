@@ -3,8 +3,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class RecipeList {
     
@@ -138,19 +141,26 @@ class RecipeDetails extends ScrollPane{
     private HBox container;
     private VBox detailsContainer;
     private VBox instructionsContainer;
+    private VBox modifyContainer;
+    private Button modifyButton;
+    private Button deleteButton;
+    private boolean modifyInProgress = false;
 
     public RecipeDetails() {
         this.container = new HBox(10);
         this.setContent(container);
         this.setFitToWidth(true);
         this.setFitToHeight(true);
+        this.modifyButton = new Button("Edit");
+        this.deleteButton = new Button("Delete");
     
         this.detailsContainer = new VBox(10);
         this.instructionsContainer = new VBox(10);
-        this.container.getChildren().addAll(detailsContainer, instructionsContainer);
+        this.modifyContainer = new VBox(10);
+        this.modifyContainer.getChildren().addAll(modifyButton, deleteButton);
+
+        this.container.getChildren().addAll(detailsContainer, instructionsContainer, modifyContainer);
     }
-
-
 
     public void addDetails(Recipe recipe){
         Label ingredientsLabel = new Label("Ingredients:");
@@ -158,19 +168,73 @@ class RecipeDetails extends ScrollPane{
         ingredientsLabel.setUnderline(true);
         instructionsLabel.setUnderline(true);
         
-        this.detailsContainer.setPrefSize(400, 50);
+        this.detailsContainer.setPrefSize(250, 50);
         this.detailsContainer.setAlignment(Pos.TOP_CENTER);
+        this.instructionsContainer.setPrefSize(250, 50);
         this.instructionsContainer.setAlignment(Pos.TOP_CENTER);
+        this.modifyContainer.setPrefSize(250, 50);
+        this.modifyContainer.setAlignment(Pos.TOP_CENTER);
 
         this.detailsContainer.getChildren().add(ingredientsLabel);
+        
         for (String ingredient : recipe.getIngredients()) {
             Label newIngredient = new Label(ingredient);
             this.detailsContainer.getChildren().add(newIngredient);
         }
 
         this.instructionsContainer.getChildren().add(instructionsLabel);
-        this.instructionsContainer.getChildren().add(new Label(recipe.getInstructions()));
+        Label instructions = new Label(recipe.getInstructions());
+        instructions.setWrapText(true);
+        this.instructionsContainer.getChildren().add(instructions);
+
+        this.modifyButton.setOnAction(event -> {
+            if(this.modifyInProgress == false){
+                this.editDetails(recipe, ingredientsLabel, instructionsLabel);
+                this.modifyInProgress = true;
+            }
+            else{
+                Interface.getStatusField().setText("Editing already in progress!");
+            }
+        });
+
     }
+
+    private void editDetails(Recipe recipe, Label ingredientsLabel, Label instructionsLabel){
+        System.out.println(recipe.getId());
+
+        this.detailsContainer.getChildren().clear();
+        this.instructionsContainer.getChildren().clear();
+        this.modifyContainer.getChildren().clear();
+
+        this.detailsContainer.getChildren().add(ingredientsLabel);
+        this.instructionsContainer.getChildren().add(instructionsLabel);
+        Button saveButton = new Button("Save");
+        this.modifyContainer.getChildren().add(saveButton);
+
+        this.detailsContainer.setPrefSize(400, 50);
+        this.instructionsContainer.setPrefSize(400, 50);
+
+        for (String ingredient : recipe.getIngredients()) {
+            String[] splitIngredient =  ingredient.split(" ");
+
+            IngredientHBox editableIngredientBox = new IngredientHBox(10, this.detailsContainer);
+            editableIngredientBox.getIngredient().setText(splitIngredient[0]);
+            editableIngredientBox.getQuantity().setText(splitIngredient[1]);
+            editableIngredientBox.getUnit().setValue(splitIngredient[2]);
+
+            this.detailsContainer.getChildren().add(editableIngredientBox);
+        }
+
+        this.instructionsContainer.getChildren().add(new TextArea(recipe.getInstructions()));
+
+        saveButton.setOnAction(event -> {
+            //SAVE DATA AND SEND TO SERVER, REFRESH LIST
+
+            RecipeList.showRecipes();
+        });
+
+    }
+
 
 }
 

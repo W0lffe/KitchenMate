@@ -105,6 +105,33 @@ class IngredientHBox extends HBox{
         this.getChildren().addAll(ingredient, quantity, unit, remove);
     }
 
+    public IngredientHBox(double spacing, VBox parent) {
+        super(spacing);
+        this.ingredient = new TextField();
+        this.quantity = new TextField();
+        this.unit = new ChoiceBox<String>();
+        this.remove = new Button("Remove");
+        
+        unit.getItems().addAll("kg", "g", "litre", "dl");
+        ingredient.setPromptText("Ingredient");
+        quantity.setPromptText("Quantity");
+
+        this.unit.setPrefSize(50, 10); 
+
+        this.remove.setOnAction(e -> {
+            if (parent.getChildren().size() > 1) {
+                parent.getChildren().remove(this);
+            }
+            else{
+                Interface.getStatusField().setText("You must have atleast one ingredient!");
+            }
+        });
+
+        this.getChildren().addAll(ingredient, quantity, unit, remove);
+    }
+
+
+
     public TextField getIngredient() {
         return ingredient;
     }

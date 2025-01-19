@@ -41,7 +41,7 @@ function postRecipes($recipePath){
     $nextIdForRecipe = 1;
     if(!($recipeArray)){
 
-        $idsInArray = array_column(recipeArray);
+        $idsInArray = array_column($recipeArray);
         $nextIdForRecipe = max($idsInArray) + 1;
     }
 
