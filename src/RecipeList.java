@@ -3,11 +3,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
 
 public class RecipeList {
     
@@ -16,7 +15,7 @@ public class RecipeList {
 
     public static void showRecipes(){
 
-        recipes = HTTP.fetchRecipes();
+        recipes = HTTP.fetchRecipes("recipes");
         VBox rootContainer = Main.root.getRootCenter();
 
         if(!rootContainer.getChildren().isEmpty()){
@@ -25,6 +24,7 @@ public class RecipeList {
         Label listLabel = new Label("BROWSE RECIPES");
 
         ScrollPane scrollContainer = new ScrollPane();
+        scrollContainer.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.9,Main.getRoot().getRootCenter().getHeight());
         scrollContainer.setFitToWidth(true);
       
         VBox recipeContainer = new VBox(10);
@@ -39,16 +39,16 @@ public class RecipeList {
 
             RecipeContainer recipeBox = new RecipeContainer(50, recipeName, portions, ingredients, "Expand", "Add");
             
-            RecipeDetails detailsContainer = new RecipeDetails();
-            detailsContainer.addDetails(recipe);
+            RecipeDetails recipeDetailsContainer = new RecipeDetails();
+            recipeDetailsContainer.addDetails(recipe);
         
             recipeBox.getExpandButton().setOnAction(event -> {
 
-                if(!container.getChildren().contains(detailsContainer)){
-                    container.getChildren().add(detailsContainer);
+                if(!container.getChildren().contains(recipeDetailsContainer)){
+                    container.getChildren().add(recipeDetailsContainer);
                 }
                 else{
-                    container.getChildren().remove(detailsContainer);
+                    container.getChildren().remove(recipeDetailsContainer);
                 } 
               
             });
@@ -112,16 +112,16 @@ class RecipeContainer extends HBox{
         this.buttonHBox.getChildren().addAll(expandButton, addToBasketButton);
 
         this.recipeHBox.setAlignment(Pos.CENTER);
-        this.recipeHBox.setPrefSize(150, 50);
+        this.recipeHBox.setPrefSize(Main.getRoot().getRootCenter().getWidth()*0.25, Main.getRoot().getRootCenter().getHeight()*0.10);
         
         this.portionsHBox.setAlignment(Pos.CENTER);
-        this.portionsHBox.setPrefSize(150, 50);
+        this.portionsHBox.setPrefSize(Main.getRoot().getRootCenter().getWidth()*0.25, Main.getRoot().getRootCenter().getHeight()*0.10);
 
         this.ingredAmountHBox.setAlignment(Pos.CENTER);
-        this.ingredAmountHBox.setPrefSize(150, 50);
+        this.ingredAmountHBox.setPrefSize(Main.getRoot().getRootCenter().getWidth()*0.25, Main.getRoot().getRootCenter().getHeight()*0.10);
 
         this.buttonHBox.setAlignment(Pos.CENTER);
-        this.buttonHBox.setPrefSize(150, 50);
+        this.buttonHBox.setPrefSize(Main.getRoot().getRootCenter().getWidth()*0.25, Main.getRoot().getRootCenter().getHeight()*0.10);
 
         this.getChildren().addAll(recipeHBox, portionsHBox, ingredAmountHBox, buttonHBox);
     }
@@ -153,10 +153,21 @@ class RecipeDetails extends ScrollPane{
         this.setFitToHeight(true);
         this.modifyButton = new Button("Edit");
         this.deleteButton = new Button("Delete");
-    
+
         this.detailsContainer = new VBox(10);
+        this.detailsContainer.setPrefWidth(Main.getRoot().getRootCenter().getWidth()*0.33);
+        this.detailsContainer.setMaxHeight(Main.getRoot().getRootCenter().getHeight()*0.33);
+        this.detailsContainer.setAlignment(Pos.TOP_CENTER);
+
         this.instructionsContainer = new VBox(10);
+        this.instructionsContainer.setPrefWidth(Main.getRoot().getRootCenter().getWidth()*0.33);
+        this.instructionsContainer.setMaxHeight(Main.getRoot().getRootCenter().getHeight()*0.33);
+        this.instructionsContainer.setAlignment(Pos.TOP_CENTER);
+
         this.modifyContainer = new VBox(10);
+        this.modifyContainer.setPrefWidth(Main.getRoot().getRootCenter().getWidth()*0.33);
+        this.modifyContainer.setMaxHeight(Main.getRoot().getRootCenter().getHeight()*0.33);
+        this.modifyContainer.setAlignment(Pos.TOP_CENTER);
         this.modifyContainer.getChildren().addAll(modifyButton, deleteButton);
 
         this.container.getChildren().addAll(detailsContainer, instructionsContainer, modifyContainer);
@@ -168,13 +179,6 @@ class RecipeDetails extends ScrollPane{
         ingredientsLabel.setUnderline(true);
         instructionsLabel.setUnderline(true);
         
-        this.detailsContainer.setPrefSize(250, 50);
-        this.detailsContainer.setAlignment(Pos.TOP_CENTER);
-        this.instructionsContainer.setPrefSize(250, 50);
-        this.instructionsContainer.setAlignment(Pos.TOP_CENTER);
-        this.modifyContainer.setPrefSize(250, 50);
-        this.modifyContainer.setAlignment(Pos.TOP_CENTER);
-
         this.detailsContainer.getChildren().add(ingredientsLabel);
         
         for (String ingredient : recipe.getIngredients()) {
@@ -193,26 +197,29 @@ class RecipeDetails extends ScrollPane{
                 this.modifyInProgress = true;
             }
             else{
-                Interface.getStatusField().setText("Editing already in progress!");
+                //Interface.getStatusField().setText("Editing already in progress!");
             }
+        });
+
+        this.deleteButton.setOnAction(event -> {
+            HTTP.deleteData(recipe.getId());
+            RecipeList.showRecipes();
         });
 
     }
 
     private void editDetails(Recipe recipe, Label ingredientsLabel, Label instructionsLabel){
-        System.out.println(recipe.getId());
-
         this.detailsContainer.getChildren().clear();
         this.instructionsContainer.getChildren().clear();
         this.modifyContainer.getChildren().clear();
 
+        this.detailsContainer.setPrefSize(Main.getRoot().getRootCenter().getWidth()*0.50, Main.getRoot().getRootCenter().getHeight()*0.10);
+
         this.detailsContainer.getChildren().add(ingredientsLabel);
         this.instructionsContainer.getChildren().add(instructionsLabel);
-        Button saveButton = new Button("Save");
-        this.modifyContainer.getChildren().add(saveButton);
-
-        this.detailsContainer.setPrefSize(400, 50);
-        this.instructionsContainer.setPrefSize(400, 50);
+        Button saveButton = new Button("SAVE");
+        Button addIngredientButton = new Button("NEW INGREDIENT");
+        this.modifyContainer.getChildren().addAll(saveButton, addIngredientButton);
 
         for (String ingredient : recipe.getIngredients()) {
             String[] splitIngredient =  ingredient.split(" ");
@@ -225,9 +232,39 @@ class RecipeDetails extends ScrollPane{
             this.detailsContainer.getChildren().add(editableIngredientBox);
         }
 
-        this.instructionsContainer.getChildren().add(new TextArea(recipe.getInstructions()));
+        TextArea instructions = new TextArea(recipe.getInstructions());
+        this.instructionsContainer.getChildren().add(instructions);
+
+        addIngredientButton.setOnAction(e -> {
+            this.detailsContainer.getChildren().add(new IngredientHBox(10, this.detailsContainer));
+        });
 
         saveButton.setOnAction(event -> {
+            int ingredientAmount = 0;
+            ArrayList<String> newIngredients = new ArrayList<>();
+
+            for (Node node : this.detailsContainer.getChildren()) {
+                if(node instanceof IngredientHBox){
+                    IngredientHBox newIngredient = (IngredientHBox) node;
+
+                    String collectedIng = Recipe.collectIngredients(newIngredient);
+                    if(collectedIng == null || collectedIng.isBlank() || collectedIng.isEmpty()){
+                        return;
+                    }
+                    else{
+                        newIngredients.add(collectedIng);
+                        ingredientAmount++;
+                    }
+                }
+            }
+
+            recipe.setIngredientAmount(ingredientAmount);
+            recipe.setIngredients(newIngredients);
+            recipe.setInstructions(instructions.getText());
+            //System.out.println("After saving:");
+            //System.out.println(recipe);
+
+            HTTP.saveRecipe(recipe, "recipes");
             //SAVE DATA AND SEND TO SERVER, REFRESH LIST
 
             RecipeList.showRecipes();

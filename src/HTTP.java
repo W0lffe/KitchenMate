@@ -5,7 +5,6 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -17,13 +16,13 @@ public class HTTP {
     private static String URL = "/recipes.php"; //URL to server here!
     private static Gson gson = new Gson();
 
-    public static String saveRecipe(Recipe recipeToSave){
+    public static String saveRecipe(Recipe recipeToSave, String method){
         String StringJSON = gson.toJson(recipeToSave);
 
         //System.out.println(StringJSON);
     
         try {
-            URI serverURI = URI.create(URL);
+            URI serverURI = URI.create(URL + "?method=" + method);
             URL server_url = serverURI.toURL();
             HttpURLConnection connection = (HttpURLConnection) server_url.openConnection();
             connection.setRequestMethod("POST");
@@ -38,11 +37,11 @@ public class HTTP {
 
             String message;
             if (Response == HttpURLConnection.HTTP_OK) {
-                //System.out.println("Data successfully sent!");
-                message = "Recipe saved successfully!";
+                System.out.println("Data successfully sent!");
+                message = "Data saved successfully!";
             } else {
                 message = "Error! " + Response;
-                //System.out.println("Error! " + Response);
+                System.out.println("Error! " + Response);
             }
             connection.disconnect();
             return message;
@@ -53,13 +52,13 @@ public class HTTP {
         }
     }
 
-    public static ArrayList<Recipe> fetchRecipes(){
+    public static ArrayList<Recipe> fetchRecipes(String method){
        
         ArrayList<Recipe> listToReturn = new ArrayList<>();
 
         try {
             
-            URI serverURI = URI.create(URL + "?method=recipes");
+            URI serverURI = URI.create(URL + "?method=" + method);
             URL server_url = serverURI.toURL();
             HttpURLConnection connection = (HttpURLConnection) server_url.openConnection();
             connection.setRequestMethod("GET");
@@ -98,4 +97,30 @@ public class HTTP {
     return listToReturn;
 }
 
+public static void deleteData(int id){
+
+    try {
+
+        URI serverURI = URI.create(URL + "?id=" + id);
+        URL server_url = serverURI.toURL();
+        HttpURLConnection connection = (HttpURLConnection) server_url.openConnection();
+        connection.setRequestMethod("DELETE");
+
+        int Response = connection.getResponseCode();
+
+        String message;
+        if (Response == HttpURLConnection.HTTP_OK) {
+            message = "Data successfully deleted!";
+        } else {
+            message = "Error! " + Response;
+        }
+        connection.disconnect();
+        System.out.println(message);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println("Error! " + e.getMessage());
+    }
 }
+}
+

@@ -73,7 +73,7 @@ public class Recipe {
     
     public static void createRecipe(){
 
-        TextField status = Interface.getStatusField();
+        //TextField status = Interface.getStatusField();
         ArrayList<String> ingredients = new ArrayList<String>();
         
         VBox rootContainer = Main.root.getRootCenter();
@@ -86,7 +86,7 @@ public class Recipe {
         rootContainer.getChildren().add(creator);
 
         creator.getButton1().setOnAction(e -> {
-            creator.getContainer().getChildren().add(new IngredientHBox(10, creator));
+            creator.getContainer().getChildren().add(new IngredientHBox(10, creator.getContainer()));
         });
 
         creator.getButton2().setOnAction(e -> {       
@@ -97,18 +97,18 @@ public class Recipe {
             try {
                 recipe = creator.getRecipeName().getText();
                 if (recipe.isEmpty()) {
-                    status.setText("Recipe needs a name!");
+                    //status.setText("Recipe needs a name!");
                     return;
                 }
                 
                 portions = Integer.parseInt(creator.getPortions().getText());
                 if (portions <= 0) {
-                    status.setText("Set portions quantity!");
+                    //status.setText("Set portions quantity!");
                     return;
                 }
 
             } catch (NumberFormatException error) {
-                status.setText("Invalid number for portions!");
+                //status.setText("Invalid number for portions!");
                 return;
             }
 
@@ -122,56 +122,68 @@ public class Recipe {
             for (Node node : creator.getContainer().getChildren()) {
                 if (node instanceof IngredientHBox) {
                     IngredientHBox ingredientBox = (IngredientHBox) node;
-
-                    String ingredient;
-                    String quantity;
-                    String unit;
-
-                    try {
-                        ingredient = ingredientBox.getIngredient().getText();
-                        if (ingredient.isEmpty()) {
-                            status.setText("Please set name for ingredient!");
-                            return;
-                        }
-
-                        quantity = ingredientBox.getQuantity().getText();
-                        if (quantity.isEmpty()) {
-                            status.setText("Please set value for ingredient quantity!");
-                            return;
-                        }
-
-                        unit = ingredientBox.getUnit().getValue();
-                        if (unit == null || unit.isEmpty()) {
-                            status.setText("Please select unit value!");
-                            return;
-                        }
-                    } catch (Exception error) {
-                        status.setText("");
+                    String collectedIng = collectIngredients(ingredientBox);
+                    if(collectedIng == null || collectedIng.isBlank() || collectedIng.isEmpty()){
                         return;
                     }
-                    
-                    String sum = ingredient + " " + quantity + " " + unit;
-                
-                    ingredientAmount++;
-                    ingredients.add(sum);
+                    else{
+                        ingredients.add(collectedIng);
+                        ingredientAmount++;
+                    }
                 }
             }
-
+ 
                 if(!recipe.isEmpty() && !ingredients.isEmpty()){
                     Recipe newRecipe = new Recipe(recipe, portions, ingredientAmount, ingredients, instructions);
                     
-                    String message = HTTP.saveRecipe(newRecipe);
+                    String message = HTTP.saveRecipe(newRecipe, "recipes");
                     ingredients.clear();
-                    status.setText(message);
+                    //status.setText(message);
     
                     rootContainer.getChildren().remove(creator);
                 }
                 else{
-                    status.setText("Recipe cant be created!");
+                    //status.setText("Recipe cant be created!");
                 }
         
         });
+    }
 
+
+    public static String collectIngredients(IngredientHBox container){
+
+        String ingredient;
+        String quantity;
+        String unit;
+
+        try {
+            ingredient = container.getIngredient().getText();
+            if (ingredient.isEmpty()) {
+                //status.setText("Please set name for ingredient!");
+                System.out.println("Please set name for ingredient!");
+                return null;
+            }
+
+            quantity = container.getQuantity().getText();
+            if (quantity.isEmpty()) {
+                //status.setText("Please set value for ingredient quantity!");
+                System.out.println("Please set value for ingredient quantity!");
+                return null;
+            }
+
+            unit = container.getUnit().getValue();
+            if (unit == null || unit.isEmpty()) {
+                //status.setText("Please select unit value!");
+                System.out.println("Please select unit value!");
+                return null;
+            }
+        } catch (Exception error) {
+            //status.setText("");
+            return null;
+        }
+        
+        
+        return ingredient + " " + quantity + " " + unit;
     }
 
 }

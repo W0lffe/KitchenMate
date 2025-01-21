@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.awt.*;
 
 public class Main extends Application{
 
@@ -11,16 +12,25 @@ public class Main extends Application{
     public static Stage primaryStage;
 
     /**@description Final definitions for width of window */
-    public static final int WIDTH = 1200;
+    public static int WIDTH;
     /**@description Final definitions for height of window */
-    public static final int HEIGHT = 600;
+    public static int HEIGHT;
 
     /**@description Reference to root of Interface created in Main */
     public static Interface root;
 
      @Override
     public void start(Stage primary){
-        
+
+        //Init tools to to find users screensize
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension userScreenSize = toolkit.getScreenSize();
+
+        WIDTH = userScreenSize.width / 2;
+        HEIGHT = userScreenSize.height / 2;
+        System.out.println(WIDTH);
+        System.out.println(HEIGHT);
+
         primaryStage = primary;
 
         //Create scene for main menu

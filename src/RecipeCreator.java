@@ -7,6 +7,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.Node;
 
 public class RecipeCreator extends VBox {
     
@@ -30,17 +31,22 @@ public class RecipeCreator extends VBox {
         this.button2 = new Button("SAVE RECIPE");
 
         container = new VBox(10);
-        container.setPrefSize(800, 200);
         container.setAlignment(Pos.TOP_CENTER);
         scrollpane.setFitToWidth(true);
+        scrollpane.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.5, Main.getRoot().getRootCenter().getHeight()*0.4);
         scrollpane.setContent(container);
 
         this.instructions.setMaxSize(300, 100);
 
-        recipeName.setPromptText("Enter recipe name");
-        portions.setPromptText("How many portions?");
+        this.recipeName.setPromptText("Enter recipe name");
+        this.recipeName.setMaxWidth(Main.getRoot().getRootCenter().getWidth()*0.33);
+        this.portions.setPromptText("How many portions?");
+        this.portions.setMaxWidth(Main.getRoot().getRootCenter().getWidth()*0.33);
         instructions.setPromptText("Write instructions here");
+        this.instructions.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.3, 200);
+
         this.getChildren().addAll(title,recipeName,portions, scrollpane, button1, instructions, button2);
+        this.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.75, Main.getRoot().getRootCenter().getHeight());
     }
 
     public Label getTitle() {
@@ -80,31 +86,6 @@ class IngredientHBox extends HBox{
     private ChoiceBox<String> unit;
     private Button remove;
     
-    public IngredientHBox(double spacing, RecipeCreator parent) {
-        super(spacing);
-        this.ingredient = new TextField();
-        this.quantity = new TextField();
-        this.unit = new ChoiceBox<String>();
-        this.remove = new Button("Remove");
-        
-        unit.getItems().addAll("kg", "g", "litre", "dl");
-        ingredient.setPromptText("Ingredient");
-        quantity.setPromptText("Quantity");
-
-        this.unit.setPrefSize(50, 10); 
-
-        this.remove.setOnAction(e -> {
-            if (parent.getContainer().getChildren().size() > 1) {
-                parent.getContainer().getChildren().remove(this);
-            }
-            else{
-                Interface.getStatusField().setText("You must have atleast one ingredient!");
-            }
-        });
-
-        this.getChildren().addAll(ingredient, quantity, unit, remove);
-    }
-
     public IngredientHBox(double spacing, VBox parent) {
         super(spacing);
         this.ingredient = new TextField();
@@ -119,18 +100,22 @@ class IngredientHBox extends HBox{
         this.unit.setPrefSize(50, 10); 
 
         this.remove.setOnAction(e -> {
-            if (parent.getChildren().size() > 1) {
+            int parentChildrens = 0;
+            for (Node node : parent.getChildren()) {
+                if (node instanceof IngredientHBox) {
+                    parentChildrens++;
+                }
+            }
+            if (parentChildrens > 1) {
                 parent.getChildren().remove(this);
             }
             else{
-                Interface.getStatusField().setText("You must have atleast one ingredient!");
+                //Interface.getStatusField().setText("You must have atleast two ingredients!");
             }
         });
 
         this.getChildren().addAll(ingredient, quantity, unit, remove);
     }
-
-
 
     public TextField getIngredient() {
         return ingredient;

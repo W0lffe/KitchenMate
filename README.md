@@ -2,7 +2,8 @@
 
 ## State of Project
 
-Currently the project is in starting point. Basic recipe creation is implemented and also browsing created recipes as a list so far.
+Currently the project is in starting point. Program now includes recipe creation along with features to remove recipes from database, and modify them.
+Shopping list creation has been started.
 
 As this is a work in progress, certain features are still being developed, and program may contain bugs or issues.
 
@@ -36,8 +37,8 @@ This project will involve creating and manipulating various recipes and shopping
 * [X] Create recipes
     * [X] Ingredients with quantities and units
     * [X] Instructions
-* [ ] Modify created recipes
-* [ ] Delete recipes
+* [X] Modify created recipes
+* [X] Delete recipes
 * [ ] Browse created recipes
     * [X] List
     * [ ] Sorting

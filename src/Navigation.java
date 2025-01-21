@@ -1,52 +1,40 @@
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 
 /**@class Navigation
  * @purpose holds UI elements for navigation bar, extends VBox
  */
-public class Navigation extends VBox {
+public class Navigation extends HBox {
     
     //Elements
-    private Label naviLabel;
     private Button button1;
     private Button button2;
     private Button button3;
 
     //Constructors
-    public Navigation(double spacing, String naviLabelString, String buttonString) {
+    public Navigation(double spacing, String buttonString) {
         super(spacing);
-        this.naviLabel = new Label(naviLabelString);
         this.button1 = new Button(buttonString);
 
-        this.getChildren().addAll(naviLabel, button1);
+        this.getChildren().addAll(button1);
     }
 
-    public Navigation(double spacing, String naviLabelString, String buttonString, String buttonString2) {
+    public Navigation(double spacing,String buttonString, String buttonString2) {
         super(spacing);
-        this.naviLabel = new Label(naviLabelString);
         this.button1 = new Button(buttonString);
         this.button2 = new Button(buttonString2);
 
-        this.getChildren().addAll(naviLabel, button1, button2);
+        this.getChildren().addAll(button1, button2);
     }
 
-    public Navigation(double spacing, String naviLabelString, String buttonString, String buttonString2, String buttonString3) {
+    public Navigation(double spacing, String buttonString, String buttonString2, String buttonString3) {
         super(spacing);
-        this.naviLabel = new Label(naviLabelString);
         this.button1 = new Button(buttonString);
         this.button2 = new Button(buttonString2);
         this.button3 = new Button(buttonString3);
 
-        this.getChildren().addAll(naviLabel, button1, button2, button3);
+        this.getChildren().addAll(button1, button2, button3);
 
-    }
-
-    /**
-     * @return label of navigation bar
-     */
-    public Label getNaviLabel() {
-        return naviLabel;
     }
 
     /**

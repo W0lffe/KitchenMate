@@ -1,5 +1,5 @@
 import javafx.geometry.Pos;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -14,8 +14,6 @@ public class Interface extends BorderPane {
     private VBox left;
     private VBox right;
     private VBox center;
-    private static TextField status;
-
 
     //Constructor
     public Interface(VBox top, VBox bottom, VBox left, VBox right, VBox center) {
@@ -83,43 +81,34 @@ public class Interface extends BorderPane {
     public static Interface init(){
 
         //Create navigation bar
-        Navigation naviBar = new Navigation(20, "Navigation", "CREATE A RECIPE", "BROWSE RECIPES", "SHOPPING LIST");
+        VBox top = new VBox(10);
+        Navigation naviBar = new Navigation(20, "CREATE A RECIPE", "BROWSE RECIPES", "SHOPPING LIST");
         naviBar.getButton1().setOnAction(event -> Recipe.createRecipe());
         naviBar.getButton2().setOnAction(event -> RecipeList.showRecipes());
         naviBar.getButton3().setOnAction(event -> ShoppingList.showShoppingList());
-        naviBar.setAlignment(Pos.TOP_CENTER);
+        naviBar.setAlignment(Pos.CENTER);
+        top.setAlignment(Pos.TOP_CENTER);
+        top.getChildren().addAll(new Label("Navigation"), naviBar);
+        top.setMaxSize(Main.WIDTH, Main.HEIGHT*0.10);
 
         //Create left container
         VBox left = new VBox();
-        left.setPrefSize(Main.WIDTH/6, 400);
-        left.setAlignment(Pos.TOP_CENTER);
-        left.getChildren().add(naviBar); //add navibar
-        
-        //Create textfield
-        TextField statusField = new TextField();
-        statusField.setMaxSize(Main.WIDTH/4, 20);
-        statusField.setEditable(false);
-        status = statusField;
-
-        //Create top container
-        VBox top = new VBox();
-        top.setPrefSize(Main.WIDTH, Main.HEIGHT/6);
-        top.setAlignment(Pos.CENTER);
-        top.getChildren().addAll(statusField); //Add textfield
+        left.setPrefSize(Main.WIDTH*0.05, Main.HEIGHT*0.60);
+        left.setAlignment(Pos.CENTER);
 
         //Create right container
         VBox right = new VBox();
-        right.setPrefSize(Main.WIDTH/6, 400);
+        right.setPrefSize(Main.WIDTH*0.05, Main.HEIGHT*0.60);
         right.setAlignment(Pos.CENTER);
 
         //Create bottom container
         VBox bottom = new VBox();
-        bottom.setMaxSize(Main.WIDTH, Main.HEIGHT/10);
+        bottom.setMaxSize(Main.WIDTH, Main.HEIGHT*0.10);
         bottom.setAlignment(Pos.CENTER);
 
         //Create center container
-        VBox center = new VBox();
-        center.setPrefSize(800, 500);
+        VBox center = new VBox(20);
+        center.setPrefSize(Main.WIDTH - left.getWidth(), Main.HEIGHT*0.60);
         center.setAlignment(Pos.TOP_CENTER);
 
         //Create Interface class ROOT for window with previously created containers
@@ -129,15 +118,6 @@ public class Interface extends BorderPane {
         //Return root to Main
         return root;
     }
-
-    /**
-     * @return TextField element of top container
-     */
-    public static TextField getStatusField(){
-        return status;
-    }
-
-
     
 }
 

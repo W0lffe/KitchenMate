@@ -1,7 +1,11 @@
 <?php
 
 $recipeDirName = "Recipes";
+$shopDirName = "Shopping";
+
 $recipePath = "$recipeDirName/recipes.json";
+$shopPath = "$shopDirName/shoppinglist.json";
+
 
 $directoryInit = initRecipeDir($recipeDirName);
 
@@ -11,7 +15,14 @@ if($directoryInit["Error"]){
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    postRecipes($recipePath);
+    $method = $_GET['method'];
+    
+    if($method == "recipes"){
+        postRecipes($recipePath);
+    }
+    else if($method == "shoplist"){
+        postShoplist($shopPath);
+    }
 }
 else if($_SERVER['REQUEST_METHOD'] === 'GET'){
     $method = $_GET['method'];
@@ -20,37 +31,55 @@ else if($_SERVER['REQUEST_METHOD'] === 'GET'){
         getData($recipePath, "Fetch recipes");
     }
     else if($method == "shoplist"){
-        getData($shoplistPath, "Fetch shoppinglist");
+        getData($shopPath, "Fetch shoppinglist");
     }
 }
-
+else if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
+    deleteData($recipePath);
+}
 
 
 function postRecipes($recipePath){
   
     $recipeFromClient = file_get_contents("php://input");
 
-    $recipeArray = [];
+    $existingRecipeArray = [];
 
     if(file_exists($recipePath)){
         $existingRecipes = file_get_contents($recipePath);
 
-        $recipeArray = json_decode($existingRecipes, true);
+        $existingRecipeArray = json_decode($existingRecipes, true);
     }
-
-    $nextIdForRecipe = 1;
-    if(!($recipeArray)){
-
-        $idsInArray = array_column($recipeArray);
-        $nextIdForRecipe = max($idsInArray) + 1;
-    }
-
+    
     $newRecipe = json_decode($recipeFromClient, true);
-    $newRecipe['id'] = $nextIdForRecipe;
+    $recipeExists = false;
 
-    $recipeArray[] = $newRecipe;
+    for ($i = 0; $i < count($existingRecipeArray); $i++) {
+        if ($existingRecipeArray[$i]['id'] == $newRecipe['id']) {
+            $existingRecipeArray[$i] = $newRecipe;
+            $recipeExists = true;
+            break;
+        }
+    }
 
-    $encodedRecipes = json_encode($recipeArray, JSON_PRETTY_PRINT);
+    if(!$recipeExists){
+
+        $nextIdForRecipe = 1;
+        
+        if(count($existingRecipeArray) > 0){
+
+            $idsInArray = count($existingRecipeArray) ;
+            $nextIdForRecipe = $idsInArray + 1;
+        }
+
+        $newRecipe = json_decode($recipeFromClient, true);
+        $newRecipe['id'] = $nextIdForRecipe;
+
+        $existingRecipeArray[] = $newRecipe;
+    }
+
+    $encodedRecipes = json_encode($existingRecipeArray, JSON_PRETTY_PRINT);
+
 
     if(file_put_contents($recipePath, $encodedRecipes)){
         echo json_encode(["Operation" => "Save data","Status " => "Data saved"]);
@@ -59,7 +88,15 @@ function postRecipes($recipePath){
     }    
 }
 
+function postShoplist($shopPath){
 
+    $listFromClient = file_get_contents("php://input");
+
+    $encodedData = json_encode($listFromClient, JSON_PRETTY_PRINT);
+
+    file_put_contents($shopPath, $encodedData);
+}
+ 
 
 function initRecipeDir($recipeDirName){
 
@@ -88,4 +125,32 @@ function getData($file_path, $operation){
         echo json_encode(["Operation" => $operation, "Status" => "Failed: File does not exist!"]);
     }
 }
+
+function deleteData($recipePath){
+    $idToDelete = $_GET['id'];
+
+    if(file_exists($recipePath)){
+
+        $decodedData = json_decode(file_get_contents($recipePath), true);
+
+        for($i = 0; $i < count($decodedData); $i++){
+            if($decodedData[$i]['id'] == $idToDelete){
+                array_splice($decodedData, $i, 1);
+                break;
+            }
+        }
+
+        $newId = 1;
+        
+        for($i = 0; $i < count($decodedData); $i++){
+            $decodedData[$i]['id'] = $newId;
+            $newId++;
+        }
+
+        $encodedData = json_encode($decodedData, JSON_PRETTY_PRINT);
+        file_put_contents($recipePath, $encodedData);
+    }
+}
+
+
 ?>

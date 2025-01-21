@@ -1,0 +1,64 @@
+[
+    {
+        "name": "Mousse",
+        "portions": 4,
+        "ingredientAmount": 2,
+        "ingredients": [
+            "Kerma 6 dl",
+            "Suklaa 600 g"
+        ],
+        "instructions": "1. Kiehauta kerma\n2. Lis\u00e4\u00e4 pienenetty suklaalevy kermaan ja ota pois l\u00e4mm\u00f6lt\u00e4\n3. Sekoita kunnes suklaa on sulanut\n4. Laita laakeaan astiin ja j\u00e4\u00e4hdyt\u00e4 y\u00f6n yli\n5. Kun massa on paksuuntut j\u00e4\u00e4kaapissa, voi sen vatkata",
+        "id": 1
+    },
+    {
+        "name": "Artisokkapyre",
+        "portions": 10,
+        "ingredientAmount": 3,
+        "ingredients": [
+            "Maa-artisokka 1 kg",
+            "Kerma 4 dl",
+            "Voi 250 g"
+        ],
+        "instructions": "1. Kuori maa-artisokat ja paahda\n2. L\u00e4mmit\u00e4 kerma ja sulata voi siihen\n3. Kun maa-artisokat on paahdettu, lis\u00e4\u00e4 ne kermavoi seokseen\n4. Kunnes pehmeit\u00e4, soseuta blenderiss\u00e4",
+        "id": 2
+    },
+    {
+        "name": "Skagenr\u00f6ra",
+        "portions": 4,
+        "ingredientAmount": 7,
+        "ingredients": [
+            "R\u00e4kor 800 g",
+            "Citronsaft 0.5 dl",
+            "Majonn\u00e4s 350 g",
+            "Dill 80 g",
+            "Grasl\u00f6k 80 g",
+            "R\u00f6dl\u00f6k 80 g",
+            "Salta 5 g"
+        ],
+        "instructions": "1. Fina chop l\u00f6k och gr\u00f6na\n2. Hang r\u00e4kor\n3. Mixar citronsaft, majo, gr\u00f6na och r\u00e4kor\n4. Smaka",
+        "id": 3
+    },
+    {
+        "name": "Lihaliemi",
+        "portions": 10,
+        "ingredientAmount": 4,
+        "ingredients": [
+            "Keittoluut 2 kg",
+            "Vesi 5 litre",
+            "Juurekset 1 kg",
+            "Timjami 100 g"
+        ],
+        "instructions": "1. Paahda luut ja juurekset\n2. Laita kylm\u00e4\u00e4n veteen\n3. Kiehauta, ja redusoi\n4. Kuori vaahtoa",
+        "id": 4
+    },
+    {
+        "name": "Testi",
+        "portions": 5,
+        "ingredientAmount": 1,
+        "ingredients": [
+            "hoo\u00e4f 5 kg"
+        ],
+        "instructions": "Instructions not specified!",
+        "id": 5
+    }
+]
