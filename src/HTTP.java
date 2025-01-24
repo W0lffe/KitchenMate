@@ -13,7 +13,7 @@ import com.google.gson.JsonElement;
 
 public class HTTP {
     
-    private static String URL = "/recipes.php"; //URL to server here!
+    private static String URL = "https://www.cc.puv.fi/~e2301740/KitchenMate/recipes.php"; //URL to server here!
     private static Gson gson = new Gson();
 
     public static String saveRecipe(Recipe recipeToSave, String method){
@@ -37,11 +37,11 @@ public class HTTP {
 
             String message;
             if (Response == HttpURLConnection.HTTP_OK) {
-                System.out.println("Data successfully sent!");
+                //System.out.println("Data successfully sent!");
                 message = "Data saved successfully!";
             } else {
                 message = "Error! " + Response;
-                System.out.println("Error! " + Response);
+                //System.out.println("Error! " + Response);
             }
             connection.disconnect();
             return message;
@@ -90,10 +90,12 @@ public class HTTP {
             }
     }
     catch (Exception e) {
-        System.out.println("Error occured!" + e);
+        Modal.initInfoModal("Error occured!" + e);
+        //System.out.println("Error occured!" + e);
         return null;
     }
 
+    Modal.initInfoModal("Recipe list fetched successfully!");
     return listToReturn;
 }
 

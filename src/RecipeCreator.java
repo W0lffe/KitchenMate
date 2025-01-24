@@ -30,7 +30,7 @@ public class RecipeCreator extends VBox {
         this.instructions = new TextArea();
         this.button2 = new Button("SAVE RECIPE");
 
-        container = new VBox(10);
+        this.container = new VBox(10);
         container.setAlignment(Pos.TOP_CENTER);
         scrollpane.setFitToWidth(true);
         scrollpane.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.5, Main.getRoot().getRootCenter().getHeight()*0.4);
@@ -93,7 +93,7 @@ class IngredientHBox extends HBox{
         this.unit = new ChoiceBox<String>();
         this.remove = new Button("Remove");
         
-        unit.getItems().addAll("kg", "g", "litre", "dl");
+        unit.getItems().addAll("kg", "g", "litre", "dl", "pcs");
         ingredient.setPromptText("Ingredient");
         quantity.setPromptText("Quantity");
 
@@ -110,12 +110,30 @@ class IngredientHBox extends HBox{
                 parent.getChildren().remove(this);
             }
             else{
-                //Interface.getStatusField().setText("You must have atleast two ingredients!");
+                Modal.initInfoModal("You must have atleast one ingredient!");
             }
         });
 
         this.getChildren().addAll(ingredient, quantity, unit, remove);
     }
+
+    public IngredientHBox(double spacing) {
+        super(spacing);
+        this.ingredient = new TextField();
+        this.quantity = new TextField();
+        this.unit = new ChoiceBox<String>();
+        this.remove = new Button("ADD");
+        
+        unit.getItems().addAll("kg", "g", "litre", "dl", "pcs");
+        ingredient.setPromptText("Product");
+        quantity.setPromptText("Quantity");
+
+        this.unit.setPrefSize(50, 10); 
+
+        this.getChildren().addAll(ingredient, quantity, unit, remove);
+    }
+
+
 
     public TextField getIngredient() {
         return ingredient;
@@ -128,5 +146,11 @@ class IngredientHBox extends HBox{
     public ChoiceBox<String> getUnit() {
         return unit;
     }
+
+    public Button getRemoveButton() {
+        return remove;
+    }
+
+    
     
 }

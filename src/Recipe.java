@@ -1,18 +1,17 @@
 import java.util.ArrayList;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.TextField;
 
 public class Recipe {
     
     private String name;
     private int portions;
     private int ingredientAmount;
-    private ArrayList<String> ingredients;
+    private ArrayList<Product> ingredients;
     private String instructions;
     private int id;
     
-    public Recipe(String name, int portions, int ingredientAmount, ArrayList<String> ingredients, String instructions) {
+    public Recipe(String name, int portions, int ingredientAmount, ArrayList<Product> ingredients, String instructions) {
         this.name = name;
         this.portions = portions;
         this.ingredientAmount = ingredientAmount;
@@ -48,11 +47,11 @@ public class Recipe {
         this.ingredientAmount = ingredientAmount;
     }
 
-    public ArrayList<String> getIngredients() {
+    public ArrayList<Product> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
+    public void setIngredients(ArrayList<Product> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -73,8 +72,7 @@ public class Recipe {
     
     public static void createRecipe(){
 
-        //TextField status = Interface.getStatusField();
-        ArrayList<String> ingredients = new ArrayList<String>();
+        ArrayList<Product> ingredients = new ArrayList<Product>();
         
         VBox rootContainer = Main.root.getRootCenter();
         if(!rootContainer.getChildren().isEmpty()){
@@ -97,22 +95,21 @@ public class Recipe {
             try {
                 recipe = creator.getRecipeName().getText();
                 if (recipe.isEmpty()) {
-                    //status.setText("Recipe needs a name!");
+                    Modal.initInfoModal("Recipe needs a name!");
                     return;
                 }
                 
                 portions = Integer.parseInt(creator.getPortions().getText());
                 if (portions <= 0) {
-                    //status.setText("Set portions quantity!");
+                    Modal.initInfoModal("Set portions quantity!");
                     return;
                 }
 
             } catch (NumberFormatException error) {
-                //status.setText("Invalid number for portions!");
+                Modal.initInfoModal("Invalid number for portions!");
                 return;
             }
 
-            int ingredientAmount = 0;
             String instructions = creator.getInstructions().getText();
 
             if (instructions == null || instructions.isEmpty()) {
@@ -122,68 +119,68 @@ public class Recipe {
             for (Node node : creator.getContainer().getChildren()) {
                 if (node instanceof IngredientHBox) {
                     IngredientHBox ingredientBox = (IngredientHBox) node;
-                    String collectedIng = collectIngredients(ingredientBox);
-                    if(collectedIng == null || collectedIng.isBlank() || collectedIng.isEmpty()){
+                    Product collectedIng = collectIngredients(ingredientBox);
+                    if(collectedIng == null){
                         return;
                     }
                     else{
                         ingredients.add(collectedIng);
-                        ingredientAmount++;
                     }
                 }
             }
  
                 if(!recipe.isEmpty() && !ingredients.isEmpty()){
-                    Recipe newRecipe = new Recipe(recipe, portions, ingredientAmount, ingredients, instructions);
+                    Recipe newRecipe = new Recipe(recipe, portions, ingredients.size(), ingredients, instructions);
                     
                     String message = HTTP.saveRecipe(newRecipe, "recipes");
                     ingredients.clear();
-                    //status.setText(message);
+                    Modal.initInfoModal(message);
     
                     rootContainer.getChildren().remove(creator);
                 }
                 else{
-                    //status.setText("Recipe cant be created!");
+                    Modal.initInfoModal("Recipe cant be created!");
                 }
         
         });
     }
 
 
-    public static String collectIngredients(IngredientHBox container){
+    public static Product collectIngredients(IngredientHBox container){
 
         String ingredient;
-        String quantity;
+        String quantityString;
         String unit;
+        double quantity;
 
         try {
             ingredient = container.getIngredient().getText();
             if (ingredient.isEmpty()) {
-                //status.setText("Please set name for ingredient!");
-                System.out.println("Please set name for ingredient!");
+                Modal.initInfoModal("Please set name for ingredient!");
                 return null;
             }
 
-            quantity = container.getQuantity().getText();
-            if (quantity.isEmpty()) {
-                //status.setText("Please set value for ingredient quantity!");
-                System.out.println("Please set value for ingredient quantity!");
+            quantityString = container.getQuantity().getText();
+            if (quantityString.isEmpty()) {
+                Modal.initInfoModal("Please set value for ingredient quantity!");
                 return null;
+            }
+            else{
+                quantity = Double.parseDouble(quantityString);
             }
 
             unit = container.getUnit().getValue();
             if (unit == null || unit.isEmpty()) {
-                //status.setText("Please select unit value!");
-                System.out.println("Please select unit value!");
+                Modal.initInfoModal("Please select unit value!");
                 return null;
             }
         } catch (Exception error) {
-            //status.setText("");
+            Modal.initInfoModal("Error occured!");
             return null;
         }
         
         
-        return ingredient + " " + quantity + " " + unit;
+        return new Product(ingredient, quantity, unit);
     }
 
 }

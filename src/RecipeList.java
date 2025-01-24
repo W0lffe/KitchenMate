@@ -11,7 +11,7 @@ import javafx.scene.Node;
 public class RecipeList {
     
     private static ArrayList<Recipe> recipes;
-    private static ArrayList<Ingredient> ingredientList = new ArrayList<>();
+    private static ArrayList<Product> ingredientList = new ArrayList<>();
 
     public static void showRecipes(){
 
@@ -53,31 +53,7 @@ public class RecipeList {
               
             });
 
-            recipeBox.getAddToBasketButton().setOnAction(e-> {
-                for (String ingredient : recipe.getIngredients()) {
-                    String[] splitString = ingredient.split(" ");
-                    System.out.println(Double.parseDouble(splitString[1]));
-                    Ingredient createdIngredient = new Ingredient(splitString[0], Double.parseDouble(splitString[1]), splitString[2]);
-                    
-                    boolean isDuplicate = false;
-
-                    for(Ingredient ing : ingredientList){
-                        if(ing.getName().equals(createdIngredient.getName())){
-                            isDuplicate = true;
-                            double sum = ing.getQuantity() + createdIngredient.getQuantity();
-                            ing.setQuantity(sum);
-                            break;
-                        }
-                    }
-
-                    if(!isDuplicate){
-                        ingredientList.add(createdIngredient);
-                    }
-
-                }
-
-                System.out.println(ingredientList);
-            });
+            recipeBox.getAddToBasketButton().setOnAction(e-> { Modal.initListModal(recipe.getIngredients()); });
 
             container.getChildren().add(recipeBox);
             recipeContainer.getChildren().add(container);;
@@ -86,7 +62,7 @@ public class RecipeList {
         rootContainer.getChildren().addAll(listLabel, scrollContainer);
         }
 
-        public static ArrayList<Ingredient> getList(){
+        public static ArrayList<Product> getList(){
             return ingredientList;
         }
 }
@@ -102,9 +78,9 @@ class RecipeContainer extends HBox{
 
     public RecipeContainer(double spacing, String recipe, String portionAmount, String ingredientQuantity, String expandButtonLabel, String addToBasketLabel) {
         super(spacing);
-        this.recipeHBox = new HBox(new Label(recipe));
-        this.portionsHBox = new HBox(new Label(portionAmount));
-        this.ingredAmountHBox = new HBox(new Label(ingredientQuantity));
+        this.recipeHBox = new HBox(10, new Label(recipe));
+        this.portionsHBox = new HBox(10, new Label(portionAmount));
+        this.ingredAmountHBox = new HBox(10, new Label(ingredientQuantity));
         this.expandButton = new Button(expandButtonLabel);
         this.addToBasketButton = new Button(addToBasketLabel);
         this.buttonHBox = new HBox(10);
@@ -181,8 +157,8 @@ class RecipeDetails extends ScrollPane{
         
         this.detailsContainer.getChildren().add(ingredientsLabel);
         
-        for (String ingredient : recipe.getIngredients()) {
-            Label newIngredient = new Label(ingredient);
+        for (Product ingredient : recipe.getIngredients()) {
+            Label newIngredient = new Label(ingredient.toString());
             this.detailsContainer.getChildren().add(newIngredient);
         }
 
@@ -196,12 +172,10 @@ class RecipeDetails extends ScrollPane{
                 this.editDetails(recipe, ingredientsLabel, instructionsLabel);
                 this.modifyInProgress = true;
             }
-            else{
-                //Interface.getStatusField().setText("Editing already in progress!");
-            }
         });
 
         this.deleteButton.setOnAction(event -> {
+
             HTTP.deleteData(recipe.getId());
             RecipeList.showRecipes();
         });
@@ -221,13 +195,12 @@ class RecipeDetails extends ScrollPane{
         Button addIngredientButton = new Button("NEW INGREDIENT");
         this.modifyContainer.getChildren().addAll(saveButton, addIngredientButton);
 
-        for (String ingredient : recipe.getIngredients()) {
-            String[] splitIngredient =  ingredient.split(" ");
+        for (Product ingredient : recipe.getIngredients()) {
 
             IngredientHBox editableIngredientBox = new IngredientHBox(10, this.detailsContainer);
-            editableIngredientBox.getIngredient().setText(splitIngredient[0]);
-            editableIngredientBox.getQuantity().setText(splitIngredient[1]);
-            editableIngredientBox.getUnit().setValue(splitIngredient[2]);
+            editableIngredientBox.getIngredient().setText(ingredient.getName());
+            editableIngredientBox.getQuantity().setText(Double.toString(ingredient.getQuantity()));
+            editableIngredientBox.getUnit().setValue(ingredient.getUnit());
 
             this.detailsContainer.getChildren().add(editableIngredientBox);
         }
@@ -240,31 +213,29 @@ class RecipeDetails extends ScrollPane{
         });
 
         saveButton.setOnAction(event -> {
-            int ingredientAmount = 0;
-            ArrayList<String> newIngredients = new ArrayList<>();
+            ArrayList<Product> newIngredients = new ArrayList<>();
 
             for (Node node : this.detailsContainer.getChildren()) {
                 if(node instanceof IngredientHBox){
                     IngredientHBox newIngredient = (IngredientHBox) node;
 
-                    String collectedIng = Recipe.collectIngredients(newIngredient);
-                    if(collectedIng == null || collectedIng.isBlank() || collectedIng.isEmpty()){
+                    Product collectedIng = Recipe.collectIngredients(newIngredient);
+                    if(collectedIng == null){
                         return;
                     }
                     else{
                         newIngredients.add(collectedIng);
-                        ingredientAmount++;
                     }
                 }
             }
 
-            recipe.setIngredientAmount(ingredientAmount);
+            recipe.setIngredientAmount(newIngredients.size());
             recipe.setIngredients(newIngredients);
             recipe.setInstructions(instructions.getText());
             //System.out.println("After saving:");
             //System.out.println(recipe);
 
-            HTTP.saveRecipe(recipe, "recipes");
+            Modal.initInfoModal(HTTP.saveRecipe(recipe, "recipes"));
             //SAVE DATA AND SEND TO SERVER, REFRESH LIST
 
             RecipeList.showRecipes();
