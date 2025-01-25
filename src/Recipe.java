@@ -4,31 +4,27 @@ import javafx.scene.layout.VBox;
 
 public class Recipe {
     
-    private String name;
+    private String recipeName;
     private int portions;
     private int ingredientAmount;
     private ArrayList<Product> ingredients;
-    private String instructions;
+    private ArrayList<String> instructions;
     private int id;
-    
-    public Recipe(String name, int portions, int ingredientAmount, ArrayList<Product> ingredients, String instructions) {
-        this.name = name;
+
+    public Recipe(String recipeName, int portions, int ingredientAmount, ArrayList<Product> ingredients, ArrayList<String> instructions) {
+        this.recipeName = recipeName;
         this.portions = portions;
         this.ingredientAmount = ingredientAmount;
         this.ingredients = ingredients;
         this.instructions = instructions;
     }
 
-    public int getId() {
-        return id;
+    public String getRecipeName() {
+        return recipeName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setRecipeName(String recipeName) {
+        this.recipeName = recipeName;
     }
 
     public int getPortions() {
@@ -55,42 +51,41 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    public String getInstructions() {
+    public ArrayList<String> getInstructions() {
         return instructions;
     }
 
-    public void setInstructions(String instructions) {
+    public void setInstructions(ArrayList<String> instructions) {
         this.instructions = instructions;
     }
 
-    @Override
-    public String toString() {
-        return "Recipe [name=" + name + ", portions=" + portions + ", ingredientAmount=" + ingredientAmount
-                + ", ingredients=" + ingredients + ", instructions=" + instructions + "]";
+    public int getId() {
+        return id;
     }
 
-    
-    public static void createRecipe(){
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        ArrayList<Product> ingredients = new ArrayList<Product>();
+    public static void initRecipeCreation(){
+
+        VBox mainRootRight =  Main.getRoot().getRootRightContainer();
+        Main.clearRootRight();
         
-        VBox rootContainer = Main.root.getRootCenter();
-        if(!rootContainer.getChildren().isEmpty()){
-            rootContainer.getChildren().clear();
-        }
-
         RecipeCreator creator = new RecipeCreator(10);
-        creator.getContainer().getChildren().add(new IngredientHBox(10, creator));
-        rootContainer.getChildren().add(creator);
+ 
+        mainRootRight.getChildren().add(creator);
 
-        creator.getButton1().setOnAction(e -> {
-            creator.getContainer().getChildren().add(new IngredientHBox(10, creator.getContainer()));
+        creator.getSaveButton().setOnAction(event -> {
+            createRecipe(creator);
         });
 
-        creator.getButton2().setOnAction(e -> {       
-            
-            String recipe;
-            int portions;
+    }
+
+    private static void createRecipe(RecipeCreator creator){
+
+        String recipe;
+        int portions;
 
             try {
                 recipe = creator.getRecipeName().getText();
@@ -109,78 +104,41 @@ public class Recipe {
                 Modal.initInfoModal("Invalid number for portions!");
                 return;
             }
-
-            String instructions = creator.getInstructions().getText();
-
-            if (instructions == null || instructions.isEmpty()) {
-                instructions = "Instructions not specified!";
+        
+            ArrayList<String> instructions = InstructionHBox.getInstructions(creator.getInstructionContainer());
+           
+            if(instructions.isEmpty()){
+                instructions.add("Instructions not specified!");
             }
 
-            for (Node node : creator.getContainer().getChildren()) {
-                if (node instanceof IngredientHBox) {
-                    IngredientHBox ingredientBox = (IngredientHBox) node;
-                    Product collectedIng = collectIngredients(ingredientBox);
-                    if(collectedIng == null){
+            ArrayList<Product> ingredients = new ArrayList<>();
+
+            for (Node node : creator.getProductContainer().getChildren()) {
+                if (node instanceof ProductHBox) {
+                    ProductHBox ingredientBox = (ProductHBox) node;
+                    Product collectedIngredient = ProductHBox.collectProducts(ingredientBox);
+                    if(collectedIngredient == null){
                         return;
                     }
                     else{
-                        ingredients.add(collectedIng);
+                        ingredients.add(collectedIngredient);
                     }
                 }
             }
- 
-                if(!recipe.isEmpty() && !ingredients.isEmpty()){
-                    Recipe newRecipe = new Recipe(recipe, portions, ingredients.size(), ingredients, instructions);
-                    
-                    String message = HTTP.saveRecipe(newRecipe, "recipes");
-                    ingredients.clear();
-                    Modal.initInfoModal(message);
-    
-                    rootContainer.getChildren().remove(creator);
-                }
-                else{
-                    Modal.initInfoModal("Recipe cant be created!");
-                }
-        
-        });
-    }
 
+            if(!recipe.isEmpty() || !ingredients.isEmpty()){
 
-    public static Product collectIngredients(IngredientHBox container){
-
-        String ingredient;
-        String quantityString;
-        String unit;
-        double quantity;
-
-        try {
-            ingredient = container.getIngredient().getText();
-            if (ingredient.isEmpty()) {
-                Modal.initInfoModal("Please set name for ingredient!");
-                return null;
-            }
-
-            quantityString = container.getQuantity().getText();
-            if (quantityString.isEmpty()) {
-                Modal.initInfoModal("Please set value for ingredient quantity!");
-                return null;
+                Recipe newRecipe = new Recipe(recipe, portions, ingredients.size(), ingredients, instructions);
+                HTTP.saveRecipe(newRecipe, "recipes");
+                ingredients.clear();
+                Recipe.initRecipeCreation();
             }
             else{
-                quantity = Double.parseDouble(quantityString);
+                Modal.initInfoModal("Recipe cant be created!");
             }
 
-            unit = container.getUnit().getValue();
-            if (unit == null || unit.isEmpty()) {
-                Modal.initInfoModal("Please select unit value!");
-                return null;
-            }
-        } catch (Exception error) {
-            Modal.initInfoModal("Error occured!");
-            return null;
-        }
-        
-        
-        return new Product(ingredient, quantity, unit);
+
     }
+
 
 }

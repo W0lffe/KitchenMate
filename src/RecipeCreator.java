@@ -1,156 +1,117 @@
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Node;
 
 public class RecipeCreator extends VBox {
     
     private Label title;
+    private Label nameText;
+    private Label portText;
     private TextField recipeName;
     private TextField portions;
-    private ScrollPane scrollpane;
-    private VBox container;
-    private Button button1;
-    private TextArea instructions;
-    private Button button2;
-    
+    private HBox textFieldContainer;
+    private VBox productContainer;
+    private ScrollPane productScroll;
+    private VBox instructionContainer;
+    private ScrollPane instructionScroll;
+    private HBox scrollContainer;
+    private Button addIngredientButton;
+    private Button addStepButton;
+    private Button saveButton;
+    private HBox buttonBar;
+   
     public RecipeCreator(double spacing) {
         super(spacing);
         this.title = new Label("CREATE A NEW RECIPE");
+        this.title.setPadding(new Insets(10));
+
         this.recipeName = new TextField();
+        this.nameText = new Label("Enter name for recipe: ");
         this.portions = new TextField();
-        this.scrollpane = new ScrollPane();
-        this.button1 = new Button("ADD NEW INGREDIENT");
-        this.instructions = new TextArea();
-        this.button2 = new Button("SAVE RECIPE");
+        this.portText = new Label("Enter amount of portions: ");
+        this.textFieldContainer = new HBox(20, nameText, recipeName, portText, portions);
+        
+        this.productContainer = new VBox(20);
+        this.productContainer.setPrefWidth(Main.getRoot().getRootRightContainer().getWidth()*0.45);
+        this.productScroll = new ScrollPane(productContainer);
+        this.productScroll.setFitToWidth(true);
+        
+        this.instructionContainer = new VBox(20);
+        this.instructionContainer.setPrefWidth(Main.getRoot().getRootRightContainer().getWidth()*0.45);
+        this.instructionScroll = new ScrollPane(instructionContainer);
+        this.instructionScroll.setFitToWidth(true);
 
-        this.container = new VBox(10);
-        container.setAlignment(Pos.TOP_CENTER);
-        scrollpane.setFitToWidth(true);
-        scrollpane.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.5, Main.getRoot().getRootCenter().getHeight()*0.4);
-        scrollpane.setContent(container);
+        this.scrollContainer = new HBox(20, productScroll, instructionScroll);
+        this.scrollContainer.setAlignment(Pos.CENTER);
 
-        this.instructions.setMaxSize(300, 100);
+        this.addIngredientButton = new Button("ADD INGREDIENT");
+        this.addStepButton = new Button("ADD STEP TO INSTRUCTIONS");
+        this.saveButton = new Button("SAVE RECIPE");
+        this.buttonBar = new HBox(20, addIngredientButton, addStepButton, saveButton);
 
-        this.recipeName.setPromptText("Enter recipe name");
-        this.recipeName.setMaxWidth(Main.getRoot().getRootCenter().getWidth()*0.33);
-        this.portions.setPromptText("How many portions?");
-        this.portions.setMaxWidth(Main.getRoot().getRootCenter().getWidth()*0.33);
-        instructions.setPromptText("Write instructions here");
-        this.instructions.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.3, 200);
+        this.setAlignment(Pos.TOP_CENTER);
+        this.setPrefSize(Main.getRoot().getRootRightContainer().getWidth(), Main.getRoot().getRootRightContainer().getHeight());
+        this.textFieldContainer.setPrefHeight(Main.getRoot().getRootRightContainer().getHeight()*0.1);
+        this.scrollContainer.setPrefHeight(Main.getRoot().getRootRightContainer().getHeight()*0.6);
 
-        this.getChildren().addAll(title,recipeName,portions, scrollpane, button1, instructions, button2);
-        this.setMaxSize(Main.getRoot().getRootCenter().getWidth()*0.75, Main.getRoot().getRootCenter().getHeight());
+        ProductHBox firstIngredient = new ProductHBox(10, this.productContainer);
+        this.productContainer.getChildren().add(firstIngredient);
+
+        InstructionHBox firstStep = new InstructionHBox(10, "Step 1",  this.instructionContainer);
+        this.instructionContainer.getChildren().add(firstStep);
+
+        this.getChildren().addAll(title, textFieldContainer, scrollContainer, buttonBar);
+
+        this.addIngredientButton.setOnAction(e -> {
+            this.productContainer.getChildren().add(new ProductHBox(10, this.productContainer));
+        });
+
+        this.addStepButton.setOnAction(e -> {
+            String step = this.getStepCount();
+            this.instructionContainer.getChildren().add(new InstructionHBox(10, step, this.instructionContainer));
+        });
+
     }
 
-    public Label getTitle() {
-        return title;
+    private String getStepCount(){
+        int count = 1;
+        
+        for (Node node : this.instructionContainer.getChildren()) {
+            if(node instanceof InstructionHBox){
+                count++;
+            }
+        }
+
+        return "Step " + Integer.toString(count);
     }
 
-    public VBox getContainer() {
-        return container;
+    public Button getSaveButton(){
+        return saveButton;
     }
 
-    public Button getButton1() {
-        return button1;
-    }
-
-    public TextArea getInstructions() {
-        return instructions;
-    }
-
-    public Button getButton2() {
-        return button2;
-    }
-
-    public TextField getRecipeName() {
+    public TextField getRecipeName(){
         return recipeName;
     }
 
     public TextField getPortions() {
         return portions;
     }
- 
-}
 
-class IngredientHBox extends HBox{
+    public VBox getInstructionContainer() {
+        return instructionContainer;
+    }
 
-    private TextField ingredient;
-    private TextField quantity;
-    private ChoiceBox<String> unit;
-    private Button remove;
+    public VBox getProductContainer() {
+        return productContainer;
+    }
     
-    public IngredientHBox(double spacing, VBox parent) {
-        super(spacing);
-        this.ingredient = new TextField();
-        this.quantity = new TextField();
-        this.unit = new ChoiceBox<String>();
-        this.remove = new Button("Remove");
-        
-        unit.getItems().addAll("kg", "g", "litre", "dl", "pcs");
-        ingredient.setPromptText("Ingredient");
-        quantity.setPromptText("Quantity");
-
-        this.unit.setPrefSize(50, 10); 
-
-        this.remove.setOnAction(e -> {
-            int parentChildrens = 0;
-            for (Node node : parent.getChildren()) {
-                if (node instanceof IngredientHBox) {
-                    parentChildrens++;
-                }
-            }
-            if (parentChildrens > 1) {
-                parent.getChildren().remove(this);
-            }
-            else{
-                Modal.initInfoModal("You must have atleast one ingredient!");
-            }
-        });
-
-        this.getChildren().addAll(ingredient, quantity, unit, remove);
-    }
-
-    public IngredientHBox(double spacing) {
-        super(spacing);
-        this.ingredient = new TextField();
-        this.quantity = new TextField();
-        this.unit = new ChoiceBox<String>();
-        this.remove = new Button("ADD");
-        
-        unit.getItems().addAll("kg", "g", "litre", "dl", "pcs");
-        ingredient.setPromptText("Product");
-        quantity.setPromptText("Quantity");
-
-        this.unit.setPrefSize(50, 10); 
-
-        this.getChildren().addAll(ingredient, quantity, unit, remove);
-    }
-
-
-
-    public TextField getIngredient() {
-        return ingredient;
-    }
-
-    public TextField getQuantity() {
-        return quantity;
-    }
-
-    public ChoiceBox<String> getUnit() {
-        return unit;
-    }
-
-    public Button getRemoveButton() {
-        return remove;
-    }
-
     
     
 }
+

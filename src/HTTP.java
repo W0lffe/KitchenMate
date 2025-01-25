@@ -13,10 +13,11 @@ import com.google.gson.JsonElement;
 
 public class HTTP {
     
-    private static String URL = "https://www.cc.puv.fi/~e2301740/KitchenMate/recipes.php"; //URL to server here!
+    private static String URL = "/KitchenMate/recipes.php"; //URL to server here!
     private static Gson gson = new Gson();
 
-    public static String saveRecipe(Recipe recipeToSave, String method){
+
+    public static void saveRecipe(Recipe recipeToSave, String method){
         String StringJSON = gson.toJson(recipeToSave);
 
         //System.out.println(StringJSON);
@@ -44,11 +45,12 @@ public class HTTP {
                 //System.out.println("Error! " + Response);
             }
             connection.disconnect();
-            return message;
+            Modal.initInfoModal(message);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return e.getMessage();
+            Modal.initInfoModal(e.getMessage());
+
         }
     }
 
@@ -117,11 +119,12 @@ public static void deleteData(int id){
             message = "Error! " + Response;
         }
         connection.disconnect();
-        System.out.println(message);
+        Modal.initInfoModal(message);
+        //System.out.println(message);
 
     } catch (Exception e) {
         e.printStackTrace();
-        System.out.println("Error! " + e.getMessage());
+        Modal.initInfoModal("Error! " + e.getMessage());
     }
 }
 }

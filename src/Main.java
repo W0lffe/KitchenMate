@@ -6,18 +6,18 @@ import java.awt.*;
 public class Main extends Application{
 
     /**@description Reference to main menu scene created in Main */
-    public static Scene main;
+    private static Scene main;
 
     /**@description Reference to primary stage created in Main*/
-    public static Stage primaryStage;
+    private static Stage primaryStage;
 
-    /**@description Final definitions for width of window */
-    public static int WIDTH;
-    /**@description Final definitions for height of window */
-    public static int HEIGHT;
+    /**@description definitions for width of window */
+    private static int WIDTH;
+    /**@description definitions for height of window */
+    private static int HEIGHT;
 
     /**@description Reference to root of Interface created in Main */
-    public static Interface root;
+    private static Interface root;
 
      @Override
     public void start(Stage primary){
@@ -34,19 +34,33 @@ public class Main extends Application{
         primaryStage = primary;
 
         //Create scene for main menu
-        root = Interface.init();
+        root = new Interface();
         main = new Scene(root, WIDTH, HEIGHT);
        
         //Set scene
         primaryStage.setTitle("KitchenMate");
         primaryStage.setScene(main);
         primaryStage.show();
+    }
 
+    public static void clearRootRight(){
+        if(!getRoot().getRootRightContainer().getChildren().isEmpty()){
+            getRoot().getRootRightContainer().getChildren().clear();
+        }
     }
 
     public static Interface getRoot(){
         return root;
     }
+
+    public static int getWidth(){
+        return WIDTH;
+    }
+
+    public static int getHeight(){
+        return HEIGHT;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

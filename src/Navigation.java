@@ -1,62 +1,60 @@
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 
 /**@class Navigation
  * @purpose holds UI elements for navigation bar, extends VBox
  */
-public class Navigation extends HBox {
+public class Navigation extends VBox {
     
     //Elements
-    private Button button1;
-    private Button button2;
-    private Button button3;
-
+    private VBox button1;
+    private VBox button2;
+    private VBox button3;
+    
     //Constructors
-    public Navigation(double spacing, String buttonString) {
+
+    public Navigation(double spacing, VBox parent) {
         super(spacing);
-        this.button1 = new Button(buttonString);
+        this.button1 = new VBox(10, new Label("RECIPE CREATION"));
+        this.button2 = new VBox(10, new Label("RECIPE LIST"));
+        this.button3 = new VBox(10, new Label("BASKET"));
 
-        this.getChildren().addAll(button1);
-    }
-
-    public Navigation(double spacing,String buttonString, String buttonString2) {
-        super(spacing);
-        this.button1 = new Button(buttonString);
-        this.button2 = new Button(buttonString2);
-
-        this.getChildren().addAll(button1, button2);
-    }
-
-    public Navigation(double spacing, String buttonString, String buttonString2, String buttonString3) {
-        super(spacing);
-        this.button1 = new Button(buttonString);
-        this.button2 = new Button(buttonString2);
-        this.button3 = new Button(buttonString3);
+        this.button1.setPrefSize(parent.getWidth(), parent.getHeight()*0.1);
+        this.button2.setPrefSize(parent.getWidth(), parent.getHeight()*0.1);
+        this.button3.setPrefSize(parent.getWidth(), parent.getHeight()*0.1);
+        this.button1.setAlignment(Pos.TOP_CENTER);
+        this.button2.setAlignment(Pos.TOP_CENTER);
+        this.button3.setAlignment(Pos.TOP_CENTER);
 
         this.getChildren().addAll(button1, button2, button3);
 
-    }
+        this.button1.setOnMouseClicked(e -> {
+            Recipe.initRecipeCreation();
+        });
 
-    /**
-     * @return first button of navigation bar
-     */
-    public Button getButton1() {
+        this.button2.setOnMouseClicked(e -> {
+            RecipeList.initRecipeList();
+        });
+    }
+    
+    
+    public VBox getButton1() {
         return button1;
     }
 
-     /**
-     * @return second button of navigation bar
-     */
-    public Button getButton2() {
+    public VBox getButton2() {
         return button2;
     }
 
-     /**
-     * @return third button of navigation bar
-     */
-    public Button getButton3() {
+    public VBox getButton3() {
         return button3;
     }
+
+    
+
+   
+    
  
 }
 

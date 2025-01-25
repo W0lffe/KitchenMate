@@ -23,7 +23,7 @@ public class Modal {
         ModalWindow modal = new ModalWindow(20);
         modal.populate(ingredientList);
 
-        Scene modalScene = new Scene(modal, Main.getRoot().getRootCenter().getWidth()*0.6, Main.getRoot().getRootCenter().getHeight()*0.8);
+        Scene modalScene = new Scene(modal, Main.getRoot().getRootRightContainer().getWidth()*0.6, Main.getRoot().getRootRightContainer().getHeight()*0.8);
         modalStage.setScene(modalScene);
 
         modalStage.showAndWait();
@@ -36,7 +36,7 @@ public class Modal {
 
         ModalWindow modal = new ModalWindow(20, error);
 
-        Scene modalScene = new Scene(modal, Main.getRoot().getRootCenter().getWidth()*0.25, Main.getRoot().getRootCenter().getHeight()*0.25);
+        Scene modalScene = new Scene(modal, Main.getRoot().getRootRightContainer().getWidth()*0.25, Main.getRoot().getRootRightContainer().getHeight()*0.25);
         modalStage.setScene(modalScene);
 
         modalStage.showAndWait();
@@ -65,8 +65,8 @@ class ModalWindow extends VBox{
         
         this.scrollContainer.setContent(listContainer);
         this.scrollContainer.setFitToWidth(true);
-        this.scrollContainer.setMaxWidth(Main.getRoot().getRootCenter().getWidth()*0.4);
-        this.scrollContainer.setPrefHeight(Main.getRoot().getRootCenter().getHeight()*0.6);
+        this.scrollContainer.setMaxWidth(Main.getRoot().getRootRightContainer().getWidth()*0.4);
+        this.scrollContainer.setPrefHeight(Main.getRoot().getRootRightContainer().getHeight()*0.6);
         this.listContainer.setAlignment(Pos.CENTER);
         this.buttonContainer.setAlignment(Pos.CENTER);
 
@@ -75,10 +75,10 @@ class ModalWindow extends VBox{
         this.cancelButton.setOnAction(e -> Modal.modalStage.close());
         this.confirmButton.setOnAction(e -> {
             for (Node node : this.listContainer.getChildren()) {
-                if (node instanceof IngredientHBox) {
-                    IngredientHBox children = (IngredientHBox) node;
-                    Product productToAppend = Recipe.collectIngredients(children);
-                    ShoppingList.appendToShoppingList(productToAppend);
+                if (node instanceof ProductHBox) {
+                    ProductHBox children = (ProductHBox) node;
+                    Product productToAppend = ProductHBox.collectProducts(children);
+                    //ShoppingList.appendToShoppingList(productToAppend);
                 }
             }
             Modal.modalStage.close();
@@ -108,8 +108,8 @@ class ModalWindow extends VBox{
 
         for (Product ingredient : ingredientList) {
             
-            IngredientHBox editableIngredientBox = new IngredientHBox(10, this.listContainer);
-            editableIngredientBox.getIngredient().setText(ingredient.getName());
+            ProductHBox editableIngredientBox = new ProductHBox(10, this.listContainer);
+            editableIngredientBox.getProduct().setText(ingredient.getName());
             editableIngredientBox.getQuantity().setText(Double.toString(ingredient.getQuantity()));
             editableIngredientBox.getUnit().setValue(ingredient.getUnit());
 
