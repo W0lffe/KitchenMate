@@ -45,7 +45,7 @@ public class RecipeListView extends HBox {
             });
 
             containerToAdd.getAddButton().setOnAction(e -> {
-
+                Modal.initListModal(recipe.getIngredients());
             });
 
             this.recipeListContainer.getChildren().add(containerToAdd);

@@ -78,7 +78,7 @@ class ModalWindow extends VBox{
                 if (node instanceof ProductHBox) {
                     ProductHBox children = (ProductHBox) node;
                     Product productToAppend = ProductHBox.collectProducts(children);
-                    //ShoppingList.appendToShoppingList(productToAppend);
+                    ShoppingList.appendToShoppingList(productToAppend);
                 }
             }
             Modal.modalStage.close();

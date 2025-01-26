@@ -36,6 +36,10 @@ public class Navigation extends VBox {
         this.button2.setOnMouseClicked(e -> {
             RecipeList.initRecipeList();
         });
+
+        this.button3.setOnMouseClicked(e -> {
+            ShoppingList.initShoppingList();
+        });
     }
     
     

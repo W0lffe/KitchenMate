@@ -24,6 +24,7 @@ public class Interface extends HBox {
         this.rootRightContainer.setPrefSize(Main.getWidth()*0.8, Main.getHeight());
         this.rootLeftContainer.setAlignment(Pos.CENTER);
         this.rootRightContainer.setAlignment(Pos.CENTER);
+        
         this.initNavi();
         this.getStylesheets().add(Interface.class.getResource("styles.css").toExternalForm());
 
