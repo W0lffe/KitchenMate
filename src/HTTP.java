@@ -13,14 +13,21 @@ import com.google.gson.JsonElement;
 
 public class HTTP {
     
-    private static String URL = "/recipes.php"; //URL to server here!
+    private static String URL = "/KitchenMate/recipes.php"; //URL to server here!
     private static Gson gson = new Gson();
     private static boolean firstFetch = false;
 
-    public static void saveRecipe(Recipe recipeToSave, String method){
+    public static void saveData(Recipe recipeToSave, String method){
         String StringJSON = gson.toJson(recipeToSave);
 
         //System.out.println(StringJSON);
+        String message = "";
+        if(method.equals("recipes")){
+            message = message.concat("Recipe");
+        }
+        else{
+            message = message.concat("Basket");
+        }
     
         try {
             URI serverURI = URI.create(URL + "?method=" + method);
@@ -36,10 +43,9 @@ public class HTTP {
 
             int Response = connection.getResponseCode();
 
-            String message;
             if (Response == HttpURLConnection.HTTP_OK) {
                 //System.out.println("Data successfully sent!");
-                message = "Data saved successfully!";
+                message = message.concat(" saved successfully!");
 
             } else {
                 message = "Error! " + Response;
@@ -99,7 +105,7 @@ public class HTTP {
     }
 
     if(!firstFetch){
-        Modal.initInfoModal("Recipe list fetched successfully!");
+        Modal.initInfoModal("Recipes fetched succesfully!");
         firstFetch = true;
     }
 

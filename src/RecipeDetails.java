@@ -127,7 +127,7 @@ public class RecipeDetails extends HBox{
             recipe.setInstructions(InstructionHBox.getInstructions(this.instructionBox));
             recipe.setIngredientAmount(recipe.getIngredients().size());
 
-            HTTP.saveRecipe(recipe, "recipes");
+            HTTP.saveData(recipe, "recipes");
             RecipeList.initRecipeList();
         });
 

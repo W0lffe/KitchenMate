@@ -31,7 +31,7 @@
             "command": "java",
             "args": [
                 "--module-path", "lib/javafx-sdk-23/lib/",
-                "--add-modules", "javafx.controls,javafx.fxml",
+                 ,
                 "-jar", "out/KitchenMate.jar"
             ]
         }
@@ -40,3 +40,4 @@
 
 // javac -cp "lib/javafx-sdk-23/lib/*;lib/gson/*" src/*.java -d out
 // java --module-path "lib/javafx-sdk-23/lib/" --add-modules javafx.controls,javafx.fxml -cp "out;lib/gson/*" Main
+// java --module-path, lib/javafx-sdk-23/lib/ --add-modules javafx.controls,javafx.fxml -jar out/KitchenMate.jar

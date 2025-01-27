@@ -2,23 +2,38 @@
 
 ## State of Project
 
-Currently the project is in starting point. Program now includes recipe creation along with features to remove recipes from database, and modify them.
-Shopping list creation has been started.
+Currently the project is in starting point. Program now includes recipe creation along with features to remove recipes from database, and modify them. Also now you are
+able to create shopping baskets based on the recipe ingredients, or you can manually entry products. Currently the basket does not save anywhere, only available while
+software is running.
 
 As this is a work in progress, certain features are still being developed, and program may contain bugs or issues.
 
 ### To run the program
 
-In Visual Studio Code:
-* ~~Run task using tasks.json tasks, Compile -> Build JAR -> Run JAR~~
+**First**
+
+Add your URL to HTTP.java file, then
 
 **Compile**
 ```
 javac -cp "lib/javafx-sdk-23/lib/*;lib/gson/*" src/*.java -d out
 ```
+
 **Run**
 ```
 java --module-path "lib/javafx-sdk-23/lib/" --add-modules javafx.controls,javafx.fxml -cp "out;lib/gson/*" Main
+```
+
+**Alternatively**
+
+After compiling, you can run this task in Visual Studio Code:
+* Build JAR
+
+then
+
+**Run JAR**
+```
+java --module-path, lib/javafx-sdk-23/lib/ --add-modules javafx.controls,javafx.fxml -jar out/KitchenMate.jar
 ```
 
 
@@ -47,9 +62,9 @@ This project will involve creating and manipulating various recipes and shopping
     * [X] POST
     * [X] GET
 * [ ] UI (Implementing JavaFX from the beginning)
-* [ ] Add recipe ingredients to shopping list
-* [ ] Shopping list view
-    * [ ] Modifying list(removing, modify amounts)
+* [X] Add recipe ingredients to shopping list
+* [X] Shopping list view
+    * [X] Modifying list(removing, modify amounts)
 
 #### Browser (Probably will try React):
 * [ ] Recipe Browsing

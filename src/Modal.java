@@ -29,12 +29,12 @@ public class Modal {
         modalStage.showAndWait();
     }
 
-    public static void initInfoModal(String error){
+    public static void initInfoModal(String message){
 
         modalStage = new Stage();
         modalStage.initModality(Modality.APPLICATION_MODAL);
 
-        ModalWindow modal = new ModalWindow(20, error);
+        ModalWindow modal = new ModalWindow(20, message);
 
         Scene modalScene = new Scene(modal, Main.getRoot().getRootRightContainer().getWidth()*0.25, Main.getRoot().getRootRightContainer().getHeight()*0.25);
         modalStage.setScene(modalScene);
@@ -53,8 +53,8 @@ class ModalWindow extends VBox{
     private Button cancelButton;
     private Label title;
     
-    public ModalWindow(double arg0) {
-        super(arg0);
+    public ModalWindow(double spacing) {
+        super(spacing);
         this.scrollContainer = new ScrollPane();
         this.listContainer = new VBox(10);
         this.confirmButton = new Button("Confirm");
@@ -74,6 +74,11 @@ class ModalWindow extends VBox{
         this.getChildren().addAll(title, scrollContainer, buttonContainer);
         this.cancelButton.setOnAction(e -> Modal.modalStage.close());
         this.confirmButton.setOnAction(e -> {
+
+            if(ShoppingListView.getCondition()){
+                ShoppingList.getBasket().clear();
+            }
+
             for (Node node : this.listContainer.getChildren()) {
                 if (node instanceof ProductHBox) {
                     ProductHBox children = (ProductHBox) node;
@@ -93,6 +98,7 @@ class ModalWindow extends VBox{
         super(spacing);
         this.confirmButton = new Button("Confirm");
         this.title = new Label(labelString);
+        this.title.setWrapText(true);
 
         this.setAlignment(Pos.CENTER);
         this.getChildren().addAll(title, confirmButton);

@@ -129,7 +129,7 @@ public class Recipe {
             if(!recipe.isEmpty() || !ingredients.isEmpty()){
 
                 Recipe newRecipe = new Recipe(recipe, portions, ingredients.size(), ingredients, instructions);
-                HTTP.saveRecipe(newRecipe, "recipes");
+                HTTP.saveData(newRecipe, "recipes");
                 ingredients.clear();
                 Recipe.initRecipeCreation();
             }

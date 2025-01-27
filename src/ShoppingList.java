@@ -4,7 +4,7 @@ import javafx.scene.layout.VBox;
 
 public class ShoppingList{
 
-    private static ArrayList<Product> shoppingList = new ArrayList<>();
+    private static ArrayList<Product> basket = new ArrayList<>();
 
     public static void initShoppingList(){
 
@@ -12,7 +12,7 @@ public class ShoppingList{
         Main.clearRootRight();
 
         ShoppingListView listView = new ShoppingListView(10);
-        listView.populateTable(shoppingList);
+        listView.populateTable(basket);
 
         mainRootRight.getChildren().add(listView);
 
@@ -22,7 +22,7 @@ public class ShoppingList{
 
         boolean productExists = false;
 
-        for (Product product : shoppingList) {
+        for (Product product : basket) {
             if(product.getName().equals(productToAppend.getName())){
                 double sum = product.getQuantity() + productToAppend.getQuantity();
                 product.setQuantity(sum);
@@ -32,8 +32,12 @@ public class ShoppingList{
         }
 
         if(!productExists){
-            shoppingList.add(productToAppend);
+            basket.add(productToAppend);
         }
+    }
+
+    public static ArrayList<Product> getBasket(){
+        return basket;
     }
 
 }

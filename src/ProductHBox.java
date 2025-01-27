@@ -73,6 +73,10 @@ public class ProductHBox extends HBox{
         return unit;
     }
 
+    public Button getButton() {
+        return button;
+    }
+
     public static Product collectProducts(ProductHBox container){
 
         String ingredient;
@@ -108,7 +112,7 @@ public class ProductHBox extends HBox{
         
         return new Product(ingredient, quantity, unit);
     }
-
+ 
 }
     
 

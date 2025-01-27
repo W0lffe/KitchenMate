@@ -1,2 +1,2 @@
-Class-Path: lib/gson/gson-2.11.0.jar;lib/javafx-sdk-23/lib/
 Main-Class: Main
+Class-Path: lib/gson/gson-2.11.0.jar;lib/javafx-sdk-23/lib/

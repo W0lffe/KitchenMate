@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 
 public class RecipeList {
 
@@ -16,7 +17,7 @@ public class RecipeList {
         RecipeListView recipeList = new RecipeListView(10);
         recipeList.populateList(recipes);
 
-        mainRootRight.getChildren().addAll(recipeList);
+        mainRootRight.getChildren().addAll(new Label("BROWSE RECIPES"), recipeList);
 
     }
 }
