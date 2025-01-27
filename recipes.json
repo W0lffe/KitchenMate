@@ -1,0 +1,109 @@
+[
+    {
+        "recipeName": "Fried Rice",
+        "portions": 4,
+        "ingredientAmount": 5,
+        "ingredients": [
+            {
+                "name": "Riisi",
+                "quantity": 200,
+                "unit": "g"
+            },
+            {
+                "name": "Vegemix",
+                "quantity": 400,
+                "unit": "g"
+            },
+            {
+                "name": "Soija",
+                "quantity": 0.5,
+                "unit": "dl"
+            },
+            {
+                "name": "Sambal Oelek",
+                "quantity": 10,
+                "unit": "g"
+            },
+            {
+                "name": "P\u00e4hkin\u00e4",
+                "quantity": 50,
+                "unit": "g"
+            }
+        ],
+        "instructions": [
+            "Keit\u00e4 riisi",
+            "Paista veget",
+            "Tee maustetahna",
+            "Lis\u00e4\u00e4 riisi ja maustetahna pannulle",
+            "Lis\u00e4\u00e4 p\u00e4hkin\u00e4t"
+        ],
+        "id": 1
+    },
+    {
+        "recipeName": "Sweet N Sour Chicken",
+        "portions": 4,
+        "ingredientAmount": 5,
+        "ingredients": [
+            {
+                "name": "Chicken",
+                "quantity": 450,
+                "unit": "g"
+            },
+            {
+                "name": "Ketchup",
+                "quantity": 100,
+                "unit": "g"
+            },
+            {
+                "name": "Soy",
+                "quantity": 0.5,
+                "unit": "dl"
+            },
+            {
+                "name": "Water",
+                "quantity": 0.5,
+                "unit": "dl"
+            },
+            {
+                "name": "Syrup",
+                "quantity": 20,
+                "unit": "g"
+            }
+        ],
+        "instructions": [
+            "Dice the chicken",
+            "Mix up soy, ketchup, water and syrup",
+            "Fry the chicken, when done take out of pan",
+            "Pour the mixture on pan and let reduce a little, before putting chicken back"
+        ],
+        "id": 2
+    },
+    {
+        "recipeName": "Lihaliemi",
+        "portions": 10,
+        "ingredientAmount": 3,
+        "ingredients": [
+            {
+                "name": "Vesi",
+                "quantity": 5,
+                "unit": "litre"
+            },
+            {
+                "name": "Keittoluut",
+                "quantity": 2,
+                "unit": "kg"
+            },
+            {
+                "name": "Juurekset",
+                "quantity": 2,
+                "unit": "kg"
+            }
+        ],
+        "instructions": [
+            "Paahda luut ja juurekset",
+            "Lis\u00e4\u00e4 luut ja juurekset kylm\u00e4\u00e4n veteen",
+            "Kiehauta, redusoi ja kuori vaahtoa"
+        ],
+        "id": 3
+    }
+]
