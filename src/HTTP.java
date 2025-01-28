@@ -17,16 +17,16 @@ public class HTTP {
     private static Gson gson = new Gson();
     private static boolean firstFetch = false;
 
-    public static void saveData(Recipe recipeToSave, String method){
-        String StringJSON = gson.toJson(recipeToSave);
+    public static void saveData(Object dataToSave, String method){
+        String StringJSON = gson.toJson(dataToSave);
 
         //System.out.println(StringJSON);
         String message = "";
-        if(method.equals("recipes")){
-            message = message.concat("Recipe");
+        if(method.equals("Recipe")){
+            message = message.concat(method);
         }
         else{
-            message = message.concat("Basket");
+            message = message.concat(method);
         }
     
         try {

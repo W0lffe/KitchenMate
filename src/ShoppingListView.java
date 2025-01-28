@@ -68,7 +68,8 @@ public class ShoppingListView extends HBox {
 
         this.saveButton.setOnAction(e -> {
             if(!editInProgress && !entryInProgress){
-
+                Basket newBasket = new Basket(ShoppingList.getBasket());
+                HTTP.saveData(newBasket, "Basket");
             }
             else if(editInProgress){
                 Modal.initInfoModal("Saving is not possible while editing list!");

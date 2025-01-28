@@ -1,10 +1,10 @@
 <?php
 
 $recipeDirName = "Recipes";
-$shopDirName = "Shopping";
+$basketDirName = "Shopping";
 
 $recipePath = "$recipeDirName/recipes.json";
-$shopPath = "$shopDirName/shoppinglist.json";
+$basketPath = "$basketDirName/basket.json";
 
 
 $directoryInit = initRecipeDir($recipeDirName);
@@ -17,21 +17,21 @@ if($directoryInit["Error"]){
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $method = $_GET['method'];
     
-    if($method == "recipes"){
+    if($method == "Recipe"){
         postRecipes($recipePath);
     }
-    else if($method == "shoplist"){
-        postShoplist($shopPath);
+    else if($method == "Basket"){
+        postShoplist($basketPath);
     }
 }
 else if($_SERVER['REQUEST_METHOD'] === 'GET'){
     $method = $_GET['method'];
 
-    if($method == "recipes"){
+    if($method == "Recipe"){
         getData($recipePath, "Fetch recipes");
     }
-    else if($method == "shoplist"){
-        getData($shopPath, "Fetch shoppinglist");
+    else if($method == "Basket"){
+        getData($basketPath, "Fetch basket");
     }
 }
 else if($_SERVER['REQUEST_METHOD'] === 'DELETE'){
@@ -88,13 +88,11 @@ function postRecipes($recipePath){
     }    
 }
 
-function postShoplist($shopPath){
+function postShoplist($basketPath){
 
     $listFromClient = file_get_contents("php://input");
 
-    $encodedData = json_encode($listFromClient, JSON_PRETTY_PRINT);
-
-    file_put_contents($shopPath, $encodedData);
+    file_put_contents($basketPath, $listFromClient);
 }
  
 

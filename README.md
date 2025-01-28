@@ -3,8 +3,7 @@
 ## State of Project
 
 Currently the project is in starting point. Program now includes recipe creation along with features to remove recipes from database, and modify them. Also now you are
-able to create shopping baskets based on the recipe ingredients, or you can manually entry products. Currently the basket does not save anywhere, only available while
-software is running.
+able to create shopping basket based on the recipe ingredients, or you can manually entry products. Currently the basket can be saved to server, but can not be fetched yet.
 
 As this is a work in progress, certain features are still being developed, and program may contain bugs or issues.
 
@@ -24,16 +23,16 @@ javac -cp "lib/javafx-sdk-23/lib/*;lib/gson/*" src/*.java -d out
 java --module-path "lib/javafx-sdk-23/lib/" --add-modules javafx.controls,javafx.fxml -cp "out;lib/gson/*" Main
 ```
 
-**Alternatively**
+**~~Alternatively~~**
 
-After compiling, you can run this task in Visual Studio Code:
-* Build JAR
+~~After compiling, you can run this task in Visual Studio Code:~~
+* ~~Build JAR~~
 
-then
+~~then~~
 
-**Run JAR**
+**~~Run JAR~~**
 ```
-java --module-path, lib/javafx-sdk-23/lib/ --add-modules javafx.controls,javafx.fxml -jar out/KitchenMate.jar
+~~java --module-path, lib/javafx-sdk-23/lib/ --add-modules javafx.controls,javafx.fxml -jar out/KitchenMate.jar~~
 ```
 
 

@@ -12,7 +12,7 @@ public class RecipeList {
         VBox mainRootRight = Main.getRoot().getRootRightContainer();
         Main.clearRootRight();
 
-        recipes = HTTP.fetchRecipes("recipes");
+        recipes = HTTP.fetchRecipes("Recipe");
 
         RecipeListView recipeList = new RecipeListView(10);
         recipeList.populateList(recipes);
