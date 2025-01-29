@@ -4,6 +4,7 @@ import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Node;
@@ -24,6 +25,7 @@ public class RecipeCreator extends VBox {
     private Button addIngredientButton;
     private Button addStepButton;
     private Button saveButton;
+    private CheckBox allowDelete;
     private HBox buttonBar;
    
     public RecipeCreator(double spacing) {
@@ -53,7 +55,9 @@ public class RecipeCreator extends VBox {
         this.addIngredientButton = new Button("ADD INGREDIENT");
         this.addStepButton = new Button("ADD STEP TO INSTRUCTIONS");
         this.saveButton = new Button("SAVE RECIPE");
-        this.buttonBar = new HBox(20, addIngredientButton, addStepButton, saveButton);
+        this.allowDelete = new CheckBox("LOCK RECIPE");
+
+        this.buttonBar = new HBox(20, addIngredientButton, addStepButton, saveButton, allowDelete);
 
         this.setAlignment(Pos.TOP_CENTER);
         this.setPrefSize(Main.getRoot().getRootRightContainer().getWidth(), Main.getRoot().getRootRightContainer().getHeight());
@@ -110,6 +114,12 @@ public class RecipeCreator extends VBox {
     public VBox getProductContainer() {
         return productContainer;
     }
+
+    public CheckBox getAllowDelete() {
+        return allowDelete;
+    }
+    
+
     
     
     

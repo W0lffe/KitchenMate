@@ -85,7 +85,7 @@ public class HTTP {
 
                 JsonObject jsonObject = JsonParser.parseString(response.toString()).getAsJsonObject();
                 JsonArray jsonArray = jsonObject.getAsJsonArray("Data");
-                System.out.println(jsonArray);
+                //System.out.println(jsonArray);
 
                 for (JsonElement jsonElement : jsonArray) {
                     JsonObject object = jsonElement.getAsJsonObject();
@@ -138,5 +138,54 @@ public static void deleteData(int id){
         Modal.initInfoModal("Error! " + e.getMessage());
     }
 }
+
+public static Basket fetchBasket(String method){
+       
+    Basket basketToReturn = new Basket(null);
+
+    try {
+        
+        URI serverURI = URI.create(URL + "?method=" + method);
+        URL server_url = serverURI.toURL();
+        HttpURLConnection connection = (HttpURLConnection) server_url.openConnection();
+        connection.setRequestMethod("GET");
+
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+            }
+            br.close();
+
+            JsonObject jsonObject = JsonParser.parseString(response.toString()).getAsJsonObject();
+            jsonObject = jsonObject.getAsJsonObject("Data");
+            //System.out.println(jsonObject);
+
+            basketToReturn = gson.fromJson(jsonObject, Basket.class);
+            //System.out.println(gson.fromJson(jsonObject, Basket.class)); 
+        }
+        else{
+            return null;
+        }
+}
+catch (Exception e) {
+    Modal.initInfoModal("Error occured!" + e);
+    //System.out.println("Error occured!" + e);
+    return null;
+}
+
+if(!firstFetch){
+    Modal.initInfoModal("Basket fetched succesfully!");
+    firstFetch = true;
+}
+
+return basketToReturn;
+}
+
+
 }
 

@@ -53,6 +53,7 @@ This project will involve creating and manipulating various recipes and shopping
     * [X] Instructions
 * [X] Modify created recipes
 * [X] Delete recipes
+    * [X] Recipe Lock, to prevent unwanted deletions
 * [ ] Browse created recipes
     * [X] List
     * [ ] Sorting
@@ -62,6 +63,7 @@ This project will involve creating and manipulating various recipes and shopping
     * [X] GET
 * [ ] UI (Implementing JavaFX from the beginning)
 * [X] Add recipe ingredients to shopping list
+    * [ ] Implement method(s) for unit conversions
 * [X] Shopping list view
     * [X] Modifying list(removing, modify amounts)
 

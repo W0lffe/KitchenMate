@@ -9,14 +9,16 @@ public class Recipe {
     private int ingredientAmount;
     private ArrayList<Product> ingredients;
     private ArrayList<String> instructions;
+    private boolean lockRecipe;
     private int id;
 
-    public Recipe(String recipeName, int portions, int ingredientAmount, ArrayList<Product> ingredients, ArrayList<String> instructions) {
+    public Recipe(String recipeName, int portions, int ingredientAmount, ArrayList<Product> ingredients, ArrayList<String> instructions, boolean lockRecipe) {
         this.recipeName = recipeName;
         this.portions = portions;
         this.ingredientAmount = ingredientAmount;
         this.ingredients = ingredients;
         this.instructions = instructions;
+        this.lockRecipe = lockRecipe;
     }
 
     public String getRecipeName() {
@@ -66,6 +68,16 @@ public class Recipe {
     public void setId(int id) {
         this.id = id;
     }
+
+    
+    public boolean isLockRecipe() {
+        return lockRecipe;
+    }
+
+    public void setLockRecipe(boolean lockRecipe) {
+        this.lockRecipe = lockRecipe;
+    }
+
 
     public static void initRecipeCreation(){
 
@@ -126,10 +138,12 @@ public class Recipe {
                 }
             }
 
+            boolean lock = creator.getAllowDelete().isSelected();
+
             if(!recipe.isEmpty() || !ingredients.isEmpty()){
 
-                Recipe newRecipe = new Recipe(recipe, portions, ingredients.size(), ingredients, instructions);
-                HTTP.saveData(newRecipe, "recipes");
+                Recipe newRecipe = new Recipe(recipe, portions, ingredients.size(), ingredients, instructions, lock);
+                HTTP.saveData(newRecipe, "Recipe");
                 ingredients.clear();
                 Recipe.initRecipeCreation();
             }

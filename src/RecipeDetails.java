@@ -4,6 +4,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.Node;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
 public class RecipeDetails extends HBox{
@@ -28,7 +29,7 @@ public class RecipeDetails extends HBox{
         
         this.editButton = new Button("EDIT");
         this.deleteButton = new Button("DELETE");
-        this.buttonBox = new VBox(20, editButton, deleteButton);
+        this.buttonBox = new VBox(10, editButton, deleteButton);
 
         this.setPrefWidth(Main.getRoot().getRootRightContainer().getWidth()*0.95);
         this.setMaxHeight(Main.getRoot().getRootRightContainer().getHeight()*0.9);
@@ -75,8 +76,13 @@ public class RecipeDetails extends HBox{
         });
 
         this.deleteButton.setOnAction(e -> {
-            HTTP.deleteData(recipe.getId());
-            RecipeList.initRecipeList();
+            if(recipe.isLockRecipe()){
+                Modal.initInfoModal("Recipe is locked!");
+            }
+            else{
+                HTTP.deleteData(recipe.getId());
+                RecipeList.initRecipeList();
+            }
         });
     }
 
@@ -90,7 +96,8 @@ public class RecipeDetails extends HBox{
         this.editButton.setText("FINISH");
         this.deleteButton.setText("ADD INGREDIENT");
         Button addStep = new Button("ADD STEP");
-        this.buttonBox.getChildren().add(addStep);
+        CheckBox allowDelete = new CheckBox("LOCK RECIPE");
+        this.buttonBox.getChildren().addAll(addStep, allowDelete);
         
         for (Product product : recipe.getIngredients()) {
             
@@ -111,6 +118,8 @@ public class RecipeDetails extends HBox{
 
         }
 
+        allowDelete.setSelected(recipe.isLockRecipe());
+
         this.editButton.setOnAction(e ->  {
 
             recipe.getIngredients().clear();
@@ -126,8 +135,9 @@ public class RecipeDetails extends HBox{
 
             recipe.setInstructions(InstructionHBox.getInstructions(this.instructionBox));
             recipe.setIngredientAmount(recipe.getIngredients().size());
+            recipe.setLockRecipe(allowDelete.isSelected());
 
-            HTTP.saveData(recipe, "recipes");
+            HTTP.saveData(recipe, "Recipe");
             RecipeList.initRecipeList();
         });
 

@@ -7,5 +7,11 @@ public class Basket {
     public Basket(ArrayList<Product> basket) {
         this.basket = basket;
     }
+
+    public ArrayList<Product> getBasket() {
+        return basket;
+    }
+
+    
     
 }
