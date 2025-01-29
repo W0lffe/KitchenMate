@@ -36,6 +36,7 @@ public class Main extends Application{
         //Create scene for main menu
         root = new Interface();
         main = new Scene(root, WIDTH, HEIGHT);
+        main.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
        
         //Set scene
         primaryStage.setTitle("KitchenMate");

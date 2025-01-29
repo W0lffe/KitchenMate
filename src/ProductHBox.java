@@ -26,6 +26,8 @@ public class ProductHBox extends HBox{
         this.unit.setPrefSize(50, 10); 
         this.quantity.setPrefSize(100, 10);
 
+        unit.getStyleClass().add("choice-box"); 
+
         this.button.setOnAction(e -> {
             int parentChildrens = 0;
             for (Node node : parent.getChildren()) {
@@ -55,6 +57,8 @@ public class ProductHBox extends HBox{
         product.setPromptText("Product");
         quantity.setPromptText("Quantity");
 
+
+        unit.getStyleClass().add("choice-box"); 
         this.unit.setPrefSize(50, 10); 
         this.quantity.setPrefSize(100, 10);
 

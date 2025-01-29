@@ -13,7 +13,7 @@ import com.google.gson.JsonElement;
 
 public class HTTP {
     
-    private static String URL = "/KitchenMate/recipes.php"; //URL to server here!
+    private static String URL = "https://www.cc.puv.fi/~e2301740/KitchenMate/recipes.php"; //URL to server here!
     private static Gson gson = new Gson();
     private static boolean firstFetch = false;
 

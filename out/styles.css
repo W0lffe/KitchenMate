@@ -1,79 +1,99 @@
 /* General Styling */
 .root {
     -fx-font-family: "Arial";
-    -fx-background-color: #f4f4f4;
-    -fx-border-color: black;
-    -fx-border-width: 2px;
+    -fx-background-color: #171719; 
+
+}
+
+.vboxbutton{
+    -fx-spacing: 10px;
+    -fx-padding: 15px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px 0 1px 0;
+    -fx-border-color: #fffff086;
+}
+
+
+.vboxbutton:hover{
+    -fx-background-color: #fffff086;
+
 }
 
 /* Label Styling */
 .label {
+    -fx-text-fill: #fffff0d7;
     -fx-font-size: 16px;
-    -fx-text-fill: #333333;
     -fx-font-weight: bold;
 }
 
 /* Button Styling */
 .button {
-    -fx-background-color: #0066cc;
-    -fx-text-fill: white;
+    -fx-background-color: #fffff0e0;
+    -fx-text-fill: #171719;
     -fx-font-size: 14px;
-    -fx-padding: 8px 16px;
-    -fx-border-radius: 5px;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
     -fx-background-radius: 5px;
     -fx-cursor: hand;
 }
 
 .button:hover {
-    -fx-background-color: #00509e;
+    -fx-background-color: #fffff086;
 }
 
 /* TextField Styling */
 .text-field {
     -fx-border-color: #cccccc;
     -fx-border-width: 1px;
-    -fx-border-radius: 5px;
-    -fx-padding: 5px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
     -fx-font-size: 14px;
     -fx-background-color: white;
-}
-
-.text-field:focused {
-    -fx-border-color: #0066cc;
-    -fx-border-width: 2px;
-}
-
-/* TextArea Styling */
-.text-area {
-    -fx-border-color: #cccccc;
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px;
-    -fx-padding: 5px;
-    -fx-font-size: 14px;
-    -fx-background-color: white;
-}
-
-.text-area:focused {
-    -fx-border-color: #0066cc;
-    -fx-border-width: 2px;
 }
 
 /* ChoiceBox Styling */
 .choice-box {
     -fx-border-color: #cccccc;
+    -fx-text-fill: black;  /* Default text color */
     -fx-border-width: 1px;
     -fx-border-radius: 5px;
     -fx-font-size: 14px;
 }
 
-/* VBox Styling */
-.vbox {
+.choice-box .label{
+    -fx-text-fill: black;
+}
+
+/* Style for the button part of the ChoiceBox (selected item) */
+.choice-box .choice-box-button {
+    -fx-background-color: transparent; /* Transparent background for selected item */
+    -fx-text-fill: black; /* Text color for the selected item */
+}
+
+/* Style for the dropdown list items */
+.choice-box .list-view .list-cell {
+    -fx-text-fill: black; /* Text color for the items */
+    -fx-background-color: transparent; /* Transparent background */
+}
+
+/* Hover effect for the list items */
+.choice-box .list-view .list-cell:hover {
+    -fx-background-color: #f0f0f0; /* Light gray background on hover */
+    -fx-text-fill: black; /* Text color when hovered */
+}
+
+/* Style for when hovering over the ChoiceBox button */
+.choice-box .choice-box-button:hover {
+    -fx-background-color: #e0e0e0; /* Light gray background when hovering */
+    -fx-text-fill: black; /* Text color on hover */
+}
+
+.vbox{
     -fx-spacing: 10px;
-    -fx-padding: 15px;
-    -fx-border-color: #b3d8ff;
+    -fx-padding: 5px;
+    -fx-border-color: #fffff0d7;
     -fx-border-radius: 5px;
-    -fx-border-width: 2px;
-    -fx-border-color: black;
+    -fx-border-width: 1px;
 }
 
 /* IngredientHBox Styling */

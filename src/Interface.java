@@ -40,7 +40,7 @@ public class Interface extends HBox {
     }
 
     public void initNavi(){
-        Navigation newNavi = new Navigation(50, this.rootLeftContainer);
+        Navigation newNavi = new Navigation(20);
         this.rootLeftContainer.getChildren().add(newNavi);
     }
 
