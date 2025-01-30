@@ -38,6 +38,7 @@ public class RecipeContainer extends VBox{
 
         this.boxContainer.getChildren().addAll(recipeNameBox, portionsBox, ingredientAmountBox, buttonsBox);
         this.getChildren().add(boxContainer);
+        this.getStyleClass().add("recipecontainer");
 
     }
 

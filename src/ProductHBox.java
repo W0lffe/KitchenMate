@@ -44,6 +44,7 @@ public class ProductHBox extends HBox{
         });
 
         this.getChildren().addAll(product, quantity, unit, button);
+        this.getStyleClass().add("producthbox");
     }
 
     public ProductHBox(double spacing) {

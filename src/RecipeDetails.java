@@ -30,6 +30,7 @@ public class RecipeDetails extends HBox{
         this.editButton = new Button("EDIT");
         this.deleteButton = new Button("DELETE");
         this.buttonBox = new VBox(10, editButton, deleteButton);
+        this.buttonBox.getStyleClass().add("listcheckbox");
 
         this.setPrefWidth(Main.getRoot().getRootRightContainer().getWidth()*0.95);
         this.setMaxHeight(Main.getRoot().getRootRightContainer().getHeight()*0.9);
@@ -45,7 +46,6 @@ public class RecipeDetails extends HBox{
         this.buttonBox.setAlignment(Pos.TOP_CENTER);
 
         this.getChildren().addAll(ingredientScroll, instructionScroll, buttonBox);
-
         
     }
 

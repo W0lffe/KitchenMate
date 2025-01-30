@@ -38,13 +38,14 @@ public class RecipeCreator extends VBox {
         this.portions = new TextField();
         this.portText = new Label("Enter amount of portions: ");
         this.textFieldContainer = new HBox(20, nameText, recipeName, portText, portions);
+        this.textFieldContainer.setMaxWidth(Main.getRoot().getRootRightContainer().getWidth()*0.9);
         
-        this.productContainer = new VBox(20);
+        this.productContainer = new VBox(10);
         this.productContainer.setPrefWidth(Main.getRoot().getRootRightContainer().getWidth()*0.45);
         this.productScroll = new ScrollPane(productContainer);
         this.productScroll.setFitToWidth(true);
         
-        this.instructionContainer = new VBox(20);
+        this.instructionContainer = new VBox(10);
         this.instructionContainer.setPrefWidth(Main.getRoot().getRootRightContainer().getWidth()*0.45);
         this.instructionScroll = new ScrollPane(instructionContainer);
         this.instructionScroll.setFitToWidth(true);
@@ -58,6 +59,8 @@ public class RecipeCreator extends VBox {
         this.allowDelete = new CheckBox("LOCK RECIPE");
 
         this.buttonBar = new HBox(20, addIngredientButton, addStepButton, saveButton, allowDelete);
+        this.buttonBar.setMaxWidth(Main.getRoot().getRootRightContainer().getWidth()*0.9);
+        //allowDelete.getStylesheets().add("check-box");
 
         this.setAlignment(Pos.TOP_CENTER);
         this.setPrefSize(Main.getRoot().getRootRightContainer().getWidth(), Main.getRoot().getRootRightContainer().getHeight());

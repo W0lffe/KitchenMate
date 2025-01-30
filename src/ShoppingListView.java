@@ -42,6 +42,7 @@ public class ShoppingListView extends HBox {
         this.newItemContainer.setPrefSize(Main.getRoot().getRootRightContainer().getWidth()*0.4, Main.getRoot().getRootRightContainer().getHeight()*0.4);
 
         this.getChildren().addAll(productTable, splitContainer);
+        this.getStyleClass().add("shoplist");
 
         this.manualEntryButton.setOnAction(e -> { 
             if(!editInProgress){

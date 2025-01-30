@@ -31,7 +31,7 @@
     -fx-background-color: #fffff0e0;
     -fx-text-fill: #171719;
     -fx-font-size: 14px;
-    -fx-padding: 15px;
+    -fx-padding: 10px;
     -fx-border-radius: 10px;
     -fx-background-radius: 5px;
     -fx-cursor: hand;
@@ -44,9 +44,9 @@
 /* TextField Styling */
 .text-field {
     -fx-border-color: #cccccc;
-    -fx-border-width: 1px;
+    -fx-border-width: 2px;
     -fx-border-radius: 10px;
-    -fx-padding: 10px;
+    -fx-padding: 10px; 
     -fx-font-size: 14px;
     -fx-background-color: white;
 }
@@ -58,57 +58,85 @@
     -fx-border-width: 1px;
     -fx-border-radius: 5px;
     -fx-font-size: 14px;
+    -fx-padding: 1px;
 }
 
 .choice-box .label{
     -fx-text-fill: black;
 }
 
-/* Style for the button part of the ChoiceBox (selected item) */
-.choice-box .choice-box-button {
-    -fx-background-color: transparent; /* Transparent background for selected item */
-    -fx-text-fill: black; /* Text color for the selected item */
+.producthbox .button{
+    -fx-background-color: #171719;
+    -fx-text-fill: #fffff0e0;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
 }
 
-/* Style for the dropdown list items */
-.choice-box .list-view .list-cell {
-    -fx-text-fill: black; /* Text color for the items */
-    -fx-background-color: transparent; /* Transparent background */
+.producthbox .text-field:focused{
+    -fx-border-color: black;
+    -fx-border-width: 2px;
 }
 
-/* Hover effect for the list items */
-.choice-box .list-view .list-cell:hover {
-    -fx-background-color: #f0f0f0; /* Light gray background on hover */
-    -fx-text-fill: black; /* Text color when hovered */
+.check-box {
+   -fx-text-fill:white;
+   -fx-padding: 10px;
 }
 
-/* Style for when hovering over the ChoiceBox button */
-.choice-box .choice-box-button:hover {
-    -fx-background-color: #e0e0e0; /* Light gray background when hovering */
-    -fx-text-fill: black; /* Text color on hover */
+.listcheckbox .check-box {
+    -fx-text-fill:black;
+    -fx-padding: 10px;
+}
+
+
+.scroll-pane{
+   -fx-padding: 10px;
+}
+
+.recipecontainer{
+    -fx-padding: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #00000086;
+}
+.recipecontainer .label{
+    -fx-text-fill: black;
+}
+
+.recipecontainer .button{
+    -fx-background-color: #171719;
+    -fx-text-fill: #fffff0e0;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.shoplist .button{
+    -fx-background-color: #fffff0e0;
+    -fx-text-fill: #171719;
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
 }
 
 .vbox{
-    -fx-spacing: 10px;
     -fx-padding: 5px;
     -fx-border-color: #fffff0d7;
     -fx-border-radius: 5px;
     -fx-border-width: 1px;
+
 }
 
 /* IngredientHBox Styling */
 .hbox {
-    -fx-spacing: 10px;
     -fx-padding: 5px;
     -fx-background-color: #e8f4ff;
     -fx-border-color: #b3d8ff;
     -fx-border-radius: 5px;
-}
-
-/* Recipe Title Styling */
-.title {
-    -fx-font-size: 20px;
-    -fx-text-fill: #333333;
-    -fx-font-weight: bold;
-    -fx-underline: true;
 }

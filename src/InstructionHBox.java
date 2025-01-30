@@ -18,6 +18,7 @@ public class InstructionHBox extends HBox {
         this.stepText.setPrefWidth(Main.getRoot().getRootRightContainer().getWidth()*0.3);
 
         this.getChildren().addAll(stepText, deleteStep);
+        this.getStyleClass().add("producthbox");
 
         this.deleteStep.setOnAction(e -> {
 
