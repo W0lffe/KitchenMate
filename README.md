@@ -16,7 +16,7 @@ Project is currently only in the beginning.
     - [ ] Set up basic structure and styled view for the application
     - [ ] Functionality to create user
 - State Management
-    - [ ] Set up Context 
+    - [x] Set up Context 
     - [ ] Set up Utility Reducer and its actions
 - Initial API Integration
     - [ ] Creating a new user
@@ -81,7 +81,7 @@ Project is currently only in the beginning.
 
 ### Components
 
-- [ ] Header
+- [x] Header
 
 - [ ] Login
 
