@@ -9,7 +9,7 @@ Project is currently only in the beginning.
 
 ### Planned Stages of Development
 
-#### Stage 1 - [ ]
+#### Stage 1 
     App Structure & Basic Components
 
 - Front-End
@@ -22,7 +22,7 @@ Project is currently only in the beginning.
     - [ ] Creating a new user
     - [ ] Authenticating user
 
-#### Stage 2 - [ ]
+#### Stage 2 
     Recipe & Dish Management
 
 - Front-End
@@ -42,7 +42,7 @@ Project is currently only in the beginning.
         - [ ] Modify
         - [ ] Delete
 
-#### Stage 3 - [ ]
+#### Stage 3 
     Backend Functionality
 - [ ] GET
     - [ ] Basket
@@ -63,7 +63,7 @@ Project is currently only in the beginning.
     - [ ] Recipes
     - [ ] Dishes
 
-#### Stage 4 - [ ]
+#### Stage 4 
     Final Integration & Testing
 - Front-End
     - [ ] Connecting front-end to backend
