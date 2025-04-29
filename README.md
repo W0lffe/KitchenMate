@@ -5,22 +5,23 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-Project is currently only in the beginning.
-
+The project is in its early stages but has a solid foundation in terms of app structure and styling. 
+It includes a working navigation system, modal component, and forms for login and signup. 
+State management is handled using React Context combined with useReducer, currently managing utility-related features such as navigation and modal visibility, and app slogans.
 ### Planned Stages of Development
 
 #### Stage 1 
     App Structure & Basic Components
 
 - Front-End
-    - [ ] Set up basic structure and styled view for the application
-    - [ ] Functionality to create user
+    - [x] Set up basic structure and styled view for the application
+    - [x] Functionality to create user
 - State Management
-    - [ ] Set up Context 
-    - [ ] Set up Utility Reducer and its actions
+    - [x] Set up Context 
+    - [x] Set up Utility Reducer and its actions
 - Initial API Integration
-    - [ ] Creating a new user
-    - [ ] Authenticating user
+    - [x] Creating a new user
+    - [x] Authenticating user
 
 #### Stage 2 
     Recipe & Dish Management
@@ -81,11 +82,13 @@ Project is currently only in the beginning.
 
 ### Components
 
-- [ ] Header
+- [x] Header
 
-- [ ] Login
+- [x] Login/Signup
 
-- [ ] Navigation
+- [x] Modal
+
+- [x] Navigation
 
 - [ ] MainContainer
 
@@ -101,15 +104,20 @@ Project is currently only in the beginning.
 
 #### Context
 
-- [ ] Implementing Context for the app
+- [ ] Implement Context for the app
+    - [x] Work in Progress
 
 #### UtilityReducer
 
-- [ ] "SET_USER"
+- [x] "SET_USER"
 
-- [ ] "SET_MODAL_STATE"
+- [x] "SET_MODAL_STATE"
 
-- [ ] "SET_ACTIVE_SECTION"
+- [x] "SET_ACTIVE_SECTION"
+
+- [x] "SET_NAVIGATION_STATE"
+
+- [x] "SET_SLOGAN"
 
 #### RecipeReducer actions
 
@@ -155,8 +163,8 @@ Project is currently only in the beginning.
     - [ ] recipes
     - [ ] dishes
 
-- [ ] authenticateUser
-- [ ] createNewUser
+- [x] authenticateUser
+- [x] createNewUser
 
 - [ ] Connect front-end to backend
 
