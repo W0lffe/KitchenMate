@@ -10,7 +10,7 @@ It includes a working navigation system, modal component, and forms for login an
 State management is handled using React Context combined with useReducer, currently managing utility-related features such as navigation and modal visibility, and app slogans.
 ### Planned Stages of Development
 
-#### Stage 1 
+#### Stage 1 **COMPLETED**
     App Structure & Basic Components
 
 - Front-End
