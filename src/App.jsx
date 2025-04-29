@@ -1,6 +1,6 @@
 import {  } from 'react'
 import Header from './components/Header/Header'
-import NavigationWrapper from './components/Navigation/NavigationWrapper'
+import NavigationWrapper from './components/Sidebar/NavigationWrapper'
 import KitchenContextProvider from './context/KitchenContext'
 
 

@@ -8,7 +8,10 @@ export const KitchenContext = createContext({
     navigationIsOpen: false,
     toggleNavigation: () => {},
     activeSection: "",
-    setActiveSection: () => {}
+    setActiveSection: () => {},
+    userIsLogged: false,
+    setUser: () => {},
+    user: ""
 })
 
 const utilityReducer = (state, action) => {
@@ -28,6 +31,13 @@ const utilityReducer = (state, action) => {
             return {
                 ...state, activeSection: action.payload
             }
+        case "SET_USER":
+            console.log("DEBUG", action.type, action.payload)
+            return {
+                ...state, 
+                user: action.payload.username,
+                userIsLogged: action.payload.status
+            }
         default: 
             return state;
     }
@@ -39,7 +49,8 @@ export default function KitchenContextProvider({children}){
         slogan: "",
         navigationIsOpen: false,
         activeSection: "",
-
+        user: "",
+        userIsLogged: false
     })
 
     const setSlogan = () => {
@@ -63,13 +74,23 @@ export default function KitchenContextProvider({children}){
         })
     }
 
+    const setUser = (user) => {
+        utilDispatch({
+            type: "SET_ACTIVE_SECTION",
+            payload: user
+        })
+    }
+
     const ctxValue = {
         slogan: utilState.slogan,
         setSlogan,
         navigationIsOpen: utilState.navigationIsOpen,
         toggleNavigation,
         activeSection: utilState.activeSection,
-        setActiveSection
+        setActiveSection,
+        userIsLogged: utilState.userIsLogged,
+        setUser, 
+        user: utilState.user
     }
 
     return(

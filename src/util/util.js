@@ -7,5 +7,5 @@ const slogans = [
 ];
 
 export const getRandomSlogan = () => {
-    return slogans[Math.floor(Math.random() * slogans.length+1)];
+    return slogans[Math.floor(Math.random() * slogans.length)];
 }
