@@ -5,7 +5,7 @@ import NaviSection from "./NaviSection";
 import { topStyle } from "./navigationStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForward, 
-    faBackward} from "@fortawesome/free-solid-svg-icons";
+        faBackward} from "@fortawesome/free-solid-svg-icons";
 
 export default function Navigation(){
 
@@ -15,7 +15,8 @@ export default function Navigation(){
         toggleNavigation();
     }
 
-    const content = navigationIsOpen ? <FontAwesomeIcon icon={faBackward} className="text-gray-200" />: <FontAwesomeIcon icon={faForward} className="text-gray-400"/>;
+    const content = navigationIsOpen ? <FontAwesomeIcon icon={faBackward} className="text-gray-200" /> : 
+                                        <FontAwesomeIcon icon={faForward} className="text-gray-400"/>;
 
     return(
         <>
@@ -24,7 +25,6 @@ export default function Navigation(){
         </section>
         <UserSection />
         <NaviSection />
-        
         </>
     )
 }

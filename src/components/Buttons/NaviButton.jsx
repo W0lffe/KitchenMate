@@ -1,4 +1,4 @@
-import { naviButtonStyle } from "./ButtonStyle";
+import { naviButtonStyle } from "./buttonStyles";
 
 export default function NaviButton({children, func, value}){
     return <button onClick={() => func(value)}
