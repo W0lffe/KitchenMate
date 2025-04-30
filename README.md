@@ -107,6 +107,10 @@ State management is handled using React Context combined with useReducer, curren
 - [ ] Implement Context for the app
     - [x] Work in Progress
 
+#### Hooks
+
+- [x] Custom Hook: useIsMobile, to detect if user device is mobile
+
 #### UtilityReducer
 
 - [x] "SET_USER"

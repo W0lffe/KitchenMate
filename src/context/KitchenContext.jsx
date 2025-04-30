@@ -1,6 +1,7 @@
 import { createContext,
         useReducer} from "react";
 import { getRandomSlogan } from "../util/util";
+import { utilityReducer } from "./utilityReducer";
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -14,44 +15,8 @@ export const KitchenContext = createContext({
     user: "",
     setModalState: () => {},
     modalIsOpen: false,
-    activeModal: ""
+    activeModal: "",
 })
-
-const utilityReducer = (state, action) => {
-    switch(action.type){
-        case "SET_SLOGAN":
-            console.log("DEBUG", action.type, action.payload)
-            return{
-                ...state, slogan: action.payload
-            }
-        case "SET_NAVIGATION_STATE":
-            console.log("DEBUG", action.type, action.payload)
-            return {
-                ...state, navigationIsOpen: action.payload
-            }
-        case "SET_ACTIVE_SECTION":
-            console.log("DEBUG", action.type, action.payload)
-            return {
-                ...state, activeSection: action.payload
-            }
-        case "SET_USER":
-            console.log("DEBUG", action.type, action.payload)
-            return {
-                ...state, 
-                user: action.payload.username,
-                userIsLogged: action.payload.status
-            }
-        case "SET_MODAL_STATE":
-            console.log("DEBUG", action.type, action.payload)
-            return {
-                ...state, 
-                activeModal: action.payload.section,
-                modalIsOpen: action.payload.modalState
-            }
-        default: 
-            return state;
-    }
-}
 
 export default function KitchenContextProvider({children}){
 
@@ -62,7 +27,7 @@ export default function KitchenContextProvider({children}){
         user: "",
         userIsLogged: false,
         activeModal: "",
-        modalIsOpen: false
+        modalIsOpen: false,
     })
 
     const setSlogan = () => {
@@ -115,7 +80,7 @@ export default function KitchenContextProvider({children}){
         user: utilState.user,
         setModalState,
         modalIsOpen: utilState.modalIsOpen,
-        activeModal: utilState.activeModal
+        activeModal: utilState.activeModal,
     }
 
     return(

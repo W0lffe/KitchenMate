@@ -15,7 +15,7 @@ export default function Navigation(){
         toggleNavigation();
     }
 
-    const content = navigationIsOpen ? <FontAwesomeIcon icon={faBackward} className="text-gray-200" /> : 
+    const content = navigationIsOpen ? <FontAwesomeIcon icon={faBackward} className="text-gray-900 animate-pulse" /> : 
                                         <FontAwesomeIcon icon={faForward} className="text-gray-400"/>;
 
     return(
