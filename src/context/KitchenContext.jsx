@@ -45,6 +45,10 @@ export default function KitchenContextProvider({children}){
     }
 
     const setActiveSection = (section) => {
+        if(section === utilState.activeSection){
+            section = undefined;
+        }
+
         utilDispatch({
             type: "SET_ACTIVE_SECTION",
             payload: section
