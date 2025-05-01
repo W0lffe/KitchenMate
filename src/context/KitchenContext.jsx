@@ -15,8 +15,26 @@ export const KitchenContext = createContext({
     user: "",
     setModalState: () => {},
     modalIsOpen: false,
+    isMobile: false,
+    setIsMobile: () => {},
     activeModal: "",
+    availableRecipes: [],
+    setAvailableRecipes: () => {},
+    activeRecipe: null,
+    setActiveRecipe: () => {},
 })
+
+export const recipesReducer = (state, action) => {
+    switch(action.type){
+        case "SET_ACTIVE_RECIPE":
+            console.log("DEBUG: ", action.type, action.payload)
+            return {
+                ...state, activeRecipe: action.payload
+            }
+        default:
+            return state
+    }
+}
 
 export default function KitchenContextProvider({children}){
 
@@ -28,8 +46,21 @@ export default function KitchenContextProvider({children}){
         userIsLogged: false,
         activeModal: "",
         modalIsOpen: false,
+        isMobile: false,
     })
 
+
+    const [recipesState, recipeDispatch] = useReducer(recipesReducer, {
+        availableRecipes: [],
+        activeRecipe: null
+    })
+
+    const setIsMobile = (isMobile) => {
+        utilDispatch({
+            type: "SET_MOBILE",
+            payload: isMobile
+        })
+    }
     const setSlogan = () => {
         utilDispatch({
             type: "SET_SLOGAN",
@@ -72,6 +103,17 @@ export default function KitchenContextProvider({children}){
         })
     }
 
+    const setAvailableRecipes = () => {
+
+    }
+
+    const setActiveRecipe = (recipe) => {
+        recipeDispatch({
+            type: "SET_ACTIVE_RECIPE",
+            payload: recipe
+        })
+    }
+
     const ctxValue = {
         slogan: utilState.slogan,
         setSlogan,
@@ -85,6 +127,12 @@ export default function KitchenContextProvider({children}){
         setModalState,
         modalIsOpen: utilState.modalIsOpen,
         activeModal: utilState.activeModal,
+        isMobile: utilState.isMobile,
+        setIsMobile,
+        availableRecipes: recipesState.availableRecipes,
+        setAvailableRecipes,
+        activeRecipe: recipesState.activeRecipe,
+        setActiveRecipe
     }
 
     return(

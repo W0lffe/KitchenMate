@@ -1,0 +1,15 @@
+
+export const mobileHeaderStyle = `h-1/10`;
+
+export const wrapperStyle = `flex flex-row w-full h-full gap-5`;
+
+export const listSectionStyle = `w-full h-full`;
+
+export const listHeaderStyle = `h-1/10 w-full`;
+
+export const creationSectionStyle = `w-full h-full`;
+
+export const creationHeaderStyle = `h-1/10 w-full`
+
+
+

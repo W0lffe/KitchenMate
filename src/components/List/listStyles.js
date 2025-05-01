@@ -1,7 +1,7 @@
 export const listContainerStyle = `w-full h-9/10 border border-white/40 flex flex-col 
                             justify-start items-center rounded-[12px]`;
 
-export const listHeadingStyle = `h-10 w-9/10 flex justify-between items-center p-2 lg:p-5 font-medium `;
+export const listHeadingStyle = `h-10 w-9/10 flex justify-between items-center p-2 lg:p-5 m-2 font-medium `;
 
 export const itemListStyle = `w-full h-max-8/10 flex flex-col justify-start items-center overflow-y-auto`;
 

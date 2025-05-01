@@ -29,7 +29,7 @@ export default function List(){
                     <label>View</label>
                 </li>
             <ul className={itemListStyle}>
-                {list.map((item) => <ListItem key={item.id} item={item} active={activeSection} />)}
+                {list.map((item) => <ListItem key={item.id} item={item}/>)}
             </ul>
         </div>
     )

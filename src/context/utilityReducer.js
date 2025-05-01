@@ -29,6 +29,11 @@ export const utilityReducer = (state, action) => {
                 activeModal: action.payload.section,
                 modalIsOpen: action.payload.modalState
             }
+        case "SET_MOBILE":
+            console.log("UTILITY_DEBUG:", action.type, action.payload)
+            return {
+                ...state, isMobile: action.payload
+            }
         default: 
             return state;
     }
