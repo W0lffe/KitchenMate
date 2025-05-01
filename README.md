@@ -123,6 +123,8 @@ State management is handled using React Context combined with useReducer, curren
 
 - [x] "SET_SLOGAN"
 
+- [x] "SET_MOBILE" 
+
 #### RecipeReducer actions
 
 - [ ] "SET_RECIPES"
@@ -130,6 +132,8 @@ State management is handled using React Context combined with useReducer, curren
 - [ ] "ADD_RECIPE"
 
 - [ ] "DELETE_RECIPE"
+
+- [ ] "SET_ACTIVE_RECIPE"
 
 #### BasketReducer actions
 
