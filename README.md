@@ -90,9 +90,9 @@ State management is handled using React Context combined with useReducer, curren
 
 - [x] Navigation
 
-- [ ] MainContainer
+- [x] MainContainer
 
-- [ ] RecipeList/ShoppingList (wrapper)
+- [ ] List(wrapper for changing content between basketlist, recipelist, dishlist)
 
 - [ ] RecipeForm
 
