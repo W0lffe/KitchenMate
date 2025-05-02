@@ -89,12 +89,23 @@ State management is handled using React Context combined with useReducer, curren
 - [x] Modal
 
 - [x] Navigation
+    - [x] NaviSection
+    - [x] UserSection
 
 - [x] MainContainer
 
 - [ ] List(wrapper for changing content between basketlist, recipelist, dishlist)
+    - [x] Recipes
+    - [ ] Dishes
+    - [ ] Basket
 
-- [ ] RecipeForm
+- [x] RecipeCreation
+    - [x] InfoSection
+    - [x] IngredientForm / InstructionsForm
+
+- [x] Product
+
+- [x] Instruction
 
 - [ ] Recipe/Dish Card (wrapper)
 
