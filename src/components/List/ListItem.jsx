@@ -22,7 +22,7 @@ export default function ListItem({item}){
             <label className={listItemNameStyle}>{item.name}</label>
             <label>{item.portions}</label>
             <label>{item.prepTime}</label>
-            <button onClick={handleClick}><FontAwesomeIcon icon={faEye} /></button>
+            <button onClick={handleClick}><FontAwesomeIcon icon={faEye}/></button>
         </li>
     )
 }
