@@ -61,7 +61,7 @@ export default function LoginSignupForm(){
                     <label className={labelStyle}>{activeModal === "login" ? "Password:" : "Password (8-16 characters):"}</label>
                     <input type="password" name="passwd" placeholder="Enter password" className={inputStyle} />
                     {formState.errors?.map((error, i) => <p key={i}>{error}</p>)}
-                    <SubmitButton />
+                    <SubmitButton use={"login"}/>
                 </form>
             </section>
         </div>

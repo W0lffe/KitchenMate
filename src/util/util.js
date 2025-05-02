@@ -6,6 +6,10 @@ const slogans = [
     "Where Great Meals Begin – KitchenMate."
 ];
 
+export const units = [ 
+    "kg", "l", "g", "dl", "pcs"
+]
+
 export const getRandomSlogan = () => {
     return slogans[Math.floor(Math.random() * slogans.length)];
 }

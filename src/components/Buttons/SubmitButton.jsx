@@ -1,12 +1,12 @@
 import { useFormStatus } from "react-dom";
-import { submitButtonStyle } from "./buttonStyles";
+import { getSubmitButtonStyle } from "./buttonStyles";
 
-export default function SubmitButton(){
+export default function SubmitButton({use}){
     const {pending} = useFormStatus()
 
     return(
         <button type="submit" 
         disabled={pending}
-        className={submitButtonStyle}>{pending ? "Submitting..." : "Submit"}</button>
+        className={getSubmitButtonStyle(use)}>{pending ? "Submitting..." : "Submit"}</button>
     )
 }

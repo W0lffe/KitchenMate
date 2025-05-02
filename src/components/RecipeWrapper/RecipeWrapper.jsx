@@ -1,8 +1,13 @@
 import List from "../List/List"
-import { creationHeaderStyle, creationSectionStyle, listHeaderStyle, listSectionStyle, mobileHeaderStyle, wrapperStyle } from "./wrapperStyles"
+import { creationHeaderStyle, 
+        creationSectionStyle, 
+        listHeaderStyle, 
+        listSectionStyle, 
+        mobileHeaderStyle, 
+        wrapperStyle } from "./wrapperStyles"
 import { useContext} from "react"
 import { KitchenContext } from "../../context/KitchenContext"
-import RecipeCreationDetail from "../RecipeCreationDetail/RecipeCreationDetail"
+import RecipeContent from "../RecipeContent/RecipeContent"
 
 
 export default function RecipeWrapper() {
@@ -39,7 +44,7 @@ export default function RecipeWrapper() {
                     <header className={creationHeaderStyle}>
                         <p>{(activeRecipe && activeRecipe.mode === "create") ? <h2>Recipe Creation</h2> : <h2>Recipe Details</h2>}</p>
                     </header>
-            {activeRecipe ? <RecipeCreationDetail /> : null}
+            {activeRecipe ? <RecipeContent /> : null}
             </section>
         </div>
     )

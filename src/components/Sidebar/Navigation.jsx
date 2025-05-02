@@ -21,7 +21,7 @@ export default function Navigation(){
     return(
         <>
         <section className={topStyle}>
-            <p onClick={handleClick}>{content}</p>
+            <button onClick={handleClick}>{content}</button>
         </section>
         <UserSection />
         <NaviSection />

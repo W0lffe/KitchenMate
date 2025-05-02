@@ -8,6 +8,6 @@ export const itemListStyle = `w-full h-max-8/10 flex flex-col justify-start item
 export const nameHeadingStyle = `w-15 lg:w-45`;
 
 export const listItemStyle = `h-fit w-9/10 flex justify-between items-center border border-white bg-gray-400/40  
-                                mb-3 p-2 lg:p-5 font-medium rounded-custom`;
+                                mb-3 p-2 lg:p-5 font-medium rounded-custom hover:bg-gray-600/40`;
 
 export const listItemNameStyle = `w-20 lg:w-45 text-wrap break-normal`;
