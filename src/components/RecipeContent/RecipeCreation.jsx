@@ -13,14 +13,22 @@ import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import SubmitButton from "../Buttons/SubmitButton";
+import Instruction from "../Instruction/Instruction";
 
 export default function RecipeCreation(){
 
-    const [numberOfProducts, setNumberofProducts] = useState(1)
+    const [numberOfProducts, setNumberOfProducts] = useState(1)
+    const [numberOfSteps, setNumberOfSteps] = useState(1)
+
     const {isMobile} = useContext(KitchenContext)
 
     const handleNewProduct = () => {
-        setNumberofProducts(numberOfProducts + 1)
+        setNumberOfProducts(numberOfProducts + 1)
+    }
+
+    const handleNewStep = () => {
+        setNumberOfSteps(numberOfSteps + 1)
+
     }
     
     return(
@@ -54,10 +62,10 @@ export default function RecipeCreation(){
                 <section className={sectionStyle}>
                 <p className={lineStyle}>
                     <label className={labelStyle}>Instructions</label>
-                    <label><FontAwesomeIcon icon={faSquarePlus} /></label>
+                    <label><FontAwesomeIcon icon={faSquarePlus} onClick={handleNewStep}/></label>
                 </p>
                 <ul className={listStyle}>
-                
+                    {[...Array(numberOfSteps)].map((_, i) => <Instruction key={i} step={"Step " + parseInt(i+1)}/>)}
                 </ul>
                 </section>
             </div>
