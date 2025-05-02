@@ -2,36 +2,44 @@ import { useState } from "react"
 import Product from "../Product/Product"
 import Instruction from "../Instruction/Instruction"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-import { labelStyle, lineStyle, sectionStyle, listStyle } from "./recipeStyles";
+import { faSquarePlus, 
+        faSquareMinus } from "@fortawesome/free-solid-svg-icons";
+import { labelStyle, 
+        lineStyle, 
+        sectionStyle, 
+        listStyle } from "./recipeStyles";
 
 export default function FormList({use}){
 
-    const [numberOfProducts, setNumberOfProducts] = useState(1)
-    const [numberOfSteps, setNumberOfSteps] = useState(1)
+    const [count, setCount] = useState(1)
 
-    const handleNewProduct = () => {
-        setNumberOfProducts(numberOfProducts + 1)
+    const increment = () => {
+        setCount(prev => prev +1)
     }
 
-    const handleNewStep = () => {
-        setNumberOfSteps(numberOfSteps + 1)
-
+    const decrement = () => {
+        setCount(prev => prev -1)
     }
-    
+
+    const isProduct = use === "product";
+ 
     return(
         <section className={sectionStyle}>
             <p className={lineStyle}>
-                <label className={labelStyle}>{use === "product" ? "Ingredients" : "Instructions"}</label>
+                <label className={labelStyle}>{isProduct ? "Ingredients" : "Instructions"}</label>
                 <label>
-                    <FontAwesomeIcon icon={faSquarePlus} 
-                                    onClick={use === "product" ? handleNewProduct : handleNewStep} />
+                    <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
+                </label>
+                <label>
+                    <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
                 </label>
             </p>
             <ul className={listStyle}>
-                {use === "product" ? 
-                            ([...Array(numberOfProducts)].map((_, i) => <Product key={i}/>)) : 
-                            ([...Array(numberOfSteps)].map((_,i) => <Instruction key={i} step={"Step " + parseInt(i+1)}/>))}
+                {([...Array(count)].map((_, i) =>
+                    isProduct ? 
+                            <Product key={i}/> 
+                            : 
+                            <Instruction key={i} step={`Step ${i+1}`} />))}
             </ul>
         </section>
     )

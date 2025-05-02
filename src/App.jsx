@@ -1,4 +1,3 @@
-import {  } from 'react'
 import Header from './components/Header/Header'
 import Modal from './components/Modal/Modal'
 import MainContainer from './components/MainContainer/MainContainer'

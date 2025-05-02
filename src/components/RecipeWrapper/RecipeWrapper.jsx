@@ -42,7 +42,7 @@ export default function RecipeWrapper() {
             </section>
             <section className={creationSectionStyle}>
                     <header className={creationHeaderStyle}>
-                        <p>{(activeRecipe && activeRecipe.mode === "create") ? <h2>Recipe Creation</h2> : <h2>Recipe Details</h2>}</p>
+                        {(activeRecipe && activeRecipe.mode === "create") ? <h2>Recipe Creation</h2> : <h2>Recipe Details</h2>}
                     </header>
             {activeRecipe ? <RecipeContent /> : null}
             </section>

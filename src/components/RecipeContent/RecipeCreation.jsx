@@ -1,7 +1,8 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
         footerStyle} from "./recipeStyles";
-import { useContext} from "react";
+import { useContext, 
+        useActionState} from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import SubmitButton from "../Buttons/SubmitButton";
 import RecipeInfoSection from "./RecipeInfoSection";
@@ -11,10 +12,25 @@ export default function RecipeCreation(){
     
     const {isMobile} = useContext(KitchenContext)
 
+    const form = (prevFormState, formData) => {
+        const name = formData.get("name")
+        const portions = formData.get("portions")
+        const time = formData.get("time")
+
+        const products = formData.getAll("product");
+        const steps = formData.getAll("step");
+        console.log(products)
+        console.log(steps)
+
+    }
+
+    const [formState, formAction] = useActionState(form , {errors: null})
+
+
     return(
        <div className="text-white">
         {isMobile ? <h2 className={mobileHeadingStyle}>NEW RECIPE</h2> : null}
-        <form action="">
+        <form action={formAction}>
             <RecipeInfoSection />
             <div className={sectionContainerStyle}>
                <FormList use="product"/>

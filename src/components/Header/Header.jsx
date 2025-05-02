@@ -1,10 +1,10 @@
 import logo from "../../assets/whiteKitchenmate.png"
 import { KitchenContext } from "../../context/KitchenContext"
 import { useContext, 
-    useEffect } from "react"
+        useEffect } from "react"
 import { HeaderStyle, 
-    logoStyle, 
-    sloganStyle } from "./headerStyles";
+        logoStyle, 
+        sloganStyle } from "./headerStyles";
 
 export default function Header(){
 

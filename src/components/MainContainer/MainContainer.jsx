@@ -1,4 +1,5 @@
-import { useContext, useEffect } from "react"
+import { useContext, 
+        useEffect } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
 import { useIsMobile } from "../../hooks/useIsMobile"
 import RecipeWrapper from "../RecipeWrapper/RecipeWrapper"

@@ -1,5 +1,6 @@
 import { units } from "../../util/util"
-import { getInputStyle, productStyle } from "./productStyles"
+import { getInputStyle, 
+        productStyle } from "./productStyles"
 
 export default function Product(){
     return(
