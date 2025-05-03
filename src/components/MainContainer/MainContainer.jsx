@@ -7,7 +7,7 @@ import { containerStyle } from "./containerStyles"
 
 export default function MainContainer(){
 
-    const {activeSection, setIsMobile} = useContext(KitchenContext)
+    const {activeSection, setIsMobile, setAvailableRecipes} = useContext(KitchenContext)
 
     const isMobile = useIsMobile();
 
@@ -17,6 +17,12 @@ export default function MainContainer(){
         }
         console.log("mobile: ", isMobile)
     }, [])
+
+    useEffect(() => {
+        if(activeSection){
+            setAvailableRecipes();
+        }
+    }, [activeSection])
 
     return(
         <>

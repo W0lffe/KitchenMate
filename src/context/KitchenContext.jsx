@@ -1,7 +1,11 @@
 import { createContext,
-        useReducer} from "react";
+        useReducer,
+         useRef,
+         useState} from "react";
 import { getRandomSlogan } from "../util/util";
 import { utilityReducer } from "./utilityReducer";
+import { recipeList } from "../../backend/dummy_data";
+
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -22,6 +26,7 @@ export const KitchenContext = createContext({
     setAvailableRecipes: () => {},
     activeRecipe: null,
     setActiveRecipe: () => {},
+    isFetchingData: false,
 })
 
 export const recipesReducer = (state, action) => {
@@ -31,12 +36,20 @@ export const recipesReducer = (state, action) => {
             return {
                 ...state, activeRecipe: action.payload
             }
+         case "SET_RECIPES":
+            console.log("DEBUG: ", action.type, action.payload)
+            return {
+                ...state, availableRecipes: action.payload
+            }
         default:
             return state
     }
 }
 
 export default function KitchenContextProvider({children}){
+
+    const [isFetchingData, setIsFetchingData] = useState(false);
+    const recipeListRef = useRef()
 
     const [utilState, utilDispatch] = useReducer(utilityReducer, {
         slogan: "",
@@ -103,10 +116,24 @@ export default function KitchenContextProvider({children}){
         })
     }
 
-    const setAvailableRecipes = () => {
+    const setAvailableRecipes = async () => {
+        setIsFetchingData(true);
+        console.log("fetch", isFetchingData)
+
+        await new Promise(r => setTimeout(r, 1000));
+        recipeDispatch({
+                type: "SET_RECIPES",
+                payload: recipeList
+        })
+        recipeListRef.current = recipeList;
+
+        setIsFetchingData(false);
+        console.log("fetch", isFetchingData)
 
     }
 
+       
+    
     const setActiveRecipe = (recipe) => {
         recipeDispatch({
             type: "SET_ACTIVE_RECIPE",
@@ -132,7 +159,8 @@ export default function KitchenContextProvider({children}){
         availableRecipes: recipesState.availableRecipes,
         setAvailableRecipes,
         activeRecipe: recipesState.activeRecipe,
-        setActiveRecipe
+        setActiveRecipe,
+        isFetchingData: isFetchingData,
     }
 
     return(

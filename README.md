@@ -68,11 +68,11 @@ State management is handled using React Context combined with useReducer, curren
     Final Integration & Testing
 - Front-End
     - [ ] Connecting front-end to backend
-    - [ ] Testing of components
+    - [ ] Optimizing styling
 - Testing
     - [ ] Testing on different devices
     - [ ] Bug fixes
-
+    - [ ] Testing of components
 - Deployment
     - [ ] Deploying first version to Firebase
 
@@ -98,6 +98,7 @@ State management is handled using React Context combined with useReducer, curren
     - [x] Recipes
     - [ ] Dishes
     - [ ] Basket
+    - [ ] Toolbar (sorting and filtering)
 
 - [x] RecipeCreation
     - [x] InfoSection
@@ -138,13 +139,13 @@ State management is handled using React Context combined with useReducer, curren
 
 #### RecipeReducer actions
 
-- [ ] "SET_RECIPES"
+- [x] "SET_RECIPES"
 
 - [ ] "ADD_RECIPE"
 
 - [ ] "DELETE_RECIPE"
 
-- [ ] "SET_ACTIVE_RECIPE"
+- [x] "SET_ACTIVE_RECIPE"
 
 #### BasketReducer actions
 

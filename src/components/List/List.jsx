@@ -2,7 +2,6 @@ import { KitchenContext } from "../../context/KitchenContext"
 import { useContext, 
         useEffect, 
         useState } from "react"
-import { recipeList } from "../../../backend/dummy_data"
 import { listContainerStyle, 
         listHeadingStyle, 
         itemListStyle, 
@@ -11,12 +10,12 @@ import ListItem from "./ListItem";
 
 export default function List(){
 
-    const {activeSection} = useContext(KitchenContext);
+    const {activeSection, availableRecipes} = useContext(KitchenContext);
     const [list, setList] = useState([]);
 
     useEffect(() => {
         if(activeSection === "recipes"){
-            setList([...recipeList, ...recipeList, ...recipeList, ...recipeList])
+            setList([...availableRecipes])
         }
     }, [activeSection])
 

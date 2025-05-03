@@ -1,48 +1,46 @@
 import List from "../List/List"
+import Toolbar from "../Toolbar/Toolbar"
 import { creationHeaderStyle, 
         creationSectionStyle, 
-        listHeaderStyle, 
         listSectionStyle, 
-        mobileHeaderStyle, 
         wrapperStyle } from "./wrapperStyles"
-import { useContext} from "react"
+import { useContext } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
 import RecipeContent from "../RecipeContent/RecipeContent"
 
 
 export default function RecipeWrapper() {
 
-    const {activeRecipe, setActiveRecipe, setModalState, isMobile} = useContext(KitchenContext)
-
-    const handleMobileClick = () => {
-        setActiveRecipe({recipe: null, mode: "create"})
-        setModalState("recipe")
-    }
+    const {activeRecipe, isMobile, isFetchingData} = useContext(KitchenContext)
 
     if(isMobile){
         return(
             <>
-            <header className={mobileHeaderStyle}>
-                    <p>TOOLBAR FOR FILTERING AND SORTING</p>
-                    <button onClick={handleMobileClick}>CREATE NEW</button>
-            </header>
-            <List />
+            <Toolbar />
+            {isFetchingData ? <p>FETCHING DATA PLACEHOLDER</p> :  <List />}
             </>
         )
+    }
+
+    let heading = "";
+    if(activeRecipe){
+        if(activeRecipe.mode === "create"){
+            heading = "Recipe Creation";
+        }
+        if(activeRecipe.mode === "detail"){
+            heading = "Recipe Details";
+        }
     }
 
     return (
         <div className={wrapperStyle}>
             <section className={listSectionStyle}>
-                <header className={listHeaderStyle}>
-                    <p>TOOLBAR FOR FILTERING AND SORTING</p>
-                    <button onClick={() => setActiveRecipe({recipe: null, mode: "create"})}>CREATE NEW</button>
-                </header>
-                <List />
+                <Toolbar />
+                {isFetchingData ? <p>FETCHING DATA PLACEHOLDER</p> :  <List />}
             </section>
             <section className={creationSectionStyle}>
                     <header className={creationHeaderStyle}>
-                        {(activeRecipe && activeRecipe.mode === "create") ? <h2>Recipe Creation</h2> : <h2>Recipe Details</h2>}
+                        {activeRecipe ? <h2>{heading}</h2> : null}
                     </header>
             {activeRecipe ? <RecipeContent /> : null}
             </section>
