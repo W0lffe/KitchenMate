@@ -18,8 +18,12 @@ export default function RecipeCreation(){
         const time = formData.get("time")
 
         const products = formData.getAll("product");
+        const quantity = formData.getAll("quantity");
+        const unit = formData.getAll("unit");
         const steps = formData.getAll("step");
         console.log(products)
+        console.log(quantity)
+        console.log(unit)
         console.log(steps)
 
     }

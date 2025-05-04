@@ -2,6 +2,7 @@ import List from "../List/List"
 import Toolbar from "../Toolbar/Toolbar"
 import { creationHeaderStyle, 
         creationSectionStyle, 
+        headingStyle, 
         listSectionStyle, 
         wrapperStyle } from "./wrapperStyles"
 import { useContext } from "react"
@@ -40,7 +41,7 @@ export default function RecipeWrapper() {
             </section>
             <section className={creationSectionStyle}>
                     <header className={creationHeaderStyle}>
-                        {activeRecipe ? <h2>{heading}</h2> : null}
+                        {activeRecipe ? <h2 className={headingStyle}>{heading}</h2> : null}
                     </header>
             {activeRecipe ? <RecipeContent /> : null}
             </section>

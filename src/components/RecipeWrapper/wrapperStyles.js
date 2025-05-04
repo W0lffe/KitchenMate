@@ -7,5 +7,7 @@ export const creationSectionStyle = `w-full h-full`;
 
 export const creationHeaderStyle = `h-1/10 w-full`
 
+export const headingStyle = `text-xl italic`;
+
 
 

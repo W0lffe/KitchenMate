@@ -4,8 +4,7 @@ import { createContext,
          useState} from "react";
 import { getRandomSlogan } from "../util/util";
 import { utilityReducer } from "./utilityReducer";
-import { recipeList } from "../../backend/dummy_data";
-
+import { fetchRecipes } from "../api/http.js"
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -120,19 +119,18 @@ export default function KitchenContextProvider({children}){
         setIsFetchingData(true);
         console.log("fetch", isFetchingData)
 
+        const recipes = await fetchRecipes(utilState.user);
         await new Promise(r => setTimeout(r, 1000));
         recipeDispatch({
                 type: "SET_RECIPES",
-                payload: recipeList
+                payload: recipes
         })
-        recipeListRef.current = recipeList;
+        recipeListRef.current = recipes;
 
         setIsFetchingData(false);
         console.log("fetch", isFetchingData)
 
     }
-
-       
     
     const setActiveRecipe = (recipe) => {
         recipeDispatch({

@@ -30,6 +30,6 @@ export const sectionStyle = `max-h-60 h-125 lg:max-h-125 w-full flex flex-col ju
 
 export const sectionContainerStyle = `flex flex-col h-full lg:flex-row gap-3`;
 
-export const listStyle = `max-h-60 h-125 lg:max-h-125 overflow-y-auto w-full flex flex-col items-center justify-start`;
+export const listStyle = `max-h-60 h-125 lg:max-h-125 overflow-y-auto w-full flex flex-col items-center`;
 
 export const footerStyle = `flex items-center justify-center m-2`;

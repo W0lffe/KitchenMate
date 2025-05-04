@@ -23,7 +23,7 @@ export default function Toolbar(){
   
     return(
         <header className={style}>
-            <h3 className="text-xl">Search and Filter</h3>
+            <h3 className="text-md lg:text-xl italic">Search and Filter</h3>
             <span className="flex flex-row gap-1 lg:gap-15 items-center">
                 <input type="text" name="name" placeholder="Search..." className="border border-white w-30"/>
                 <p>Sort By:</p>

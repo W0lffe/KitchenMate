@@ -1,7 +1,7 @@
 # KitchenMate
 
 ## Goal
-To create a simple program to create and manage recipies, and create dishes out of those components. Also to be able to create a shopping list based on all the products and their quantities in those recipies/dishes.
+To create a simple program to create and manage recipies, and create dishes out of those components. Also to be able to create a shopping list based on all the products and their quantities in those recipes/dishes.
 
 ## State of Project
 
