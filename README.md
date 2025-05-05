@@ -141,7 +141,7 @@ State management is handled using React Context combined with useReducer, curren
 
 - [x] "SET_RECIPES"
 
-- [ ] "ADD_RECIPE"
+- [x] "ADD_RECIPE"
 
 - [ ] "DELETE_RECIPE"
 

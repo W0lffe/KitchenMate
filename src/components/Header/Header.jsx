@@ -8,12 +8,13 @@ import { HeaderStyle,
 
 export default function Header(){
 
-    const {slogan, setSlogan} = useContext(KitchenContext);
+    const {slogan, setSlogan, setAvailableRecipes} = useContext(KitchenContext);
 
     useEffect(() => {
         setSlogan();
+        setAvailableRecipes();
     }, [])
-    
+
     return(
         <header className={HeaderStyle}>
            <img src={logo} alt="KitchenMate" className={logoStyle} />

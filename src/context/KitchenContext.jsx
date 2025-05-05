@@ -36,7 +36,7 @@ export const recipesReducer = (state, action) => {
             return {
                 ...state, activeRecipe: action.payload
             }
-        case "ADD_NEW":
+        case "ADD_RECIPE":
             const updatedRecipes = [...state.availableRecipes, action.payload];
             console.log("DEBUG: ", action.type, action.payload, updatedRecipes);
             return {
@@ -133,6 +133,7 @@ export default function KitchenContextProvider({children}){
                 payload: recipes
         })
 
+        recipeListRef.current = recipes;
         setIsFetchingData(false);
         console.log("fetch", isFetchingData)
 
@@ -141,7 +142,7 @@ export default function KitchenContextProvider({children}){
     const addNewRecipe = async (newRecipe) => {
 
         recipeDispatch({
-            type: "ADD_NEW",
+            type: "ADD_RECIPE",
             payload: newRecipe
         })
     }
