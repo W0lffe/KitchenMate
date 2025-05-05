@@ -22,7 +22,7 @@ export default function MainContainer(){
         if(activeSection){
             setAvailableRecipes();
         }
-    }, [activeSection])
+    }, [])
 
     return(
         <>

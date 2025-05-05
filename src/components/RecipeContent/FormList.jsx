@@ -9,7 +9,7 @@ import { labelStyle,
         sectionStyle, 
         listStyle } from "./recipeStyles";
 
-export default function FormList({use}){
+export default function FormList({use, state}){
 
     const [count, setCount] = useState(1)
 
@@ -37,9 +37,9 @@ export default function FormList({use}){
             <ul className={listStyle}>
                 {([...Array(count)].map((_, i) =>
                     isProduct ? 
-                            <Product key={i}/> 
+                            <Product key={i} state={state} index={i}/> 
                             : 
-                            <Instruction key={i} step={`Step ${i+1}`} />))}
+                            <Instruction key={i} step={`Step ${i+1}`} state={state} index={i}/>))}
             </ul>
         </section>
     )

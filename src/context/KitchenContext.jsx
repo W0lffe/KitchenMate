@@ -21,6 +21,7 @@ export const KitchenContext = createContext({
     isMobile: false,
     setIsMobile: () => {},
     activeModal: "",
+    addNewRecipe: () => {},
     availableRecipes: [],
     setAvailableRecipes: () => {},
     activeRecipe: null,
@@ -34,6 +35,12 @@ export const recipesReducer = (state, action) => {
             console.log("DEBUG: ", action.type, action.payload)
             return {
                 ...state, activeRecipe: action.payload
+            }
+        case "ADD_NEW":
+            const updatedRecipes = [...state.availableRecipes, action.payload];
+            console.log("DEBUG: ", action.type, action.payload, updatedRecipes);
+            return {
+                ...state, availableRecipes: updatedRecipes
             }
          case "SET_RECIPES":
             console.log("DEBUG: ", action.type, action.payload)
@@ -125,11 +132,18 @@ export default function KitchenContextProvider({children}){
                 type: "SET_RECIPES",
                 payload: recipes
         })
-        recipeListRef.current = recipes;
 
         setIsFetchingData(false);
         console.log("fetch", isFetchingData)
 
+    }
+
+    const addNewRecipe = async (newRecipe) => {
+
+        recipeDispatch({
+            type: "ADD_NEW",
+            payload: newRecipe
+        })
     }
     
     const setActiveRecipe = (recipe) => {
@@ -154,6 +168,7 @@ export default function KitchenContextProvider({children}){
         activeModal: utilState.activeModal,
         isMobile: utilState.isMobile,
         setIsMobile,
+        addNewRecipe,
         availableRecipes: recipesState.availableRecipes,
         setAvailableRecipes,
         activeRecipe: recipesState.activeRecipe,

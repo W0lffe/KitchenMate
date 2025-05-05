@@ -34,3 +34,62 @@ export const getToolbarLabels = (isMobile) => {
  */
     return labels;
 }
+
+export const validateRecipeName = (name) => {
+
+    if(name.length > 0 && name.length <= 30){
+        return true;
+    }
+
+    return false;
+}
+
+export const validateInteger = (userInput) => {
+
+    const value = Number(userInput);
+
+    if(Number.isInteger(value) && value > 0){
+        return true;
+    }
+ 
+    return false;
+}
+
+export const validateArrays = (array) => {
+
+    let allInputsFound = true;
+
+    array.forEach(element => {
+        if(element === null || element === undefined || element.length === 0 || element === "Unit"){
+            allInputsFound = false;
+            return;
+        }
+    });
+
+    return allInputsFound;
+}
+
+export const combineProductData = (products, quantities, units) => {
+
+    let combinedProducts = [];
+
+    for(let i = 0; i < products.length; i++){
+        const combinedProduct = {
+            product: products[i],
+            quantity: quantities[i],
+            unit: units[i]
+        }
+        combinedProducts.push(combinedProduct);
+    }
+
+    return combinedProducts;
+}
+
+export const getTimestamp = () => {
+
+    const date = new Date();
+    const formattedDate = date.getFullYear() + "-" + date.getMonth() + 1 + "-" + date.getDate();    
+    return formattedDate;
+}
+
+
