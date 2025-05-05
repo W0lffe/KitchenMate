@@ -20,7 +20,7 @@ export default function ListItem({item}){
     return(
         <li className={listItemStyle}>
             <label className={listItemNameStyle}>{item.name}</label>
-            <label>{item.portions}</label>
+            <label>{item.output.portions}</label>
             <label>{item.prepTime.time} {item.prepTime.format}</label>
             <button onClick={handleClick}><FontAwesomeIcon icon={faEye}/></button>
         </li>

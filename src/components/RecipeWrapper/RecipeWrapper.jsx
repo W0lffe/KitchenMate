@@ -9,7 +9,6 @@ import { useContext } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
 import RecipeContent from "../RecipeContent/RecipeContent"
 
-
 export default function RecipeWrapper() {
 
     const {activeRecipe, isMobile, isFetchingData} = useContext(KitchenContext)

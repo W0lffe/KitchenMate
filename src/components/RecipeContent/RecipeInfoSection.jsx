@@ -33,8 +33,8 @@ export default function RecipeInfoSection({state}){
                                 defaultValue={state.validInputs?.time} />
                 <select name="timeFormat" className={getInputStyle(true)} defaultValue={state.validInputs?.timeFormat} >
                     <option>Unit</option>
-                    <option>hour(s)</option>
                     <option>minute(s)</option>
+                    <option>hour(s)</option>
                 </select>
             </p>
         </div>

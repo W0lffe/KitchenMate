@@ -14,7 +14,7 @@ import FormList from "./FormList";
 
 export default function RecipeCreation(){
     
-    const {isMobile, addNewRecipe} = useContext(KitchenContext)
+    const {isMobile, addNewRecipe, setModalState} = useContext(KitchenContext)
 
     const recipeForm = async(prevFormState, formData) => {
 
@@ -44,6 +44,11 @@ export default function RecipeCreation(){
             format: timeFormat
         }
 
+        const portionScale = {
+            portions,
+            output
+        }
+
         if(errors.length > 0){
             console.log(errors)
             return {
@@ -64,20 +69,22 @@ export default function RecipeCreation(){
 
         const newRecipe = {
             name,
-            portions,
+            output: portionScale, 
             prepTime,
             ingredients,
-            steps,
+            instructions: steps,
             date: getTimestamp()
         }
 
         await addNewRecipe(newRecipe);
+        if(isMobile){
+            setModalState(null)
+        }
 
         return {errors: null}
     }
 
     const [formState, formAction] = useActionState(recipeForm , {errors: null})
-
     const hasErrors = formState.errors?.length > 0 ? true : false;
 
 
