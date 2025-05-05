@@ -1,7 +1,8 @@
 import { recipeInfoStyle, 
         lineStyle, 
         labelStyle, 
-        inputStyle } from "./recipeStyles"
+        getInputStyle } from "./recipeStyles"
+import { outputs } from "../../util/util"
 
 export default function RecipeInfoSection({state}){
 
@@ -9,15 +10,32 @@ export default function RecipeInfoSection({state}){
         <div className={recipeInfoStyle}>
             <p className={lineStyle}>
                 <label className={labelStyle}>Name:</label>
-                <input type="text" name="name" className={inputStyle} defaultValue={state.validInputs?.name}/>
+                <input type="text" name="name" 
+                                placeholder="Recipe name"
+                                className={getInputStyle(false)} 
+                                defaultValue={state.validInputs?.name}/>
             </p>
             <p className={lineStyle}>
-                <label className={labelStyle}>Portions:</label>
-                <input type="text" name="portions" className={inputStyle} defaultValue={state.validInputs?.portions}/>
+                <label className={labelStyle}>Output:</label>
+                <input type="text" name="portions" 
+                                placeholder="Amount" 
+                                className={getInputStyle(true)} 
+                                defaultValue={state.validInputs?.portions}/>
+                <select name="output" className={getInputStyle(true)} defaultValue={state.validInputs?.output} >
+                   {outputs.map((output, i) => <option key={i}>{output}</option> )}
+                </select>
             </p>
             <p className={lineStyle}>
                 <label className={labelStyle}>Prep Time:</label>
-                <input type="text" name="time" className={inputStyle} defaultValue={state.validInputs?.time} />
+                <input type="text" name="time" 
+                                placeholder="Preparation Time"  
+                                className={getInputStyle(true)} 
+                                defaultValue={state.validInputs?.time} />
+                <select name="timeFormat" className={getInputStyle(true)} defaultValue={state.validInputs?.timeFormat} >
+                    <option>Unit</option>
+                    <option>hour(s)</option>
+                    <option>minute(s)</option>
+                </select>
             </p>
         </div>
     )

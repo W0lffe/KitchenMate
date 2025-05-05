@@ -99,6 +99,10 @@ export default function KitchenContextProvider({children}){
             section = undefined;
         }
 
+        if(section === "recipes"){
+           setActiveRecipe(null)
+        }
+
         utilDispatch({
             type: "SET_ACTIVE_SECTION",
             payload: section
@@ -140,11 +144,13 @@ export default function KitchenContextProvider({children}){
     }
 
     const addNewRecipe = async (newRecipe) => {
-
+        await new Promise(r => setTimeout(r, 1000));
         recipeDispatch({
             type: "ADD_RECIPE",
             payload: newRecipe
         })
+
+        setActiveRecipe(null);
     }
     
     const setActiveRecipe = (recipe) => {

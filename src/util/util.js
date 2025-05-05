@@ -14,6 +14,13 @@ export const units = [
     "kg", "l", "g", "dl", "pcs"
 ]
 
+export const outputs  = [
+    "Portions", "GN 1/6-10", "GN 1/6-15", "GN 1/3-10", "GN 1/3-15", 
+    "GN 1/2-10", "GN 1/2-15", "GN 1/1-10", "GN 1/1-15", "GN 1/1-6.5",
+    "6L Piping"
+]
+
+
 export const getRandomSlogan = () => {
     return slogans[Math.floor(Math.random() * slogans.length)];
 }
@@ -35,40 +42,6 @@ export const getToolbarLabels = (isMobile) => {
     return labels;
 }
 
-export const validateRecipeName = (name) => {
-
-    if(name.length > 0 && name.length <= 30){
-        return true;
-    }
-
-    return false;
-}
-
-export const validateInteger = (userInput) => {
-
-    const value = Number(userInput);
-
-    if(Number.isInteger(value) && value > 0){
-        return true;
-    }
- 
-    return false;
-}
-
-export const validateArrays = (array) => {
-
-    let allInputsFound = true;
-
-    array.forEach(element => {
-        if(element === null || element === undefined || element.length === 0 || element === "Unit"){
-            allInputsFound = false;
-            return;
-        }
-    });
-
-    return allInputsFound;
-}
-
 export const combineProductData = (products, quantities, units) => {
 
     let combinedProducts = [];
@@ -88,7 +61,7 @@ export const combineProductData = (products, quantities, units) => {
 export const getTimestamp = () => {
 
     const date = new Date();
-    const formattedDate = date.getFullYear() + "-" + date.getMonth() + 1 + "-" + date.getDate();    
+    const formattedDate = date.getFullYear() + "-" + parseInt(date.getMonth() + 1) + "-" + date.getDate();    
     return formattedDate;
 }
 
