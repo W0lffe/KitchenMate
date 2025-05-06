@@ -19,7 +19,7 @@ export const mobileHeadingStyle = `w-full text-center text-md font-medium m-2`;
 
 export const recipeInfoStyle = `h-fit w-full flex flex-col justify-center items-start lg:p-2`;
 
-export const lineStyle = `flex gap-6 m-2`;
+export const lineStyle = `flex gap-6 m-2 items-center flex-row`;
 
 export const labelStyle = `text-[16px] font-semibold`;
 

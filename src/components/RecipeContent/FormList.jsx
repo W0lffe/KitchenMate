@@ -27,12 +27,8 @@ export default function FormList({use, state}){
         <section className={sectionStyle}>
             <p className={lineStyle}>
                 <label className={labelStyle}>{isProduct ? "Ingredients" : "Instructions"}</label>
-                <label>
-                    <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
-                </label>
-                <label>
-                    <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
-                </label>
+                <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
+                <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
             </p>
             <ul className={listStyle}>
                 {([...Array(count)].map((_, i) =>

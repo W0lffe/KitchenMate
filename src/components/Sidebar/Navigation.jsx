@@ -15,13 +15,12 @@ export default function Navigation(){
         toggleNavigation();
     }
 
-    const content = navigationIsOpen ? <FontAwesomeIcon icon={faBackward} className="text-gray-400 animate-pulse" /> : 
-                                        <FontAwesomeIcon icon={faForward} className="text-gray-400"/>;
-
     return(
         <>
         <section className={topStyle}>
-            <button onClick={handleClick}>{content}</button>
+            <FontAwesomeIcon icon={navigationIsOpen ? faBackward : faForward} 
+                                className={navigationIsOpen ? "text-gray-400 animate-pulse" : "text-gray-400"}
+                                onClick={handleClick}/>
         </section>
         <UserSection />
         <NaviSection />

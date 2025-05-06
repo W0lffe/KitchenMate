@@ -26,10 +26,12 @@ export const KitchenContext = createContext({
     setAvailableRecipes: () => {},
     activeRecipe: null,
     setActiveRecipe: () => {},
+    deleteRecipe: () => {},
     isFetchingData: false,
 })
 
 export const recipesReducer = (state, action) => {
+    let updatedRecipes;
     switch(action.type){
         case "SET_ACTIVE_RECIPE":
             console.log("DEBUG: ", action.type, action.payload)
@@ -37,15 +39,21 @@ export const recipesReducer = (state, action) => {
                 ...state, activeRecipe: action.payload
             }
         case "ADD_RECIPE":
-            const updatedRecipes = [...state.availableRecipes, action.payload];
+            updatedRecipes = [...state.availableRecipes, action.payload];
             console.log("DEBUG: ", action.type, action.payload, updatedRecipes);
             return {
                 ...state, availableRecipes: updatedRecipes
             }
-         case "SET_RECIPES":
+        case "SET_RECIPES":
             console.log("DEBUG: ", action.type, action.payload)
             return {
                 ...state, availableRecipes: action.payload
+            }
+        case "DELETE_RECIPE":
+            console.log("DEBUG: ", action.type, action.payload)
+            updatedRecipes = state.availableRecipes.filter((recipe) =>  recipe.id !== action.payload )
+            return {
+                ...state, availableRecipes: updatedRecipes
             }
         default:
             return state
@@ -152,6 +160,16 @@ export default function KitchenContextProvider({children}){
 
         setActiveRecipe(null);
     }
+
+    const deleteRecipe = async (id) => {
+        await new Promise(r => setTimeout(r, 1000));
+        recipeDispatch({
+            type: "DELETE_RECIPE",
+            payload: id
+        })
+
+        setActiveRecipe(null);
+    }
     
     const setActiveRecipe = (recipe) => {
         recipeDispatch({
@@ -180,6 +198,7 @@ export default function KitchenContextProvider({children}){
         setAvailableRecipes,
         activeRecipe: recipesState.activeRecipe,
         setActiveRecipe,
+        deleteRecipe,
         isFetchingData: isFetchingData,
     }
 
