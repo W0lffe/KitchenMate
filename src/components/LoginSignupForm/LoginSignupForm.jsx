@@ -51,7 +51,7 @@ export default function LoginSignupForm(){
     return(
         <div className={containerStyle}>
             <header className={headerStyle}>
-                <button className={closeButtonStyle} onClick={() => setModalState("")}>X</button>
+                <SubmitButton use={"close"} func={setModalState} />
             </header>
             <section className={sectionStyle}>
                 <h3 className={headingStyle}>{activeModal === "login" ? "LOGIN" : "SIGNUP"}</h3>

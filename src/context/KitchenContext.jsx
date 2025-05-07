@@ -28,6 +28,9 @@ export const KitchenContext = createContext({
     setActiveRecipe: () => {},
     deleteRecipe: () => {},
     isFetchingData: false,
+    filterRecipes: () => {},
+    sortRecipes: () => {},
+
 })
 
 export const recipesReducer = (state, action) => {
@@ -178,6 +181,45 @@ export default function KitchenContextProvider({children}){
         })
     }
 
+    const filterRecipes = (value) => {
+        let filtered;
+        if(value.length > 0){
+            filtered = recipesState.availableRecipes.filter((recipe) => recipe.name.toLowerCase().includes(value.toLowerCase()))
+        }
+        else{
+            filtered = recipeListRef.current;
+        }
+
+        recipeDispatch({
+            type: "SET_RECIPES",
+            payload: filtered
+        })
+        
+    }
+
+    const sortRecipes = (sortBy) => {
+        const sorted = [...recipesState.availableRecipes].sort((a, b) => {
+            let valA;
+            let valB;
+
+            switch(sortBy){
+                case "time":
+                    valA = a.prepTime.time
+                    valB = b.prepTime.time
+                    return valA - valB;
+                case "name":
+                    valA = a.name
+                    valB = b.name
+                    return valA.localeCompare(valB)
+            }
+        })
+
+        recipeDispatch({
+            type: "SET_RECIPES",
+            payload: sorted
+        })
+    }
+
     const ctxValue = {
         slogan: utilState.slogan,
         setSlogan,
@@ -200,6 +242,8 @@ export default function KitchenContextProvider({children}){
         setActiveRecipe,
         deleteRecipe,
         isFetchingData: isFetchingData,
+        filterRecipes,
+        sortRecipes
     }
 
     return(

@@ -9,6 +9,7 @@ import { bottomSection,
         iconSpan, 
         listSection, 
         topSection } from "./inspectStyles";
+import SubmitButton from "../Buttons/SubmitButton";
 
 export default function ItemInspectView({item}){
 
@@ -19,13 +20,16 @@ export default function ItemInspectView({item}){
 
     const handleDelete = () => {
         deleteRecipe(recipe.id)
-        setModalState(null)
+        if(isMobile){
+            setModalState(null)
+        }
     }
 
     return(
         <div className={containerStyle}>
             <section className={topSection}>
                 <span className={iconSpan}>
+                    {isMobile ? <SubmitButton use={"close"} func={() => setModalState(null)}/> : null}
                     <FontAwesomeIcon icon={faTrash} 
                                     className={getIconStyle("del")}
                                     onClick={handleDelete}/>

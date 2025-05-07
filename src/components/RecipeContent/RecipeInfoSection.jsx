@@ -11,7 +11,7 @@ export default function RecipeInfoSection({state}){
             <p className={lineStyle}>
                 <label className={labelStyle}>Name:</label>
                 <input type="text" name="name" 
-                                placeholder="Recipe name"
+                                placeholder="Recipe Name"
                                 className={getInputStyle(false)} 
                                 defaultValue={state.validInputs?.name}/>
             </p>

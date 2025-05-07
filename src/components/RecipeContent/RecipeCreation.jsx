@@ -90,7 +90,11 @@ export default function RecipeCreation(){
 
     return(
        <div className="text-white">
-        {isMobile ? <h2 className={mobileHeadingStyle}>NEW RECIPE</h2> : null}
+        {isMobile ? 
+            <span className="flex flex-row justify-end items-center px-2">
+                <h2 className={mobileHeadingStyle}>NEW RECIPE</h2>
+                <SubmitButton use={"close"} func={() => setModalState(null)} />
+            </span> : null}
         <form action={formAction}>
             <RecipeInfoSection state={formState}/>
             <ul className={getErrorStyle(hasErrors)}>

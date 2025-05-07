@@ -17,7 +17,7 @@ export default function List(){
         if(activeSection === "recipes"){
             setList([...availableRecipes])
         }
-    }, [activeSection])
+    }, [availableRecipes])
 
     console.log(list)
 
