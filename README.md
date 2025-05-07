@@ -5,9 +5,9 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is in its early stages but has a solid foundation in terms of app structure and styling. 
-It includes a working navigation system, modal component, and forms for login and signup. 
-State management is handled using React Context combined with useReducer, currently managing utility-related features such as navigation and modal visibility, and app slogans.
+The project is in its early stages but has a solid foundation in terms of app structure and styling. It includes a working navigation system, modal component, and forms for login and signup. Core recipe features such as creation, reading, updating, and deleting are fully functional locally.
+State management is handled using React Context combined with useReducers, currently managing utility-related features such as navigation, modal visibility, and app slogans, as well as recipe-related features such as adding new recipes, tracking the currently active recipe, and managing the list of available recipes.
+
 ### Planned Stages of Development
 
 #### Stage 1 **COMPLETED**
@@ -29,11 +29,11 @@ State management is handled using React Context combined with useReducer, curren
 - Front-End
     - [ ] Components and functionalities for
        - [ ] Create, Read, Update
-            - [ ] Recipe
+            - [x] Recipe 
             - [ ] Basket
             - [ ] Dish
 - State Management
-    - [ ] Set up RecipeReducer
+    - [x] Set up RecipeReducer
     - [ ] Set up BasketReducer
     - [ ] Set up DishReducer
 - API Integration
@@ -69,6 +69,7 @@ State management is handled using React Context combined with useReducer, curren
 - Front-End
     - [ ] Connecting front-end to backend
     - [ ] Optimizing styling
+    - [ ] Polishing
 - Testing
     - [ ] Testing on different devices
     - [ ] Bug fixes

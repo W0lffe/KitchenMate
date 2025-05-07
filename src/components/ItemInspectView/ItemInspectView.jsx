@@ -13,7 +13,7 @@ import SubmitButton from "../Buttons/SubmitButton";
 
 export default function ItemInspectView({item}){
 
-    const {deleteRecipe, isMobile, setModalState}  = useContext(KitchenContext)
+    const {deleteRecipe, isMobile, setModalState, setActiveRecipe}  = useContext(KitchenContext)
 
     const mode = item.mode;
     const recipe = item.recipe;
@@ -21,7 +21,14 @@ export default function ItemInspectView({item}){
     const handleDelete = () => {
         deleteRecipe(recipe.id)
         if(isMobile){
-            setModalState(null)
+            setModalState(null, false)
+        }
+    }
+
+    const handleModify = () => {
+        setActiveRecipe({recipe, mode: "edit"})
+        if(isMobile){
+            setModalState("recipe", true)
         }
     }
 
@@ -34,7 +41,8 @@ export default function ItemInspectView({item}){
                                     className={getIconStyle("del")}
                                     onClick={handleDelete}/>
                     <FontAwesomeIcon icon={faPenToSquare} 
-                                    className={getIconStyle()} />
+                                    className={getIconStyle()}
+                                    onClick={handleModify} />
                 </span>
                 <h2 className="text-2xl font-semibold italic">{recipe.name}</h2>
                 <h3 className="text-lg">Yield: {recipe.output.portions} {recipe.output.output}</h3>

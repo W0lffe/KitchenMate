@@ -3,7 +3,9 @@ import { sectionContainerStyle,
         footerStyle, 
         getErrorStyle} from "./recipeStyles";
 import { useContext, 
-        useActionState} from "react";
+        useActionState,
+        useState,
+        useEffect} from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData,
         getTimestamp} from "../../util/util";
@@ -14,7 +16,36 @@ import FormList from "./FormList";
 
 export default function RecipeCreation(){
     
-    const {isMobile, addNewRecipe, setModalState} = useContext(KitchenContext)
+    const {isMobile, addNewRecipe, setModalState, activeRecipe, updateRecipe} = useContext(KitchenContext)
+    const [editingRecipe, setEditingRecipe] = useState(false);
+    const recipeToModify = activeRecipe.recipe;
+    let modifiedId;
+
+    let initialFormState = {errors: null}
+
+    useEffect(() => {
+        if(recipeToModify !== null){
+            setEditingRecipe(true);
+        }
+    }, [recipeToModify])
+
+    if(recipeToModify !== null){
+        modifiedId = recipeToModify.id;
+        initialFormState = {
+            errors: null,
+            validInputs: {
+                    name: recipeToModify.name,
+                    portions: recipeToModify.output.portions,
+                    output: recipeToModify.output.output,
+                    time: recipeToModify.prepTime.time,
+                    timeFormat: recipeToModify.prepTime.format,
+                    products: recipeToModify.ingredients.map(ingredient => ingredient.product),
+                    quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
+                    unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
+                    steps: recipeToModify.instructions
+            }
+        }
+    }
 
     const recipeForm = async(prevFormState, formData) => {
 
@@ -76,15 +107,23 @@ export default function RecipeCreation(){
             date: getTimestamp()
         }
 
-        await addNewRecipe(newRecipe);
+        if(editingRecipe){
+            const updatedRecipe = {...newRecipe, id: modifiedId};
+            console.log("creation",updatedRecipe)
+            updateRecipe(updatedRecipe)
+        }
+        else{
+            await addNewRecipe(newRecipe);
+        }
+
         if(isMobile){
-            setModalState(null)
+            setModalState(null, false)
         }
 
         return {errors: null}
     }
 
-    const [formState, formAction] = useActionState(recipeForm , {errors: null})
+    const [formState, formAction] = useActionState(recipeForm , initialFormState)
     const hasErrors = formState.errors?.length > 0 ? true : false;
 
 
@@ -93,7 +132,7 @@ export default function RecipeCreation(){
         {isMobile ? 
             <span className="flex flex-row justify-end items-center px-2">
                 <h2 className={mobileHeadingStyle}>NEW RECIPE</h2>
-                <SubmitButton use={"close"} func={() => setModalState(null)} />
+                <SubmitButton use={"close"} func={() => setModalState(null, false)} />
             </span> : null}
         <form action={formAction}>
             <RecipeInfoSection state={formState}/>

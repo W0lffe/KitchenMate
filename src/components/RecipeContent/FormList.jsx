@@ -11,7 +11,14 @@ import { labelStyle,
 
 export default function FormList({use, state}){
 
-    const [count, setCount] = useState(1)
+    const isProduct = use === "product";
+
+    let initialCount = 1;
+    if(state.validInputs){
+        initialCount = isProduct ? state.validInputs.products.length : state.validInputs.steps.length;
+    }
+
+    const [count, setCount] = useState(initialCount)
 
     const increment = () => {
         setCount(prev => prev +1)
@@ -21,7 +28,6 @@ export default function FormList({use, state}){
         setCount(prev => prev -1)
     }
 
-    const isProduct = use === "product";
  
     return(
         <section className={sectionStyle}>

@@ -28,6 +28,7 @@ export const KitchenContext = createContext({
     setActiveRecipe: () => {},
     deleteRecipe: () => {},
     isFetchingData: false,
+    updateRecipe: () => {},
     filterRecipes: () => {},
     sortRecipes: () => {},
 
@@ -58,6 +59,15 @@ export const recipesReducer = (state, action) => {
             return {
                 ...state, availableRecipes: updatedRecipes
             }
+        case "MODIFY_RECIPE":
+            console.log("DEBUG: ", action.type, action.payload)
+            updatedRecipes = state.availableRecipes.map(recipe => 
+                recipe.id === action.payload.id ? action.payload : recipe
+            )
+            console.log("updated list",updatedRecipes)
+            return {
+                ...state, availableRecipes: updatedRecipes
+            }
         default:
             return state
     }
@@ -85,6 +95,8 @@ export default function KitchenContextProvider({children}){
         activeRecipe: null
     })
 
+
+    /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
     const setIsMobile = (isMobile) => {
         utilDispatch({
             type: "SET_MOBILE",
@@ -127,16 +139,18 @@ export default function KitchenContextProvider({children}){
         })
     }
 
-    const setModalState = (section) => {
+    const setModalState = (section, modalState) => {
         utilDispatch({
             type: "SET_MODAL_STATE",
             payload: {
                 section,
-                modalState: !utilState.modalIsOpen
+                modalState
             }
         })
     }
 
+
+ /******************START OF RECIPES REDUCER RELATED FUNCTIONS******************************************* */
     const setAvailableRecipes = async () => {
         setIsFetchingData(true);
         console.log("fetch", isFetchingData)
@@ -179,6 +193,16 @@ export default function KitchenContextProvider({children}){
             type: "SET_ACTIVE_RECIPE",
             payload: recipe
         })
+    }
+
+    const updateRecipe = (updatedRecipe) => {
+        console.log("context",updatedRecipe)
+        recipeDispatch({
+            type: "MODIFY_RECIPE",
+            payload: updatedRecipe
+        })
+
+        setActiveRecipe(null);
     }
 
     const filterRecipes = (value) => {
@@ -241,6 +265,7 @@ export default function KitchenContextProvider({children}){
         activeRecipe: recipesState.activeRecipe,
         setActiveRecipe,
         deleteRecipe,
+        updateRecipe,
         isFetchingData: isFetchingData,
         filterRecipes,
         sortRecipes

@@ -31,7 +31,7 @@ export default function Toolbar(){
 
     const handleMobileClick = () => {
         setActiveRecipe({recipe: null, mode: "create"})
-        setModalState("recipe")
+        setModalState("recipe", true)
     }
 
     if(isMobile){
@@ -47,7 +47,7 @@ export default function Toolbar(){
                             className={inputStyle} 
                             onChange={(event) => filterRecipes(event.target.value)}/>
             <span className={spanStyle}>
-                {labels.map((item, i) => <label onClick={() => sortRecipes(sortValues[i])}>{item}</label>)}
+                {labels.map((item, i) => <label key={i} onClick={() => sortRecipes(sortValues[i])}>{item}</label>)}
                 <FontAwesomeIcon icon={faFolderPlus} 
                                 onClick={func} 
                                 className={iconStyle}/>

@@ -13,7 +13,7 @@ export default function ListItem({item}){
     const handleClick = () => {
         setActiveRecipe({recipe: item, mode: "detail"});
         if(isMobile){
-            setModalState("recipe");
+            setModalState("recipe", true);
         }
     }
 

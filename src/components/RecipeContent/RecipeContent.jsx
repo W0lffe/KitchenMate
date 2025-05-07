@@ -12,6 +12,7 @@ export default function RecipeContent(){
     return(
         <div className={getContainerStyle(isMobile)}>
             {mode === "create" ? <RecipeCreation /> : null}
+            {mode === "edit" ? <RecipeCreation /> : null}
             {mode === "detail" ? <ItemInspectView item={{recipe: activeRecipe.recipe, mode: "recipe"}}/> : null}
         </div>
     )
