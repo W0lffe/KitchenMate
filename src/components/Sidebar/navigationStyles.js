@@ -2,7 +2,7 @@
 export const getWrapperStyle = (state) => {
     let wrapperStyle = `fixed top-0 left-0 
                         z-1 border-2 border-white/30 shadow-lg shadow-black
-                        bg-gradient-to-l from-gray-200/30 via-gray-400/50 to gray-700/30
+                        bg-gray-950/85
                         flex flex-col justify-start items-center
                         rounded-r-[20px] transition[width] duration-1500 ease-out overflow-hidden 
                         text-[18px] lg:text-[22px]`;

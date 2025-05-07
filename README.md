@@ -1,13 +1,13 @@
 # KitchenMate
 
 ## Goal
-To create a simple program to create and manage recipies, and create dishes out of those components. Also to be able to create a shopping list based on all the products and their quantities in those recipies/dishes.
+To create a simple program to create and manage recipies, and create dishes out of those components. Also to be able to create a shopping list based on all the products and their quantities in those recipes/dishes.
 
 ## State of Project
 
-The project is in its early stages but has a solid foundation in terms of app structure and styling. 
-It includes a working navigation system, modal component, and forms for login and signup. 
-State management is handled using React Context combined with useReducer, currently managing utility-related features such as navigation and modal visibility, and app slogans.
+The project is in its early stages but has a solid foundation in terms of app structure and styling. It includes a working navigation system, modal component, and forms for login and signup. Core recipe features such as creation, reading, updating, and deleting are fully functional locally.
+State management is handled using React Context combined with useReducers, currently managing utility-related features such as navigation, modal visibility, and app slogans, as well as recipe-related features such as adding new recipes, tracking the currently active recipe, and managing the list of available recipes.
+
 ### Planned Stages of Development
 
 #### Stage 1 **COMPLETED**
@@ -29,11 +29,11 @@ State management is handled using React Context combined with useReducer, curren
 - Front-End
     - [ ] Components and functionalities for
        - [ ] Create, Read, Update
-            - [ ] Recipe
+            - [x] Recipe 
             - [ ] Basket
             - [ ] Dish
 - State Management
-    - [ ] Set up RecipeReducer
+    - [x] Set up RecipeReducer
     - [ ] Set up BasketReducer
     - [ ] Set up DishReducer
 - API Integration
@@ -68,11 +68,12 @@ State management is handled using React Context combined with useReducer, curren
     Final Integration & Testing
 - Front-End
     - [ ] Connecting front-end to backend
-    - [ ] Testing of components
+    - [ ] Optimizing styling
+    - [ ] Polishing
 - Testing
     - [ ] Testing on different devices
     - [ ] Bug fixes
-
+    - [ ] Testing of components
 - Deployment
     - [ ] Deploying first version to Firebase
 
@@ -89,14 +90,26 @@ State management is handled using React Context combined with useReducer, curren
 - [x] Modal
 
 - [x] Navigation
+    - [x] NaviSection
+    - [x] UserSection
 
-- [ ] MainContainer
+- [x] MainContainer
 
-- [ ] RecipeList/ShoppingList (wrapper)
+- [ ] List(wrapper for changing content between basketlist, recipelist, dishlist)
+    - [x] Recipes
+    - [ ] Dishes
+    - [ ] Basket
+    - [ ] Toolbar (sorting and filtering)
 
-- [ ] RecipeForm
+- [x] RecipeCreation
+    - [x] InfoSection
+    - [x] IngredientForm / InstructionsForm
 
-- [ ] Recipe/Dish Card (wrapper)
+- [x] Product
+
+- [x] Instruction
+
+- [] Recipe/Dish Card (wrapper)
 
 - [ ] DishCreation
 
@@ -106,6 +119,10 @@ State management is handled using React Context combined with useReducer, curren
 
 - [ ] Implement Context for the app
     - [x] Work in Progress
+
+#### Hooks
+
+- [x] Custom Hook: useIsMobile, to detect if user device is mobile
 
 #### UtilityReducer
 
@@ -119,13 +136,17 @@ State management is handled using React Context combined with useReducer, curren
 
 - [x] "SET_SLOGAN"
 
+- [x] "SET_MOBILE" 
+
 #### RecipeReducer actions
 
-- [ ] "SET_RECIPES"
+- [x] "SET_RECIPES"
 
-- [ ] "ADD_RECIPE"
+- [x] "ADD_RECIPE"
 
-- [ ] "DELETE_RECIPE"
+- [x] "DELETE_RECIPE"
+
+- [x] "SET_ACTIVE_RECIPE"
 
 #### BasketReducer actions
 

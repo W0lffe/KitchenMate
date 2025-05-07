@@ -15,7 +15,7 @@ export default function NaviSection(){
     const {navigationIsOpen, setActiveSection} = useContext(KitchenContext)
 
     return(
-         <section className={getSectionStyle(navigationIsOpen)}>
+        <section className={getSectionStyle(navigationIsOpen)}>
             <h4 className={headingStyle}>NAVIGATION</h4>
             <NaviButton func={setActiveSection} value={"recipes"}>Recipe Management <FontAwesomeIcon icon={faBookOpen} className="text-gray-200"/></NaviButton>
             <NaviButton func={setActiveSection} value={"dishes"}>Dish Management <FontAwesomeIcon icon={faUtensils} className="text-gray-200"/></NaviButton>

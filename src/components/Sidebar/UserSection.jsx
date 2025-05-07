@@ -21,8 +21,10 @@ export default function UserSection(){
                         <button className={naviButtonStyle}>Logout <FontAwesomeIcon icon={faRightFromBracket} className="text-gray-200"/></button>  </>) : 
                         (<>
                         <FontAwesomeIcon icon={faUser} className="text-gray-200"/>
-                        <button onClick={() => setModalState("login")} className={naviButtonStyle}>Login <FontAwesomeIcon icon={faRightToBracket} className="text-gray-200"/></button>   </>)}
-                        <p className={signupStyle} onClick={() => setModalState("signup")}>Not an user yet? Click here to begin.</p>
+                        <button onClick={() => setModalState("login", true)} 
+                                className={naviButtonStyle}>Login <FontAwesomeIcon icon={faRightToBracket} className="text-gray-200"/>
+                        </button>   </>)}
+                        <p className={signupStyle} onClick={() => setModalState("signup", true)}>Not an user yet? Click here to begin.</p>
         </section>
     )
 }

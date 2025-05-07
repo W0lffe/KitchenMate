@@ -1,12 +1,22 @@
 import { useFormStatus } from "react-dom";
-import { submitButtonStyle } from "./buttonStyles";
+import { getSubmitButtonStyle } from "./buttonStyles";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-export default function SubmitButton(){
+export default function SubmitButton({use, func}){
     const {pending} = useFormStatus()
+
+    if(use === "close"){
+        return(
+            <FontAwesomeIcon icon={faXmark} 
+                            onClick={() => func(null)} 
+                            className={getSubmitButtonStyle(use)}/>
+        )
+    }
 
     return(
         <button type="submit" 
         disabled={pending}
-        className={submitButtonStyle}>{pending ? "Submitting..." : "Submit"}</button>
+        className={getSubmitButtonStyle(use)}>{pending ? "Submitting..." : "Submit"}</button>
     )
 }

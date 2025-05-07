@@ -51,7 +51,7 @@ export default function LoginSignupForm(){
     return(
         <div className={containerStyle}>
             <header className={headerStyle}>
-                <button className={closeButtonStyle} onClick={() => setModalState("")}>X</button>
+                <SubmitButton use={"close"} func={setModalState} />
             </header>
             <section className={sectionStyle}>
                 <h3 className={headingStyle}>{activeModal === "login" ? "LOGIN" : "SIGNUP"}</h3>
@@ -61,7 +61,7 @@ export default function LoginSignupForm(){
                     <label className={labelStyle}>{activeModal === "login" ? "Password:" : "Password (8-16 characters):"}</label>
                     <input type="password" name="passwd" placeholder="Enter password" className={inputStyle} />
                     {formState.errors?.map((error, i) => <p key={i}>{error}</p>)}
-                    <SubmitButton />
+                    <SubmitButton use={"login"}/>
                 </form>
             </section>
         </div>
