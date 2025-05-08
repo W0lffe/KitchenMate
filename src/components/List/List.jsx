@@ -22,7 +22,7 @@ export default function List(){
             setList([])
         }
         if(activeSection === "basket"){
-            setList([])
+            setList([...basketList])
         }
 
     }, [activeSection, availableRecipes])
