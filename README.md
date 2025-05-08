@@ -38,7 +38,7 @@ State management is handled using React Context combined with useReducers, curre
     - [ ] Set up DishReducer
 - API Integration
     - [ ] Implement CRUD
-        - [ ] Fetch
+        - [x] Fetch
         - [ ] Post
         - [ ] Modify
         - [ ] Delete

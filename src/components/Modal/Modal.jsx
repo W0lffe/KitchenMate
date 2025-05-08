@@ -19,7 +19,7 @@ export default function Modal(){
         <div>
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
                 {activeModal === "signup" || activeModal === "login" ? <LoginSignupForm /> : null}
-                {activeModal === "recipe" ? <ContentWrapper /> : null}
+                {activeModal === "recipes" ? <ContentWrapper /> : null}
             </dialog>
         </div>,document.getElementById("modal")
     )

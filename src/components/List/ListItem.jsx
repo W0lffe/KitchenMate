@@ -8,7 +8,7 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, isMobile, setModalState, activeSection} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection} = useContext(KitchenContext)
     const [section, setSection] = useState(null);
 
     useEffect(() => {
@@ -17,17 +17,18 @@ export default function ListItem({item}){
 
    
     const handleClick = () => {
-        let section;
         if(activeSection === "recipes"){
             setActiveRecipe({recipe: item, mode: "detail"});
-            section = "recipe";
         }
         else if(activeSection === "dishes"){
-            alert("ADDING RECIPE TO DISH")
+            setActiveDish({dish: item, mode: "detail"})
+        }
+        else if(activeSection === "basket"){
+            alert("DELETING ITEM")
         }
 
         if(isMobile){
-            setModalState(section, true);
+            setModalState(activeSection, true);
         }
     }
 
@@ -35,7 +36,7 @@ export default function ListItem({item}){
         <li className={listItemStyle}>
             {section === "recipes" ? <RecipeItem item={item}/> : null}
             {section === "basket" ? <BasketItem item={item}/> : null}
-            {section === "dishes" ? <RecipeItem /> : null}
+            {section === "dishes" ? <DishItem item={item}/> : null}
             <button onClick={handleClick}><FontAwesomeIcon icon={faEye}/></button>
         </li>
     )
@@ -57,6 +58,16 @@ function BasketItem({item}){
         <label className={listItemNameStyle}>{item.product}</label>
         <label>{item.quantity}</label>
         <label>{item.unit}</label>
+        </>
+    )
+}
+
+function DishItem({item}){
+    return(
+        <>
+        <label className={listItemNameStyle}>{item.name}</label>
+        <label>{item.course}</label>
+        <label>{item.components.length}</label>
         </>
     )
 }

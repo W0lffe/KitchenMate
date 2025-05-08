@@ -7,11 +7,11 @@ import { listContainerStyle,
         itemListStyle, 
         nameHeadingStyle } from "./listStyles";
 import ListItem from "./ListItem";
-import { basketList } from "../../../backend/dummy_data";
+import { getListLabels } from "../../util/util";
 
 export default function List(){
 
-    const {activeSection, availableRecipes, isFetchingData} = useContext(KitchenContext);
+    const {activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData} = useContext(KitchenContext);
     const [list, setList] = useState([]);
 
     useEffect(() => {
@@ -19,13 +19,13 @@ export default function List(){
             setList([...availableRecipes])
         }
         if(activeSection === "dishes"){
-            setList([])
+            setList([...availableDishes])
         }
         if(activeSection === "basket"){
-            setList([...basketList])
+            setList([...availableBasket])
         }
 
-    }, [activeSection, availableRecipes])
+    }, [activeSection, availableRecipes, availableDishes])
 
     if(isFetchingData){
         return(
@@ -40,13 +40,12 @@ export default function List(){
             {list.length > 0 ? 
             (<>
             <li className={listHeadingStyle}>
-                <label className={nameHeadingStyle}>Name</label>
-                <label>Portions</label>
-                <label>Prep Time</label>
-                <label>View</label>
+                {getListLabels(activeSection).map((label, i) => 
+                    <label key={i} className={i === 0 ? nameHeadingStyle : null}>{label}</label>
+                )}
             </li>
             <ul className={itemListStyle}>
-                {list.map((item) => <ListItem key={item.id} item={item}/>)}
+                {list.map((item, i) => <ListItem key={i} item={item}/>)}
             </ul>
             </>) 
             : 

@@ -8,11 +8,13 @@ import { HeaderStyle,
 
 export default function Header(){
 
-    const {slogan, setSlogan, setAvailableRecipes} = useContext(KitchenContext);
+    const {slogan, setSlogan, setAvailableRecipes, setAvailableBasket, setAvailableDishes} = useContext(KitchenContext);
 
     useEffect(() => {
         setSlogan();
         setAvailableRecipes();
+        setAvailableDishes();
+        setAvailableBasket();
     }, [])
 
     return(

@@ -6,7 +6,7 @@ import {getContainerStyle} from "./wrapperStyles.js"
 
 export default function ContentWrapper(){
 
-    const {activeSection, activeRecipe, isMobile} = useContext(KitchenContext)
+    const {activeSection, activeRecipe, activeDish, isMobile} = useContext(KitchenContext)
     
     let content = null;
     let mode;
@@ -16,8 +16,16 @@ export default function ContentWrapper(){
         content = <>
             {mode === "create" ? <RecipeCreation /> : null}
             {mode === "edit" ? <RecipeCreation /> : null}
-            {mode === "detail" ? <ItemInspectView item={{recipe: activeRecipe.recipe, mode: "recipe"}}/> : null}
+            {mode === "detail" ? <ItemInspectView itemToInspect={{recipe: activeRecipe.recipe, mode: activeSection}}/> : null}
 
+        </>
+    }
+
+    if(activeSection === "dishes"){
+        mode = activeDish?.mode;
+        content = <>
+            {mode === "create" ? <p>I AM DISH CREATOOOOR</p> : null}
+            {mode === "detail" ? <ItemInspectView itemToInspect={{dish: activeDish.dish, mode: activeSection}}/> : null}
         </>
     }
 

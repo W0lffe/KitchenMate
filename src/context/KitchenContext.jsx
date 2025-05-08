@@ -5,7 +5,7 @@ import { createContext,
 import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
         recipesReducer } from "./reducer.js";
-import { fetchRecipes } from "../api/http.js"
+import { fetchBasket, fetchDishes, fetchRecipes } from "../api/http.js"
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -32,8 +32,40 @@ export const KitchenContext = createContext({
     updateRecipe: () => {},
     filterRecipes: () => {},
     sortRecipes: () => {},
+    setAvailableDishes: () => {},
+    availableDishes: [],
+    setActiveDish: () => {},
+    activeDish: null,
+    setAvailableBasket: () => {},
+    availableBasket: []
 
 })
+
+export const dishReducer = (state, action) => {
+    console.log("DISH_DEBUG: ", action.type, action.payload)
+    let updatedDishes;
+    switch(action.type){
+        case "SET_DISHES":
+            return{
+                ...state, availableDishes: action.payload
+            }
+        case "SET_ACTIVE_DISH":
+            return{
+                ...state, activeDish: action.payload
+            }
+    }
+}
+
+export const basketReducer = (state, action) => {
+    console.log("BASKET_DEBUG: ", action.type, action.payload)
+    let updatedBasket;
+    switch(action.type){
+        case "SET_BASKET":
+            return{
+                ...state, availableBasket: action.payload
+            }
+    }
+}
 
 
 export default function KitchenContextProvider({children}){
@@ -57,6 +89,17 @@ export default function KitchenContextProvider({children}){
         availableRecipes: [],
         activeRecipe: null
     })
+
+    const [dishesState, dishDispatch] = useReducer(dishReducer, {
+        availableDishes: [],
+        activeDish: null
+    })
+
+    const [basketState, basketDispatch] = useReducer(basketReducer, {
+        availableBasket: []
+    
+    })
+
 
 
     /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
@@ -116,7 +159,6 @@ export default function KitchenContextProvider({children}){
  /******************START OF RECIPES REDUCER RELATED FUNCTIONS******************************************* */
     const setAvailableRecipes = async () => {
         setIsFetchingData(true);
-        console.log("fetch", isFetchingData)
 
         const recipes = await fetchRecipes(utilState.user);
         await new Promise(r => setTimeout(r, 1000));
@@ -127,7 +169,6 @@ export default function KitchenContextProvider({children}){
 
         recipeListRef.current = recipes;
         setIsFetchingData(false);
-        console.log("fetch", isFetchingData)
 
     }
 
@@ -159,13 +200,50 @@ export default function KitchenContextProvider({children}){
     }
 
     const updateRecipe = (updatedRecipe) => {
-        console.log("context",updatedRecipe)
         recipeDispatch({
             type: "MODIFY_RECIPE",
             payload: updatedRecipe
         })
 
         setActiveRecipe(null);
+    }
+
+
+    /******************START OF DISH REDUCER RELATED FUNCTIONS******************************************* */
+
+    const setAvailableDishes = async () => {
+        setIsFetchingData(true);
+
+        const dishes = await fetchDishes(utilState.user);
+        await new Promise(r => setTimeout(r, 1000));
+        dishDispatch({
+                type: "SET_DISHES",
+                payload: dishes
+        })
+
+        setIsFetchingData(false);
+    }
+
+    const setActiveDish = (dish) => {
+        dishDispatch({
+            type: "SET_ACTIVE_DISH",
+            payload: dish
+        })
+    }
+
+    /******************START OF BASKET REDUCER RELATED FUNCTIONS******************************************* */
+
+    const setAvailableBasket = async() => {
+        setIsFetchingData(true);
+
+        const basket = await fetchBasket(utilState.user);
+        await new Promise(r => setTimeout(r, 1000));
+        basketDispatch({
+                type: "SET_BASKET",
+                payload: basket
+        })
+
+        setIsFetchingData(false);
     }
 
     const filterRecipes = (value) => {
@@ -231,7 +309,14 @@ export default function KitchenContextProvider({children}){
         updateRecipe,
         isFetchingData: isFetchingData,
         filterRecipes,
-        sortRecipes
+        sortRecipes,
+        setAvailableDishes,
+        availableDishes: dishesState.availableDishes,
+        setActiveDish,
+        activeDish: dishesState.activeDish,
+        setAvailableBasket,
+        availableBasket: basketState.availableBasket,
+
     }
 
     return(

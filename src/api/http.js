@@ -1,4 +1,4 @@
-import { recipeList } from "../../backend/dummy_data";
+import { basketList, recipeList, dishList } from "../../backend/dummy_data";
 const URL = "";
 
 export const postNewUser = async (user) => {
@@ -46,6 +46,17 @@ export const fetchRecipes = async(user) => {
     return await fetchData(user, "recipes");
 }
 
+export const fetchDishes = async(user) => {
+
+    return await fetchData(user, "dishes");
+
+}
+
+export const fetchBasket = async(user) => {
+
+    return await fetchData(user, "basket");
+
+}
 const fetchData = async (user, endpoint) => {
 /* 
     try {
@@ -63,7 +74,18 @@ const fetchData = async (user, endpoint) => {
     }
  */
 
-    const response = recipeList;
+
+    let response;
+
+    if(endpoint === "recipes"){
+        response = recipeList;
+    }
+    if(endpoint === "dishes"){
+        response = dishList;
+    }
+    if(endpoint === "basket"){
+        response = basketList
+    }
 
     return response;
 }
