@@ -97,8 +97,8 @@ State management is handled using React Context combined with useReducers, curre
 
 - [ ] List(wrapper for changing content between basketlist, recipelist, dishlist)
     - [x] Recipes
-    - [ ] Dishes
-    - [ ] Basket
+    - [x] Dishes
+    - [x] Basket
     - [ ] Toolbar (sorting and filtering)
 
 - [x] RecipeCreation
@@ -109,7 +109,7 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] Instruction
 
-- [] Recipe/Dish Card (wrapper)
+- [ ] Recipe/Dish Card (wrapper)
 
 - [ ] DishCreation
 
@@ -148,13 +148,17 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] "SET_ACTIVE_RECIPE"
 
+- [x] "MODIFY_RECIPE"
+
 #### BasketReducer actions
 
 - [ ] "SET_BASKET"
 
-- [ ] "ADD_BASKET"
+- [ ] "ADD_ITEM"
 
-- [ ] "DELETE_BASKET"
+- [ ] "DELETE_ITEM"
+
+- [ ] "MODIFY_ITEM
 
 #### DishReducer actions
 

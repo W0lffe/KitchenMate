@@ -8,12 +8,20 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, isMobile, setModalState} = useContext(KitchenContext)
-
+    const {setActiveRecipe, isMobile, setModalState, activeSection} = useContext(KitchenContext)
+   
     const handleClick = () => {
-        setActiveRecipe({recipe: item, mode: "detail"});
+        let section;
+        if(activeSection === "recipes"){
+            setActiveRecipe({recipe: item, mode: "detail"});
+            section = "recipe";
+        }
+        else if(activeSection === "dishes"){
+            alert("ADDING RECIPE TO DISH")
+        }
+
         if(isMobile){
-            setModalState("recipe", true);
+            setModalState(section, true);
         }
     }
 

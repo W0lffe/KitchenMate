@@ -15,7 +15,7 @@ import { faArrowDownAZ,
 
 export default function Toolbar(){
 
-    const {isMobile, setActiveRecipe, setModalState, filterRecipes, sortRecipes} = useContext(KitchenContext)
+    const {isMobile, setActiveRecipe, setModalState, filterRecipes, sortRecipes, activeSection} = useContext(KitchenContext)
 
     const labels = !isMobile ? ["Name", "Prep Time", "Newest-Oldest", "Favorite"] :
     [
@@ -27,7 +27,11 @@ export default function Toolbar(){
     const sortValues = ["name", "time", "date", "favorite"];
 
     let style = toolbarStyle;
+    
     let func = () => { setActiveRecipe({recipe: null, mode: "create"}) };
+    if(activeSection === "dishes"){
+        func = () => { alert("CREATING NEW DISH") }
+    }
 
     const handleMobileClick = () => {
         setActiveRecipe({recipe: null, mode: "create"})

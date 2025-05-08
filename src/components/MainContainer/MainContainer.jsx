@@ -2,7 +2,7 @@ import { useContext,
         useEffect } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
 import { useIsMobile } from "../../hooks/useIsMobile"
-import RecipeWrapper from "../RecipeWrapper/RecipeWrapper"
+import ActiveSectionWrapper from "../ActiveSectionWrapper/ActiveSectionWrapper"
 import { containerStyle } from "./containerStyles"
 
 export default function MainContainer(){
@@ -22,10 +22,8 @@ export default function MainContainer(){
         <>
         {activeSection ? (
             <div className={containerStyle}>
-            {activeSection === "recipes" ? <RecipeWrapper /> : null}
-            {activeSection === "dishes" ? <p>RENDER DISHWRAPPER</p> : null}
-            {activeSection === "basket" ? <p>RENDER BASKET</p> : null}
-        </div>
+                <ActiveSectionWrapper /> 
+            </div>
         ) : null}
         </>
     )

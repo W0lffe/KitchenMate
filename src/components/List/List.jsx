@@ -7,31 +7,52 @@ import { listContainerStyle,
         itemListStyle, 
         nameHeadingStyle } from "./listStyles";
 import ListItem from "./ListItem";
+import { basketList } from "../../../backend/dummy_data";
 
 export default function List(){
 
-    const {activeSection, availableRecipes} = useContext(KitchenContext);
+    const {activeSection, availableRecipes, isFetchingData} = useContext(KitchenContext);
     const [list, setList] = useState([]);
 
     useEffect(() => {
         if(activeSection === "recipes"){
             setList([...availableRecipes])
         }
-    }, [availableRecipes])
+        if(activeSection === "dishes"){
+            setList([])
+        }
+        if(activeSection === "basket"){
+            setList([])
+        }
 
-    console.log(list)
+    }, [activeSection, availableRecipes])
+
+    if(isFetchingData){
+        return(
+            <div className={listContainerStyle}>
+                <p>Fetching data...</p>
+            </div>
+        )
+    }
 
     return(
         <div className={listContainerStyle}>
+            {list.length > 0 ? 
+            (<>
             <li className={listHeadingStyle}>
-                    <label className={nameHeadingStyle}>Name</label>
-                    <label>Portions</label>
-                    <label>Prep Time</label>
-                    <label>View</label>
-                </li>
+                <label className={nameHeadingStyle}>Name</label>
+                <label>Portions</label>
+                <label>Prep Time</label>
+                <label>View</label>
+            </li>
             <ul className={itemListStyle}>
                 {list.map((item) => <ListItem key={item.id} item={item}/>)}
             </ul>
+            </>) 
+            : 
+            (<>
+                <p>List is empty! Start by creating {activeSection}.</p>
+            </>)}
         </div>
     )
 }

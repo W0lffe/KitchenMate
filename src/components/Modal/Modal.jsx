@@ -4,7 +4,7 @@ import { useContext,
 import { createPortal } from "react-dom";
 import { KitchenContext } from "../../context/KitchenContext";
 import LoginSignupForm from "../LoginSignupForm/LoginSignupForm";
-import RecipeContent from "../RecipeContent/RecipeContent";
+import ContentWrapper from "../ContentWrapper/ContentWrapper";
 
 export default function Modal(){
 
@@ -19,7 +19,7 @@ export default function Modal(){
         <div>
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
                 {activeModal === "signup" || activeModal === "login" ? <LoginSignupForm /> : null}
-                {activeModal === "recipe" ? <RecipeContent /> : null}
+                {activeModal === "recipe" ? <ContentWrapper /> : null}
             </dialog>
         </div>,document.getElementById("modal")
     )

@@ -3,7 +3,8 @@ import { createContext,
          useRef,
          useState} from "react";
 import { getRandomSlogan } from "../util/util";
-import { utilityReducer } from "./utilityReducer";
+import { utilityReducer, 
+        recipesReducer } from "./reducer.js";
 import { fetchRecipes } from "../api/http.js"
 
 export const KitchenContext = createContext({
@@ -34,44 +35,6 @@ export const KitchenContext = createContext({
 
 })
 
-export const recipesReducer = (state, action) => {
-    let updatedRecipes;
-    switch(action.type){
-        case "SET_ACTIVE_RECIPE":
-            console.log("DEBUG: ", action.type, action.payload)
-            return {
-                ...state, activeRecipe: action.payload
-            }
-        case "ADD_RECIPE":
-            updatedRecipes = [...state.availableRecipes, action.payload];
-            console.log("DEBUG: ", action.type, action.payload, updatedRecipes);
-            return {
-                ...state, availableRecipes: updatedRecipes
-            }
-        case "SET_RECIPES":
-            console.log("DEBUG: ", action.type, action.payload)
-            return {
-                ...state, availableRecipes: action.payload
-            }
-        case "DELETE_RECIPE":
-            console.log("DEBUG: ", action.type, action.payload)
-            updatedRecipes = state.availableRecipes.filter((recipe) =>  recipe.id !== action.payload )
-            return {
-                ...state, availableRecipes: updatedRecipes
-            }
-        case "MODIFY_RECIPE":
-            console.log("DEBUG: ", action.type, action.payload)
-            updatedRecipes = state.availableRecipes.map(recipe => 
-                recipe.id === action.payload.id ? action.payload : recipe
-            )
-            console.log("updated list",updatedRecipes)
-            return {
-                ...state, availableRecipes: updatedRecipes
-            }
-        default:
-            return state
-    }
-}
 
 export default function KitchenContextProvider({children}){
 
