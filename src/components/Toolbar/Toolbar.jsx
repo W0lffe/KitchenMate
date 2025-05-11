@@ -24,7 +24,7 @@ export default function Toolbar(){
     <FontAwesomeIcon icon={faCalendarDays} className={iconStyle}/>,
     <FontAwesomeIcon icon={faStar} className={iconStyle}/>,
     ];
-    const sortValues = ["name", "time", "date", "favorite"];
+    const sortValues = ["name", "time", "date", "fav"];
 
     let style = toolbarStyle;
     

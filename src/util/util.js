@@ -23,7 +23,7 @@ export const getListLabels = (activeList)=> {
         case "recipes":
             return ["Name", "Portions", "Prep Time", "View"]
         case "dishes":
-            return [ "Name", "Course", "Components", "TBD"]
+            return [ "Name", "Course", "Components", "View"]
         case "basket":
             return ["Product", "Quantity", "Unit", "TBD"]
     }

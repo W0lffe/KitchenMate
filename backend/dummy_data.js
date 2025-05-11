@@ -1,6 +1,8 @@
 export const recipeList = [
     {
         "name": "Fried Rice",
+        "favorite": true,
+        "date": "2025-4-12",
         "output": {
             "portions": 4,
             "output": "Portions"
@@ -47,6 +49,8 @@ export const recipeList = [
     },
     {
         "name": "Sweet N Sour Chicken",
+        "favorite": false,
+        "date": "2025-2-5",
         "output": {
             "portions": 4,
             "output": "Portions"
@@ -92,6 +96,8 @@ export const recipeList = [
     },
     {
         "name": "Lihaliemi",
+        "favorite": true,
+        "date": "2023-4-12",
         "output": {
             "portions": 10,
             "output": "Portions"
@@ -126,6 +132,8 @@ export const recipeList = [
     },
     {
         "name": "Skagenr\u00f6ra",
+        "favorite": false,
+        "date": "2020-12-12",
         "output": {
             "portions": 4,
             "output": "Portions"
@@ -250,6 +258,7 @@ export const dishList = [
         "name":"Toast Skagen",
         "id": 1,
         "course":"Starter",
+        "favorite": true,
         "components": [
             {
                 "name":"Skagenröra",

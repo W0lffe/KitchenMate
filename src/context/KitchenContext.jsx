@@ -39,8 +39,7 @@ export const KitchenContext = createContext({
     deleteDish: () => {},
     setAvailableBasket: () => {},
     availableBasket: [],
-    
-
+    setFavorite: () => {},
 })
 
 export const dishReducer = (state, action) => {
@@ -57,6 +56,13 @@ export const dishReducer = (state, action) => {
             }
         case "DELETE_DISH":
             updatedDishes = [...state.availableDishes.filter((dish) => dish.id !== action.payload)]
+            return{
+                ...state, availableDishes: updatedDishes
+            }
+        case "MODIFY_DISH":
+            updatedDishes = state.availableDishes.map(dish => 
+                dish.id === action.payload.id ? action.payload : dish
+            )
             return{
                 ...state, availableDishes: updatedDishes
             }
@@ -280,6 +286,25 @@ export default function KitchenContextProvider({children}){
         
     }
 
+    const setFavorite = (item, isRecipe) => {
+
+        item.favorite = !item.favorite;
+        
+        if(isRecipe){
+            recipeDispatch({
+                type: "MODIFY_RECIPE",
+                payload: item
+            })
+        }
+        else{
+            dishDispatch({
+                type: "MODIFY_DISH",
+                payload: item
+            })
+    
+        }
+    }
+
     const sortRecipes = (sortBy) => {
         const sorted = [...recipesState.availableRecipes].sort((a, b) => {
             let valA;
@@ -294,6 +319,14 @@ export default function KitchenContextProvider({children}){
                     valA = a.name
                     valB = b.name
                     return valA.localeCompare(valB)
+                case "fav":
+                    valA = a.favorite
+                    valB = b.favorite
+                    return valB - valA;
+                case "date":
+                    valA = a.date
+                    valB = b.date
+                    return valB.localeCompare(valA)
             }
         })
 
@@ -335,6 +368,7 @@ export default function KitchenContextProvider({children}){
         deleteDish,
         setAvailableBasket,
         availableBasket: basketState.availableBasket,
+        setFavorite,
 
     }
 

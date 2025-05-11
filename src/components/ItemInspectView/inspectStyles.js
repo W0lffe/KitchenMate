@@ -23,6 +23,7 @@ export const getIconStyle = (icon) => {
     let style = `text-2xl lg:text-3xl transition-all duration-300 ease-out`;
 
     style += icon === "del" ? ` hover:text-red-700` : ` hover:text-gray-400/30`
+    style += icon === "fav" ? ` text-amber-400` : null; 
 
     return style;
 }

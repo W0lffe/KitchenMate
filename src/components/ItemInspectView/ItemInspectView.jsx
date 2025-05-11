@@ -1,5 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, 
+        faPenToSquare, 
+        faStar,
+        faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
@@ -13,7 +16,7 @@ import SubmitButton from "../Buttons/SubmitButton";
 
 export default function ItemInspectView({itemToInspect}){
 
-    const {activeSection, deleteRecipe, isMobile, setModalState, setActiveRecipe, deleteDish}  = useContext(KitchenContext)
+    const {activeSection, deleteRecipe, isMobile, setModalState, setActiveRecipe, deleteDish, setFavorite}  = useContext(KitchenContext)
 
     const isRecipe = itemToInspect.mode === "recipes";
     const item = isRecipe ? itemToInspect.recipe : itemToInspect.dish;
@@ -21,6 +24,7 @@ export default function ItemInspectView({itemToInspect}){
 
     const subtitle = isRecipe ? `Yield: ${item.output.portions} ${item.output.output}` : `Course: ${item.course}`;
     const prepTime = isRecipe ? `Prep Time: ${item.prepTime.time} ${item.prepTime.format}` : null;
+    const favorited = item.favorite ? "fav" : "";
 
     const handleDelete = () => {
         if(isRecipe){
@@ -35,7 +39,6 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleModify = () => {
-        console.log(item)
         if(isRecipe){
             setActiveRecipe({recipe: item, mode: "edit"})
         }
@@ -44,10 +47,20 @@ export default function ItemInspectView({itemToInspect}){
         }
     }
 
+    const handleAddCart = () => {
+
+    }
+
+    const handleFavorite = () => {
+        setFavorite(item, isRecipe);
+    }
+
     return(
         <div className={containerStyle}>
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
-                        handleModify={handleModify} setModalState={setModalState}/>
+                        handleModify={handleModify} setModalState={setModalState}
+                        handleAddCart={handleAddCart} handleFavorite={handleFavorite}
+                        fav={favorited}/>
             <section className={topSection}>
                 <h2 className="text-2xl font-semibold italic">{item.name}</h2>
                 <h3 className="text-lg">{subtitle}</h3>
@@ -70,7 +83,8 @@ export default function ItemInspectView({itemToInspect}){
     )
 }
 
-function ButtonBar({isMobile, handleDelete, handleModify, setModalState}){
+function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handleAddCart, setModalState, fav}){
+
     return(
         <span className={iconSpan}>
                     <FontAwesomeIcon icon={faTrash} 
@@ -79,6 +93,12 @@ function ButtonBar({isMobile, handleDelete, handleModify, setModalState}){
                     <FontAwesomeIcon icon={faPenToSquare} 
                                     className={getIconStyle()}
                                     onClick={handleModify} />
+                    <FontAwesomeIcon icon={faStar} 
+                                    className={getIconStyle(fav)}
+                                    onClick={handleFavorite} />
+                    <FontAwesomeIcon icon={faCartPlus} 
+                                     className={getIconStyle()}
+                                     onClick={handleAddCart} />
                     {isMobile ? <SubmitButton use={"close"} func={() => setModalState(null)}/> : null}
                 </span>
     )

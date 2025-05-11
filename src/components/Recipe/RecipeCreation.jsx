@@ -20,6 +20,7 @@ export default function RecipeCreation(){
     const [editingRecipe, setEditingRecipe] = useState(false);
     const recipeToModify = activeRecipe.recipe;
     let modifiedId;
+    let isFavorited;
 
     let initialFormState = {errors: null}
 
@@ -31,6 +32,7 @@ export default function RecipeCreation(){
 
     if(recipeToModify !== null){
         modifiedId = recipeToModify.id;
+        isFavorited = recipeToModify.favorite;
         initialFormState = {
             errors: null,
             validInputs: {
@@ -42,7 +44,7 @@ export default function RecipeCreation(){
                     products: recipeToModify.ingredients.map(ingredient => ingredient.product),
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
-                    steps: recipeToModify.instructions
+                    steps: recipeToModify.instructions,
             }
         }
     }
@@ -108,7 +110,7 @@ export default function RecipeCreation(){
         }
 
         if(editingRecipe){
-            const updatedRecipe = {...newRecipe, id: modifiedId};
+            const updatedRecipe = {...newRecipe, id: modifiedId, favorite: isFavorited};
             console.log("creation",updatedRecipe)
             updateRecipe(updatedRecipe)
         }
