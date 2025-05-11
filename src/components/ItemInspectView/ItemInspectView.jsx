@@ -13,14 +13,22 @@ import SubmitButton from "../Buttons/SubmitButton";
 
 export default function ItemInspectView({itemToInspect}){
 
-    const {activeSection, deleteRecipe, isMobile, setModalState, setActiveRecipe}  = useContext(KitchenContext)
+    const {activeSection, deleteRecipe, isMobile, setModalState, setActiveRecipe, deleteDish}  = useContext(KitchenContext)
 
-    const mode = itemToInspect.mode;
-    const item = mode === "recipes" ? itemToInspect.recipe : itemToInspect.dish;
-    const recipe = itemToInspect.recipe;
+    const isRecipe = itemToInspect.mode === "recipes";
+    const item = isRecipe ? itemToInspect.recipe : itemToInspect.dish;
+    const listOfItem = isRecipe ? itemToInspect.recipe.ingredients : itemToInspect.dish.components;
+
+    const subtitle = isRecipe ? `Yield: ${item.output.portions} ${item.output.output}` : `Course: ${item.course}`;
+    const prepTime = isRecipe ? `Prep Time: ${item.prepTime.time} ${item.prepTime.format}` : null;
 
     const handleDelete = () => {
-        deleteRecipe(item.id)
+        if(isRecipe){
+            deleteRecipe(item.id)
+        }
+        else{
+            deleteDish(item.id)
+        }
         if(isMobile){
             setModalState(null, false)
         }
@@ -28,7 +36,9 @@ export default function ItemInspectView({itemToInspect}){
 
     const handleModify = () => {
         console.log(item)
-        setActiveRecipe({recipe: item, mode: "edit"})
+        if(isRecipe){
+            setActiveRecipe({recipe: item, mode: "edit"})
+        }
         if(isMobile){
             setModalState(activeSection, true)
         }
@@ -36,42 +46,63 @@ export default function ItemInspectView({itemToInspect}){
 
     return(
         <div className={containerStyle}>
+            <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
+                        handleModify={handleModify} setModalState={setModalState}/>
             <section className={topSection}>
-                <span className={iconSpan}>
-                    {isMobile ? <SubmitButton use={"close"} func={() => setModalState(null)}/> : null}
+                <h2 className="text-2xl font-semibold italic">{item.name}</h2>
+                <h3 className="text-lg">{subtitle}</h3>
+                <h3 className="text-lg">{prepTime}</h3>
+            </section>
+            <div className={bottomSection}>
+                <ItemListSection isRecipe={isRecipe} list={listOfItem}/>
+                {isRecipe ? (
+                    <section className={listSection}>
+                    <label>Instructions</label>
+                    <ul className={getListStyle()}>
+                        {item.instructions.map((step, i) => 
+                            <li key={i}>{`${i+1}. ${step}`}</li>)}
+                    </ul>
+                    </section>
+                ) : 
+                null}
+            </div>
+        </div>
+    )
+}
+
+function ButtonBar({isMobile, handleDelete, handleModify, setModalState}){
+    return(
+        <span className={iconSpan}>
                     <FontAwesomeIcon icon={faTrash} 
                                     className={getIconStyle("del")}
                                     onClick={handleDelete}/>
                     <FontAwesomeIcon icon={faPenToSquare} 
                                     className={getIconStyle()}
                                     onClick={handleModify} />
+                    {isMobile ? <SubmitButton use={"close"} func={() => setModalState(null)}/> : null}
                 </span>
-                <h2 className="text-2xl font-semibold italic">{recipe.name}</h2>
-                <h3 className="text-lg">Yield: {recipe.output.portions} {recipe.output.output}</h3>
-                <h3 className="text-lg">Prep Time: {recipe.prepTime.time} {recipe.prepTime.format}</h3>
-            </section>
-            <div className={bottomSection}>
-                <section className={listSection}>
-                    <label>Ingredients</label>
-                    <ul className={getListStyle("ingredients")}>
-                        {recipe.ingredients.map((ingredient, i) => 
-                            <li key={i} className="flex w-2/3 justify-between">
-                                <label className="w-30">{ingredient.product}</label>
-                                <label>{ingredient.quantity}</label>
-                                <label>{ingredient.unit}</label>
-                            </li>)}
-                    </ul>
-                </section>
-                <section className={listSection}>
-                    <label>Instructions</label>
-                    <ul className={getListStyle()}>
-                        {recipe.instructions.map((step, i) => 
-                            <li key={i}>{`${i+1}. ${step}`}</li>)}
-                    </ul>
-                </section>
-            </div>
-        </div>
     )
-        
-    
+}
+
+function ItemListSection({isRecipe, list}){
+
+    const style = isRecipe ? "ingredients" : null;
+
+    return(
+        <section className={listSection}>
+            <label>{isRecipe ? "Ingredients" : "Components"}</label>
+                <ul className={getListStyle(style)}>
+                {list.map((listItem, i) => 
+                    <li key={i} className="flex w-2/3 justify-between">
+                        <label className="w-30">{listItem.product || listItem.name }</label>
+                        {isRecipe ? (
+                            <>
+                                <label>{listItem.quantity}</label>
+                                <label>{listItem.unit}</label>
+                            </>
+                        ) : null}
+                    </li>)}
+                 </ul>
+        </section>
+    )
 }

@@ -36,8 +36,10 @@ export const KitchenContext = createContext({
     availableDishes: [],
     setActiveDish: () => {},
     activeDish: null,
+    deleteDish: () => {},
     setAvailableBasket: () => {},
-    availableBasket: []
+    availableBasket: [],
+    
 
 })
 
@@ -52,6 +54,11 @@ export const dishReducer = (state, action) => {
         case "SET_ACTIVE_DISH":
             return{
                 ...state, activeDish: action.payload
+            }
+        case "DELETE_DISH":
+            updatedDishes = [...state.availableDishes.filter((dish) => dish.id !== action.payload)]
+            return{
+                ...state, availableDishes: updatedDishes
             }
     }
 }
@@ -128,8 +135,9 @@ export default function KitchenContextProvider({children}){
             section = undefined;
         }
 
-        if(section === "recipes"){
+        if(section !== null){
            setActiveRecipe(null)
+           setActiveDish(null)
         }
 
         utilDispatch({
@@ -231,6 +239,16 @@ export default function KitchenContextProvider({children}){
         })
     }
 
+    const deleteDish = async (id) => {
+        await new Promise(r => setTimeout(r, 1000));
+        dishDispatch({
+            type: "DELETE_DISH",
+            payload: id
+        })
+
+        setActiveDish(null);
+    }
+
     /******************START OF BASKET REDUCER RELATED FUNCTIONS******************************************* */
 
     const setAvailableBasket = async() => {
@@ -314,6 +332,7 @@ export default function KitchenContextProvider({children}){
         availableDishes: dishesState.availableDishes,
         setActiveDish,
         activeDish: dishesState.activeDish,
+        deleteDish,
         setAvailableBasket,
         availableBasket: basketState.availableBasket,
 

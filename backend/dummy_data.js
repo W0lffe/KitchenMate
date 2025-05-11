@@ -248,6 +248,7 @@ export const basketList = [
 export const dishList = [
     {
         "name":"Toast Skagen",
+        "id": 1,
         "course":"Starter",
         "components": [
             {

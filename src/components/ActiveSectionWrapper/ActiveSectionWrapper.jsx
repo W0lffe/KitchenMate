@@ -36,8 +36,8 @@ export default function ActiveSectionWrapper(){
     }
     if(activeSection === "dishes" && activeDish?.mode){
        content = <ContentWrapper />
-       if(activeDish.mode === "create"){
-            heading = "Dish Creation"
+       if(activeDish.mode === "detail"){
+            heading = "Dish Details"
        }
     }
 
