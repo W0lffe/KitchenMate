@@ -39,7 +39,7 @@ State management is handled using React Context combined with useReducers, curre
 - API Integration
     - [ ] Implement CRUD
         - [x] Fetch
-        - [ ] Post
+        - [x] Post
         - [ ] Modify
         - [ ] Delete
 
@@ -95,11 +95,11 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] MainContainer
 
-- [ ] List(wrapper for changing content between basketlist, recipelist, dishlist)
+- [x] List(wrapper for changing content between basketlist, recipelist, dishlist)
     - [x] Recipes
     - [x] Dishes
     - [x] Basket
-    - [ ] Toolbar (sorting and filtering)
+    - [x] Toolbar (sorting and filtering)
 
 - [x] RecipeCreation
     - [x] InfoSection
@@ -109,7 +109,7 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] Instruction
 
-- [ ] Recipe/Dish Card (wrapper)
+- [x] Recipe/Dish Card (wrapper)
 
 - [ ] DishCreation
 
@@ -152,7 +152,7 @@ State management is handled using React Context combined with useReducers, curre
 
 #### BasketReducer actions
 
-- [ ] "SET_BASKET"
+- [x] "SET_BASKET"
 
 - [ ] "ADD_ITEM"
 
@@ -162,11 +162,13 @@ State management is handled using React Context combined with useReducers, curre
 
 #### DishReducer actions
 
-- [ ] "SET_DISHES"
+- [x] "SET_DISHES"
+
+- [x] "SET_ACTIVE_DISH"
 
 - [ ] "ADD_DISH"
 
-- [ ] "DELETE_DISH"
+- [x] "DELETE_DISH"
 
 
 ### API Integration

@@ -41,6 +41,8 @@ export const authenticateUser = async (user) => {
     }
 }
 
+/*******************FETCH API****************/
+
 export const fetchRecipes = async(user) => {
 
     return await fetchData(user, "recipes");
@@ -89,3 +91,45 @@ const fetchData = async (user, endpoint) => {
 
     return response;
 }
+
+/*******************POST API****************/
+
+export const postRecipes = async(user, data) => {
+
+    return await postData(user, data, "recipes");
+}
+
+export const postDishes = async(user, data) => {
+
+    return await postData(user, data, "dishes");
+}
+
+export const postBasket = async(user, data) => {
+
+    return await postData(user, data, "basket");
+}
+
+const postData = async (user, data, endpoint) => {
+    
+        try {
+            const response = await fetch(`${URL}?user=${JSON.stringify(user)}&endpoint=${JSON.stringify(endpoint)}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application-json"
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if(!response.ok){
+                throw new Error("Error occured while posting data to ", endpoint);
+            }
+    
+            const resData = await response.json();
+            return resData;
+    
+        } catch (error) {
+            return error;
+        }
+}
+
+/*******************DELETE API****************/

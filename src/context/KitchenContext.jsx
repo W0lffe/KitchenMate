@@ -5,7 +5,7 @@ import { createContext,
 import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
         recipesReducer } from "./reducer.js";
-import { fetchBasket, fetchDishes, fetchRecipes } from "../api/http.js"
+import { fetchBasket, fetchDishes, fetchRecipes, postRecipes, postBasket, postDishes } from "../api/http.js"
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -187,6 +187,7 @@ export default function KitchenContextProvider({children}){
     }
 
     const addNewRecipe = async (newRecipe) => {
+        //postRecipes(utilState.user, newRecipe)
         await new Promise(r => setTimeout(r, 1000));
         recipeDispatch({
             type: "ADD_RECIPE",
