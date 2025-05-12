@@ -191,66 +191,7 @@ export const recipeList = [
 
 
 export const basketList = [
-    {
-        "product": "Kr\u00e4ft\u00f6r",
-        "quantity": 800,
-        "unit": "g"
-    },
-    {
-        "product": "Majonn\u00e4s",
-        "quantity": 250,
-        "unit": "g"
-    },
-    {
-        "product": "Dill",
-        "quantity": 80,
-        "unit": "g"
-    },
-    {
-        "product": "Grasl\u00f6k",
-        "quantity": 80,
-        "unit": "g"
-    },
-    {
-        "product": "R\u00f6dl\u00f6k",
-        "quantity": 80,
-        "unit": "g"
-    },
-    {
-        "product": "Citronsaft",
-        "quantity": 0.5,
-        "unit": "dl"
-    },
-    {
-        "product": "Salta",
-        "quantity": 10,
-        "unit": "g"
-    },
-    {
-        "product": "Chicken",
-        "quantity": 450,
-        "unit": "g"
-    },
-    {
-        "product": "Ketchup",
-        "quantity": 100,
-        "unit": "g"
-    },
-    {
-        "product": "Soy",
-        "quantity": 0.5,
-        "unit": "dl"
-    },
-    {
-        "product": "Water",
-        "quantity": 0.5,
-        "unit": "dl"
-    },
-    {
-        "product": "Syrup",
-        "quantity": 20,
-        "unit": "g"
-    }
+    
 ]
 
 export const dishList = [
@@ -298,6 +239,49 @@ export const dishList = [
                         "quantity": 10,
                         "unit": "g"
                     }
+                ]
+            }
+        ]
+    },
+    {
+        "name":"Chateubriand",
+        "id": 2,
+        "course":"Main",
+        "favorite": false,
+        "components": [
+            {
+                "name":"Punkkusoosi",
+                "ingredients": [
+                    {
+                        "product": "Vesi",
+                        "quantity": 5,
+                        "unit": "litre"
+                    },
+                    {
+                        "product": "Keittoluut",
+                        "quantity": 2,
+                        "unit": "kg"
+                    },
+                    {
+                        "product": "Juurekset",
+                        "quantity": 2,
+                        "unit": "kg"
+                    },
+                    {
+                        "product": "Punaviini",
+                        "quantity": 2,
+                        "unit": "l"
+                    }
+                ]
+            },
+            {
+                "name":"Beef Tenderloin",
+                "ingredients": [
+                    {
+                        "product": "Beef Tenderloin",
+                        "quantity": 140,
+                        "unit": "g"
+                    },
                 ]
             }
         ]

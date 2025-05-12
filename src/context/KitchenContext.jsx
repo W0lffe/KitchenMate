@@ -39,6 +39,7 @@ export const KitchenContext = createContext({
     deleteDish: () => {},
     setAvailableBasket: () => {},
     availableBasket: [],
+    addProductsToBasket: () => {},
     setFavorite: () => {},
 })
 
@@ -76,6 +77,11 @@ export const basketReducer = (state, action) => {
         case "SET_BASKET":
             return{
                 ...state, availableBasket: action.payload
+            }
+        case "ADD_PRODUCTS":
+            updatedBasket = [...state.availableBasket, ...action.payload]
+            return{
+                    ...state, availableBasket: updatedBasket
             }
     }
 }
@@ -271,6 +277,13 @@ export default function KitchenContextProvider({children}){
         setIsFetchingData(false);
     }
 
+    const addProductsToBasket = (products) => {
+        basketDispatch({
+            type: "ADD_PRODUCTS",
+            payload: products
+    })
+    }
+
     const filterRecipes = (value) => {
         let filtered;
         if(value.length > 0){
@@ -369,6 +382,7 @@ export default function KitchenContextProvider({children}){
         deleteDish,
         setAvailableBasket,
         availableBasket: basketState.availableBasket,
+        addProductsToBasket,
         setFavorite,
 
     }

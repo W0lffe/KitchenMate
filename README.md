@@ -154,7 +154,7 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] "SET_BASKET"
 
-- [ ] "ADD_ITEM"
+- [x] "ADD_ITEM"
 
 - [ ] "DELETE_ITEM"
 
