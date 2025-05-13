@@ -40,6 +40,8 @@ export const KitchenContext = createContext({
     setAvailableBasket: () => {},
     availableBasket: [],
     addProductsToBasket: () => {},
+    entryInProgress: false,
+    setEntryStatus: () => {},
     setFavorite: () => {},
 })
 
@@ -83,6 +85,10 @@ export const basketReducer = (state, action) => {
             return{
                     ...state, availableBasket: updatedBasket
             }
+        case "SET_ENTRY":
+            return{
+                ...state, entryInProgress: action.payload
+            }
     }
 }
 
@@ -115,8 +121,8 @@ export default function KitchenContextProvider({children}){
     })
 
     const [basketState, basketDispatch] = useReducer(basketReducer, {
-        availableBasket: []
-    
+        availableBasket: [],
+        entryInProgress: false,
     })
 
 
@@ -150,6 +156,7 @@ export default function KitchenContextProvider({children}){
         if(section !== null){
            setActiveRecipe(null)
            setActiveDish(null)
+           setEntryStatus(false)
         }
 
         utilDispatch({
@@ -281,7 +288,18 @@ export default function KitchenContextProvider({children}){
         basketDispatch({
             type: "ADD_PRODUCTS",
             payload: products
-    })
+        })
+
+        if(basketState.entryInProgress){
+            setEntryStatus(false);
+        }
+    }
+
+    const setEntryStatus = (status) => {
+        basketDispatch({
+            type: "SET_ENTRY",
+            payload: status
+        })
     }
 
     const filterRecipes = (value) => {
@@ -383,6 +401,8 @@ export default function KitchenContextProvider({children}){
         setAvailableBasket,
         availableBasket: basketState.availableBasket,
         addProductsToBasket,
+        entryInProgress: basketState.entryInProgress,
+        setEntryStatus,
         setFavorite,
 
     }

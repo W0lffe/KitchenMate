@@ -200,6 +200,7 @@ export const dishList = [
         "id": 1,
         "course":"Starter",
         "favorite": true,
+        "image": "https://www.uotilan.fi/wp-content/uploads/2020/12/Uotilan_leipomo_resepti_juhlava_skagen-780x520.jpg",
         "components": [
             {
                 "name":"Skagenröra",
@@ -248,6 +249,7 @@ export const dishList = [
         "id": 2,
         "course":"Main",
         "favorite": false,
+        "image": "https://gdaysouffle.com/wp-content/uploads/2019/08/Steak-with-Bordeaise-5-of-5-1-of-1.jpg",
         "components": [
             {
                 "name":"Punkkusoosi",

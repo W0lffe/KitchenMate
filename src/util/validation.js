@@ -3,21 +3,29 @@ export const validateAll = (name, portions, time,
     timeFormat, products, quantity, unit, steps) => {
 
     let errors = [];
-
-    if (!validateRecipeName(name)) {
-        errors.push("Recipe name is invalid")
+    
+    if(name !== null){
+        if (!validateRecipeName(name)) {
+            errors.push("Recipe name is invalid")
+        }
     }
 
-    if (!validateNumber(portions)) {
-        errors.push("Please enter portion quantity!")
+    if(portions !== null){
+        if (!validateNumber(portions)) {
+            errors.push("Please enter portion quantity!")
+        }
     }
 
-    if (!validateNumber(time)) {
-        errors.push("Please enter prep time!")
+    if(time !== null){
+        if (!validateNumber(time)) {
+            errors.push("Please enter prep time!")
+        }
     }
 
-    if(!validateTimeFormat(timeFormat)){
-        errors.push("Please select prep time format!")
+    if(timeFormat !== null){
+        if(!validateTimeFormat(timeFormat)){
+            errors.push("Please select prep time format!")
+        }
     }
 
     if (!validateArrays(products)) {
@@ -32,9 +40,12 @@ export const validateAll = (name, portions, time,
         errors.push("Please enter unit for products!")
     }
 
-    if (!validateArrays(steps)) {
-        errors.push("Instruction steps can't be empty!")
+    if(steps !== null){
+        if (!validateArrays(steps)) {
+            errors.push("Instruction steps can't be empty!")
+        }
     }
+  
 
     return errors;
 }

@@ -9,7 +9,7 @@ export default function Product({state, index}){
                             placeholder="Product" 
                             className={getInputStyle("product")} 
                             defaultValue={state?.validInputs?.products[index]}/>
-            <input type="text" name="quantity" 
+            <input type="number" name="quantity" 
                             placeholder="Quantity" 
                             className={getInputStyle("quantity")} 
                             defaultValue={state?.validInputs?.quantity[index]}/>

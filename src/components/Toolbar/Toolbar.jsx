@@ -15,9 +15,12 @@ import { faArrowDownAZ,
 
 export default function Toolbar(){
 
-    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterRecipes, sortRecipes, activeSection} = useContext(KitchenContext)
+    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterRecipes, sortRecipes, activeSection, setEntryStatus} = useContext(KitchenContext)
 
-    const labels = !isMobile ? ["Name", "Prep Time", "Newest-Oldest", "Favorite"] :
+    const labelArray = activeSection === "basket" ? ["Name", "Quantity", "Obtained"] : 
+                                        ["Name", "Prep Time", "Newest-Oldest", "Favorite"];
+
+    const labels = !isMobile ? labelArray :
     [
     <FontAwesomeIcon icon={faArrowDownAZ} className={iconStyle}/>,
     <FontAwesomeIcon icon={faClock} className={iconStyle}/>,
@@ -35,6 +38,10 @@ export default function Toolbar(){
     if(activeSection === "dishes"){
         func = () => { setActiveDish({dish: null, mode: "create"}) };
     }
+    if(activeSection === "basket"){
+        func = () => { setEntryStatus(true) };
+    }   
+   
 
     const handleMobileClick = () => {
         if(activeSection === "recipes"){
@@ -43,10 +50,11 @@ export default function Toolbar(){
         if(activeSection === "dishes"){
             setActiveDish({dish: null, mode: "create"})
         }
-       
+        if(activeSection === "basket"){
+            setEntryStatus(true);
+        }   
 
         setModalState(activeSection, true)
-
     }
 
     if(isMobile){

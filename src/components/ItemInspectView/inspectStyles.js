@@ -1,9 +1,9 @@
 
-export const containerStyle = `flex flex-col gap-5 w-full h-full text-white`;
+export const containerStyle = `flex flex-col gap-2  w-full h-full text-white`;
 
-export const topSection = `h-1/6 flex flex-col justify-center p-5 border-b-1 border-white/20 rounded-custom`;
+export const topSection = ` h-2/10 flex flex-row justify-start border-b-1 border-white/20 rounded-custom`;
 
-export const bottomSection =  `h-5/6 flex flex-col lg:flex-row`;
+export const bottomSection =  ` h-8/10 flex flex-col lg:flex-row`;
 
 export const listSection = `flex flex-col items-center h-1/2 lg:h-full w-full lg:w-1/2 border-b-1 border-white/20 lg:border-0 rounded-custom`;
 

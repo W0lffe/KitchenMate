@@ -7,11 +7,11 @@ import { faSquarePlus,
 import { labelStyle, 
         lineStyle, 
         sectionStyle, 
-        listStyle } from "./recipeStyles";
+        listStyle } from "./formListStyles";
 
 export default function FormList({use, state}){
 
-    const isProduct = use === "product";
+    const isProduct = use === "Ingredients" || use === "Items";
 
     let initialCount = 1;
     if(state.validInputs){
@@ -32,7 +32,7 @@ export default function FormList({use, state}){
     return(
         <section className={sectionStyle}>
             <p className={lineStyle}>
-                <label className={labelStyle}>{isProduct ? "Ingredients" : "Instructions"}</label>
+                <label className={labelStyle}>{use}</label>
                 <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
                 <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
             </p>

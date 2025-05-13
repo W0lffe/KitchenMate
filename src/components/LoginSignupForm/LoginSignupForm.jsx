@@ -6,7 +6,6 @@ import { postNewUser,
         authenticateUser } from "../../api/http";
 import { containerStyle, 
         headerStyle, 
-        closeButtonStyle, 
         sectionStyle,
         headingStyle,
         formStyle,

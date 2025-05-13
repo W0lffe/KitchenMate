@@ -1,7 +1,6 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
-        footerStyle, 
-        getErrorStyle} from "./recipeStyles";
+        footerStyle} from "./recipeStyles";
 import { useContext, 
         useActionState,
         useState,
@@ -12,7 +11,8 @@ import { combineProductData,
 import { validateAll } from "../../util/validation";
 import SubmitButton from "../Buttons/SubmitButton";
 import RecipeInfoSection from "./RecipeInfoSection";
-import FormList from "./FormList";
+import FormList from "../FormList/FormList";
+import Errors from "../Error/Errors"
 
 export default function RecipeCreation(){
     
@@ -126,8 +126,6 @@ export default function RecipeCreation(){
     }
 
     const [formState, formAction] = useActionState(recipeForm , initialFormState)
-    const hasErrors = formState.errors?.length > 0 ? true : false;
-
 
     return(
        <div className="text-white">
@@ -138,15 +136,10 @@ export default function RecipeCreation(){
             </span> : null}
         <form action={formAction}>
             <RecipeInfoSection state={formState}/>
-            <ul className={getErrorStyle(hasErrors)}>
-                {formState.errors?.map((error, i) => 
-                <li key={i}>
-                    {error}
-                </li>)}
-            </ul>
+            <Errors errors={formState.errors}/>
             <div className={sectionContainerStyle}>
-               <FormList use="product" state={formState}/>
-               <FormList use="instruction" state={formState}/>
+               <FormList use="Ingredients" state={formState}/>
+               <FormList use="instructions" state={formState}/>
             </div>
             <footer className={footerStyle}>
                 <SubmitButton use={"recipe"}/>

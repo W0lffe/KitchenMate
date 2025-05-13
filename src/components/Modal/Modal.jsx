@@ -8,7 +8,7 @@ import ContentWrapper from "../ContentWrapper/ContentWrapper";
 
 export default function Modal(){
 
-    const {activeModal, modalIsOpen} = useContext(KitchenContext)
+    const {activeModal, modalIsOpen, entryInProgress} = useContext(KitchenContext)
     const modal = useRef()
 
     useEffect(() => {
@@ -21,6 +21,7 @@ export default function Modal(){
                 {activeModal === "signup" || activeModal === "login" ? <LoginSignupForm /> : null}
                 {activeModal === "recipes" ? <ContentWrapper /> : null}
                 {activeModal === "dishes" ? <ContentWrapper /> : null}
+                {entryInProgress ? <ContentWrapper /> : null}
             </dialog>
         </div>,document.getElementById("modal")
     )

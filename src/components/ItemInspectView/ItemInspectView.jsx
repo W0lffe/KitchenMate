@@ -21,9 +21,6 @@ export default function ItemInspectView({itemToInspect}){
     const isRecipe = itemToInspect.mode === "recipes";
     const item = isRecipe ? itemToInspect.recipe : itemToInspect.dish;
     const listOfItem = isRecipe ? itemToInspect.recipe.ingredients : itemToInspect.dish.components;
-
-    const subtitle = isRecipe ? `Yield: ${item.output.portions} ${item.output.output}` : `Course: ${item.course}`;
-    const prepTime = isRecipe ? `Prep Time: ${item.prepTime.time} ${item.prepTime.format}` : null;
     const favorited = item.favorite ? "fav" : "";
 
     const handleDelete = () => {
@@ -66,11 +63,7 @@ export default function ItemInspectView({itemToInspect}){
                         handleModify={handleModify} setModalState={setModalState}
                         handleAddCart={handleAddCart} handleFavorite={handleFavorite}
                         fav={favorited}/>
-            <section className={topSection}>
-                <h2 className="text-2xl font-semibold italic">{item.name}</h2>
-                <h3 className="text-lg">{subtitle}</h3>
-                <h3 className="text-lg">{prepTime}</h3>
-            </section>
+            <ItemInfoSection isRecipe={isRecipe} item={item} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={isRecipe} list={listOfItem}/>
                 {isRecipe ? (
@@ -129,5 +122,27 @@ function ItemListSection({isRecipe, list}){
                     </li>)}
                  </ul>
         </section>
+    )
+}
+
+function ItemInfoSection({isRecipe, item}){
+
+    const name = item.name;
+    const subtitle = isRecipe ? `Yield: ${item.output.portions} ${item.output.output}` : `Course: ${item.course}`;
+    const prepTime = isRecipe ? `Prep Time: ${item.prepTime.time} ${item.prepTime.format}` : null;
+
+    return(
+        <div className={topSection}>
+            <section className="w-fit lg:w-1/2 p-5 lg:p-8">
+                <h2 className="text-2xl font-semibold italic">{name}</h2>
+                <h3 className="text-lg">{subtitle}</h3>
+                <h3 className="text-lg">{prepTime}</h3>
+            </section>
+            {!isRecipe ? (
+                <section className="w-1/2">
+                    <img src={item.image} alt="PHOTO" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
+                </section>
+            ) : null}
+        </div>
     )
 }

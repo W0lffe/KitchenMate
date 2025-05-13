@@ -19,6 +19,9 @@ export const getSubmitButtonStyle = (use) =>{
         case "recipe":
             style += ` bg-gray-500/70 hover:bg-gray-600/60`
             return style;
+        case "basket":
+            style += ` bg-gray-500/70 hover:bg-gray-600/60`
+            return style;
     }
 }
     

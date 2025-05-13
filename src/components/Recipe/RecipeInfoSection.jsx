@@ -17,7 +17,7 @@ export default function RecipeInfoSection({state}){
             </p>
             <p className={lineStyle}>
                 <label className={labelStyle}>Output:</label>
-                <input type="text" name="portions" 
+                <input type="number" name="portions" 
                                 placeholder="Amount" 
                                 className={getInputStyle(true)} 
                                 defaultValue={state.validInputs?.portions}/>
@@ -27,7 +27,7 @@ export default function RecipeInfoSection({state}){
             </p>
             <p className={lineStyle}>
                 <label className={labelStyle}>Prep Time:</label>
-                <input type="text" name="time" 
+                <input type="number" name="time" 
                                 placeholder="Preparation Time"  
                                 className={getInputStyle(true)} 
                                 defaultValue={state.validInputs?.time} />
