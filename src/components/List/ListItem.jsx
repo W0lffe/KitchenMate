@@ -1,30 +1,33 @@
 import { KitchenContext } from "../../context/KitchenContext"
 import { useContext, useState, useEffect } from "react"
-import { listItemStyle, 
+import { getListItemStyle, 
         listItemNameStyle } from "./listStyles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection} = useContext(KitchenContext)
-    const [section, setSection] = useState(null);
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, updateProduct} = useContext(KitchenContext)
 
     useEffect(() => {
         setSection(activeSection)
     },[activeSection])
 
+    const [section, setSection] = useState(null);
+
+    const iconToUse = section === "basket" ? faSquareCheck : faEye;
    
     const handleClick = () => {
-        if(activeSection === "recipes"){
+        if(section === "recipes"){
             setActiveRecipe({recipe: item, mode: "detail"});
         }
-        else if(activeSection === "dishes"){
-            setActiveDish({dish: item, mode: "detail"})
+        else if(section === "dishes"){
+            setActiveDish({dish: item, mode: "detail"});
         }
-        else if(activeSection === "basket"){
-            alert("DELETING ITEM")
+        else if(section === "basket"){
+            const updatedItem = {...item, obtained: !item.obtained};
+            updateProduct(updatedItem);
         }
 
         if(isMobile){
@@ -33,11 +36,11 @@ export default function ListItem({item}){
     }
 
     return(
-        <li className={listItemStyle}>
+        <li className={getListItemStyle(item.obtained ? item.obtained : null)}>
             {section === "recipes" ? <RecipeItem item={item}/> : null}
             {section === "basket" ? <BasketItem item={item}/> : null}
             {section === "dishes" ? <DishItem item={item}/> : null}
-            <button onClick={handleClick}><FontAwesomeIcon icon={faEye}/></button>
+            <button onClick={handleClick}><FontAwesomeIcon icon={iconToUse} className={item.obtained ? "text-green-600" : " text-[17px]"}/></button>
         </li>
     )
 }

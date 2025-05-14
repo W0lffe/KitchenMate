@@ -18,6 +18,7 @@ export const filter = (parameters) => {
 
 export const sort = (parameters) => {
 
+    console.log(parameters)
     const list = parameters.fullList;
     const key = parameters.value;
     const dispatch = parameters.dispatch;
@@ -49,8 +50,8 @@ export const sort = (parameters) => {
                 valB = b.quantity ? b.quantity : b.components.length;
                 return valB - valA;
             case "check":
-                valA = a.obtained;
-                valB = b.obtained;
+                valA = a.obtained ? 1 : 0;
+                valB = b.obtained ? 1 : 0;
                 return valB - valA;
             case "course": 
                 valA = a.course;

@@ -41,6 +41,7 @@ export const KitchenContext = createContext({
     setAvailableBasket: () => {},
     availableBasket: [],
     addProductsToBasket: () => {},
+    updateProduct: () => {},
     entryInProgress: false,
     setEntryStatus: () => {},
     setFavorite: () => {},
@@ -90,6 +91,14 @@ export const basketReducer = (state, action) => {
             return{
                 ...state, entryInProgress: action.payload
             }
+        case "MODIFY_PRODUCT": {
+            updatedBasket = state.availableBasket.map(product => 
+                product.product === action.payload.product ? action.payload : product
+            )
+            return {
+                ...state, availableBasket: updatedBasket
+            }
+        }
     }
 }
 
@@ -301,6 +310,13 @@ export default function KitchenContextProvider({children}){
         setModalState(null);
     }
 
+    const updateProduct = (updatedProduct) => {
+        basketDispatch({
+            type: "MODIFY_PRODUCT",
+            payload: updatedProduct
+        })
+    }
+
     const setEntryStatus = (status) => {
         basketDispatch({
             type: "SET_ENTRY",
@@ -420,6 +436,7 @@ export default function KitchenContextProvider({children}){
         setAvailableBasket,
         availableBasket: basketState.availableBasket,
         addProductsToBasket,
+        updateProduct,
         entryInProgress: basketState.entryInProgress,
         setEntryStatus,
         setFavorite,
