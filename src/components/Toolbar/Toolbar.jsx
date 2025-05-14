@@ -7,28 +7,18 @@ import { headingStyle,
 import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownAZ, 
-        faClock, 
-        faCalendarDays, 
-        faStar,
-        faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import { sortOptions } from "./sortOptions";
 
 export default function Toolbar(){
 
     const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterRecipes, sortRecipes, activeSection, setEntryStatus} = useContext(KitchenContext)
 
-    const labelArray = activeSection === "basket" ? ["Name", "Quantity", "Obtained"] : 
-                                        ["Name", "Prep Time", "Newest-Oldest", "Favorite"];
-
-    const labels = !isMobile ? labelArray :
-    [
-    <FontAwesomeIcon icon={faArrowDownAZ} className={iconStyle}/>,
-    <FontAwesomeIcon icon={faClock} className={iconStyle}/>,
-    <FontAwesomeIcon icon={faCalendarDays} className={iconStyle}/>,
-    <FontAwesomeIcon icon={faStar} className={iconStyle}/>,
-    ];
-    const sortValues = ["name", "time", "date", "fav"];
-
+    const currentOptions = sortOptions[activeSection === "basket" ? "basket" : "other"];
+    const labels = !isMobile ? currentOptions.labels : 
+                                currentOptions.icons.map((icon, i) => <FontAwesomeIcon icon={icon} key={i} className={iconStyle}/>)
+    
+    const sortValues = currentOptions.values;
     let style = toolbarStyle;
     
     let func;
