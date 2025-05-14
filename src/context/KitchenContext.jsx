@@ -6,6 +6,7 @@ import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
         recipesReducer } from "./reducer.js";
 import { fetchBasket, fetchDishes, fetchRecipes, postRecipes, postBasket, postDishes } from "../api/http.js"
+import { filter, sort } from "../util/filterSort.js";
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -30,8 +31,8 @@ export const KitchenContext = createContext({
     deleteRecipe: () => {},
     isFetchingData: false,
     updateRecipe: () => {},
-    filterRecipes: () => {},
-    sortRecipes: () => {},
+    filterList: () => {},
+    sortList: () => {},
     setAvailableDishes: () => {},
     availableDishes: [],
     setActiveDish: () => {},
@@ -96,7 +97,9 @@ export const basketReducer = (state, action) => {
 export default function KitchenContextProvider({children}){
 
     const [isFetchingData, setIsFetchingData] = useState(false);
-    const recipeListRef = useRef()
+    const fetchedRecipes = useRef()
+    const fetchedDishes = useRef()
+    const fetchedBasket = useRef()
 
     const [utilState, utilDispatch] = useReducer(utilityReducer, {
         slogan: "",
@@ -194,7 +197,7 @@ export default function KitchenContextProvider({children}){
                 payload: recipes
         })
 
-        recipeListRef.current = recipes;
+        fetchedRecipes.current = recipes;
         setIsFetchingData(false);
 
     }
@@ -249,6 +252,7 @@ export default function KitchenContextProvider({children}){
                 payload: dishes
         })
 
+        fetchedDishes.current = dishes;
         setIsFetchingData(false);
     }
 
@@ -281,6 +285,7 @@ export default function KitchenContextProvider({children}){
                 payload: basket
         })
 
+        fetchedBasket.current = basket;
         setIsFetchingData(false);
     }
 
@@ -293,6 +298,8 @@ export default function KitchenContextProvider({children}){
         if(basketState.entryInProgress){
             setEntryStatus(false);
         }
+
+        setModalState(null);
     }
 
     const setEntryStatus = (status) => {
@@ -302,20 +309,64 @@ export default function KitchenContextProvider({children}){
         })
     }
 
-    const filterRecipes = (value) => {
-        let filtered;
-        if(value.length > 0){
-            filtered = recipesState.availableRecipes.filter((recipe) => recipe.name.toLowerCase().includes(value.toLowerCase()))
-        }
-        else{
-            filtered = recipeListRef.current;
-        }
+    const filterList = (value) => {
 
-        recipeDispatch({
-            type: "SET_RECIPES",
-            payload: filtered
-        })
+        switch(utilState.activeSection){
+            case "recipes":
+                filter({
+                    fullList: fetchedRecipes.current,
+                    value,
+                    dispatch: recipeDispatch,
+                    type: "SET_RECIPES"
+                })
+                break;
+            case "dishes":
+                filter({
+                    fullList: fetchedDishes.current,
+                    value,
+                    dispatch: dishDispatch,
+                    type: "SET_DISHES"
+                })
+                break;
+            case "basket":
+                filter({
+                    fullList: fetchedBasket.current,
+                    value,
+                    dispatch: basketDispatch,
+                    type: "SET_BASKET"
+                })
+                break;
+        }
+    }
+
+    const sortList = (sortBy) => {
         
+        switch(utilState.activeSection){
+            case "recipes":
+                sort({
+                    fullList: recipesState.availableRecipes,
+                    value: sortBy,
+                    dispatch: recipeDispatch,
+                    type: "SET_RECIPES"
+                })
+                break;
+            case "dishes":
+                sort({
+                    fullList: dishesState.availableDishes,
+                    value: sortBy,
+                    dispatch: dishDispatch,
+                    type: "SET_DISHES"
+                })
+                break;
+            case "basket":
+                sort({
+                    fullList: basketState.availableBasket,
+                    value: sortBy,
+                    dispatch: basketDispatch,
+                    type: "SET_BASKET"
+                })
+                break;
+        }
     }
 
     const setFavorite = (item, isRecipe) => {
@@ -335,37 +386,6 @@ export default function KitchenContextProvider({children}){
             })
     
         }
-    }
-
-    const sortRecipes = (sortBy) => {
-        const sorted = [...recipesState.availableRecipes].sort((a, b) => {
-            let valA;
-            let valB;
-
-            switch(sortBy){
-                case "time":
-                    valA = a.prepTime.time
-                    valB = b.prepTime.time
-                    return valA - valB;
-                case "name":
-                    valA = a.name
-                    valB = b.name
-                    return valA.localeCompare(valB)
-                case "fav":
-                    valA = a.favorite
-                    valB = b.favorite
-                    return valB - valA;
-                case "date":
-                    valA = a.date
-                    valB = b.date
-                    return valB.localeCompare(valA)
-            }
-        })
-
-        recipeDispatch({
-            type: "SET_RECIPES",
-            payload: sorted
-        })
     }
 
     const ctxValue = {
@@ -391,8 +411,8 @@ export default function KitchenContextProvider({children}){
         deleteRecipe,
         updateRecipe,
         isFetchingData: isFetchingData,
-        filterRecipes,
-        sortRecipes,
+        filterList,
+        sortList,
         setAvailableDishes,
         availableDishes: dishesState.availableDishes,
         setActiveDish,

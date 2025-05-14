@@ -12,7 +12,7 @@ import { sortOptions } from "./sortOptions";
 
 export default function Toolbar(){
 
-    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterRecipes, sortRecipes, activeSection, setEntryStatus} = useContext(KitchenContext)
+    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterList, sortList, activeSection, setEntryStatus} = useContext(KitchenContext)
 
     const currentOptions = sortOptions[activeSection === "basket" ? "basket" : "other"];
     const labels = !isMobile ? currentOptions.labels : 
@@ -58,9 +58,9 @@ export default function Toolbar(){
             <input type="text" name="name" 
                             placeholder="Search..." 
                             className={inputStyle} 
-                            onChange={(event) => filterRecipes(event.target.value)}/>
+                            onChange={(event) => filterList(event.target.value)}/>
             <span className={spanStyle}>
-                {labels.map((item, i) => <label key={i} onClick={() => sortRecipes(sortValues[i])}>{item}</label>)}
+                {labels.map((item, i) => <label key={i} onClick={() => sortList(sortValues[i])}>{item}</label>)}
                 <FontAwesomeIcon icon={faFolderPlus} 
                                 onClick={func} 
                                 className={iconStyle}/>
