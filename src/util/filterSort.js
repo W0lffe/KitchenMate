@@ -45,18 +45,20 @@ export const sort = (parameters) => {
                 valB = b.date;
                 return valB.localeCompare(valA)
             case "quantity":
-                valA = a.quantity;
-                valB = b.quantity;
+                valA = a.quantity ? a.quantity : a.components.length;
+                valB = b.quantity ? b.quantity : b.components.length;
                 return valB - valA;
             case "check":
                 valA = a.obtained;
                 valB = b.obtained;
                 return valB - valA;
+            case "course": 
+                valA = a.course;
+                valB = b.course;
+                return valB.localeCompare(valA)
         }
     })
 
-    console.log(sorted)
-    
     dispatch({
         type,
         payload: sorted

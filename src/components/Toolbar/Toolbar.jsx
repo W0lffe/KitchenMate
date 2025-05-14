@@ -8,13 +8,13 @@ import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
-import { sortOptions } from "./sortOptions";
+import { getSortOptions } from "./sortOptions";
 
 export default function Toolbar(){
 
     const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterList, sortList, activeSection, setEntryStatus} = useContext(KitchenContext)
 
-    const currentOptions = sortOptions[activeSection === "basket" ? "basket" : "other"];
+    const currentOptions = getSortOptions(activeSection)
     const labels = !isMobile ? currentOptions.labels : 
                                 currentOptions.icons.map((icon, i) => <FontAwesomeIcon icon={icon} key={i} className={iconStyle}/>)
     

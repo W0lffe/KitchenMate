@@ -199,7 +199,6 @@ export default function KitchenContextProvider({children}){
 
         fetchedRecipes.current = recipes;
         setIsFetchingData(false);
-
     }
 
     const addNewRecipe = async (newRecipe) => {
