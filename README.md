@@ -5,8 +5,8 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is in its early stages but has a solid foundation in terms of app structure and styling. It includes a working navigation system, modal component, and forms for login and signup. Core recipe features such as creation, reading, updating, and deleting are fully functional locally.
-State management is handled using React Context combined with useReducers, currently managing utility-related features such as navigation, modal visibility, and app slogans, as well as recipe-related features such as adding new recipes, tracking the currently active recipe, and managing the list of available recipes.
+The project is in its early stages but has a solid foundation in terms of app structure and styling. It includes a working navigation system, modal component, and forms for login and signup. Core recipe features such as creation, reading, updating, and deleting are fully functional locally. Foundational basket features are established such as adding products from recipes or dishes directly, or making manual entry. User is also able to mark the product "obtained" in the basket. Dishes section is currently on read and delete only. All lists are sharing a simple sorting and filtering logic.
+State management is handled using React Context combined with useReducers, currently managing utility-related features such as navigation, modal visibility, and app slogans, as well as recipe/basket/dishes features such as adding new recipes/products, tracking the currently active recipe/dish, and managing the list of available recipes/basket/dishes.
 
 ### Planned Stages of Development
 
@@ -154,11 +154,11 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] "SET_BASKET"
 
-- [x] "ADD_ITEM"
+- [x] "ADD_PRODUCTS"
 
 - [ ] "DELETE_ITEM"
 
-- [ ] "MODIFY_ITEM
+- [x] "MODIFY_PRODUCT"
 
 #### DishReducer actions
 
@@ -173,14 +173,14 @@ State management is handled using React Context combined with useReducers, curre
 
 ### API Integration
 
-- [ ] fetchData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
-- [ ] postData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
+- [x] fetchData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
+- [x] postData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
 - [ ] modifyData
     - [ ] basket
     - [ ] recipes
