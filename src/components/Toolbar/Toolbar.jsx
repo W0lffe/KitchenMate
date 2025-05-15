@@ -29,7 +29,7 @@ export default function Toolbar(){
         func = () => { setActiveDish({dish: null, mode: "create"}) };
     }
     if(activeSection === "basket"){
-        func = () => { setEntryStatus(true) };
+        func = () => { setEntryStatus({status: true, mode: "add"}) };
     }   
    
 
@@ -41,7 +41,7 @@ export default function Toolbar(){
             setActiveDish({dish: null, mode: "create"})
         }
         if(activeSection === "basket"){
-            setEntryStatus(true);
+            setEntryStatus({status: true, mode: "add"});
         }   
 
         setModalState(activeSection, true)

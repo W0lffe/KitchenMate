@@ -2,12 +2,12 @@ import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext"
 import RecipeCreation from "../Recipe/RecipeCreation";
 import ItemInspectView from "../ItemInspectView/ItemInspectView";
-import ManualBasketEntry from "../ManualBasketEntry/ManualBasketEntry.jsx";
+import BasketEntryList from "../BasketEntryList/BasketEntryList.jsx";
 import {getContainerStyle} from "./wrapperStyles.js"
 
 export default function ContentWrapper(){
 
-    const {activeSection, activeRecipe, activeDish, isMobile, entryInProgress} = useContext(KitchenContext)
+    const {activeSection, activeRecipe, activeDish, isMobile, editStatus} = useContext(KitchenContext)
     
     let content = null;
     let mode;
@@ -15,8 +15,7 @@ export default function ContentWrapper(){
     if(activeSection === "recipes"){
         mode = activeRecipe?.mode;
         content = <>
-            {mode === "create" ? <RecipeCreation /> : null}
-            {mode === "edit" ? <RecipeCreation /> : null}
+            {mode === "create" || mode === "edit"  ? <RecipeCreation /> : null}
             {mode === "detail" ? <ItemInspectView itemToInspect={{recipe: activeRecipe.recipe, mode: activeSection}}/> : null}
 
         </>
@@ -32,7 +31,7 @@ export default function ContentWrapper(){
 
     if(activeSection === "basket"){
         content = <>
-            <ManualBasketEntry />
+            {editStatus?.status ? <BasketEntryList /> : null}
         </>
     }
 

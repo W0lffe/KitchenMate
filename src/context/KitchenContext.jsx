@@ -42,7 +42,7 @@ export const KitchenContext = createContext({
     availableBasket: [],
     addProductsToBasket: () => {},
     updateProduct: () => {},
-    entryInProgress: false,
+    editStatus: null,
     setEntryStatus: () => {},
     setFavorite: () => {},
 })
@@ -87,9 +87,9 @@ export const basketReducer = (state, action) => {
             return{
                     ...state, availableBasket: updatedBasket
             }
-        case "SET_ENTRY":
+        case "SET_STATUS":
             return{
-                ...state, entryInProgress: action.payload
+                ...state, editStatus: action.payload
             }
         case "MODIFY_PRODUCT": {
             updatedBasket = state.availableBasket.map(product => 
@@ -134,7 +134,7 @@ export default function KitchenContextProvider({children}){
 
     const [basketState, basketDispatch] = useReducer(basketReducer, {
         availableBasket: [],
-        entryInProgress: false,
+        editStatus: null,
     })
 
 
@@ -168,7 +168,7 @@ export default function KitchenContextProvider({children}){
         if(section !== null){
            setActiveRecipe(null)
            setActiveDish(null)
-           setEntryStatus(false)
+           setEntryStatus(null)
         }
 
         utilDispatch({
@@ -304,7 +304,7 @@ export default function KitchenContextProvider({children}){
         })
 
         if(basketState.entryInProgress){
-            setEntryStatus(false);
+            setEntryStatus(null);
         }
 
         setModalState(null);
@@ -319,7 +319,7 @@ export default function KitchenContextProvider({children}){
 
     const setEntryStatus = (status) => {
         basketDispatch({
-            type: "SET_ENTRY",
+            type: "SET_STATUS",
             payload: status
         })
     }
@@ -437,7 +437,7 @@ export default function KitchenContextProvider({children}){
         availableBasket: basketState.availableBasket,
         addProductsToBasket,
         updateProduct,
-        entryInProgress: basketState.entryInProgress,
+        editStatus: basketState.editStatus,
         setEntryStatus,
         setFavorite,
 

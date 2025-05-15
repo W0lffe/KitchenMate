@@ -126,12 +126,13 @@ export default function RecipeCreation(){
     }
 
     const [formState, formAction] = useActionState(recipeForm , initialFormState)
+    const mobileHeading = !editingRecipe ? "Recipe Creation" : "Recipe Editor";
 
     return(
        <div className="text-white">
         {isMobile ? 
             <span className="flex flex-row justify-end items-center px-2">
-                <h2 className={mobileHeadingStyle}>NEW RECIPE</h2>
+                <h2 className={mobileHeadingStyle}>{mobileHeading}</h2>
                 <SubmitButton use={"close"} func={() => setModalState(null, false)} />
             </span> : null}
         <form action={formAction}>

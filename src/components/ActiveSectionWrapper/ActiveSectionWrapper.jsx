@@ -11,7 +11,7 @@ import ContentWrapper from "../ContentWrapper/ContentWrapper"
 
 export default function ActiveSectionWrapper(){
 
-    const {activeSection, isMobile, activeRecipe, activeDish, entryInProgress} = useContext(KitchenContext)
+    const {activeSection, isMobile, activeRecipe, activeDish, editStatus} = useContext(KitchenContext)
 
     if(isMobile){
         return <>
@@ -21,7 +21,7 @@ export default function ActiveSectionWrapper(){
     }
 
     let heading = "";
-    let content = null;
+    let content;
     if(activeSection === "recipes" && activeRecipe?.mode){
         content = <ContentWrapper />
         if(activeRecipe.mode === "create"){
@@ -40,9 +40,14 @@ export default function ActiveSectionWrapper(){
             heading = "Dish Details"
        }
     }
-    if(activeSection === "basket" && entryInProgress){
+    if(activeSection === "basket" && editStatus?.mode){
         content = <ContentWrapper />
-        heading = "Add Items to Basket"
+        if(editStatus.mode === "add"){
+            heading = "Add Items to Basket"
+        }
+        if(editStatus.mode === "edit"){
+            heading = "Edit Basket"
+        }
     }
 
      return (

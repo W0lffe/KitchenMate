@@ -1,7 +1,7 @@
 import FormList from "../FormList/FormList"
 import SubmitButton from "../Buttons/SubmitButton";
 import Errors from "../Error/Errors"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData } from "../../util/util";
 import { validateAll } from "../../util/validation";
@@ -9,7 +9,33 @@ import { useActionState } from "react";
 
 export default function ManualBasketEntry(){
 
-    const {isMobile, setModalState, addProductsToBasket} = useContext(KitchenContext)
+    const {isMobile, setModalState, addProductsToBasket, editStatus, availableBasket} = useContext(KitchenContext)
+
+    let initialFormState = {errors: null};
+    const [isEditing, setIsEditing] = useState(false);
+    let heading = "Add Items";
+
+    useEffect(() => {
+        setIsEditing(true)
+    }, [editStatus]);
+
+    if(editStatus.mode === "edit"){
+        heading = "Edit Basket"
+        const products = availableBasket.map((product) => product.product);
+        const quantity = availableBasket.map((product) => product.quantity);
+        const unit = availableBasket.map((product) => product.unit);
+
+        initialFormState = {
+            errors: null,
+            validInputs: {
+                products,
+                quantity, 
+                unit
+            }
+        }
+
+        console.log(products, quantity, unit)
+    }
 
     const manualEntry = (prevFormState, formData) => {
         const products = formData.getAll("product");
@@ -44,7 +70,7 @@ export default function ManualBasketEntry(){
 
     }
 
-    const [formState, formAction] = useActionState(manualEntry, {errors: null})
+    const [formState, formAction] = useActionState(manualEntry, initialFormState)
 
     return(
         <div className="text-white w-full p-2">
@@ -53,12 +79,12 @@ export default function ManualBasketEntry(){
                     <header className="flex w-full justify-end">
                         <SubmitButton use={"close"} func={setModalState} />
                     </header>
-                    <h3>Add Items</h3>
+                    <h3>{heading}</h3>
                 </section>
             ) : null}
             <Errors errors={formState.errors}/>
             <form action={formAction} className="flex flex-col items-center gap-5">
-                <FormList use={"Items"} state={[]}/>
+                <FormList use={"Items"} state={formState}/>
                 <footer>
                     <SubmitButton use={"basket"}/>
                 </footer>
