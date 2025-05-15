@@ -25,7 +25,7 @@ KitchenMate.docx
 *.sw?
 
 #Assets
-src/assets/
+
 
 #Other
 backend/recipes.php
