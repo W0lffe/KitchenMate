@@ -7,7 +7,8 @@ import { headingStyle,
 import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus, 
+        faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { getSortOptions } from "./sortOptions";
 
 export default function Toolbar(){
@@ -47,6 +48,11 @@ export default function Toolbar(){
         setModalState(activeSection, true)
     }
 
+    const handleBasketEdit = () => {
+        setEntryStatus({status: true, mode: "edit"});
+        setModalState(activeSection, true)
+    }
+
     if(isMobile){
         style = mobileToolbarStyle;
         func = handleMobileClick;
@@ -64,6 +70,10 @@ export default function Toolbar(){
                 <FontAwesomeIcon icon={faFolderPlus} 
                                 onClick={func} 
                                 className={iconStyle}/>
+                {activeSection === "basket" ? 
+                    (<FontAwesomeIcon icon={faPenToSquare} 
+                        onClick={handleBasketEdit} 
+                        className={iconStyle}/>) : null}
             </span>
         </header>
     )

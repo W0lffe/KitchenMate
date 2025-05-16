@@ -11,20 +11,23 @@ export default function ManualBasketEntry(){
 
     const {isMobile, setModalState, addProductsToBasket, editStatus, availableBasket} = useContext(KitchenContext)
 
+    const isEditMode = editStatus.mode === "edit";
     let initialFormState = {errors: null};
+
     const [isEditing, setIsEditing] = useState(false);
     let heading = "Add Items";
 
     useEffect(() => {
-        setIsEditing(true)
+        setIsEditing(prevState => !prevState)
     }, [editStatus]);
 
-    if(editStatus.mode === "edit"){
+    if(isEditMode){
+
         heading = "Edit Basket"
         const products = availableBasket.map((product) => product.product);
         const quantity = availableBasket.map((product) => product.quantity);
         const unit = availableBasket.map((product) => product.unit);
-
+        
         initialFormState = {
             errors: null,
             validInputs: {
@@ -35,8 +38,7 @@ export default function ManualBasketEntry(){
         }
 
         console.log(products, quantity, unit)
-    }
-
+ 
     const manualEntry = (prevFormState, formData) => {
         const products = formData.getAll("product");
         const quantity = formData.getAll("quantity");
@@ -91,4 +93,4 @@ export default function ManualBasketEntry(){
             </form>
         </div>
    )
-}
+}}

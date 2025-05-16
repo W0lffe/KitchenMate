@@ -41,6 +41,7 @@ export const KitchenContext = createContext({
     setAvailableBasket: () => {},
     availableBasket: [],
     addProductsToBasket: () => {},
+    deleteProduct: () =>{},
     updateProduct: () => {},
     editStatus: null,
     setEntryStatus: () => {},
@@ -95,6 +96,13 @@ export const basketReducer = (state, action) => {
             updatedBasket = state.availableBasket.map(product => 
                 product.product === action.payload.product ? action.payload : product
             )
+            return {
+                ...state, availableBasket: updatedBasket
+            }
+        }
+        case "DELETE_PRODUCT": {
+            updatedBasket = state.availableBasket.filter((product) => 
+              product.product !== action.payload)
             return {
                 ...state, availableBasket: updatedBasket
             }
@@ -316,6 +324,14 @@ export default function KitchenContextProvider({children}){
             payload: updatedProduct
         })
     }
+    
+    const deleteProduct = (product) => {
+        console.log(product)
+        basketDispatch({
+            type: "DELETE_PRODUCT",
+            payload: product
+        })
+    }
 
     const setEntryStatus = (status) => {
         basketDispatch({
@@ -436,6 +452,7 @@ export default function KitchenContextProvider({children}){
         setAvailableBasket,
         availableBasket: basketState.availableBasket,
         addProductsToBasket,
+        deleteProduct,
         updateProduct,
         editStatus: basketState.editStatus,
         setEntryStatus,

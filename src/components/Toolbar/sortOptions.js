@@ -2,7 +2,10 @@ import { faArrowDownAZ,
         faClock, 
         faCalendarDays, 
         faStar,
-        faArrowDown19, faSquareCheck, faUtensils, faGears } from "@fortawesome/free-solid-svg-icons";
+        faArrowDown19, 
+        faSquareCheck, 
+        faUtensils, 
+        faGears } from "@fortawesome/free-solid-svg-icons";
 
 export const getSortOptions = (activeSection) => {
 

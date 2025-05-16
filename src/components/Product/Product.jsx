@@ -1,8 +1,17 @@
 import { units } from "../../util/util"
 import { getInputStyle, 
         productStyle } from "./productStyles"
+import { KitchenContext } from "../../context/KitchenContext"
+import { useContext } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export default function Product({state, index}){
+    const {editStatus, deleteProduct} = useContext(KitchenContext);
+    
+    const isEditingBasket = editStatus.mode === "edit";
+    const productName = state?.validInputs?.products[index];
+
     return(
         <div className={productStyle}>
             <input type="text" name="product" 
@@ -19,6 +28,9 @@ export default function Product({state, index}){
                 <option>Unit</option>
                 {units.map((unit) => <option key={unit}>{unit}</option>)}
             </select>
+            {isEditingBasket ? (
+                <FontAwesomeIcon icon={faTrash} onClick={() => { deleteProduct(productName)}}/>
+            ) : null}
         </div>
     )
 }
