@@ -156,7 +156,7 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] "ADD_PRODUCTS"
 
-- [ ] "DELETE_ITEM"
+- [X] "DELETE_PRODUCT"
 
 - [x] "MODIFY_PRODUCT"
 

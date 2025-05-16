@@ -306,9 +306,17 @@ export default function KitchenContextProvider({children}){
     }
 
     const addProductsToBasket = (products) => {
+        let id = basketState.availableBasket.length;
+        const newProducts = products.map(product => {
+            const newProduct = {...product, id: parseInt(id + 1)}
+            id++;
+            return newProduct;
+        });
+
+
         basketDispatch({
             type: "ADD_PRODUCTS",
-            payload: products
+            payload: newProducts
         })
 
         if(basketState.entryInProgress){

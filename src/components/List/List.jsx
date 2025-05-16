@@ -25,6 +25,7 @@ export default function List(){
             setList([...availableBasket])
         }
 
+        console.log(list)
     }, [activeSection, availableRecipes, availableDishes, availableBasket])
 
     if(isFetchingData){
