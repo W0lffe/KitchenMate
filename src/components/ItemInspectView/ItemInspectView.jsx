@@ -16,7 +16,7 @@ import SubmitButton from "../Buttons/SubmitButton";
 
 export default function ItemInspectView({itemToInspect}){
 
-    const {activeSection, deleteRecipe, isMobile, setModalState, setActiveRecipe, deleteDish, setFavorite, addProductsToBasket}  = useContext(KitchenContext)
+    const {activeSection, deleteRecipe, isMobile, setModalState, setActiveRecipe, deleteDish, setFavorite, addNewProduct}  = useContext(KitchenContext)
 
     const isRecipe = itemToInspect.mode === "recipes";
     const item = isRecipe ? itemToInspect.recipe : itemToInspect.dish;
@@ -49,8 +49,7 @@ export default function ItemInspectView({itemToInspect}){
         if(!isRecipe){
             products = item.components.flatMap((component) => component.ingredients)
         }
-        console.log(products);
-        addProductsToBasket(products);
+        addNewProduct(products);
     }
 
     const handleFavorite = () => {

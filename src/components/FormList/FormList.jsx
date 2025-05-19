@@ -28,7 +28,6 @@ export default function FormList({use, state}){
         setCount(prev => prev -1)
     }
 
- 
     return(
         <section className={sectionStyle}>
             <p className={lineStyle}>

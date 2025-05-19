@@ -9,7 +9,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 export default function Product({state, index}){
     const {editStatus, deleteProduct} = useContext(KitchenContext);
     
-    const isEditingBasket = editStatus.mode === "edit";
+    const isEditingBasket = editStatus?.mode === "edit";
     const productName = state?.validInputs?.products[index];
 
     return(

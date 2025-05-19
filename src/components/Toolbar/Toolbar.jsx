@@ -50,7 +50,9 @@ export default function Toolbar(){
 
     const handleBasketEdit = () => {
         setEntryStatus({status: true, mode: "edit"});
-        setModalState(activeSection, true)
+        if(isMobile){
+            setModalState(activeSection, true)
+        }
     }
 
     if(isMobile){
