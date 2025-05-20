@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Product from "../Product/Product"
 import Instruction from "../Instruction/Instruction"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,14 +12,15 @@ import { labelStyle,
 export default function FormList({use, state}){
 
     const isProduct = use === "Ingredients" || use === "Items";
+    const showSpan = use === "Ingredients";
 
     let initialCount = 1;
     if(state.validInputs){
         initialCount = isProduct ? state.validInputs.products.length : state.validInputs.steps.length;
     }
-
+ 
     const [count, setCount] = useState(initialCount)
-
+ 
     const increment = () => {
         setCount(prev => prev +1)
     }
@@ -30,11 +31,14 @@ export default function FormList({use, state}){
 
     return(
         <section className={sectionStyle}>
-            <p className={lineStyle}>
-                <label className={labelStyle}>{use}</label>
-                <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
-                <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
-            </p>
+            {showSpan ? 
+            <>
+                <span className={lineStyle}>
+                    <label className={labelStyle}>{use}</label>
+                    <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
+                    <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
+                </span>
+            </> : null}
             <ul className={listStyle}>
                 {([...Array(count)].map((_, i) =>
                     isProduct ? 

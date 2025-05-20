@@ -2,8 +2,9 @@ import FormList from "../FormList/FormList"
 import SubmitButton from "../Buttons/SubmitButton";
 import Errors from "../Error/Errors"
 import { useContext, 
-        useEffect, 
-        useState } from "react"
+        useActionState, 
+        useState, 
+        useEffect} from "react"
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData } from "../../util/util";
 import { validateAll } from "../../util/validation";
@@ -15,66 +16,54 @@ export default function ManualBasketEntry(){
     const isEditing = editStatus.mode === "edit";   
     const heading = isEditing ? "Edit Basket" : "Add Items";
 
-    let initialState = {
-        errors: [],
-        validInputs: {
-            products: !isEditing ? [] : availableBasket.map((item) => item.product),
-            quantity: !isEditing ? [] : availableBasket.map((item) => item.quantity),
-            unit: !isEditing ? [] : availableBasket.map((item) => item.unit)
-        }
+    let initialState = {errors: null};
+
+    if (isEditing) {
+            initialState = ({
+                errors: null,
+                validInputs: {
+                    products: availableBasket.map((product) => product.product),
+                    quantity: availableBasket.map((product) => product.quantity),
+                    unit: availableBasket.map((product) => product.unit),
+                }
+            });
     }
 
-    const [formState, setFormState] = useState(initialState);
+      const manualEntry = () => {
 
-    useEffect(() => {
-        if(isEditing){
-            setFormState({
-                errors: [],
-                validInputs: {
-                    products: availableBasket.map((item) => item.product),
-                    quantity: availableBasket.map((item) => item.quantity),
-                    unit: availableBasket.map((item) => item.unit)
-                }}
-            )
-        }
-        console.log(formState);
-       
-    }, [availableBasket, isEditing])
-
-    const submitEntries = (e) => {
-        e.preventDefault();
-        
-        const formData = new FormData(e.target);
         const products = formData.getAll("product");
         const quantity = formData.getAll("quantity");
         const unit = formData.getAll("unit");
-        console.log(products, quantity, unit)
 
         const errors = validateAll(null, null, null, null, 
                                     products, quantity, unit, null);
         
+        const combinedProducts = combineProductData(products, quantity, unit);
+        
         if(errors.length > 0){
-            console.log(errors)
-            setFormState({
+            return {
                 errors,
                 validInputs: {
                     products,
                     quantity,
                     unit
                 }
-            })
-            return;
+            }
         }
 
-        const combinedProducts = combineProductData(products, quantity, unit);
-        console.log(combinedProducts)
-
-        if(!isEditing){
+        if(isEditing){
+            console.log("gae")
+        }
+        else{
             addNewProduct(combinedProducts);
         }
 
-        
+        setModalState(null);
+        return {errors: null}
     }
+
+    const [formState, formAction] = useActionState(manualEntry, initialState)
+
 
     return(
         <div className="text-white w-full p-2">
@@ -87,7 +76,7 @@ export default function ManualBasketEntry(){
                 </section>
             ) : null}
             <Errors errors={formState.errors}/>
-            <form onSubmit={submitEntries} className="flex flex-col items-center gap-5">
+            <form action={formAction} className="flex flex-col items-center gap-5">
                 <FormList use={"Items"} state={formState}/>
                 <footer>
                     <SubmitButton use={"basket"}/>

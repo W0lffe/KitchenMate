@@ -3,12 +3,12 @@ import { useContext, useState, useEffect } from "react"
 import { getListItemStyle, 
         listItemNameStyle } from "./listStyles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faSquareCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, updateProduct} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, updateProduct, deleteProduct} = useContext(KitchenContext)
 
     useEffect(() => {
         setSection(activeSection)
@@ -36,11 +36,12 @@ export default function ListItem({item}){
     }
 
     return(
-        <li className={getListItemStyle(item.obtained ? item.obtained : null)}>
+        <li className={getListItemStyle(isMobile, item.obtained ? item.obtained : null)}>
             {section === "recipes" ? <RecipeItem item={item}/> : null}
             {section === "basket" ? <BasketItem item={item}/> : null}
             {section === "dishes" ? <DishItem item={item}/> : null}
-            <button onClick={handleClick}><FontAwesomeIcon icon={iconToUse} className={item.obtained ? "text-green-600" : " text-[17px]"}/></button>
+            <FontAwesomeIcon onClick={handleClick} icon={iconToUse} className={item.obtained ? "text-green-600" : " text-[17px]"}/>
+            {section === "basket" ? <FontAwesomeIcon icon={faTrash} onClick={() => { deleteProduct(item.product)}} /> : null}
         </li>
     )
 }
