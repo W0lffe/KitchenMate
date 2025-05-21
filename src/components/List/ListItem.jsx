@@ -8,7 +8,7 @@ import { faEye, faSquareCheck, faTrash } from "@fortawesome/free-solid-svg-icons
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, updateProduct, deleteProduct} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, setProductObtained, deleteProduct} = useContext(KitchenContext)
 
     useEffect(() => {
         setSection(activeSection)
@@ -27,7 +27,7 @@ export default function ListItem({item}){
         }
         else if(section === "basket"){
             const updatedItem = {...item, obtained: !item.obtained};
-            updateProduct(updatedItem);
+            setProductObtained(updatedItem);
         }
 
         if(isMobile){

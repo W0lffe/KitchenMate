@@ -8,7 +8,10 @@ export const filter = (parameters) => {
     const type = parameters.type;
 
     const filtered = key.length > 0 ? 
-                    list.filter((item) => item.name.toLowerCase().includes(key.toLowerCase())) : list;
+                    list.filter((item) => 
+                        item.name?.toLowerCase().includes(key.toLowerCase()) ||
+                        item.product?.toLowerCase().includes(key.toLowerCase())  ) 
+                        : list;
 
     dispatch({
         type,

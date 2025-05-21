@@ -191,7 +191,41 @@ export const recipeList = [
 
 
 export const basketList = [
-    
+     {
+                "product": "Kr\u00e4ft\u00f6r",
+                "quantity": 800,
+                "unit": "g"
+            },
+            {
+                "product": "Majonn\u00e4s",
+                "quantity": 250,
+                "unit": "g"
+            },
+            {
+                "product": "Dill",
+                "quantity": 80,
+                "unit": "g"
+            },
+            {
+                "product": "Grasl\u00f6k",
+                "quantity": 80,
+                "unit": "g"
+            },
+            {
+                "product": "R\u00f6dl\u00f6k",
+                "quantity": 80,
+                "unit": "g"
+            },
+            {
+                "product": "Citronsaft",
+                "quantity": 0.5,
+                "unit": "dl"
+            },
+            {
+                "product": "Salta",
+                "quantity": 10,
+                "unit": "g"
+            }
 ]
 
 export const dishList = [

@@ -10,9 +10,9 @@ import { labelStyle,
         listStyle } from "./formListStyles";
 
 export default function FormList({use, state}){
-
-    const isProduct = use === "Ingredients" || use === "Items";
-    const showSpan = use === "Ingredients";
+    
+    const isEditing = use === "Edit";
+    const isProduct = ["Edit", "Ingredients", "Items"].includes(use);
 
     let initialCount = 1;
     if(state.validInputs){
@@ -20,6 +20,13 @@ export default function FormList({use, state}){
     }
  
     const [count, setCount] = useState(initialCount)
+
+    useEffect(() => {
+        if(state.validInputs){
+            const newCount = isProduct ? state.validInputs.products.length : state.validInputs.steps.length;
+            setCount(newCount);
+        }
+    }, [state.validInputs])
  
     const increment = () => {
         setCount(prev => prev +1)
@@ -31,7 +38,7 @@ export default function FormList({use, state}){
 
     return(
         <section className={sectionStyle}>
-            {showSpan ? 
+            {!isEditing ? 
             <>
                 <span className={lineStyle}>
                     <label className={labelStyle}>{use}</label>

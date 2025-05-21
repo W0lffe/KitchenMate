@@ -41,8 +41,9 @@ export const KitchenContext = createContext({
     setAvailableBasket: () => {},
     availableBasket: [],
     addNewProduct: () => {},
+    updateProducts: () => {},
     deleteProduct: () =>{},
-    updateProduct: () => {},
+    setProductObtained: () => {},
     editStatus: null,
     setEntryStatus: () => {},
     setFavorite: () => {},
@@ -320,17 +321,23 @@ export default function KitchenContextProvider({children}){
             payload: newProducts
         })
 
-        if(basketState.editStatus?.status){
-            setEntryStatus(null);
-        }
-
+      
+        setEntryStatus(null);
         setModalState(null);
     }
 
-    const updateProduct = (updatedProduct) => {
+    const updateProducts = (updatedProducts) => {
+         basketDispatch({
+                type: "SET_BASKET",
+                payload: updatedProducts
+        })
+        setEntryStatus(null);
+    }
+
+    const setProductObtained = (obtainedProduct) => {
         basketDispatch({
             type: "MODIFY_PRODUCT",
-            payload: updatedProduct
+            payload: obtainedProduct
         })
     }
     
@@ -340,6 +347,7 @@ export default function KitchenContextProvider({children}){
             type: "DELETE_PRODUCT",
             payload: product
         })
+        setEntryStatus(null);
     }
 
     const setEntryStatus = (status) => {
@@ -462,7 +470,8 @@ export default function KitchenContextProvider({children}){
         availableBasket: basketState.availableBasket,
         addNewProduct,
         deleteProduct,
-        updateProduct,
+        setProductObtained,
+        updateProducts,
         editStatus: basketState.editStatus,
         setEntryStatus,
         setFavorite,

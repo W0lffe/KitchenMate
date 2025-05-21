@@ -140,7 +140,7 @@ export default function RecipeCreation(){
             <Errors errors={formState.errors}/>
             <div className={sectionContainerStyle}>
                <FormList use="Ingredients" state={formState}/>
-               <FormList use="instructions" state={formState}/>
+               <FormList use="Instructions" state={formState}/>
             </div>
             <footer className={footerStyle}>
                 <SubmitButton use={"recipe"}/>
