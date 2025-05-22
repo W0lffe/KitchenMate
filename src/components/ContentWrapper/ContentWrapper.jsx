@@ -7,7 +7,7 @@ import {getContainerStyle} from "./wrapperStyles.js"
 
 export default function ContentWrapper(){
 
-    const {activeSection, activeRecipe, activeDish, isMobile, editStatus} = useContext(KitchenContext)
+    const {activeSection, activeRecipe, activeDish, isMobile, editStatus, setActiveDish} = useContext(KitchenContext)
     
     let content = null;
     let mode;
@@ -24,7 +24,7 @@ export default function ContentWrapper(){
     if(activeSection === "dishes"){
         mode = activeDish?.mode;
         content = <>
-            {mode === "create" ? <p>I AM DISH CREATOOOOR</p> : null}
+            {mode === "create" ? <p onClick={() => setActiveDish(null)}>I AM DISH CREATOOOOR</p> : null}
             {mode === "detail" ? <ItemInspectView itemToInspect={{dish: activeDish.dish, mode: activeSection}}/> : null}
         </>
     }

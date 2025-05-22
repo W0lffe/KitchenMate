@@ -194,7 +194,8 @@ export const basketList = [
      {
                 "product": "Kr\u00e4ft\u00f6r",
                 "quantity": 800,
-                "unit": "g"
+                "unit": "g",
+                "obtained" : true
             },
             {
                 "product": "Majonn\u00e4s",
@@ -209,7 +210,8 @@ export const basketList = [
             {
                 "product": "Grasl\u00f6k",
                 "quantity": 80,
-                "unit": "g"
+                "unit": "g",
+                "obtained" : true
             },
             {
                 "product": "R\u00f6dl\u00f6k",
@@ -219,7 +221,8 @@ export const basketList = [
             {
                 "product": "Citronsaft",
                 "quantity": 0.5,
-                "unit": "dl"
+                "unit": "dl",
+                "obtained" : true
             },
             {
                 "product": "Salta",

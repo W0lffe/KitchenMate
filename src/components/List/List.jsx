@@ -11,22 +11,26 @@ import { getListLabels } from "../../util/util";
 
 export default function List(){
 
-    const {activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData} = useContext(KitchenContext);
+    const {activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish} = useContext(KitchenContext);
     const [list, setList] = useState([]);
 
     useEffect(() => {
+     
         if(activeSection === "recipes"){
-            setList([...availableRecipes])
+            setList([...availableRecipes]);
         }
-        if(activeSection === "dishes"){
-            setList([...availableDishes])
+        else if(activeSection === "dishes"){
+            if(activeDish?.mode === "create"){
+                setList([...availableRecipes]);
+            }
+            else{
+                setList([...availableDishes]);
+            }
         }
-        if(activeSection === "basket"){
-            setList([...availableBasket])
+        else if(activeSection === "basket"){
+            setList([...availableBasket]);
         }
-
-        console.log(list)
-    }, [activeSection, availableRecipes, availableDishes, availableBasket])
+    }, [activeSection, availableRecipes, availableDishes, availableBasket, activeDish?.mode])
 
     if(isFetchingData){
         return(

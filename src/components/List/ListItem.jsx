@@ -8,15 +8,15 @@ import { faEye, faSquareCheck, faTrash } from "@fortawesome/free-solid-svg-icons
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, setProductObtained, deleteProduct} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, setProductObtained, deleteProduct, activeDish} = useContext(KitchenContext)
+    const [section, setSection] = useState(null);
 
     useEffect(() => {
         setSection(activeSection)
     },[activeSection])
 
-    const [section, setSection] = useState(null);
-
     const iconToUse = section === "basket" ? faSquareCheck : faEye;
+    const isCreatingDish = activeDish?.mode === "create";
    
     const handleClick = () => {
         if(section === "recipes"){
@@ -35,11 +35,17 @@ export default function ListItem({item}){
         }
     }
 
+   const dishesContent = section === "dishes" ? 
+        isCreatingDish ? 
+        <RecipeItem item={item} />
+        : <DishItem item={item} />
+        : null;
+   
     return(
         <li className={getListItemStyle(isMobile, item.obtained ? item.obtained : null)}>
             {section === "recipes" ? <RecipeItem item={item}/> : null}
             {section === "basket" ? <BasketItem item={item}/> : null}
-            {section === "dishes" ? <DishItem item={item}/> : null}
+            {dishesContent}
             <FontAwesomeIcon onClick={handleClick} icon={iconToUse} className={item.obtained ? "text-green-600" : " text-[17px]"}/>
             {section === "basket" ? <FontAwesomeIcon icon={faTrash} onClick={() => { deleteProduct(item.product)}} /> : null}
         </li>
@@ -50,8 +56,8 @@ function RecipeItem({item}){
     return(
         <>
         <label className={listItemNameStyle}>{item.name}</label>
-        <label>{item.output.portions}</label>
-        <label>{item.prepTime.time} {item.prepTime.format}</label>
+        <label>{item.output?.portions}</label>
+        <label>{item.prepTime?.time} {item.prepTime?.format}</label>
         </>
     )
 }
@@ -71,7 +77,7 @@ function DishItem({item}){
         <>
         <label className={listItemNameStyle}>{item.name}</label>
         <label>{item.course}</label>
-        <label>{item.components.length}</label>
+        <label>{item.components?.length}</label>
         </>
     )
 }

@@ -30,7 +30,7 @@ export default function Toolbar(){
         func = () => { setActiveDish({dish: null, mode: "create"}) };
     }
     if(activeSection === "basket"){
-        func = () => { setEntryStatus({status: true, mode: "add"}) };
+             func = () => { setEntryStatus({status: true, mode: "add"}) };
     }   
    
 

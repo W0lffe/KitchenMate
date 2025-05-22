@@ -30,11 +30,11 @@ State management is handled using React Context combined with useReducers, curre
     - [ ] Components and functionalities for
        - [ ] Create, Read, Update
             - [x] Recipe 
-            - [ ] Basket
+            - [x] Basket
             - [ ] Dish
 - State Management
     - [x] Set up RecipeReducer
-    - [ ] Set up BasketReducer
+    - [x] Set up BasketReducer
     - [ ] Set up DishReducer
 - API Integration
     - [ ] Implement CRUD
@@ -69,6 +69,7 @@ State management is handled using React Context combined with useReducers, curre
 - Front-End
     - [ ] Connecting front-end to backend
     - [ ] Optimizing styling
+    - [ ] Error Handling
     - [ ] Polishing
 - Testing
     - [ ] Testing on different devices
