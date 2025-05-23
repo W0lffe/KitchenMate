@@ -17,6 +17,10 @@ export const outputs  = [
     "6L Piping"
 ]
 
+export const courses = [
+    "Starter", "Main", "Dessert", "Amuse-bouche",
+]
+
 export const getListLabels = (activeList)=> {
 
     switch(activeList){

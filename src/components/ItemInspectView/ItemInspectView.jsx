@@ -96,7 +96,7 @@ function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handle
                     <FontAwesomeIcon icon={faCartPlus} 
                                      className={getIconStyle()}
                                      onClick={handleAddCart} />
-                    {isMobile ? <SubmitButton use={"close"} func={() => setModalState(null)}/> : null}
+                    {isMobile ? <SubmitButton use={"close"} func={setModalState}/> : null}
                 </span>
     )
 }

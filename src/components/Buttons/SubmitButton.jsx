@@ -9,7 +9,7 @@ export default function SubmitButton({use, func}){
     if(use === "close"){
         return(
             <FontAwesomeIcon icon={faXmark} 
-                            onClick={() => func(null)} 
+                            onClick={() => func(null, false)} 
                             className={getSubmitButtonStyle(use)}/>
         )
     }

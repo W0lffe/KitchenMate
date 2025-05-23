@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext"
 import RecipeCreation from "../Recipe/RecipeCreation";
+import DishCreation from "../DishCreation/DishCreation.jsx";
 import ItemInspectView from "../ItemInspectView/ItemInspectView";
 import BasketEntryList from "../BasketEntryList/BasketEntryList.jsx";
 import {getContainerStyle} from "./wrapperStyles.js"
@@ -24,7 +25,7 @@ export default function ContentWrapper(){
     if(activeSection === "dishes"){
         mode = activeDish?.mode;
         content = <>
-            {mode === "create" ? <p onClick={() => setActiveDish(null)}>I AM DISH CREATOOOOR</p> : null}
+            {mode === "create" ? <DishCreation /> : null}
             {mode === "detail" ? <ItemInspectView itemToInspect={{dish: activeDish.dish, mode: activeSection}}/> : null}
         </>
     }
