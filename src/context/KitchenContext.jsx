@@ -38,6 +38,7 @@ export const KitchenContext = createContext({
     setActiveDish: () => {},
     activeDish: null,
     deleteDish: () => {},
+    addNewDish: () => {},
     setAvailableBasket: () => {},
     availableBasket: [],
     addNewProduct: () => {},
@@ -71,6 +72,11 @@ export const dishReducer = (state, action) => {
                 dish.id === action.payload.id ? action.payload : dish
             )
             return{
+                ...state, availableDishes: updatedDishes
+            }
+        case "NEW_DISH":
+            updatedDishes = [...state.availableDishes, action.payload]
+            return {
                 ...state, availableDishes: updatedDishes
             }
     }
@@ -220,8 +226,10 @@ export default function KitchenContextProvider({children}){
         setIsFetchingData(false);
     }
 
-    const addNewRecipe = async (newRecipe) => {
+    const addNewRecipe = async (recipe) => {
         //postRecipes(utilState.user, newRecipe)
+        const id = recipesState.availableRecipes.length + 1;
+        const newRecipe = {...recipe, id};
         await new Promise(r => setTimeout(r, 1000));
         recipeDispatch({
             type: "ADD_RECIPE",
@@ -278,6 +286,15 @@ export default function KitchenContextProvider({children}){
         dishDispatch({
             type: "SET_ACTIVE_DISH",
             payload: dish
+        })
+    }
+
+    const addNewDish = (dish) => {
+        const id = dishesState.availableDishes.length + 1;
+        const newDish = {...dish, id};
+        dishDispatch({
+            type: "NEW_DISH",
+            payload: newDish
         })
     }
 
@@ -466,6 +483,7 @@ export default function KitchenContextProvider({children}){
         setActiveDish,
         activeDish: dishesState.activeDish,
         deleteDish,
+        addNewDish,
         setAvailableBasket,
         availableBasket: basketState.availableBasket,
         addNewProduct,

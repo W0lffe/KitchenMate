@@ -11,7 +11,7 @@ export default function DishInfoSection(){
                 </span>
                 <span className="flex flex-row gap-3">
                     <label>Course:</label>
-                    <select>
+                    <select name="course">
                         <option value="course">Select course</option>
                         {courses.map((course) => <option value={course} key={course}>{course}</option>)}
                     </select>
@@ -19,7 +19,7 @@ export default function DishInfoSection(){
             </section>
             <section className="flex flex-row lg:w-1/2 gap-2">
                 <label>Image:</label>
-                <input type="file" />
+                <input type="file" name="image" />
             </section>
         </div>
     )
