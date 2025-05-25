@@ -6,6 +6,7 @@
   display: flex;
   background-image: url("assets/kitchenBackground.jpg");
   background-size: cover;
+  background-position: 20%;
   color: white;
 }
 

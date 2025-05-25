@@ -4,7 +4,8 @@ import { createContext,
          useState} from "react";
 import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
-        recipesReducer } from "./reducer.js";
+        recipesReducer,
+        basketReducer } from "./reducer.js";
 import { fetchBasket, fetchDishes, fetchRecipes, postRecipes, postBasket, postDishes } from "../api/http.js"
 import { filter, sort } from "../util/filterSort.js";
 
@@ -81,43 +82,6 @@ export const dishReducer = (state, action) => {
             }
     }
 }
-
-export const basketReducer = (state, action) => {
-    console.log("BASKET_DEBUG: ", action.type, action.payload)
-    let updatedBasket;
-    switch(action.type){
-        case "SET_BASKET":
-            return{
-                ...state, availableBasket: action.payload
-            }
-        case "ADD_PRODUCTS":
-            updatedBasket = [...state.availableBasket, ...action.payload]
-            return{
-                    ...state, availableBasket: updatedBasket
-            }
-        case "SET_STATUS":
-            return{
-                ...state, editStatus: action.payload
-            }
-        case "MODIFY_PRODUCT": {
-            updatedBasket = state.availableBasket.map(product => 
-                product.product === action.payload.product ? action.payload : product
-            )
-            return {
-                ...state, availableBasket: updatedBasket
-            }
-        }
-        case "DELETE_PRODUCT": {
-            updatedBasket = state.availableBasket.filter((product) => 
-              product.product !== action.payload)
-            console.log(updatedBasket)
-            return {
-                ...state, availableBasket: updatedBasket
-            }
-        }
-    }
-}
-
 
 export default function KitchenContextProvider({children}){
 

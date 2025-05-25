@@ -112,7 +112,7 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] Recipe/Dish Card (wrapper)
 
-- [ ] DishCreation
+- [x] DishCreation
 
 ### State Management
 
@@ -167,7 +167,7 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] "SET_ACTIVE_DISH"
 
-- [ ] "ADD_DISH"
+- [X] "ADD_DISH"
 
 - [x] "DELETE_DISH"
 

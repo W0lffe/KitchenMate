@@ -1,25 +1,38 @@
 import { courses } from "../../util/util"
-
+import {labelStyle, 
+        spanStyle, 
+        inputStyle, 
+        imageSection, 
+        infoSection, 
+        divStyle} from "./dishCreationStyles"
 
 export default function DishInfoSection(){
     return(
-        <div className="flex flex-col lg:flex-row w-full p-2 gap-5 mt-1">
-            <section className="flex flex-col lg:w-1/2 gap-2">
-                <span className="flex flex-row gap-3">
-                    <label>Name:</label>
-                    <input type="text" name="name" placeholder="Name for dish" />
+        <div className={divStyle}>
+            <section className={infoSection}>
+                <span className={spanStyle}>
+                    <label className={labelStyle}>Name:</label>
+                    <input type="text" 
+                            name="name" 
+                            placeholder="Name for dish" 
+                            className={inputStyle}/>
                 </span>
-                <span className="flex flex-row gap-3">
-                    <label>Course:</label>
-                    <select name="course">
-                        <option value="course">Select course</option>
-                        {courses.map((course) => <option value={course} key={course}>{course}</option>)}
+                <span className={spanStyle}>
+                    <label className={labelStyle}>Course:</label>
+                    <select name="course" 
+                            className={inputStyle}>
+                        <option value="course">Select</option>
+                        {courses.map((course) => 
+                                    <option value={course} key={course}>{course}</option>)}
                     </select>
                 </span>
             </section>
-            <section className="flex flex-row lg:w-1/2 gap-2">
-                <label>Image:</label>
-                <input type="file" name="image" />
+            <section className={imageSection}>
+                <label for="image-upload" className={inputStyle}>Upload Image</label>
+                <input type="file" 
+                        id="image-upload" 
+                        name="image" 
+                        className="hidden w-0"/>
             </section>
         </div>
     )

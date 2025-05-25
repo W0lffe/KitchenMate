@@ -1,12 +1,19 @@
 import { useActionState, 
-    useContext, 
-    useEffect, 
-    useState } from "react"
+        useContext, 
+        useEffect, 
+        useState } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
 import SubmitButton from "../Buttons/SubmitButton"
 import DishInfoSection from "./DishInfoSection"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSquarePlus } from "@fortawesome/free-solid-svg-icons"
+import { footerStyle, 
+        headerSpanStyle, 
+        labelStyle, 
+        listDivStyle, 
+        listItemStyle, 
+        listSpanStyle, 
+        listStyle } from "./dishCreationStyles"
 
 export default function DishCreation(){
 
@@ -42,6 +49,7 @@ export default function DishCreation(){
             name,
             course,
             image,
+            favorite: false,
             components
         }
 
@@ -59,36 +67,47 @@ export default function DishCreation(){
     return(
         <div className="text-white">
            {isMobile ? 
-                       <span className="flex flex-row justify-end items-center p-2">
-                           <h2 className="w-full text-center">{mobileHeading}</h2>
+                       <span className={headerSpanStyle}>
+                           <h2 className={`${labelStyle} w-full text-center`}>{mobileHeading}</h2>
                            <SubmitButton use={"close"} func={setModalState} />
                        </span> 
             : null}
             <form action={formAction}>
             <DishInfoSection />
-            {isMobile ? <div className="flex flex-col list-none w-full max-h-50 h-50 overflow-y-auto gap-1 items-center border-b-gray-400/40 border-b rounded-custom mt-3">
-                <label>Add Recipes to Dish</label>
-                <span className="flex flex-col gap-2 h-full w-4/6 items-start">
-                    {availableRecipes.map((recipe, i) => 
-                    <li key={i} className="flex flex-row w-full justify-between">
-                        <label>{recipe.name}</label>
-                        <FontAwesomeIcon icon={faSquarePlus}
-                                        onClick={() => addComponent(recipe)}/>
-                    </li>)}
-                </span>
-                
-            </div> : null}
-            <div className="flex flex-col list-none w-full max-h-50 h-50 overflow-y-auto gap-1 items-center border-b-gray-400/40 border-b rounded-custom mt-3">
-                <label>Components</label>
-                <span className="flex flex-col gap-2 h-full w-4/6 items-start">
-                    {components.length > 0 ? components.map((component, i) => <li key={i}>{component.name}</li>) 
-                    : <p>No components added yet.</p>}
-                </span>
-            </div>
-            <footer className="flex items-center justify-center m-2">
+            {isMobile ? <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> : null}
+            <ComponentRecipeList list={components}/>
+            <footer className={footerStyle}>
                 <SubmitButton use="recipe"/>
             </footer>
             </form>
+        </div>
+    )
+}
+
+function ComponentRecipeList({use, list, func}){
+
+    const isRecipes = use === "recipe";
+    const header = isRecipes ? "Add Recipes to Dish" : "Components";
+    const fallback = isRecipes ? "Recipe list is empty." : "No components added yet";
+
+    return(
+        <div className={listDivStyle}>
+                <span className={listSpanStyle}>
+                    <label className={labelStyle}>{header}</label>
+                <ul className={listStyle}>
+                    {list.length === 0 ? <p>{fallback}</p> : null}
+                    {isRecipes && list.length > 0 ? 
+                        list.map((recipe, i) => 
+                        <li key={i} className={listItemStyle}>
+                            <label>{recipe.name}</label>
+                             <FontAwesomeIcon icon={faSquarePlus}
+                                        onClick={() => func(recipe)}/>
+                        </li>) 
+                    : 
+                        list.map((component, i) => 
+                        <li key={i}>{component.name}</li>)}
+                </ul>
+                </span>
         </div>
     )
 }

@@ -5,7 +5,7 @@ export const getWrapperStyle = (state) => {
                         bg-gray-950/85
                         flex flex-col justify-start items-center
                         rounded-r-[20px] transition[width] duration-1500 ease-out overflow-hidden 
-                        text-[18px] lg:text-[22px]`;
+                        text-[18px]`;
 
     wrapperStyle += state ? " h-full w-3/4 lg:w-1/8" : " w-[40px] h-[60px] lg:h-full lg:w-[50px]";
 
