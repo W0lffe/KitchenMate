@@ -5,6 +5,7 @@ import { useActionState,
 import { KitchenContext } from "../../context/KitchenContext"
 import SubmitButton from "../Buttons/SubmitButton"
 import DishInfoSection from "./DishInfoSection"
+import Errors from "../Error/Errors"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSquarePlus } from "@fortawesome/free-solid-svg-icons"
 import { footerStyle, 
@@ -14,6 +15,7 @@ import { footerStyle,
         listItemStyle, 
         listSpanStyle, 
         listStyle } from "./dishCreationStyles"
+import { validateName } from "../../util/validation"
 
 export default function DishCreation(){
 
@@ -45,6 +47,30 @@ export default function DishCreation(){
 
         console.log(name, course, image);
 
+        let errors = [];
+
+        if(!validateName(name)){
+            errors.push("Dish name is invalid!");
+        }
+        if(course === "Select"){
+            errors.push("Please select a course!");
+        }
+        if(components.length === 0){
+            errors.push("Dish can't be created with zero components!");
+
+        }
+        
+        if(errors.length > 0){
+            return {
+                errors,
+                validInputs: {
+                    name,
+                    course,
+                    image
+                }
+            }
+        }
+
         const newDish = {
             name,
             course,
@@ -60,6 +86,7 @@ export default function DishCreation(){
             setModalState(null)
         }
 
+        return {errors: null};
     }
 
     const [formState, formAction] = useActionState(dishForm, {errors: null});
@@ -74,6 +101,7 @@ export default function DishCreation(){
             : null}
             <form action={formAction}>
             <DishInfoSection />
+            <Errors errors={formState.errors}/>
             {isMobile ? <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> : null}
             <ComponentRecipeList list={components}/>
             <footer className={footerStyle}>

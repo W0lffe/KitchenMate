@@ -28,11 +28,13 @@ export default function DishInfoSection(){
                 </span>
             </section>
             <section className={imageSection}>
-                <label for="image-upload" className={inputStyle}>Upload Image</label>
+                <label htmlFor="image-upload" className={inputStyle}>Upload Image</label>
                 <input type="file" 
                         id="image-upload" 
                         name="image" 
-                        className="hidden w-0"/>
+                        className="hidden w-0"
+                        accept="image/*"
+                        />
             </section>
         </div>
     )

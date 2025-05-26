@@ -8,7 +8,7 @@ import {getContainerStyle} from "./wrapperStyles.js"
 
 export default function ContentWrapper(){
 
-    const {activeSection, activeRecipe, activeDish, isMobile, editStatus, setActiveDish} = useContext(KitchenContext)
+    const {activeSection, activeRecipe, activeDish, isMobile, editStatus} = useContext(KitchenContext)
     
     let content = null;
     let mode;
@@ -37,7 +37,7 @@ export default function ContentWrapper(){
     }
 
     return(
-            <div className={getContainerStyle(isMobile)}>
+            <div className={getContainerStyle(isMobile)} >
                {content}
             </div>
         )
