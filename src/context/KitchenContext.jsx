@@ -40,6 +40,7 @@ export const KitchenContext = createContext({
     activeDish: null,
     deleteDish: () => {},
     addNewDish: () => {},
+    updateDish: () => {},
     setAvailableBasket: () => {},
     availableBasket: [],
     addNewProduct: () => {},
@@ -251,6 +252,7 @@ export default function KitchenContextProvider({children}){
             type: "SET_ACTIVE_DISH",
             payload: dish
         })
+
     }
 
     const addNewDish = (dish) => {
@@ -260,6 +262,17 @@ export default function KitchenContextProvider({children}){
             type: "NEW_DISH",
             payload: newDish
         })
+
+        setActiveDish(null);
+    }
+
+    const updateDish = (dish) => {
+        dishDispatch({
+            type: "MODIFY_DISH",
+            payload: dish
+        })
+
+        setActiveDish(null);
     }
 
     const deleteDish = async (id) => {
@@ -452,6 +465,7 @@ export default function KitchenContextProvider({children}){
         availableBasket: basketState.availableBasket,
         addNewProduct,
         deleteProduct,
+        updateDish,
         setProductObtained,
         updateProducts,
         editStatus: basketState.editStatus,

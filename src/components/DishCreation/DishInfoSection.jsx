@@ -6,7 +6,8 @@ import {labelStyle,
         infoSection, 
         divStyle} from "./dishCreationStyles"
 
-export default function DishInfoSection(){
+export default function DishInfoSection({state}){
+
     return(
         <div className={divStyle}>
             <section className={infoSection}>
@@ -15,12 +16,14 @@ export default function DishInfoSection(){
                     <input type="text" 
                             name="name" 
                             placeholder="Name for dish" 
-                            className={inputStyle}/>
+                            className={inputStyle}
+                            defaultValue={state.validInputs?.name}/>
                 </span>
                 <span className={spanStyle}>
                     <label className={labelStyle}>Course:</label>
                     <select name="course" 
-                            className={inputStyle}>
+                            className={inputStyle}
+                            defaultValue={state.validInputs?.course}>
                         <option value="course">Select</option>
                         {courses.map((course) => 
                                     <option value={course} key={course}>{course}</option>)}

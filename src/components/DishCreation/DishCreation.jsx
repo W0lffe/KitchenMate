@@ -7,7 +7,7 @@ import SubmitButton from "../Buttons/SubmitButton"
 import DishInfoSection from "./DishInfoSection"
 import Errors from "../Error/Errors"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons"
+import { faSquarePlus, faTrash } from "@fortawesome/free-solid-svg-icons"
 import { footerStyle, 
         headerSpanStyle, 
         labelStyle, 
@@ -19,25 +19,49 @@ import { validateName } from "../../util/validation"
 
 export default function DishCreation(){
 
-    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, addNewDish} = useContext(KitchenContext)
-    const [components, setComponents] = useState([])
+    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, addNewDish, updateDish} = useContext(KitchenContext)
+    const [components, setComponents] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
 
     const isCreatingDish = activeDish?.mode === "create";
     const mobileHeading = "Dish Creation"
+
+    const dishToModify = activeDish.dish;
+    const modifiedID = isEditing ? activeDish.dish?.id : null;
+    const isFavorite = isEditing ? activeDish.dish?.favorite : null;
+    let initialFormState = {errors: null};
+
+    if(dishToModify !== null){
+        initialFormState = {
+            errors: null,
+            validInputs: {
+                name: dishToModify.name,
+                course: dishToModify.course
+            }
+        }
+
+        console.log(initialFormState)
+    }
+
 
     useEffect(() => {
         if(isCreatingDish && activeDish.components){
             setComponents([...activeDish?.components])
         }
-    }, [isCreatingDish, activeDish?.components])
+
+        if(dishToModify !== null){
+            setIsEditing(true)
+            setComponents([...activeDish.dish?.components] || [])
+        }
+    }, [isCreatingDish, activeDish?.components, dishToModify])
 
     const addComponent = (item) => {
-        if(isCreatingDish){
-                const existingComponents = activeDish?.components || [];
-                const components = [...existingComponents, item];
-               
-                setActiveDish({dish: null, mode: "create", components})
-            }
+        setComponents([...components, item])   
+    }
+
+    const deleteComponent = (item) => {
+        const filtered = [...components].filter((component, i) => i !== item)
+        setComponents(filtered);
     }
 
     const dishForm = (prevFormState, formData) => {
@@ -75,11 +99,16 @@ export default function DishCreation(){
             name,
             course,
             image,
-            favorite: false,
+            favorite: isFavorite ? isFavorite : false,
             components
         }
-
-        addNewDish(newDish);
+        if(isEditing){
+            const updatedDish = {...newDish, id: modifiedID};
+            updateDish(updatedDish);
+        }
+        else{
+            addNewDish(newDish);
+        }
 
         setActiveDish(null)
         if(isMobile){
@@ -89,7 +118,7 @@ export default function DishCreation(){
         return {errors: null};
     }
 
-    const [formState, formAction] = useActionState(dishForm, {errors: null});
+    const [formState, formAction] = useActionState(dishForm, initialFormState);
 
     return(
         <div className="text-white">
@@ -100,10 +129,10 @@ export default function DishCreation(){
                        </span> 
             : null}
             <form action={formAction}>
-            <DishInfoSection />
+            <DishInfoSection state={formState}/>
             <Errors errors={formState.errors}/>
             {isMobile ? <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> : null}
-            <ComponentRecipeList list={components}/>
+            <ComponentRecipeList list={components} func={deleteComponent}/>
             <footer className={footerStyle}>
                 <SubmitButton use="recipe"/>
             </footer>
@@ -133,7 +162,10 @@ function ComponentRecipeList({use, list, func}){
                         </li>) 
                     : 
                         list.map((component, i) => 
-                        <li key={i}>{component.name}</li>)}
+                        <li key={i} className={listItemStyle}>
+                            <label>{component.name}</label>
+                            <FontAwesomeIcon icon={faTrash} onClick={() => func(i)}/>
+                        </li>)}
                 </ul>
                 </span>
         </div>

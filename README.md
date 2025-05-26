@@ -27,15 +27,15 @@ State management is handled using React Context combined with useReducers, curre
     Recipe & Dish Management
 
 - Front-End
-    - [ ] Components and functionalities for
-       - [ ] Create, Read, Update
+    - [x] Components and functionalities for
+       - [x] Create, Read, Update
             - [x] Recipe 
             - [x] Basket
-            - [ ] Dish
+            - [x] Dish
 - State Management
     - [x] Set up RecipeReducer
     - [x] Set up BasketReducer
-    - [ ] Set up DishReducer
+    - [x] Set up DishReducer
 - API Integration
     - [ ] Implement CRUD
         - [x] Fetch
@@ -171,6 +171,7 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] "DELETE_DISH"
 
+- [x] "MODIFY_DISH"
 
 ### API Integration
 

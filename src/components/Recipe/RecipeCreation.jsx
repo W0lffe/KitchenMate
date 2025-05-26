@@ -111,11 +111,10 @@ export default function RecipeCreation(){
 
         if(editingRecipe){
             const updatedRecipe = {...newRecipe, id: modifiedId, favorite: isFavorited};
-            console.log("creation",updatedRecipe)
             updateRecipe(updatedRecipe)
         }
         else{
-            await addNewRecipe(newRecipe);
+            addNewRecipe(newRecipe);
         }
 
         if(isMobile){

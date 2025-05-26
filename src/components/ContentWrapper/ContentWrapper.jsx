@@ -25,7 +25,7 @@ export default function ContentWrapper(){
     if(activeSection === "dishes"){
         mode = activeDish?.mode;
         content = <>
-            {mode === "create" ? <DishCreation /> : null}
+            {mode === "create" ||  mode === "edit" ? <DishCreation /> : null}
             {mode === "detail" ? <ItemInspectView itemToInspect={{dish: activeDish.dish, mode: activeSection}}/> : null}
         </>
     }
