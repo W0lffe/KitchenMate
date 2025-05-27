@@ -5,8 +5,7 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is in its early stages but has a solid foundation in terms of app structure and styling. It includes a working navigation system, modal component, and forms for login and signup. Core recipe features such as creation, reading, updating, and deleting are fully functional locally.
-State management is handled using React Context combined with useReducers, currently managing utility-related features such as navigation, modal visibility, and app slogans, as well as recipe-related features such as adding new recipes, tracking the currently active recipe, and managing the list of available recipes.
+The project is currently in a solid and stable state, with application architecture and consistent styling throughout. It features a complete navigation system, modals, and forms for user authentication (login/signup) as well as for creating dishes, recipes, and basket items. Basic core CRUD (Create, Read, Update, Delete) functionality is fully implemented and operational locally for all main entities: recipes, dishes, and basket entries. Additionally, the app includes basic filtering and sorting capabilities to enhance usability. State management is efficiently handled through React's Context API combined with reducer functions, providing a maintainable foundation for future development.
 
 ### Planned Stages of Development
 
@@ -23,25 +22,25 @@ State management is handled using React Context combined with useReducers, curre
     - [x] Creating a new user
     - [x] Authenticating user
 
-#### Stage 2 
+#### Stage 2 **COMPLETED**
     Recipe & Dish Management
 
 - Front-End
-    - [ ] Components and functionalities for
-       - [ ] Create, Read, Update
+    - [x] Components and functionalities for
+       - [x] Create, Read, Update
             - [x] Recipe 
-            - [ ] Basket
-            - [ ] Dish
+            - [x] Basket
+            - [x] Dish
 - State Management
     - [x] Set up RecipeReducer
-    - [ ] Set up BasketReducer
-    - [ ] Set up DishReducer
+    - [x] Set up BasketReducer
+    - [x] Set up DishReducer
 - API Integration
-    - [ ] Implement CRUD
-        - [ ] Fetch
-        - [ ] Post
-        - [ ] Modify
-        - [ ] Delete
+    - [x] Implement CRUD
+        - [x] Fetch
+        - [x] Post
+        - [x] Modify
+        - [x] Delete
 
 #### Stage 3 
     Backend Functionality
@@ -69,6 +68,7 @@ State management is handled using React Context combined with useReducers, curre
 - Front-End
     - [ ] Connecting front-end to backend
     - [ ] Optimizing styling
+    - [ ] Error Handling
     - [ ] Polishing
 - Testing
     - [ ] Testing on different devices
@@ -76,6 +76,20 @@ State management is handled using React Context combined with useReducers, curre
     - [ ] Testing of components
 - Deployment
     - [ ] Deploying first version to Firebase
+
+
+#### Stage 5
+    Implementing and testing new visions for app
+- Front-End
+    - [ ] Sections for creation modals
+        - NOTE: Idea is to traverse through sections like Basic Info -> Ingredients -> Steps etc. 
+                Instead of showing all things at once.
+    - [ ] Possibility to show whole recipe in dish creation instead of just recipe name
+    - [ ] Recipe scalability feature
+    - [ ] Public recipe bank, visible for every user
+    - [ ] Utilizing localStorage for saving basket with obtained items
+    - [ ] Creating a homepage
+    - [ ] Dish creation image preview
 
 
 # Backlog
@@ -95,11 +109,11 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] MainContainer
 
-- [ ] List(wrapper for changing content between basketlist, recipelist, dishlist)
+- [x] List(wrapper for changing content between basketlist, recipelist, dishlist)
     - [x] Recipes
-    - [ ] Dishes
-    - [ ] Basket
-    - [ ] Toolbar (sorting and filtering)
+    - [x] Dishes
+    - [x] Basket
+    - [x] Toolbar (sorting and filtering)
 
 - [x] RecipeCreation
     - [x] InfoSection
@@ -109,9 +123,9 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] Instruction
 
-- [] Recipe/Dish Card (wrapper)
+- [x] Recipe/Dish Card (wrapper)
 
-- [ ] DishCreation
+- [x] DishCreation
 
 ### State Management
 
@@ -148,41 +162,48 @@ State management is handled using React Context combined with useReducers, curre
 
 - [x] "SET_ACTIVE_RECIPE"
 
+- [x] "MODIFY_RECIPE"
+
 #### BasketReducer actions
 
-- [ ] "SET_BASKET"
+- [x] "SET_BASKET"
 
-- [ ] "ADD_BASKET"
+- [x] "ADD_PRODUCTS"
 
-- [ ] "DELETE_BASKET"
+- [X] "DELETE_PRODUCT"
+
+- [x] "MODIFY_PRODUCT"
 
 #### DishReducer actions
 
-- [ ] "SET_DISHES"
+- [x] "SET_DISHES"
 
-- [ ] "ADD_DISH"
+- [x] "SET_ACTIVE_DISH"
 
-- [ ] "DELETE_DISH"
+- [X] "ADD_DISH"
 
+- [x] "DELETE_DISH"
+
+- [x] "MODIFY_DISH"
 
 ### API Integration
 
-- [ ] fetchData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
-- [ ] postData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
-- [ ] modifyData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
-- [ ] deleteData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
+- [x] fetchData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
+- [x] postData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
+- [x] modifyData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
+- [x] deleteData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
 
 - [x] authenticateUser
 - [x] createNewUser

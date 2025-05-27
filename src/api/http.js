@@ -1,4 +1,4 @@
-import { recipeList } from "../../backend/dummy_data";
+import { basketList, recipeList, dishList } from "../../backend/dummy_data";
 const URL = "";
 
 export const postNewUser = async (user) => {
@@ -41,29 +41,50 @@ export const authenticateUser = async (user) => {
     }
 }
 
-export const fetchRecipes = async(user) => {
 
-    return await fetchData(user, "recipes");
-}
+export const basketAPI = async(data) => fetchAPI({...data, endpoint: "basket"});
+export const dishesAPI = async(data) => fetchAPI({...data, endpoint: "dishes"});
+export const recipesAPI = async(data) => fetchAPI({...data, endpoint: "recipes"});
 
-const fetchData = async (user, endpoint) => {
-/* 
-    try {
-        const response = await fetch(`${URL}?user=${JSON.stringify(user)}&endpoint=${JSON.stringify(endpoint)}`);
+const fetchAPI = async(params) => {
+
+    const { user, data, method = "GET", endpoint } = params;
+ 
+    /*
+    const content = method !== "GET" ? {
+        method,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    }
+    :
+    { method };
+   
+    console.log(content);
+
+   try {
+        const response = await fetch(`${URL}?user=${JSON.stringify(user)}&endpoint=${JSON.stringify(endpoint)}`, content);
         
         if(!response.ok){
-            throw new Error("Error occured while fetching data from ", endpoint);
+            throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.status}`);
         }
 
         const resData = await response.json();
         return resData;
 
     } catch (error) {
-        return error;
+        return {error: error.message};
+    } */
+
+    if(endpoint === "basket"){
+        return basketList;
     }
- */
-
-    const response = recipeList;
-
-    return response;
+    if(endpoint === "recipes"){
+        return recipeList;
+    }
+    if(endpoint === "dishes"){
+        return dishList;
+    }
 }
+

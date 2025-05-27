@@ -3,13 +3,14 @@ import { getInputStyle,
         productStyle } from "./productStyles"
 
 export default function Product({state, index}){
+    
     return(
         <div className={productStyle}>
             <input type="text" name="product" 
                             placeholder="Product" 
                             className={getInputStyle("product")} 
                             defaultValue={state?.validInputs?.products[index]}/>
-            <input type="text" name="quantity" 
+            <input type="number" name="quantity" 
                             placeholder="Quantity" 
                             className={getInputStyle("quantity")} 
                             defaultValue={state?.validInputs?.quantity[index]}/>

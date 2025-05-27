@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Product from "../Product/Product"
 import Instruction from "../Instruction/Instruction"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,19 +7,27 @@ import { faSquarePlus,
 import { labelStyle, 
         lineStyle, 
         sectionStyle, 
-        listStyle } from "./recipeStyles";
+        listStyle } from "./formListStyles";
 
 export default function FormList({use, state}){
-
-    const isProduct = use === "product";
+    
+    const isEditing = use === "Edit";
+    const isProduct = ["Edit", "Ingredients", "Items"].includes(use);
 
     let initialCount = 1;
     if(state.validInputs){
         initialCount = isProduct ? state.validInputs.products.length : state.validInputs.steps.length;
     }
-
+ 
     const [count, setCount] = useState(initialCount)
 
+    useEffect(() => {
+        if(state.validInputs){
+            const newCount = isProduct ? state.validInputs.products.length : state.validInputs.steps.length;
+            setCount(newCount);
+        }
+    }, [state.validInputs])
+ 
     const increment = () => {
         setCount(prev => prev +1)
     }
@@ -28,14 +36,16 @@ export default function FormList({use, state}){
         setCount(prev => prev -1)
     }
 
- 
     return(
         <section className={sectionStyle}>
-            <p className={lineStyle}>
-                <label className={labelStyle}>{isProduct ? "Ingredients" : "Instructions"}</label>
-                <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
-                <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
-            </p>
+            {!isEditing ? 
+            <>
+                <span className={lineStyle}>
+                    <label className={labelStyle}>{use}</label>
+                    <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
+                    <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
+                </span>
+            </> : null}
             <ul className={listStyle}>
                 {([...Array(count)].map((_, i) =>
                     isProduct ? 

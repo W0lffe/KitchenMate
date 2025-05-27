@@ -1,7 +1,6 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
-        footerStyle, 
-        getErrorStyle} from "./recipeStyles";
+        footerStyle} from "./recipeStyles";
 import { useContext, 
         useActionState,
         useState,
@@ -12,7 +11,8 @@ import { combineProductData,
 import { validateAll } from "../../util/validation";
 import SubmitButton from "../Buttons/SubmitButton";
 import RecipeInfoSection from "./RecipeInfoSection";
-import FormList from "./FormList";
+import FormList from "../FormList/FormList";
+import Errors from "../Error/Errors"
 
 export default function RecipeCreation(){
     
@@ -20,6 +20,7 @@ export default function RecipeCreation(){
     const [editingRecipe, setEditingRecipe] = useState(false);
     const recipeToModify = activeRecipe.recipe;
     let modifiedId;
+    let isFavorited;
 
     let initialFormState = {errors: null}
 
@@ -31,6 +32,7 @@ export default function RecipeCreation(){
 
     if(recipeToModify !== null){
         modifiedId = recipeToModify.id;
+        isFavorited = recipeToModify.favorite;
         initialFormState = {
             errors: null,
             validInputs: {
@@ -42,7 +44,7 @@ export default function RecipeCreation(){
                     products: recipeToModify.ingredients.map(ingredient => ingredient.product),
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
-                    steps: recipeToModify.instructions
+                    steps: recipeToModify.instructions,
             }
         }
     }
@@ -108,12 +110,11 @@ export default function RecipeCreation(){
         }
 
         if(editingRecipe){
-            const updatedRecipe = {...newRecipe, id: modifiedId};
-            console.log("creation",updatedRecipe)
+            const updatedRecipe = {...newRecipe, id: modifiedId, favorite: isFavorited};
             updateRecipe(updatedRecipe)
         }
         else{
-            await addNewRecipe(newRecipe);
+            addNewRecipe(newRecipe);
         }
 
         if(isMobile){
@@ -124,27 +125,21 @@ export default function RecipeCreation(){
     }
 
     const [formState, formAction] = useActionState(recipeForm , initialFormState)
-    const hasErrors = formState.errors?.length > 0 ? true : false;
-
+    const mobileHeading = !editingRecipe ? "Recipe Creation" : "Recipe Editor";
 
     return(
        <div className="text-white">
         {isMobile ? 
             <span className="flex flex-row justify-end items-center px-2">
-                <h2 className={mobileHeadingStyle}>NEW RECIPE</h2>
+                <h2 className={mobileHeadingStyle}>{mobileHeading}</h2>
                 <SubmitButton use={"close"} func={() => setModalState(null, false)} />
             </span> : null}
         <form action={formAction}>
             <RecipeInfoSection state={formState}/>
-            <ul className={getErrorStyle(hasErrors)}>
-                {formState.errors?.map((error, i) => 
-                <li key={i}>
-                    {error}
-                </li>)}
-            </ul>
+            <Errors errors={formState.errors}/>
             <div className={sectionContainerStyle}>
-               <FormList use="product" state={formState}/>
-               <FormList use="instruction" state={formState}/>
+               <FormList use="Ingredients" state={formState}/>
+               <FormList use="Instructions" state={formState}/>
             </div>
             <footer className={footerStyle}>
                 <SubmitButton use={"recipe"}/>

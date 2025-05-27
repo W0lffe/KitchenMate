@@ -3,38 +3,49 @@ export const validateAll = (name, portions, time,
     timeFormat, products, quantity, unit, steps) => {
 
     let errors = [];
-
-    if (!validateRecipeName(name)) {
-        errors.push("Recipe name is invalid")
+    
+    if(name !== null){
+        if (!validateName(name)) {
+            errors.push("Recipe name is invalid!")
+        }
     }
 
-    if (!validateNumber(portions)) {
-        errors.push("Please enter portion quantity!")
+    if(portions !== null){
+        if (!validateNumber(portions)) {
+            errors.push("Please enter portion quantity!")
+        }
     }
 
-    if (!validateNumber(time)) {
-        errors.push("Please enter prep time!")
+    if(time !== null){
+        if (!validateNumber(time)) {
+            errors.push("Please enter prep time!")
+        }
     }
 
-    if(!validateTimeFormat(timeFormat)){
-        errors.push("Please select prep time format!")
+    if(timeFormat !== null){
+        if(!validateTimeFormat(timeFormat)){
+            errors.push("Please select prep time format!")
+        }
     }
 
-    if (!validateArrays(products)) {
+    if (!validateArray(products)) {
         errors.push("Please enter name for products!")
     }
 
-    if (!validateArrays(quantity)) {
+    if (!validateArray(quantity)) {
         errors.push("Please enter quantity for products!")
     }
 
-    if (!validateArrays(unit)) {
+    if (!validateArray(unit)) {
         errors.push("Please enter unit for products!")
     }
 
-    if (!validateArrays(steps)) {
-        errors.push("Instruction steps can't be empty!")
+    if(steps !== null){
+        if (!validateArray(steps)) {
+            errors.push("Instruction steps can't be empty!")
+        }
     }
+  
 
     return errors;
 }
@@ -48,7 +59,7 @@ const validateTimeFormat = (timeFormat) => {
     return true;
 }
 
-const validateRecipeName = (name) => {
+export const validateName = (name) => {
 
     if (name.length > 0 && name.length <= 30) {
         return true;
@@ -68,7 +79,7 @@ const validateNumber = (userInput) => {
     return false;
 }
 
-const validateArrays = (array) => {
+const validateArray = (array) => {
 
     let allInputsFound = true;
 

@@ -17,6 +17,22 @@ export const outputs  = [
     "6L Piping"
 ]
 
+export const courses = [
+    "Starter", "Main", "Dessert", "Amuse-bouche",
+]
+
+export const getListLabels = (activeList)=> {
+
+    switch(activeList){
+        case "recipes":
+            return ["Name", "Portions", "Prep Time", "View"]
+        case "dishes":
+            return [ "Name", "Course", "Components", "View"]
+        case "basket":
+            return ["Product", "Quantity", "Unit", "Collected", "Cut"]
+    }
+}
+
 
 export const getRandomSlogan = () => {
     return slogans[Math.floor(Math.random() * slogans.length)];

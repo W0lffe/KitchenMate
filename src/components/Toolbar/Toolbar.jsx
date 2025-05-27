@@ -7,31 +7,52 @@ import { headingStyle,
 import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDownAZ, 
-        faClock, 
-        faCalendarDays, 
-        faStar,
-        faFolderPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus, 
+        faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { getSortOptions } from "./sortOptions";
 
 export default function Toolbar(){
 
-    const {isMobile, setActiveRecipe, setModalState, filterRecipes, sortRecipes} = useContext(KitchenContext)
+    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterList, sortList, activeSection, setEntryStatus} = useContext(KitchenContext)
 
-    const labels = !isMobile ? ["Name", "Prep Time", "Newest-Oldest", "Favorite"] :
-    [
-    <FontAwesomeIcon icon={faArrowDownAZ} className={iconStyle}/>,
-    <FontAwesomeIcon icon={faClock} className={iconStyle}/>,
-    <FontAwesomeIcon icon={faCalendarDays} className={iconStyle}/>,
-    <FontAwesomeIcon icon={faStar} className={iconStyle}/>,
-    ];
-    const sortValues = ["name", "time", "date", "favorite"];
-
+    const currentOptions = getSortOptions(activeSection)
+    const labels = !isMobile ? currentOptions.labels : 
+                                currentOptions.icons.map((icon, i) => <FontAwesomeIcon icon={icon} key={i} className={iconStyle}/>)
+    
+    const sortValues = currentOptions.values;
     let style = toolbarStyle;
-    let func = () => { setActiveRecipe({recipe: null, mode: "create"}) };
+    
+    let func;
+    if(activeSection === "recipes"){
+        func = () => { setActiveRecipe({recipe: null, mode: "create"}) };
+    }
+    if(activeSection === "dishes"){
+        func = () => { setActiveDish({dish: null, mode: "create"}) };
+    }
+    if(activeSection === "basket"){
+             func = () => { setEntryStatus({status: true, mode: "add"}) };
+    }   
+   
 
     const handleMobileClick = () => {
-        setActiveRecipe({recipe: null, mode: "create"})
-        setModalState("recipe", true)
+        if(activeSection === "recipes"){
+            setActiveRecipe({recipe: null, mode: "create"})
+        }
+        if(activeSection === "dishes"){
+            setActiveDish({dish: null, mode: "create"})
+        }
+        if(activeSection === "basket"){
+            setEntryStatus({status: true, mode: "add"});
+        }   
+
+        setModalState(activeSection, true)
+    }
+
+    const handleBasketEdit = () => {
+        setEntryStatus({status: true, mode: "edit"});
+        if(isMobile){
+            setModalState(activeSection, true)
+        }
     }
 
     if(isMobile){
@@ -45,12 +66,16 @@ export default function Toolbar(){
             <input type="text" name="name" 
                             placeholder="Search..." 
                             className={inputStyle} 
-                            onChange={(event) => filterRecipes(event.target.value)}/>
+                            onChange={(event) => filterList(event.target.value)}/>
             <span className={spanStyle}>
-                {labels.map((item, i) => <label key={i} onClick={() => sortRecipes(sortValues[i])}>{item}</label>)}
+                {labels.map((item, i) => <label key={i} onClick={() => sortList(sortValues[i])}>{item}</label>)}
                 <FontAwesomeIcon icon={faFolderPlus} 
                                 onClick={func} 
                                 className={iconStyle}/>
+                {activeSection === "basket" ? 
+                    (<FontAwesomeIcon icon={faPenToSquare} 
+                        onClick={handleBasketEdit} 
+                        className={iconStyle}/>) : null}
             </span>
         </header>
     )
