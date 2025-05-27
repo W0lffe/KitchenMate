@@ -36,7 +36,8 @@ export default function DishCreation(){
             errors: null,
             validInputs: {
                 name: dishToModify.name,
-                course: dishToModify.course
+                course: dishToModify.course,
+                image: dishToModify.image
             }
         }
 

@@ -27,3 +27,5 @@ export const getIconStyle = (icon) => {
 
     return style;
 }
+
+export const imageStyle = `w-54 rounded-[50px] border-gray-900/80 border-2`

@@ -1,4 +1,5 @@
 import { courses } from "../../util/util"
+import { imageStyle } from "../ItemInspectView/inspectStyles"
 import {labelStyle, 
         spanStyle, 
         inputStyle, 
@@ -31,7 +32,13 @@ export default function DishInfoSection({state}){
                 </span>
             </section>
             <section className={imageSection}>
-                <label htmlFor="image-upload" className={inputStyle}>Upload Image</label>
+                {state.validInputs?.image ? 
+                    <label htmlFor="image-upload">
+                        <img src={state.validInputs?.image} className={imageStyle} /> 
+                    </label>
+                    :
+                    <label htmlFor="image-upload" 
+                            className={inputStyle}>Upload Image</label> }
                 <input type="file" 
                         id="image-upload" 
                         name="image" 

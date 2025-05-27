@@ -5,8 +5,7 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is in its early stages but has a solid foundation in terms of app structure and styling. It includes a working navigation system, modal component, and forms for login and signup. Core recipe features such as creation, reading, updating, and deleting are fully functional locally. Foundational basket features are established such as adding products from recipes or dishes directly, or making manual entry. User is also able to mark the product "obtained" in the basket. Dishes section is currently on read and delete only. All lists are sharing a simple sorting and filtering logic.
-State management is handled using React Context combined with useReducers, currently managing utility-related features such as navigation, modal visibility, and app slogans, as well as recipe/basket/dishes features such as adding new recipes/products, tracking the currently active recipe/dish, and managing the list of available recipes/basket/dishes.
+The project is currently in a solid and stable state, with application architecture and consistent styling throughout. It features a complete navigation system, modals, and forms for user authentication (login/signup) as well as for creating dishes, recipes, and basket items. Basic core CRUD (Create, Read, Update, Delete) functionality is fully implemented and operational locally for all main entities: recipes, dishes, and basket entries. Additionally, the app includes basic filtering and sorting capabilities to enhance usability. State management is efficiently handled through React's Context API combined with reducer functions, providing a maintainable foundation for future development.
 
 ### Planned Stages of Development
 
@@ -77,6 +76,20 @@ State management is handled using React Context combined with useReducers, curre
     - [ ] Testing of components
 - Deployment
     - [ ] Deploying first version to Firebase
+
+
+#### Stage 5
+    Implementing and testing new visions for app
+- Front-End
+    - [ ] Sections for creation modals
+        - NOTE: Idea is to traverse through sections like Basic Info -> Ingredients -> Steps etc. 
+                Instead of showing all things at once.
+    - [ ] Possibility to show whole recipe in dish creation instead of just recipe name
+    - [ ] Recipe scalability feature
+    - [ ] Public recipe bank, visible for every user
+    - [ ] Utilizing localStorage for saving basket with obtained items
+    - [ ] Creating a homepage
+    - [ ] Dish creation image preview
 
 
 # Backlog
