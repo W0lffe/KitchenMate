@@ -6,7 +6,7 @@ import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
         recipesReducer,
         basketReducer } from "./reducer.js";
-import { fetchBasket, fetchDishes, fetchRecipes, postRecipes, postBasket, postDishes } from "../api/http.js"
+import { basketAPI, dishesAPI, recipesAPI } from "../api/http.js"
 import { filter, sort } from "../util/filterSort.js";
 
 export const KitchenContext = createContext({
@@ -181,7 +181,10 @@ export default function KitchenContextProvider({children}){
     const setAvailableRecipes = async () => {
         setIsFetchingData(true);
 
-        const recipes = await fetchRecipes(utilState.user);
+        const recipes = await recipesAPI({
+            user: utilState.user,
+        });
+
         await new Promise(r => setTimeout(r, 1000));
         recipeDispatch({
                 type: "SET_RECIPES",
@@ -237,7 +240,10 @@ export default function KitchenContextProvider({children}){
     const setAvailableDishes = async () => {
         setIsFetchingData(true);
 
-        const dishes = await fetchDishes(utilState.user);
+        const dishes = await dishesAPI({
+            user: utilState.user,
+        });
+        
         await new Promise(r => setTimeout(r, 1000));
         dishDispatch({
                 type: "SET_DISHES",
@@ -290,8 +296,11 @@ export default function KitchenContextProvider({children}){
 
     const setAvailableBasket = async() => {
         setIsFetchingData(true);
+     
+        const basket = await basketAPI({
+            user: utilState.user,
+        });
 
-        const basket = await fetchBasket(utilState.user);
         await new Promise(r => setTimeout(r, 1000));
         basketDispatch({
                 type: "SET_BASKET",

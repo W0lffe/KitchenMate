@@ -22,7 +22,7 @@ The project is currently in a solid and stable state, with application architect
     - [x] Creating a new user
     - [x] Authenticating user
 
-#### Stage 2 
+#### Stage 2 **COMPLETED**
     Recipe & Dish Management
 
 - Front-End
@@ -36,11 +36,11 @@ The project is currently in a solid and stable state, with application architect
     - [x] Set up BasketReducer
     - [x] Set up DishReducer
 - API Integration
-    - [ ] Implement CRUD
+    - [x] Implement CRUD
         - [x] Fetch
         - [x] Post
-        - [ ] Modify
-        - [ ] Delete
+        - [x] Modify
+        - [x] Delete
 
 #### Stage 3 
     Backend Functionality
@@ -196,14 +196,14 @@ The project is currently in a solid and stable state, with application architect
     - [x] basket
     - [x] recipes
     - [x] dishes
-- [ ] modifyData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
-- [ ] deleteData
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
+- [x] modifyData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
+- [x] deleteData
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
 
 - [x] authenticateUser
 - [x] createNewUser
