@@ -76,7 +76,7 @@ export default function DishCreation(){
         if(!validateName(name)){
             errors.push("Dish name is invalid!");
         }
-        if(course === "Select"){
+        if(course === "course"){
             errors.push("Please select a course!");
         }
         if(components.length === 0){
