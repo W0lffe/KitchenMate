@@ -1,28 +1,70 @@
 <?php 
 
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST");
 header("Content-Type: application/json");
 
-$method = $_SERVER["REQUEST_METHOD"];
+$userFile = "./users/users.json";
 
-if($method === "POST"){
+$input = file_get_contents("php://input");
+$data = json_decode($input, true);
 
-    $input = file_get_contents("php://input");
-    $user = json_decode($input, true);
+if(!isset($data["method"]) || !isset($data["user"])){
+    echo json_encode(["status" => "Critical error while creating or authenticating user!"]);
+    exit;
+};
 
-    $existingUsers = json_decode(file_get_contents("./users/users.json"), true);
+$userData = $data["user"];
+$method = $data["method"];
 
-    $userExist = false;
-    foreach($existingUsers as $existUser){
-        if($existUser["user"] == $user["user"]){
-            $userExist = true;
-            echo json_encode(["user exists" => $userExist]);
+switch($method){
+    case "new":
+        createNewUser($userFile, $userData);
+        break;
+    case "login": 
+        authUser($userFile, $userData);
+        break;
+}
+
+function authUser($userFile, $user){
+
+    echo json_encode(["authenticating user:" => $user]);
+}
+
+function createNewUser($userFile, $newUser){
+
+    if(strlen($newUser["user"]) === 0 || strlen($newUser["user"]) > 12){
+        echo json_encode(["status" => "Username is invalid."]);
+        exit;
+    }
+
+    if(strlen($newUser["passwd"]) < 10){
+        echo json_encode(["status" => "Password is too short."]);
+        exit;
+    }
+
+    $users = json_decode(file_get_contents($userFile), true);
+
+    foreach($users as $existUser){
+        if($existUser["user"] == $newUser["user"]){
+            echo json_encode(["status" => "This username is taken."]);
             exit;
         };
     }; 
 
-    echo json_encode(["existing users" => $existingUsers]);
+    $newUser["id"] = count($users) + 1;
+    $cryptedPasswd = password_hash($newUser["passwd"], PASSWORD_BCRYPT);
+    $newUser["passwd"] = $cryptedPasswd;
 
-    echo json_encode(["received data is" => $user]);
+    array_push($users, $newUser);
+
+    if(file_put_contents($userFile ,json_encode($users, JSON_PRETTY_PRINT))){
+        echo json_encode(["status" => "User created successfully!"]);
+    }
+    else{
+        echo json_encode(["status" => "User creation failed!"]);
+    }
 }
+
+
 ?>
