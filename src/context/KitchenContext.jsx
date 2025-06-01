@@ -1,4 +1,5 @@
 import { createContext,
+        useEffect,
         useReducer,
          useRef,
          useState} from "react";
@@ -17,7 +18,7 @@ export const KitchenContext = createContext({
     activeSection: "",
     setActiveSection: () => {},
     setUser: () => {},
-    user: 0,
+    user: null,
     setModalState: () => {},
     modalIsOpen: false,
     isMobile: false,
@@ -94,7 +95,7 @@ export default function KitchenContextProvider({children}){
         slogan: "",
         navigationIsOpen: true,
         activeSection: "",
-        user: 0,
+        user: null,
         activeModal: "",
         modalIsOpen: false,
         isMobile: false,
@@ -116,6 +117,16 @@ export default function KitchenContextProvider({children}){
         editStatus: null,
     })
 
+    useEffect(() => {
+        console.log(utilState.user)
+        fetchAndSetAvailableData();
+    }, [utilState.user])
+
+    const fetchAndSetAvailableData = () => {
+        setAvailableBasket();
+        setAvailableDishes();
+        setAvailableRecipes()
+    }
 
 
     /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
@@ -177,8 +188,18 @@ export default function KitchenContextProvider({children}){
 
  /******************START OF RECIPES REDUCER RELATED FUNCTIONS******************************************* */
     const setAvailableRecipes = async () => {
+
+        if(utilState.user === null){
+             recipeDispatch({
+                type: "SET_RECIPES",
+                payload: []
+        })
+            return;
+        }
+
         setIsFetchingData(true);
 
+        console.log(utilState.user.id);
         const recipes = await recipesAPI({
             user: utilState.user.id,
         });
@@ -236,6 +257,15 @@ export default function KitchenContextProvider({children}){
     /******************START OF DISH REDUCER RELATED FUNCTIONS******************************************* */
 
     const setAvailableDishes = async () => {
+
+        if(utilState.user === null){
+            dishDispatch({
+                type: "SET_DISHES",
+                payload: []
+        })
+            return;
+        }
+        
         setIsFetchingData(true);
 
         const dishes = await dishesAPI({
@@ -293,6 +323,15 @@ export default function KitchenContextProvider({children}){
     /******************START OF BASKET REDUCER RELATED FUNCTIONS******************************************* */
 
     const setAvailableBasket = async() => {
+
+        if(utilState.user === null){
+            basketDispatch({
+                type: "SET_BASKET",
+                payload: []
+        })
+            return;
+        }
+
         setIsFetchingData(true);
      
         const basket = await basketAPI({

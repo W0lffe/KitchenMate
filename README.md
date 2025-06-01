@@ -44,16 +44,16 @@ The project is currently in a solid and stable state, with application architect
 
 #### Stage 3 
     Backend Functionality
-- [ ] GET
-    - [ ] Basket
-    - [ ] Recipes
-    - [ ] Dishes
-    - [ ] User Authentication
+- [x] GET
+    - [x] Basket
+    - [x] Recipes
+    - [x] Dishes
+    - [x] User Authentication
 - [ ] POST
     - [ ] Basket
     - [ ] Recipes
     - [ ] Dishes
-    - [ ] New User
+    - [x] New User
 - [ ] DELETE
     - [ ] Basket
     - [ ] Recipes
@@ -214,16 +214,15 @@ The project is currently in a solid and stable state, with application architect
 
 ### Functionality
 
-- [ ] GET
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
-    - [ ] userAuth
+- [x] GET
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
 - [ ] POST
     - [ ] basket
     - [ ] recipes
     - [ ] dishes
-    - [ ] newUser
+    - [x] userAPI (handles login and signup)
 - [ ] DELETE
     - [ ] basket
     - [ ] recipes
