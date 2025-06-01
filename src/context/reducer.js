@@ -16,8 +16,7 @@ export const utilityReducer = (state, action) => {
         case "SET_USER":
             return {
                 ...state, 
-                user: action.payload.username,
-                userIsLogged: action.payload.status
+                user: action.payload
             }
         case "SET_MODAL_STATE":
             return {

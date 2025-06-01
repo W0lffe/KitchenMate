@@ -6,7 +6,7 @@ import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
         recipesReducer,
         basketReducer } from "./reducer.js";
-import { basketAPI, dishesAPI, recipesAPI, userAPI } from "../api/http.js"
+import { basketAPI, dishesAPI, recipesAPI } from "../api/http.js"
 import { filter, sort } from "../util/filterSort.js";
 
 export const KitchenContext = createContext({
@@ -16,9 +16,8 @@ export const KitchenContext = createContext({
     toggleNavigation: () => {},
     activeSection: "",
     setActiveSection: () => {},
-    userIsLogged: false,
     setUser: () => {},
-    user: "",
+    user: 0,
     setModalState: () => {},
     modalIsOpen: false,
     isMobile: false,
@@ -95,8 +94,7 @@ export default function KitchenContextProvider({children}){
         slogan: "",
         navigationIsOpen: true,
         activeSection: "",
-        user: "",
-        userIsLogged: false,
+        user: 0,
         activeModal: "",
         modalIsOpen: false,
         isMobile: false,
@@ -447,7 +445,6 @@ export default function KitchenContextProvider({children}){
         toggleNavigation,
         activeSection: utilState.activeSection,
         setActiveSection,
-        userIsLogged: utilState.userIsLogged,
         setUser, 
         user: utilState.user,
         setModalState,

@@ -18,7 +18,7 @@ export const userAPI = async (data) => {
         }
         const resData = await response.json();
         console.log(resData)
-        //return resData.status;
+        return resData;
         
     } catch (error) {
         return {status: error.message};

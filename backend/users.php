@@ -11,7 +11,7 @@ $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
 if(!isset($data["method"]) || !isset($data["user"])){
-    echo json_encode(["status" => "Critical error while creating or authenticating user!"]);
+    echo json_encode(["error" => "Critical error while creating or authenticating user!"]);
     exit;
 };
 
@@ -34,17 +34,17 @@ function authUser($userFile, $user){
     foreach($users as $existUser){
         if($existUser["user"] === $user["user"]){
             if(password_verify($user["passwd"], $existUser["passwd"])){
-                echo json_encode(["status" => "User authenticated!", "id" => $existUser["id"]]);
+                echo json_encode(["success" => "User authenticated!", "id" => $existUser["id"]]);
                 exit;
             }
             else{
-                echo json_encode(["status" => "Username or password is incorrect."]);
+                echo json_encode(["error" => "Username or password is incorrect."]);
                 exit;
             }
         }
     }
 
-    echo json_encode(["status" => "Username or password is incorrect."]);
+    echo json_encode(["error" => "Username or password is incorrect."]);
     exit;
 
 
@@ -53,12 +53,17 @@ function authUser($userFile, $user){
 function createNewUser($userFile, $newUser){
 
     if(strlen($newUser["user"]) === 0 || strlen($newUser["user"]) > 12){
-        echo json_encode(["status" => "Username is invalid."]);
+        echo json_encode(["error" => "Username is invalid."]);
+        exit;
+    }
+    
+    if(strlen($newUser["passwd"]) === 0){
+        echo json_encode(["error" => "Please enter a password."]);
         exit;
     }
 
     if(strlen($newUser["passwd"]) < 10){
-        echo json_encode(["status" => "Password is too short."]);
+        echo json_encode(["error" => "Password is too short."]);
         exit;
     }
 
@@ -66,7 +71,7 @@ function createNewUser($userFile, $newUser){
 
     foreach($users as $existUser){
         if($existUser["user"] == $newUser["user"]){
-            echo json_encode(["status" => "This username is taken."]);
+            echo json_encode(["error" => "This username is taken."]);
             exit;
         };
     }; 
@@ -78,10 +83,10 @@ function createNewUser($userFile, $newUser){
     array_push($users, $newUser);
 
     if(file_put_contents($userFile ,json_encode($users, JSON_PRETTY_PRINT))){
-        echo json_encode(["status" => "User created successfully!"]);
+        echo json_encode(["success" => "User created successfully!"]);
     }
     else{
-        echo json_encode(["status" => "User creation failed!"]);
+        echo json_encode(["error" => "User creation failed!"]);
     }
 }
 
