@@ -90,6 +90,7 @@ The project is currently in a solid and stable state, with application architect
     - [ ] Utilizing localStorage for saving basket with obtained items
     - [ ] Creating a homepage
     - [ ] Dish creation image preview
+    - [ ] Modular dispatch functions
 
 
 # Backlog

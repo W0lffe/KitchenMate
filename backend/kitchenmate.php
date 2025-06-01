@@ -1,7 +1,7 @@
 <?php 
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
@@ -21,6 +21,9 @@ switch($operation){
     case "GET":
         getData($user, $endpoint);
         break;
+    case "POST":
+        postData($user, $endpoint);
+        break;
 
 }
 
@@ -37,5 +40,24 @@ function getData($user, $endpoint){
     }
 }
 
+function postData($user, $endpoint){
+
+    $input = file_get_contents("php://input");
+    $decodedInput = json_decode($input, true);
+    echo "Received", $input;
+
+    if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
+
+        $data = json_decode(file_get_contents("./$user/$endpoint.json"), true);
+
+        echo json_encode(["existing" => $data]);
+
+        array_push($data, $decodedInput);
+
+        echo json_encode(["updated" => $data]);
+    }
+
+
+}
 
 ?>

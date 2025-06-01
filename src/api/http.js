@@ -25,7 +25,6 @@ export const userAPI = async (data) => {
 }
 
 
-
 export const basketAPI = async(data) => fetchAPI({...data, endpoint: "basket"});
 export const dishesAPI = async(data) => fetchAPI({...data, endpoint: "dishes"});
 export const recipesAPI = async(data) => fetchAPI({...data, endpoint: "recipes"});
@@ -54,7 +53,7 @@ const fetchAPI = async(params) => {
         }
 
         const resData = await response.json();
-        return resData.data;
+        return {data: resData.data};
 
     } catch (error) {
         return {error: error.message};
