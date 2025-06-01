@@ -6,7 +6,7 @@ import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
         recipesReducer,
         basketReducer } from "./reducer.js";
-import { basketAPI, dishesAPI, recipesAPI } from "../api/http.js"
+import { basketAPI, dishesAPI, recipesAPI, userAPI } from "../api/http.js"
 import { filter, sort } from "../util/filterSort.js";
 
 export const KitchenContext = createContext({

@@ -2,8 +2,7 @@ import { useContext,
         useActionState } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import SubmitButton from "../Buttons/SubmitButton";
-import { postNewUser, 
-        authenticateUser } from "../../api/http";
+import { userAPI } from "../../api/http";
 import { containerStyle, 
         headerStyle, 
         sectionStyle,
@@ -20,7 +19,7 @@ export default function LoginSignupForm(){
         const pass = formData.get("passwd")
 
         const user = {
-            username: name, 
+            user: name, 
             passwd: pass
         }
 
@@ -28,13 +27,12 @@ export default function LoginSignupForm(){
         let response;
 
         if(activeModal === "login"){
-            // send user object to api
-            //response = await authenticateUser(user)
-            errors.push("Invalid username or password!")
+            response = userAPI({user, method: "login"})
+            //errors.push("Invalid username or password!")
         }
         else{
-            //response = await postNewUser(user)
-            errors.push("Username does not contain valid characters!")
+            response = userAPI({user, method: "new"})
+            //errors.push("Username does not contain valid characters!")
         }
      
         if(errors.length > 0){

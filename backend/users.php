@@ -2,6 +2,7 @@
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
 $userFile = "./users/users.json";
@@ -28,7 +29,25 @@ switch($method){
 
 function authUser($userFile, $user){
 
-    echo json_encode(["authenticating user:" => $user]);
+    $users = json_decode(file_get_contents($userFile), true);
+    
+    foreach($users as $existUser){
+        if($existUser["user"] === $user["user"]){
+            if(password_verify($user["passwd"], $existUser["passwd"])){
+                echo json_encode(["status" => "User authenticated!", "id" => $existUser["id"]]);
+                exit;
+            }
+            else{
+                echo json_encode(["status" => "Username or password is incorrect."]);
+                exit;
+            }
+        }
+    }
+
+    echo json_encode(["status" => "Username or password is incorrect."]);
+    exit;
+
+
 }
 
 function createNewUser($userFile, $newUser){

@@ -1,45 +1,30 @@
 import { basketList, recipeList, dishList } from "../../backend/dummy_data";
-const URL = "";
+const URL = "http://localhost:8000";
 
-export const postNewUser = async (user) => {
+export const userAPI = async (data) => {
 
-    try {
-        const response = await fetch(`${URL}`, {
+
+     try {
+        const response = await fetch(`${URL}/users.php`, {
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify(data)
         });
 
         if(!response.ok){
             throw new Error("Error occured posting new user")
         }
         const resData = await response.json();
-        return resData;
+        console.log(resData)
+        //return resData.status;
         
     } catch (error) {
-        return error;
+        return {status: error.message};
     }
 }
 
-export const authenticateUser = async (user) => {
-
-    try {
-        const response = await fetch(`${URL}?user=${JSON.stringify(user)}`, {
-            method: "GET",
-        });
-
-        if(!response.ok){
-            throw new Error("Error occured authenticating user.")
-        }
-        const resData = await response.json();
-        return resData;
-        
-    } catch (error) {
-        return error;
-    }
-}
 
 
 export const basketAPI = async(data) => fetchAPI({...data, endpoint: "basket"});
@@ -64,7 +49,7 @@ const fetchAPI = async(params) => {
     console.log(content);
 
    try {
-        const response = await fetch(`${URL}?user=${JSON.stringify(user)}&endpoint=${JSON.stringify(endpoint)}`, content);
+        const response = await fetch(`${URL}?user=${user}&endpoint=${endpoint}`, content);
         
         if(!response.ok){
             throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.status}`);
