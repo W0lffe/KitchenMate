@@ -180,7 +180,7 @@ export default function KitchenContextProvider({children}){
         setIsFetchingData(true);
 
         const recipes = await recipesAPI({
-            user: utilState.user,
+            user: utilState.user.id,
         });
 
         await new Promise(r => setTimeout(r, 1000));
@@ -239,7 +239,7 @@ export default function KitchenContextProvider({children}){
         setIsFetchingData(true);
 
         const dishes = await dishesAPI({
-            user: utilState.user,
+            user: utilState.user.id,
         });
         
         await new Promise(r => setTimeout(r, 1000));
@@ -296,7 +296,7 @@ export default function KitchenContextProvider({children}){
         setIsFetchingData(true);
      
         const basket = await basketAPI({
-            user: utilState.user,
+            user: utilState.user.id,
         });
 
         await new Promise(r => setTimeout(r, 1000));
