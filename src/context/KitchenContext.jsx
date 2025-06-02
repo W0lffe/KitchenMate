@@ -128,6 +128,34 @@ export default function KitchenContextProvider({children}){
         setAvailableRecipes()
     }
 
+    const postAndFetch = async (dataToPost, endpoint) => {
+
+        const data = {
+            user: utilState.user.id,
+            data: dataToPost,
+            method: "POST"
+        }
+
+        console.log("new data to post",data);
+
+        let response;
+        switch(endpoint){
+            case "recipes":
+                response = await recipesAPI(data);
+                break;
+            case "dishes":
+                response = await dishesAPI(data);
+                break;
+            case "basket": 
+                response = await basketAPI(data);
+                break;
+        }
+
+        if(response.success){
+            fetchAndSetAvailableData();
+        }
+    } 
+
 
     /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
     const setIsMobile = (isMobile) => {
@@ -207,7 +235,7 @@ export default function KitchenContextProvider({children}){
         await new Promise(r => setTimeout(r, 1000));
         recipeDispatch({
                 type: "SET_RECIPES",
-                payload: recipes
+                payload: recipes.data
         })
 
         fetchedRecipes.current = recipes;
@@ -215,7 +243,6 @@ export default function KitchenContextProvider({children}){
     }
 
     const addNewRecipe = async (recipe) => {
-        //postRecipes(utilState.user, newRecipe)
         const id = recipesState.availableRecipes.length + 1;
         const newRecipe = {...recipe, id};
         await new Promise(r => setTimeout(r, 1000));
@@ -224,6 +251,8 @@ export default function KitchenContextProvider({children}){
             payload: newRecipe
         })
 
+
+        postAndFetch(newRecipe, utilState.activeSection);
         setActiveRecipe(null);
     }
 
@@ -275,7 +304,7 @@ export default function KitchenContextProvider({children}){
         await new Promise(r => setTimeout(r, 1000));
         dishDispatch({
                 type: "SET_DISHES",
-                payload: dishes
+                payload: dishes.data
         })
 
         fetchedDishes.current = dishes;
@@ -298,6 +327,7 @@ export default function KitchenContextProvider({children}){
             payload: newDish
         })
 
+        postAndFetch(newDish, utilState.activeSection);
         setActiveDish(null);
     }
 
@@ -341,7 +371,7 @@ export default function KitchenContextProvider({children}){
         await new Promise(r => setTimeout(r, 1000));
         basketDispatch({
                 type: "SET_BASKET",
-                payload: basket
+                payload: basket.data
         })
 
         fetchedBasket.current = basket;
@@ -362,6 +392,9 @@ export default function KitchenContextProvider({children}){
             payload: newProducts
         })
 
+        console.log("new prods",newProducts);
+
+        postAndFetch(newProducts, "basket");
       
         setEntryStatus(null);
         setModalState(null);

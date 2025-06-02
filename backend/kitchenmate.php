@@ -31,6 +31,9 @@ function getData($user, $endpoint){
 
     if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
         $data = json_decode(file_get_contents("./$user/$endpoint.json"), true);
+        if($data === null){
+            $data = [];
+        }
         echo json_encode(["data" => $data]);
         exit;
     }
@@ -44,17 +47,26 @@ function postData($user, $endpoint){
 
     $input = file_get_contents("php://input");
     $decodedInput = json_decode($input, true);
-    echo "Received", $input;
 
     if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
 
         $data = json_decode(file_get_contents("./$user/$endpoint.json"), true);
-
-        echo json_encode(["existing" => $data]);
+        if($data === null){
+            $data = [];
+        }
 
         array_push($data, $decodedInput);
 
-        echo json_encode(["updated" => $data]);
+        if(file_put_contents("./$user/$endpoint.json" ,json_encode($data, JSON_PRETTY_PRINT))){
+            echo json_encode(["success" => "Data saved successfully!"]);
+        }
+        else{
+            echo json_encode(["error" => "Data could not be saved."]);
+        }
+
+    }
+    else {
+        // CREATE DIRECTORY LOGIC
     }
 
 

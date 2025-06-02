@@ -43,8 +43,6 @@ const fetchAPI = async(params) => {
     :
     { method };
    
-    console.log(content);
-
    try {
         const response = await fetch(`${URL}/kitchenmate.php?user=${user}&endpoint=${endpoint}`, content);
         
@@ -53,7 +51,7 @@ const fetchAPI = async(params) => {
         }
 
         const resData = await response.json();
-        return {data: resData.data};
+        return resData;
 
     } catch (error) {
         return {error: error.message};
