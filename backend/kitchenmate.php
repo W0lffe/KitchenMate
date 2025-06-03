@@ -55,7 +55,13 @@ function postData($user, $endpoint){
             $data = [];
         }
 
-        array_push($data, $decodedInput);
+        if($endpoint === "basket"){
+            $data = array_merge($data, $decodedInput);
+        }
+        else{
+            array_push($data, $decodedInput);
+        }
+
 
         if(file_put_contents("./$user/$endpoint.json" ,json_encode($data, JSON_PRETTY_PRINT))){
             echo json_encode(["success" => "Data saved successfully!"]);

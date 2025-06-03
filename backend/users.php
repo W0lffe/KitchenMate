@@ -7,6 +7,11 @@ header("Content-Type: application/json");
 
 $userFile = "./users/users.json";
 
+if(!initDir($userFile)){
+    echo json_encode(["error" => "Error initializing directory!"]);
+    exit;
+}
+
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
@@ -25,6 +30,25 @@ switch($method){
     case "login": 
         authUser($userFile, $userData);
         break;
+}
+
+function initDir($userFile){
+    if(!is_dir("./users")){
+        if(!mkdir("./users", 0764, true)){
+            return false;
+        };
+    };
+
+    if(!file_exists($userFile)){
+        if(!file_put_contents($userFile, json_encode([]))){
+            return false;
+        }
+        if(!chmod($userFile, 0764)){
+            return false;
+        }
+    }
+
+    return true;
 }
 
 function authUser($userFile, $user){
@@ -68,6 +92,9 @@ function createNewUser($userFile, $newUser){
     }
 
     $users = json_decode(file_get_contents($userFile), true);
+    if($users === null){
+        $users = [];
+    }
 
     foreach($users as $existUser){
         if($existUser["user"] == $newUser["user"]){
@@ -83,11 +110,39 @@ function createNewUser($userFile, $newUser){
     array_push($users, $newUser);
 
     if(file_put_contents($userFile ,json_encode($users, JSON_PRETTY_PRINT))){
-        echo json_encode(["success" => "User created successfully!"]);
+
+        if(initEndpoints($newUser["id"])){
+            echo json_encode(["success" => "User created successfully!"]);
+        }
+        else{
+            echo json_encode(["error" => "User creation failed!"]);
+        }
     }
     else{
         echo json_encode(["error" => "User creation failed!"]);
     }
+}
+
+function initEndpoints($dir){
+
+    $path = "./$dir";
+    $ep = ["recipes.json", "dishes.json", "basket.json"];
+
+    if(!mkdir($path, 0764, true)){
+        return false;
+    }
+
+    foreach ($ep as $endpoint) {
+        if(!file_put_contents("$path/$endpoint", json_encode([]))){
+            return false;
+        }
+
+        if((!chmod("$path/$endpoint", 0764))){
+            return false;
+        }
+    };
+
+    return true;
 }
 
 
