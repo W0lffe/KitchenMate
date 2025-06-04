@@ -1,7 +1,7 @@
 <?php 
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
@@ -27,6 +27,48 @@ switch($operation){
     case "PUT":
         updateData($user, $endpoint);
         break;
+    case "DELETE":
+        deleteData($user, $endpoint);
+        break;
+}
+
+function deleteData($user, $endpoint){
+
+    if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
+        $input = file_get_contents("php://input");
+        $decodedInput = json_decode($input, true);
+        echo json_encode(["Input" => $decodedInput]);
+
+        $existingData = json_decode(file_get_contents("./$user/$endpoint.json"), true);
+        echo json_encode(["existing data" => $existingData]);
+
+        $index = null;
+        foreach($existingData as $existing){
+            if($existing["id"] === $decodedInput["id"]){
+                $index = array_search($existing, $existingData, true);
+                echo json_encode(["found index" => $index]);
+                break;
+            }
+        }
+
+        if($index !== null){
+            array_splice($existingData, $index, 1);
+
+            if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
+                echo json_encode(["success" => "Data saved successfully!"]);
+            }
+            else{
+                echo json_encode(["error" => "Data could not be saved."]);
+            }
+        }
+        else{
+            echo json_encode(["error" => "Data could not be saved."]);
+        }
+    }
+    else{
+        echo json_encode(["error" => "Data could not be saved."]);
+    }
+
 
 }
 
@@ -36,45 +78,47 @@ function updateData($user, $endpoint){
 
         $input = file_get_contents("php://input");
         $decodedInput = json_decode($input, true);
-        //echo json_encode(["Input" => $decodedInput]);
-
-        $id = $decodedInput["id"];
-        //echo json_encode(["ID" => $id]);
+        echo json_encode(["Input" => $decodedInput]);
 
         $existingData = json_decode(file_get_contents("./$user/$endpoint.json"), true);
-        //echo json_encode(["existing data" => $existingData]);
+        echo json_encode(["existing data" => $existingData]);
 
-
-        $index = null;
-        foreach($existingData as $existing){
-            if($existing["id"] === $id){
-                //echo json_encode(["looping" => $existing]);
-                $index = array_search($existing, $existingData, true);
-                //echo json_encode(["found index" => $index]);
-                break;
-            }
+        if($endpoint === "basket"){
+            $existingData = $decodedInput;
+            echo json_encode(["Updated basket" => $existingData]);
         }
+        else{
+            $index = null;
+            $id = $decodedInput["id"];
+            //echo json_encode(["ID" => $id]);
 
-        if($index !== null){    
-
-            //echo json_encode(["found index data" => $existingData[$index]]);
-            $existingData[$index] = $decodedInput;
-            //echo json_encode(["after updating" => $existingData]);
-            
-            if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
-                echo json_encode(["success" => "Data saved successfully!"]);
-                exit;
+            foreach($existingData as $existing){
+                if($existing["id"] === $id){
+                    //echo json_encode(["looping" => $existing]);
+                    $index = array_search($existing, $existingData, true);
+                    //echo json_encode(["found index" => $index]);
+                    break;
+                }
+            }
+            if($index !== null){
+                //echo json_encode(["found index data" => $existingData[$index]]);
+                $existingData[$index] = $decodedInput;
+                //echo json_encode(["after updating" => $existingData]);
             }
             else{
                 echo json_encode(["error" => "Data could not be saved."]);
                 exit;
             }
         }
+        
+        if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
+            echo json_encode(["success" => "Data saved successfully!"]);
+            exit;
+        }
         else{
             echo json_encode(["error" => "Data could not be saved."]);
             exit;
         }
-
     }
     else{
         echo json_encode(["error" => "Data could not be saved."]);
