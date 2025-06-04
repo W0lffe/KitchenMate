@@ -113,13 +113,16 @@ function createNewUser($userFile, $newUser){
 
         if(initEndpoints($newUser["id"])){
             echo json_encode(["success" => "User created successfully!"]);
+            exit;
         }
         else{
             echo json_encode(["error" => "User creation failed!"]);
+            exit;
         }
     }
     else{
         echo json_encode(["error" => "User creation failed!"]);
+        exit;
     }
 }
 
