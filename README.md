@@ -5,7 +5,7 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is currently in a solid and stable state, with application architecture and consistent styling throughout. It features a complete navigation system, modals, and forms for user authentication (login/signup) as well as for creating dishes, recipes, and basket items. Basic core CRUD (Create, Read, Update, Delete) functionality is fully implemented and operational locally for all main entities: recipes, dishes, and basket entries. Additionally, the app includes basic filtering and sorting capabilities to enhance usability. State management is efficiently handled through React's Context API combined with reducer functions, providing a maintainable foundation for future development.
+The project is currently in a solid and stable state, with application architecture and consistent styling throughout. It features a complete navigation system, modals, and forms for user authentication (login/signup) as well as for creating dishes, recipes, and basket items. Basic core CRUD (Create, Read, Update, Delete) functionality is fully implemented and operational locally for all main entities: recipes, dishes, and basket entries. Additionally, the app includes basic filtering and sorting capabilities to enhance usability. State management is efficiently handled through React's Context API combined with reducer functions, providing a maintainable foundation for future development. Backend functionalities are written and tested with the help of Postman but not connected to front-end. All functionalities will be refined and polished as project goes on.
 
 ### Planned Stages of Development
 
@@ -49,19 +49,19 @@ The project is currently in a solid and stable state, with application architect
     - [x] Recipes
     - [x] Dishes
     - [x] User Authentication
-- [ ] POST
-    - [ ] Basket
-    - [ ] Recipes
-    - [ ] Dishes
+- [x] POST
+    - [x] Basket
+    - [x] Recipes
+    - [x] Dishes
     - [x] New User
-- [ ] DELETE
-    - [ ] Basket
-    - [ ] Recipes
-    - [ ] Dishes
-- [ ] PUT
-    - [ ] Basket
-    - [ ] Recipes
-    - [ ] Dishes
+- [x] DELETE
+    - [x] Basket
+    - [x] Recipes
+    - [x] Dishes
+- [x] PUT
+    - [x] Basket
+    - [x] Recipes
+    - [x] Dishes
 
 #### Stage 4 
     Final Integration & Testing
@@ -219,17 +219,17 @@ The project is currently in a solid and stable state, with application architect
     - [x] basket
     - [x] recipes
     - [x] dishes
-- [ ] POST
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
+- [x] POST
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
     - [x] userAPI (handles login and signup)
-- [ ] DELETE
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
-- [ ] PUT
-    - [ ] basket
-    - [ ] recipes
-    - [ ] dishes
+- [x] DELETE
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
+- [x] PUT
+    - [x] basket
+    - [x] recipes
+    - [x] dishes
 
