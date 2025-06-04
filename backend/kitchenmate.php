@@ -69,13 +69,7 @@ function postData($user, $endpoint){
         else{
             echo json_encode(["error" => "Data could not be saved."]);
         }
-
     }
-    else {
-        // CREATE DIRECTORY LOGIC
-    }
-
-
 }
 
 ?>
