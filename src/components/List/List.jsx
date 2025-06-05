@@ -13,21 +13,26 @@ export default function List(){
 
     const {activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish} = useContext(KitchenContext);
     const [list, setList] = useState([]);
+    const [useLabel, setUseLabel] = useState("");
 
     useEffect(() => {
      
         if(activeSection === "recipes"){
+            setUseLabel(activeSection);
             setList([...availableRecipes]);
         }
         else if(activeSection === "dishes"){
-            if(activeDish?.mode === "create"){
+            if(activeDish?.mode === "create" || activeDish?.mode === "edit"){
+                setUseLabel("recipes");
                 setList([...availableRecipes]);
             }
             else{
                 setList([...availableDishes]);
+                setUseLabel(activeSection);
             }
         }
         else if(activeSection === "basket"){
+            setUseLabel(activeSection);
             setList([...availableBasket]);
         }
     }, [activeSection, availableRecipes, availableDishes, availableBasket, activeDish?.mode])
@@ -45,7 +50,7 @@ export default function List(){
             {list.length > 0 ? 
             (<>
             <li className={listHeadingStyle}>
-                {getListLabels(activeSection).map((label, i) => 
+                {getListLabels(useLabel).map((label, i) => 
                     <label key={i} className={i === 0 ? nameHeadingStyle : null}>{label}</label>
                 )}
             </li>

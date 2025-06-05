@@ -21,14 +21,15 @@ export default function DishCreation(){
 
     const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest} = useContext(KitchenContext);
     const [components, setComponents] = useState([]);
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditingDish, setIsEditingDish] = useState(false);
 
     const isCreatingDish = activeDish?.mode === "create";
-    const mobileHeading = "Dish Creation"
+
+    const mobileHeading = "Dish Creation";
 
     const dishToModify = activeDish.dish;
-    const modifiedID = isEditing ? activeDish.dish?.id : null;
-    const isFavorite = isEditing ? activeDish.dish?.favorite : null;
+    const modifiedID = isEditingDish ? activeDish.dish?.id : null;
+    const isFavorite = isEditingDish ? activeDish.dish?.favorite : null;
     let initialFormState = {errors: null};
 
     if(dishToModify !== null){
@@ -40,21 +41,18 @@ export default function DishCreation(){
                 image: dishToModify.image
             }
         }
-
-        console.log(initialFormState)
     }
-
-
+   
     useEffect(() => {
         if(isCreatingDish && activeDish.components){
             setComponents([...activeDish?.components])
         }
-
         if(dishToModify !== null){
-            setIsEditing(true)
+            setIsEditingDish(true);
             setComponents([...activeDish.dish?.components] || [])
         }
     }, [isCreatingDish, activeDish?.components, dishToModify])
+
 
     const addComponent = (item) => {
         setComponents([...components, item])   
@@ -63,6 +61,13 @@ export default function DishCreation(){
     const deleteComponent = (item) => {
         const filtered = [...components].filter((component, i) => i !== item)
         setComponents(filtered);
+        setActiveDish({
+            dish: isCreatingDish ? null : {
+                ...dishToModify,
+                components: filtered
+            },
+            mode: isCreatingDish ? "create" : "edit"
+        })
     }
 
     const dishForm = (prevFormState, formData) => {
@@ -105,9 +110,10 @@ export default function DishCreation(){
             components
         }
 
+        console.log(newDish);
         handleRequest({
             data: newDish,
-            method: isEditing ? "PUT" : "POST"
+            method: isEditingDish ? "PUT" : "POST"
         })
 
         setActiveDish(null)

@@ -1,14 +1,19 @@
 import { KitchenContext } from "../../context/KitchenContext"
-import { useContext, useState, useEffect } from "react"
+import { useContext, 
+        useState, 
+        useEffect } from "react"
 import { getListItemStyle, 
         listItemNameStyle } from "./listStyles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faSquareCheck, faTrash, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { faEye, 
+        faSquareCheck, 
+        faTrash, 
+        faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, setProductObtained, activeDish, handleRequest} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest} = useContext(KitchenContext)
     const [section, setSection] = useState(null);
 
     useEffect(() => {
@@ -16,12 +21,13 @@ export default function ListItem({item}){
     },[activeSection])
     
     const isCreatingDish = activeDish?.mode === "create";
+    const isEditingDish = activeDish?.mode === "edit";
     let iconToUse = section === "basket" ? faSquareCheck : faEye;
-    iconToUse = isCreatingDish ? faSquarePlus : iconToUse;
+    iconToUse = isCreatingDish || isEditingDish ? faSquarePlus : iconToUse;
 
     const handleDelete = () => {
         handleRequest({
-            id: item.id,
+            data: {id: item.id},
             method: "DELETE"
         })
     }
@@ -29,6 +35,10 @@ export default function ListItem({item}){
     const handleClick = () => {
         if(section === "recipes"){
             setActiveRecipe({recipe: item, mode: "detail"});
+
+            if(isMobile){
+                setModalState(activeSection, true);
+            }
         }
         else if(section === "dishes"){
             if(isCreatingDish){
@@ -37,25 +47,40 @@ export default function ListItem({item}){
                
                 setActiveDish({dish: null, mode: "create", components})
             }
+            else if(isEditingDish){
+                const existingComponents = activeDish.dish?.components || [];
+                const components = [...existingComponents, item];
+                setActiveDish({
+                    dish: {
+                        ...activeDish.dish,
+                        components
+                    },
+                    mode: "edit"})
+            }
             else{
                 setActiveDish({dish: item, mode: "detail"});
+            }
+            if(isMobile){
+                setModalState(activeSection, true);
             }
         }
         else if(section === "basket"){
             const updatedItem = {...item, obtained: !item.obtained};
-            setProductObtained(updatedItem);
-        }
-
-        if(isMobile){
-            setModalState(activeSection, true);
+            handleRequest({
+                data: {
+                    updatedItem,
+                    update: true
+                },
+                method: "PUT"
+            });
         }
     }
 
     return(
         <li className={getListItemStyle(isMobile, item.obtained ? item.obtained : null)}>
-            {section === "recipes" || (section === "dishes" && isCreatingDish) ? <RecipeItem item={item}/> : null}
+            {section === "recipes" || (section === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item}/> : null}
             {section === "basket" ? <BasketItem item={item}/> : null}
-            {(section === "dishes" && !isCreatingDish) ? <DishItem item={item} /> : null}
+            {(section === "dishes" && (!isCreatingDish && !isEditingDish)) ? <DishItem item={item} /> : null}
             <FontAwesomeIcon onClick={handleClick} icon={iconToUse} className={item.obtained ? "text-green-600" : " text-[17px]"}/>
             {section === "basket" ? <FontAwesomeIcon icon={faTrash} onClick={handleDelete} /> : null}
         </li>

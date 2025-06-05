@@ -37,22 +37,28 @@ function deleteData($user, $endpoint){
     if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
         $input = file_get_contents("php://input");
         $decodedInput = json_decode($input, true);
-        echo json_encode(["Input" => $decodedInput]);
+        //echo json_encode(["Input" => $decodedInput]);
 
         $existingData = json_decode(file_get_contents("./$user/$endpoint.json"), true);
-        echo json_encode(["existing data" => $existingData]);
+        //echo json_encode(["existing data" => $existingData]);
 
         $index = null;
         foreach($existingData as $existing){
             if($existing["id"] === $decodedInput["id"]){
                 $index = array_search($existing, $existingData, true);
-                echo json_encode(["found index" => $index]);
+                //echo json_encode(["found index" => $index]);
                 break;
             }
         }
 
         if($index !== null){
             array_splice($existingData, $index, 1);
+
+            $newID = 1;
+            for($i = 0; $i < count($existingData); $i++){
+                $existingData[$i]["id"] = $newID;
+                $newID++;
+            }
 
             if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
                 echo json_encode(["success" => "Data saved successfully!"]);
@@ -68,8 +74,6 @@ function deleteData($user, $endpoint){
     else{
         echo json_encode(["error" => "Data could not be saved."]);
     }
-
-
 }
 
 function updateData($user, $endpoint){
@@ -78,19 +82,22 @@ function updateData($user, $endpoint){
 
         $input = file_get_contents("php://input");
         $decodedInput = json_decode($input, true);
-        echo json_encode(["Input" => $decodedInput]);
+        //echo json_encode(["Input" => $decodedInput]);
+
+        $id = $decodedInput["updatedItem"]["id"] ?? $decodedInput["id"];
+        //echo json_encode(["ID" => $id]);
+
+        $isBasketUpdate = isset($decodedInput["update"]) && $decodedInput["update"];
 
         $existingData = json_decode(file_get_contents("./$user/$endpoint.json"), true);
-        echo json_encode(["existing data" => $existingData]);
+        //echo json_encode(["existing data" => $existingData]);
 
-        if($endpoint === "basket"){
+        if($endpoint === "basket" && !$isBasketUpdate){
             $existingData = $decodedInput;
-            echo json_encode(["Updated basket" => $existingData]);
+            //echo json_encode(["Updated basket" => $existingData]);
         }
         else{
             $index = null;
-            $id = $decodedInput["id"];
-            //echo json_encode(["ID" => $id]);
 
             foreach($existingData as $existing){
                 if($existing["id"] === $id){
@@ -102,7 +109,7 @@ function updateData($user, $endpoint){
             }
             if($index !== null){
                 //echo json_encode(["found index data" => $existingData[$index]]);
-                $existingData[$index] = $decodedInput;
+                $existingData[$index] = $decodedInput["updatedItem"] ?? $decodedInput;
                 //echo json_encode(["after updating" => $existingData]);
             }
             else{
@@ -154,10 +161,19 @@ function postData($user, $endpoint){
             $data = [];
         }
 
+        $startingID = count($data) + 1;
+
         if($endpoint === "basket"){
+
+            for($i = 0; $i < count($decodedInput); $i++){
+                $decodedInput[$i]["id"] = $startingID;
+                $startingID++;
+            }
+         
             $data = array_merge($data, $decodedInput);
         }
         else{
+            $decodedInput["id"] = $startingID;
             array_push($data, $decodedInput);
         }
 

@@ -4,6 +4,7 @@ import { faTrash,
         faStar,
         faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, 
+        useEffect, 
         useState } from "react";
 import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
@@ -25,17 +26,25 @@ export default function ItemInspectView({itemToInspect}){
     const listOfItem = isRecipe ? itemToInspect.recipe.ingredients : itemToInspect.dish.components;
 
     const [isFavorited, setIsFavorited] = useState(item.favorite);
+    
+    useEffect(() => {
+        setIsFavorited(item.favorite);
+    }, [itemToInspect])
+
     const favorited = isFavorited ? "fav" : "";
 
     const handleDelete = () => {
         handleRequest({
-            id: item.id,
+            data: {id: item.id},
             method: "DELETE"
         })
 
         if(isMobile){
             setModalState(null, false)
         }
+
+        setActiveDish(null);
+        setActiveRecipe(null);
     }
 
     const handleModify = () => {
@@ -55,7 +64,11 @@ export default function ItemInspectView({itemToInspect}){
         if(!isRecipe){
             products = item.components.flatMap((component) => component.ingredients)
         }
-        addNewProduct(products);
+
+        handleRequest({
+            data: products,
+            method: "POST"
+        }, true)
     }
 
     const handleFavorite = () => {

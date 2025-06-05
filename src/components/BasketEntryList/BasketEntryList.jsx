@@ -10,11 +10,12 @@ import { validateAll } from "../../util/validation";
 
 export default function ManualBasketEntry(){
 
-    const {isMobile, setModalState, addNewProduct, editStatus, availableBasket, updateProducts} = useContext(KitchenContext)
+    const {isMobile, setModalState, editStatus, fullBasket, handleRequest, setEntryStatus} = useContext(KitchenContext)
 
     const isEditing = editStatus.mode === "edit";   
     const heading = isEditing ? "Edit Basket" : "Add Items";
     const use = isEditing ? "Edit" : "Items"; 
+    const availableBasket = fullBasket.current;
 
     let initialState = {errors: null};
 
@@ -26,7 +27,8 @@ export default function ManualBasketEntry(){
                     quantity: availableBasket.map((product) => product.quantity),
                     unit: availableBasket.map((product) => product.unit),
                 },
-                obtainedItems: availableBasket.map((product, index) => product.obtained ? index : null)
+                obtainedItems: availableBasket.map((product, index) => product.obtained ? index : null),
+                itemID: availableBasket.map((product) => product.id)
             });
     } 
 
@@ -56,17 +58,24 @@ export default function ManualBasketEntry(){
         if(isEditing){
             const updatedProducts = [...combinedProducts].map((product, productIndex) => {
                 const updated = initialFormState.obtainedItems.includes(productIndex) ?
-                                {...product, obtained: true} : product;
+                                {...product, obtained: true, id: initialFormState.itemID[productIndex]} :
+                                {...product, id: initialFormState.itemID[productIndex]};
                 return updated;
             })
-            console.log(updatedProducts)
-            updateProducts(updatedProducts)
+            handleRequest({
+                data: updatedProducts,
+                method: "PUT"
+            })
         }
         else{
-            addNewProduct(combinedProducts);
+             handleRequest({
+                data: combinedProducts,
+                method: "POST"
+            })
         }
 
         setModalState(null);
+        setEntryStatus(null);
         return {errors: null}
     }
 

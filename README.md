@@ -5,7 +5,7 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is currently in a solid and stable state, with application architecture and consistent styling throughout. It features a complete navigation system, modals, and forms for user authentication (login/signup) as well as for creating dishes, recipes, and basket items. Basic core CRUD (Create, Read, Update, Delete) functionality is fully implemented and operational locally for all main entities: recipes, dishes, and basket entries. Additionally, the app includes basic filtering and sorting capabilities to enhance usability. State management is efficiently handled through React's Context API combined with reducer functions, providing a maintainable foundation for future development. Backend functionalities are written and tested with the help of Postman but not connected to front-end. All functionalities will be refined and polished as project goes on.
+The project is nearly ready for its first public release. All initially planned functionalities have been implemented and manually tested. The application features a solid and stable architecture with consistent styling throughout. It includes a complete navigation system, modals, and forms for user authentication (login/signup), as well as for creating dishes, recipes, and basket items. Core CRUD (Create, Read, Update, Delete) functionality is fully operational for all main entities: recipes, dishes, and basket entries. Basic filtering and sorting capabilities are also in place to improve usability. State management is handled efficiently using React's Context API with reducer functions, ensuring a scalable and maintainable codebase. Backend functionalities are fully written and tested via Postman, and integration with the frontend is the final step before release. Further refinements will continue post-launch to enhance performance and user experience.
 
 ### Planned Stages of Development
 
@@ -87,11 +87,12 @@ The project is currently in a solid and stable state, with application architect
     - [ ] Possibility to show whole recipe in dish creation instead of just recipe name
     - [ ] Recipe scalability feature
     - [ ] Public recipe bank, visible for every user
-    - [ ] Utilizing localStorage for saving basket with obtained items
     - [ ] Creating a homepage
     - [ ] Dish creation image preview
-    - [ ] Modular dispatch functions
-
+    - [ ] Implement useOptimistic
+    - [ ] Delete confirmation
+    - [ ] Checking product duplicates/units
+    - [ ] Toasts!
 
 # Backlog
 ## Front-end
@@ -132,8 +133,7 @@ The project is currently in a solid and stable state, with application architect
 
 #### Context
 
-- [ ] Implement Context for the app
-    - [x] Work in Progress
+- [x] Implement Context for the app
 
 #### Hooks
 

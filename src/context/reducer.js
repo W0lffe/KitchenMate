@@ -37,9 +37,8 @@ export const utilityReducer = (state, action) => {
     }
 }
 
-
-export const recipesReducer = (state, action) => {
-    console.log("RECIPE_DEBUG: ", action.type, action.payload)
+export const kitchenReducer = (state, action) => {
+    console.log("DEBUG: ", action.type, action.payload)
     switch(action.type){
         case "SET_ACTIVE_RECIPE":
             return {
@@ -49,28 +48,6 @@ export const recipesReducer = (state, action) => {
             return {
                 ...state, availableRecipes: action.payload
             }
-        default:
-            return state
-    }
-}
-
-export const basketReducer = (state, action) => {
-    console.log("BASKET_DEBUG: ", action.type, action.payload);
-    switch(action.type){
-        case "SET_BASKET":
-            return{
-                ...state, availableBasket: action.payload
-            }
-        case "SET_STATUS":
-            return{
-                ...state, editStatus: action.payload
-            }
-    }
-}
-
-export const dishReducer = (state, action) => {
-    console.log("DISH_DEBUG: ", action.type, action.payload)
-    switch(action.type){
         case "SET_DISHES":
             return{
                 ...state, availableDishes: action.payload
@@ -79,5 +56,15 @@ export const dishReducer = (state, action) => {
             return{
                 ...state, activeDish: action.payload
             }
+        case "SET_BASKET":
+            return{
+                ...state, availableBasket: action.payload
+            }
+        case "SET_ENTRY_STATUS":
+            return{
+                ...state, editStatus: action.payload
+            }
+        default:
+            return state
     }
 }

@@ -11,8 +11,7 @@ import { naviButtonStyle } from "../Buttons/buttonStyles"
 export default function UserSection(){
 
     const {navigationIsOpen, user, setModalState, setUser} = useContext(KitchenContext);
-
-    const userIsLogged = user !== null;
+    const userIsLogged = user.name !== undefined && user.id !== null;
 
     return(
         <section className={getSectionStyle(navigationIsOpen)}>
@@ -21,7 +20,7 @@ export default function UserSection(){
                         <p>Welcome back, {user.name}!</p>
                         <img alt="IMAGE OF USER"></img>
                         <button className={naviButtonStyle} 
-                                onClick={() => setUser(null)}>Logout <FontAwesomeIcon icon={faRightFromBracket} className="text-gray-200"/></button>  </>) : 
+                                onClick={() => setUser({id: 0})}>Logout <FontAwesomeIcon icon={faRightFromBracket} className="text-gray-200"/></button>  </>) : 
                         (<>
                         <FontAwesomeIcon icon={faUser} className="text-gray-200"/>
                         <button onClick={() => setModalState("login", true)} 
