@@ -1,4 +1,4 @@
-const URL = "http://localhost:8000";
+import { URL } from "../../backend/api";
 
 export const userAPI = async (data) => {
 
@@ -16,6 +16,7 @@ export const userAPI = async (data) => {
             throw new Error("Error occured posting new user")
         }
         const resData = await response.json();
+        
         console.log(resData)
         return resData;
         

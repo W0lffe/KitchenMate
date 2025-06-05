@@ -6,8 +6,7 @@ import { createContext,
 import { getRandomSlogan } from "../util/util";
 import { utilityReducer, 
         recipesReducer,
-        basketReducer,
-        dishReducer } from "./reducer.js";
+        basketReducer } from "./reducer.js";
 import { basketAPI, 
         dishesAPI, 
         recipesAPI } from "../api/http.js"
@@ -22,27 +21,70 @@ export const KitchenContext = createContext({
     setActiveSection: () => {},
     setUser: () => {},
     user: null,
-    isInitialized: false,
     setModalState: () => {},
     modalIsOpen: false,
     isMobile: false,
     setIsMobile: () => {},
     activeModal: "",
+    addNewRecipe: () => {},
     availableRecipes: [],
+    setAvailableRecipes: () => {},
     activeRecipe: null,
     setActiveRecipe: () => {},
+    deleteRecipe: () => {},
     isFetchingData: false,
+    updateRecipe: () => {},
     filterList: () => {},
     sortList: () => {},
+    setAvailableDishes: () => {},
     availableDishes: [],
     setActiveDish: () => {},
     activeDish: null,
+    deleteDish: () => {},
+    addNewDish: () => {},
+    updateDish: () => {},
+    setAvailableBasket: () => {},
     availableBasket: [],
+    addNewProduct: () => {},
+    updateProducts: () => {},
+    deleteProduct: () =>{},
+    setProductObtained: () => {},
     editStatus: null,
     setEntryStatus: () => {},
     setFavorite: () => {},
-    handleRequest: () => {}
 })
+
+export const dishReducer = (state, action) => {
+    console.log("DISH_DEBUG: ", action.type, action.payload)
+    let updatedDishes;
+    switch(action.type){
+        case "SET_DISHES":
+            return{
+                ...state, availableDishes: action.payload
+            }
+        case "SET_ACTIVE_DISH":
+            return{
+                ...state, activeDish: action.payload
+            }
+        case "DELETE_DISH":
+            updatedDishes = [...state.availableDishes.filter((dish) => dish.id !== action.payload)]
+            return{
+                ...state, availableDishes: updatedDishes
+            }
+        case "MODIFY_DISH":
+            updatedDishes = state.availableDishes.map(dish => 
+                dish.id === action.payload.id ? action.payload : dish
+            )
+            return{
+                ...state, availableDishes: updatedDishes
+            }
+        case "NEW_DISH":
+            updatedDishes = [...state.availableDishes, action.payload]
+            return {
+                ...state, availableDishes: updatedDishes
+            }
+    }
+}
 
 export default function KitchenContextProvider({children}){
 
@@ -59,7 +101,6 @@ export default function KitchenContextProvider({children}){
         activeModal: "",
         modalIsOpen: false,
         isMobile: false,
-        isInitialized: false
     })
 
 
@@ -78,79 +119,44 @@ export default function KitchenContextProvider({children}){
         editStatus: null,
     })
 
-     const basketStateHandler = {
-            dispatch: basketDispatch,
-            type: "SET_BASKET",
-            api: basketAPI,
-            ref: fetchedBasket
-    };
-    const dishesStateHandler = {
-            dispatch: dishDispatch,
-            type: "SET_DISHES",
-            api: dishesAPI,
-            ref: fetchedDishes
-    };
-    const recipesStateHandler = {
-            dispatch: recipeDispatch,
-            type: "SET_RECIPES",
-            api: recipesAPI,
-            ref: fetchedRecipes
-    };
-
-
     useEffect(() => {
-        initializeData();
+        fetchAndSetAvailableData();
     }, [utilState.user])
 
-    const handleRequest = async (dataToHandle) => {
+    const fetchAndSetAvailableData = () => {
+        setAvailableBasket();
+        setAvailableDishes();
+        setAvailableRecipes()
+    }
 
-        const isRecipe = utilState.activeSection === "recipes";
-        const isDish = utilState.activeSection === "dishes";
-        const isBasket = utilState.activeSection === "basket";
+    const postAndFetch = async (dataToPost, endpoint) => {
 
-        const {data, method} = dataToHandle
-        const body = {
-                data,
-                user: utilState.user.id,
-                method
-            }
+        const data = {
+            user: utilState.user.id,
+            data: dataToPost,
+            method: "POST"
+        }
+
+        console.log("new data to post",data);
 
         let response;
-        let apiHandler = null;
-
-        console.log("request body", body);
-
-        if(isRecipe){
-            response = await recipesAPI(body);
-            apiHandler = recipesStateHandler;
-        }
-        if(isDish){
-            response = await dishesAPI(body);
-            apiHandler = dishesStateHandler;
-        }
-        if(isBasket){
-            response = await basketAPI(body);
-            apiHandler = basketStateHandler;
+        switch(endpoint){
+            case "recipes":
+                response = await recipesAPI(data);
+                break;
+            case "dishes":
+                response = await dishesAPI(data);
+                break;
+            case "basket": 
+                response = await basketAPI(data);
+                break;
         }
 
         if(response.success){
-            console.log("handler", apiHandler);
-            setAvailableList(apiHandler);
+            fetchAndSetAvailableData();
         }
-    }
+    } 
 
-    const initializeData = () => {
-        if(!utilState.isInitialized){
-            utilDispatch({
-                type: "SET_INITIALIZED",
-                payload: true
-            })
-        }
-
-        setAvailableList(recipesStateHandler)
-        setAvailableList(dishesStateHandler)
-        setAvailableList(basketStateHandler);
-    }
 
     /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
     const setIsMobile = (isMobile) => {
@@ -208,14 +214,13 @@ export default function KitchenContextProvider({children}){
 
     }
 
-    const setAvailableList = async (params) => {
-        
-        const {dispatch, type, api, ref} = params;
-        console.log(params);
+
+ /******************START OF RECIPES REDUCER RELATED FUNCTIONS******************************************* */
+    const setAvailableRecipes = async () => {
 
         if(utilState.user === null){
-             dispatch({
-                type,
+             recipeDispatch({
+                type: "SET_RECIPES",
                 payload: []
         })
             return;
@@ -223,28 +228,87 @@ export default function KitchenContextProvider({children}){
 
         setIsFetchingData(true);
 
-        const { data, status } = await api({
-            user: utilState.user.id
+        const recipes = await recipesAPI({
+            user: utilState.user.id,
+        });
+
+        await new Promise(r => setTimeout(r, 1000));
+        recipeDispatch({
+                type: "SET_RECIPES",
+                payload: recipes.data
         })
 
-        console.log(data, status);
-
-        dispatch({
-                type,
-                payload: data
-        })
-
-        ref.current = data;
+        fetchedRecipes.current = recipes;
         setIsFetchingData(false);
     }
-     
+
+    const addNewRecipe = async (newRecipe) => {
+        await new Promise(r => setTimeout(r, 1000));
+        recipeDispatch({
+            type: "ADD_RECIPE",
+            payload: newRecipe
+        })
+
+
+        postAndFetch(newRecipe, utilState.activeSection);
+        setActiveRecipe(null);
+    }
+
+    const deleteRecipe = async (id) => {
+        await new Promise(r => setTimeout(r, 1000));
+        recipeDispatch({
+            type: "DELETE_RECIPE",
+            payload: id
+        })
+
+        setActiveRecipe(null);
+    }
+    
     const setActiveRecipe = (recipe) => {
         recipeDispatch({
             type: "SET_ACTIVE_RECIPE",
             payload: recipe
         })
     }
-   
+
+    const updateRecipe = (updatedRecipe) => {
+        recipeDispatch({
+            type: "MODIFY_RECIPE",
+            payload: updatedRecipe
+        })
+
+        setActiveRecipe(null);
+    }
+
+
+    /******************START OF DISH REDUCER RELATED FUNCTIONS******************************************* */
+
+    const setAvailableDishes = async () => {
+
+        if(utilState.user === null){
+            dishDispatch({
+                type: "SET_DISHES",
+                payload: []
+        })
+            return;
+        }
+        
+        setIsFetchingData(true);
+
+        const dishes = await dishesAPI({
+            user: utilState.user.id,
+        });
+        
+        await new Promise(r => setTimeout(r, 1000));
+        dishDispatch({
+                type: "SET_DISHES",
+                payload: dishes.data
+        })
+
+        fetchedDishes.current = dishes;
+        setIsFetchingData(false);
+    }
+
     const setActiveDish = (dish) => {
         dishDispatch({
             type: "SET_ACTIVE_DISH",
@@ -253,14 +317,105 @@ export default function KitchenContextProvider({children}){
 
     }
 
+    const addNewDish = (newDish) => {
+        dishDispatch({
+            type: "NEW_DISH",
+            payload: newDish
+        })
+
+        postAndFetch(newDish, utilState.activeSection);
+        setActiveDish(null);
+    }
+
+    const updateDish = (dish) => {
+        dishDispatch({
+            type: "MODIFY_DISH",
+            payload: dish
+        })
+
+        setActiveDish(null);
+    }
+
+    const deleteDish = async (id) => {
+        await new Promise(r => setTimeout(r, 1000));
+        dishDispatch({
+            type: "DELETE_DISH",
+            payload: id
+        })
+
+        setActiveDish(null);
+    }
+
+    /******************START OF BASKET REDUCER RELATED FUNCTIONS******************************************* */
+
+    const setAvailableBasket = async() => {
+
+        if(utilState.user === null){
+            basketDispatch({
+                type: "SET_BASKET",
+                payload: []
+        })
+            return;
+        }
+
+        setIsFetchingData(true);
+     
+        const basket = await basketAPI({
+            user: utilState.user.id,
+        });
+
+        await new Promise(r => setTimeout(r, 1000));
+        basketDispatch({
+                type: "SET_BASKET",
+                payload: basket.data
+        })
+
+        fetchedBasket.current = basket;
+        setIsFetchingData(false);
+    }
+
+    const addNewProduct = (newProducts) => {
+        basketDispatch({
+            type: "ADD_PRODUCTS",
+            payload: newProducts
+        })
+
+        postAndFetch(newProducts, "basket");
+      
+        setEntryStatus(null);
+        setModalState(null);
+    }
+
+    const updateProducts = (updatedProducts) => {
+         basketDispatch({
+                type: "SET_BASKET",
+                payload: updatedProducts
+        })
+        setEntryStatus(null);
+    }
+
+    const setProductObtained = (obtainedProduct) => {
+        basketDispatch({
+            type: "MODIFY_PRODUCT",
+            payload: obtainedProduct
+        })
+    }
+    
+    const deleteProduct = (product) => {
+        console.log(product)
+        basketDispatch({
+            type: "DELETE_PRODUCT",
+            payload: product
+        })
+        setEntryStatus(null);
+    }
+
     const setEntryStatus = (status) => {
         basketDispatch({
             type: "SET_STATUS",
             payload: status
         })
     }
-
-
 
     const filterList = (value) => {
 
@@ -355,20 +510,32 @@ export default function KitchenContextProvider({children}){
         activeModal: utilState.activeModal,
         isMobile: utilState.isMobile,
         setIsMobile,
+        addNewRecipe,
         availableRecipes: recipesState.availableRecipes,
+        setAvailableRecipes,
         activeRecipe: recipesState.activeRecipe,
         setActiveRecipe,
+        deleteRecipe,
+        updateRecipe,
         isFetchingData: isFetchingData,
         filterList,
         sortList,
+        setAvailableDishes,
         availableDishes: dishesState.availableDishes,
         setActiveDish,
         activeDish: dishesState.activeDish,
+        deleteDish,
+        addNewDish,
+        setAvailableBasket,
         availableBasket: basketState.availableBasket,
+        addNewProduct,
+        deleteProduct,
+        updateDish,
+        setProductObtained,
+        updateProducts,
         editStatus: basketState.editStatus,
         setEntryStatus,
         setFavorite,
-        handleRequest
 
     }
 

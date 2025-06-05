@@ -8,7 +8,7 @@ import { faEye, faSquareCheck, faTrash, faSquarePlus } from "@fortawesome/free-s
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, setProductObtained, deleteProduct, activeDish} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, setProductObtained, activeDish, handleRequest} = useContext(KitchenContext)
     const [section, setSection] = useState(null);
 
     useEffect(() => {
@@ -18,6 +18,13 @@ export default function ListItem({item}){
     const isCreatingDish = activeDish?.mode === "create";
     let iconToUse = section === "basket" ? faSquareCheck : faEye;
     iconToUse = isCreatingDish ? faSquarePlus : iconToUse;
+
+    const handleDelete = () => {
+        handleRequest({
+            id: item.id,
+            method: "DELETE"
+        })
+    }
    
     const handleClick = () => {
         if(section === "recipes"){
@@ -50,7 +57,7 @@ export default function ListItem({item}){
             {section === "basket" ? <BasketItem item={item}/> : null}
             {(section === "dishes" && !isCreatingDish) ? <DishItem item={item} /> : null}
             <FontAwesomeIcon onClick={handleClick} icon={iconToUse} className={item.obtained ? "text-green-600" : " text-[17px]"}/>
-            {section === "basket" ? <FontAwesomeIcon icon={faTrash} onClick={() => { deleteProduct(item.product)}} /> : null}
+            {section === "basket" ? <FontAwesomeIcon icon={faTrash} onClick={handleDelete} /> : null}
         </li>
     )
 }

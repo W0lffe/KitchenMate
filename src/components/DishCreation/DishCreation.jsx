@@ -19,7 +19,7 @@ import { validateName } from "../../util/validation"
 
 export default function DishCreation(){
 
-    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, addNewDish, updateDish} = useContext(KitchenContext)
+    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest} = useContext(KitchenContext);
     const [components, setComponents] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
 
@@ -100,16 +100,15 @@ export default function DishCreation(){
             name,
             course,
             image,
-            favorite: isFavorite ? isFavorite : false,
+            favorite: isFavorite,
+            id: modifiedID,
             components
         }
-        if(isEditing){
-            const updatedDish = {...newDish, id: modifiedID};
-            updateDish(updatedDish);
-        }
-        else{
-            addNewDish(newDish);
-        }
+
+        handleRequest({
+            data: newDish,
+            method: isEditing ? "PUT" : "POST"
+        })
 
         setActiveDish(null)
         if(isMobile){
