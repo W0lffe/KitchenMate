@@ -13,6 +13,12 @@ dist-ssr
 *.local
 KitchenMate.docx
 
+# Firebase
+.firebaserc
+firebase.json
+.firebase/
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -24,9 +30,6 @@ KitchenMate.docx
 *.sln
 *.sw?
 
-#Assets
-
-
-#Other
-backend/recipes.php
+# Other
+backend/api.js
 

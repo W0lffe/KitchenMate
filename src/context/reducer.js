@@ -16,8 +16,7 @@ export const utilityReducer = (state, action) => {
         case "SET_USER":
             return {
                 ...state, 
-                user: action.payload.username,
-                userIsLogged: action.payload.status
+                user: action.payload
             }
         case "SET_MODAL_STATE":
             return {
@@ -29,80 +28,43 @@ export const utilityReducer = (state, action) => {
             return {
                 ...state, isMobile: action.payload
             }
+        case "SET_INITIALIZED":
+            return {
+                ...state, isInitialized: action.payload
+            }
         default: 
             return state;
     }
 }
 
-
-export const recipesReducer = (state, action) => {
-    let updatedRecipes;
-    console.log("RECIPE_DEBUG: ", action.type, action.payload)
+export const kitchenReducer = (state, action) => {
+    console.log("DEBUG: ", action.type, action.payload)
     switch(action.type){
         case "SET_ACTIVE_RECIPE":
             return {
                 ...state, activeRecipe: action.payload
             }
-        case "ADD_RECIPE":
-            updatedRecipes = [...state.availableRecipes, action.payload];
-            console.log("RECIPE_DEBUG-UPDATED: ", updatedRecipes);
-            return {
-                ...state, availableRecipes: updatedRecipes
-            }
         case "SET_RECIPES":
             return {
                 ...state, availableRecipes: action.payload
             }
-        case "DELETE_RECIPE":
-            updatedRecipes = state.availableRecipes.filter((recipe) =>  recipe.id !== action.payload )
-            return {
-                ...state, availableRecipes: updatedRecipes
+        case "SET_DISHES":
+            return{
+                ...state, availableDishes: action.payload
             }
-        case "MODIFY_RECIPE":
-            updatedRecipes = state.availableRecipes.map(recipe => 
-                recipe.id === action.payload.id ? action.payload : recipe
-            )
-            console.log("RECIPE_DEBUG-UPDATED: ", updatedRecipes);
-            return {
-                ...state, availableRecipes: updatedRecipes
+        case "SET_ACTIVE_DISH":
+            return{
+                ...state, activeDish: action.payload
             }
-        default:
-            return state
-    }
-}
-
-export const basketReducer = (state, action) => {
-    console.log("BASKET_DEBUG: ", action.type, action.payload)
-    let updatedBasket;
-    switch(action.type){
         case "SET_BASKET":
             return{
                 ...state, availableBasket: action.payload
             }
-        case "ADD_PRODUCTS":
-            updatedBasket = [...state.availableBasket, ...action.payload]
-            return{
-                    ...state, availableBasket: updatedBasket
-            }
-        case "SET_STATUS":
+        case "SET_ENTRY_STATUS":
             return{
                 ...state, editStatus: action.payload
             }
-        case "MODIFY_PRODUCT": {
-            updatedBasket = state.availableBasket.map(product => 
-                product.product === action.payload.product ? action.payload : product
-            )
-            return {
-                ...state, availableBasket: updatedBasket
-            }
-        }
-        case "DELETE_PRODUCT": {
-            updatedBasket = state.availableBasket.filter((product) => 
-              product.product !== action.payload)
-            console.log(updatedBasket)
-            return {
-                ...state, availableBasket: updatedBasket
-            }
-        }
+        default:
+            return state
     }
 }

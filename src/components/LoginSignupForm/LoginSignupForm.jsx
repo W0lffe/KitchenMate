@@ -2,8 +2,7 @@ import { useContext,
         useActionState } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import SubmitButton from "../Buttons/SubmitButton";
-import { postNewUser, 
-        authenticateUser } from "../../api/http";
+import { userAPI } from "../../api/http";
 import { containerStyle, 
         headerStyle, 
         sectionStyle,
@@ -13,35 +12,42 @@ import { containerStyle,
         inputStyle} from "./loginStyles";
 
 export default function LoginSignupForm(){
-    const {activeModal, setModalState} = useContext(KitchenContext);
+    const {activeModal, setModalState, setUser} = useContext(KitchenContext);
+    
+    const isLogin = activeModal === "login";
 
     const loginSignup = async (prevFormState, formData) => {
         const name = formData.get("username")
         const pass = formData.get("passwd")
 
         const user = {
-            username: name, 
+            user: name, 
             passwd: pass
         }
 
         let errors = [];
-        let response;
+        const response = await userAPI({user, method: isLogin ? "login" : "new"});
 
-        if(activeModal === "login"){
-            // send user object to api
-            //response = await authenticateUser(user)
-            errors.push("Invalid username or password!")
-        }
-        else{
-            //response = await postNewUser(user)
-            errors.push("Username does not contain valid characters!")
-        }
+        const {error, success, id} = response;
+        console.log(error, success, id);
+
+        error ? errors.push(error) : null;
      
         if(errors.length > 0){
-            return {errors}
+            return {
+                errors,
+                validInputs: { name }
+            }
         }
 
-        return {errors: null};
+        setTimeout(() => {
+            setModalState(null);
+            if(isLogin){
+                setUser({name, id});
+            }
+        }, 1500);
+
+        return {success};
 
     }
 
@@ -56,10 +62,16 @@ export default function LoginSignupForm(){
                 <h3 className={headingStyle}>{activeModal === "login" ? "LOGIN" : "SIGNUP"}</h3>
                 <form action={formAction} className={formStyle}>
                     <label className={labelStyle}>{activeModal === "login" ? "Username:" : "Username (unique):"}</label>
-                    <input type="text" name="username" placeholder="Enter username" className={inputStyle}/>
+                    <input type="text" name="username" 
+                                placeholder="Enter username" 
+                                className={inputStyle}
+                                defaultValue={formState.validInputs?.name}/>
                     <label className={labelStyle}>{activeModal === "login" ? "Password:" : "Password (8-16 characters):"}</label>
-                    <input type="password" name="passwd" placeholder="Enter password" className={inputStyle} />
+                    <input type="password" name="passwd" 
+                                placeholder="Enter password" 
+                                className={inputStyle} />
                     {formState.errors?.map((error, i) => <p key={i}>{error}</p>)}
+                    {formState.success? <p>{formState.success}</p> : null}
                     <SubmitButton use={"login"}/>
                 </form>
             </section>

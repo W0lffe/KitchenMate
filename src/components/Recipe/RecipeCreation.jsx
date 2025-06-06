@@ -16,11 +16,11 @@ import Errors from "../Error/Errors"
 
 export default function RecipeCreation(){
     
-    const {isMobile, addNewRecipe, setModalState, activeRecipe, updateRecipe} = useContext(KitchenContext)
+    const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext)
     const [editingRecipe, setEditingRecipe] = useState(false);
     const recipeToModify = activeRecipe.recipe;
-    let modifiedId;
-    let isFavorited;
+    const modifiedId = editingRecipe ? recipeToModify?.id : null;
+    const isFavorited = editingRecipe ? recipeToModify?.favorite : false;
 
     let initialFormState = {errors: null}
 
@@ -31,8 +31,6 @@ export default function RecipeCreation(){
     }, [recipeToModify])
 
     if(recipeToModify !== null){
-        modifiedId = recipeToModify.id;
-        isFavorited = recipeToModify.favorite;
         initialFormState = {
             errors: null,
             validInputs: {
@@ -106,17 +104,17 @@ export default function RecipeCreation(){
             prepTime,
             ingredients,
             instructions: steps,
+            favorite: isFavorited,
+            id: modifiedId,
             date: getTimestamp()
         }
 
-        if(editingRecipe){
-            const updatedRecipe = {...newRecipe, id: modifiedId, favorite: isFavorited};
-            updateRecipe(updatedRecipe)
-        }
-        else{
-            addNewRecipe(newRecipe);
-        }
-
+        handleRequest({
+            data: newRecipe,
+            method: editingRecipe ? "PUT" : "POST"
+        })
+      
+        setActiveRecipe(null);
         if(isMobile){
             setModalState(null, false)
         }

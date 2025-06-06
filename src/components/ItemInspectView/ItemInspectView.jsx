@@ -3,7 +3,9 @@ import { faTrash,
         faPenToSquare, 
         faStar,
         faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { useContext } from "react";
+import { useContext, 
+        useEffect, 
+        useState } from "react";
 import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
         containerStyle, 
@@ -16,24 +18,33 @@ import SubmitButton from "../Buttons/SubmitButton";
 
 export default function ItemInspectView({itemToInspect}){
 
-    const {activeSection, deleteRecipe, isMobile, setModalState, setActiveRecipe, deleteDish, setFavorite, addNewProduct, setActiveDish}  = useContext(KitchenContext)
+    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
 
     const isRecipe = itemToInspect.mode === "recipes";
     const isDish = itemToInspect.mode === "dishes";
     const item = isRecipe ? itemToInspect.recipe : itemToInspect.dish;
     const listOfItem = isRecipe ? itemToInspect.recipe.ingredients : itemToInspect.dish.components;
-    const favorited = item.favorite ? "fav" : "";
+
+    const [isFavorited, setIsFavorited] = useState(item.favorite);
+    
+    useEffect(() => {
+        setIsFavorited(item.favorite);
+    }, [itemToInspect])
+
+    const favorited = isFavorited ? "fav" : "";
 
     const handleDelete = () => {
-        if(isRecipe){
-            deleteRecipe(item.id)
-        }
-        else{
-            deleteDish(item.id)
-        }
+        handleRequest({
+            data: {id: item.id},
+            method: "DELETE"
+        })
+
         if(isMobile){
             setModalState(null, false)
         }
+
+        setActiveDish(null);
+        setActiveRecipe(null);
     }
 
     const handleModify = () => {
@@ -53,11 +64,20 @@ export default function ItemInspectView({itemToInspect}){
         if(!isRecipe){
             products = item.components.flatMap((component) => component.ingredients)
         }
-        addNewProduct(products);
+
+        handleRequest({
+            data: products,
+            method: "POST"
+        }, true)
     }
 
     const handleFavorite = () => {
-        setFavorite(item, isRecipe);
+        item.favorite = !item.favorite;
+        setIsFavorited(item.favorite);
+        handleRequest({
+            method: "PUT",
+            data: item
+        })
     }
 
     return(
