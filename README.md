@@ -5,7 +5,9 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is nearly ready for its first public release. All initially planned functionalities have been implemented and manually tested. The application features a solid and stable architecture with consistent styling throughout. It includes a complete navigation system, modals, and forms for user authentication (login/signup), as well as for creating dishes, recipes, and basket items. Core CRUD (Create, Read, Update, Delete) functionality is fully operational for all main entities: recipes, dishes, and basket entries. Basic filtering and sorting capabilities are also in place to improve usability. State management is handled efficiently using React's Context API with reducer functions, ensuring a scalable and maintainable codebase. Backend functionalities are fully written and tested via Postman, and integration with the frontend is the final step before release. Further refinements will continue post-launch to enhance performance and user experience.
+First working version is published to Firebase hosting!
+
+All initially planned functionalities have been implemented and manually tested. The application features a solid and stable architecture with consistent styling throughout. It includes a complete navigation system, modals, and forms for user authentication (login/signup), as well as for creating dishes, recipes, and basket items. Core CRUD (Create, Read, Update, Delete) functionality is fully operational for all main entities: recipes, dishes, and basket entries. Basic filtering and sorting capabilities are also in place to improve usability. State management is handled efficiently using React's Context API with reducer functions, ensuring a scalable and maintainable codebase. Backend functionalities are fully written and tested via Postman, and integration with the frontend is the final step before release. Further refinements will continue post-launch to enhance performance and user experience.
 
 ### Planned Stages of Development
 
@@ -66,7 +68,7 @@ The project is nearly ready for its first public release. All initially planned 
 #### Stage 4 
     Final Integration & Testing
 - Front-End
-    - [ ] Connecting front-end to backend
+    - [x] Connecting front-end to backend
     - [ ] Optimizing styling
     - [ ] Error Handling
     - [ ] Polishing
@@ -75,7 +77,7 @@ The project is nearly ready for its first public release. All initially planned 
     - [ ] Bug fixes
     - [ ] Testing of components
 - Deployment
-    - [ ] Deploying first version to Firebase
+    - [x] Deploying first version to Firebase
 
 
 #### Stage 5
@@ -93,6 +95,7 @@ The project is nearly ready for its first public release. All initially planned 
     - [ ] Delete confirmation
     - [ ] Checking product duplicates/units
     - [ ] Toasts!
+    - [ ] Real user authenticating, tokens
 
 # Backlog
 ## Front-end
