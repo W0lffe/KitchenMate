@@ -113,7 +113,7 @@ export default function RecipeCreation(){
             method: editingRecipe ? "PUT" : "POST"
         })
         const {success, error} = response;
-        
+
         if(error){
             toast.error(error);
             return {
@@ -127,7 +127,7 @@ export default function RecipeCreation(){
             if(isMobile){
                 setModalState(null, false)
             }
-        }, 1500);
+        }, 1250);
         return {errors: null}
     }
 

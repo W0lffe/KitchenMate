@@ -43,7 +43,7 @@ export default function LoginSignupForm(){
             if(isLogin){
                 setUser({name, id});
             }
-        }, 1500);
+        }, 1250);
 
         return {errors: null};
     }

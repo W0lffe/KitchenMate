@@ -16,6 +16,7 @@ import { footerStyle,
         listSpanStyle, 
         listStyle } from "./dishCreationStyles"
 import { validateName } from "../../util/validation"
+import toast from "react-hot-toast";
 
 export default function DishCreation(){
 
@@ -70,7 +71,7 @@ export default function DishCreation(){
         })
     }
 
-    const dishForm = (prevFormState, formData) => {
+    const dishForm = async (prevFormState, formData) => {
         const name = formData.get("name");
         const course = formData.get("course");
         const image = formData.get("image");
@@ -86,18 +87,22 @@ export default function DishCreation(){
             errors.push("Please select a course!");
         }
         if(components.length === 0){
-            errors.push("Dish can't be created with zero components!");
+            errors.push("Please add components!");
 
+        }
+
+        const validInputs = {
+            name,
+            course,
+            image
         }
         
         if(errors.length > 0){
+            toast.error((t) => (
+                <Errors errors={errors}/>
+            ), {duration: 5000})
             return {
-                errors,
-                validInputs: {
-                    name,
-                    course,
-                    image
-                }
+                validInputs
             }
         }
 
@@ -111,16 +116,27 @@ export default function DishCreation(){
         }
 
         console.log(newDish);
-        handleRequest({
+
+        const response = await handleRequest({
             data: newDish,
             method: isEditingDish ? "PUT" : "POST"
         })
+        const {error, success} = response;
 
-        setActiveDish(null)
-        if(isMobile){
-            setModalState(null)
+        if(error){
+            toast.error(error);
+            return {
+                validInputs
+            }
         }
 
+        toast.success(success);
+        setTimeout(() => {
+            setActiveDish(null)
+            if(isMobile){
+                setModalState(null)
+            }
+        }, 1250);
         return {errors: null};
     }
 
@@ -136,7 +152,6 @@ export default function DishCreation(){
             : null}
             <form action={formAction}>
             <DishInfoSection state={formState}/>
-            <Errors errors={formState.errors}/>
             {isMobile ? <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> : null}
             <ComponentRecipeList list={components} func={deleteComponent}/>
             <footer className={footerStyle}>
