@@ -16,12 +16,10 @@ export const userAPI = async (data) => {
             throw new Error("Error occured posting new user")
         }
         const resData = await response.json();
-        
-        console.log(resData)
         return resData;
         
     } catch (error) {
-        return {status: error.message};
+        return {error: "Error occured while fetching data!"};
     }
 }
 
@@ -48,14 +46,14 @@ const fetchAPI = async(params) => {
         const response = await fetch(`${URL}/kitchenmate.php?user=${user}&endpoint=${endpoint}`, content);
         
         if(!response.ok){
-            throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.status}`);
+            throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.error}`);
         }
 
         const resData = await response.json();
         return resData;
 
     } catch (error) {
-        return {error: error.message};
+        return {error: "Error occured while fetching data!"};
     } 
 
 }

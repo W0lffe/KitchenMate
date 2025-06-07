@@ -44,7 +44,7 @@ All initially planned functionalities have been implemented and manually tested.
         - [x] Modify
         - [x] Delete
 
-#### Stage 3 
+#### Stage 3 **COMPLETED**
     Backend Functionality
 - [x] GET
     - [x] Basket
@@ -94,7 +94,7 @@ All initially planned functionalities have been implemented and manually tested.
     - [ ] Implement useOptimistic
     - [ ] Delete confirmation
     - [ ] Checking product duplicates/units
-    - [ ] Toasts!
+    - [x] Toasts!
     - [ ] Real user authenticating, tokens
 
 # Backlog

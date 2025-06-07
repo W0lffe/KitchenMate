@@ -10,6 +10,7 @@ import { containerStyle,
         formStyle,
         labelStyle,
         inputStyle} from "./loginStyles";
+import toast from "react-hot-toast";
 
 export default function LoginSignupForm(){
     const {activeModal, setModalState, setUser} = useContext(KitchenContext);
@@ -25,21 +26,18 @@ export default function LoginSignupForm(){
             passwd: pass
         }
 
-        let errors = [];
         const response = await userAPI({user, method: isLogin ? "login" : "new"});
-
         const {error, success, id} = response;
-        console.log(error, success, id);
-
-        error ? errors.push(error) : null;
+        //console.log(error, success, id);
      
-        if(errors.length > 0){
+        if(error){
+            toast.error(error);
             return {
-                errors,
                 validInputs: { name }
             }
         }
 
+        toast.success(success);
         setTimeout(() => {
             setModalState(null);
             if(isLogin){
@@ -47,8 +45,7 @@ export default function LoginSignupForm(){
             }
         }, 1500);
 
-        return {success};
-
+        return {errors: null};
     }
 
     const [formState, formAction] = useActionState(loginSignup , {errors: null})
@@ -70,8 +67,6 @@ export default function LoginSignupForm(){
                     <input type="password" name="passwd" 
                                 placeholder="Enter password" 
                                 className={inputStyle} />
-                    {formState.errors?.map((error, i) => <p key={i}>{error}</p>)}
-                    {formState.success? <p>{formState.success}</p> : null}
                     <SubmitButton use={"login"}/>
                 </form>
             </section>

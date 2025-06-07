@@ -13,6 +13,7 @@ import SubmitButton from "../Buttons/SubmitButton";
 import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import Errors from "../Error/Errors"
+import toast from "react-hot-toast";
 
 export default function RecipeCreation(){
     
@@ -59,16 +60,10 @@ export default function RecipeCreation(){
         const unit = formData.getAll("unit");
         const steps = formData.getAll("step");
 
-        let errors = validateAll(name, portions, time, 
+        const errors = validateAll(name, portions, time, 
             timeFormat, products, quantity, unit, steps)
 
-        let ingredients;
-        if(products.length === unit.length && unit.length === quantity.length){
-            ingredients = combineProductData(products, quantity, unit)
-        }
-        else{
-            errors.push("Error creating recipe.")
-        }
+        const ingredients = combineProductData(products, quantity, unit)
 
         const prepTime = {
             time,
@@ -80,21 +75,25 @@ export default function RecipeCreation(){
             output
         }
 
+        const validInputs = {
+            name,
+            portions,
+            output,
+            time,
+            timeFormat,
+            products,
+            quantity,
+            unit,
+            steps
+        }
+
         if(errors.length > 0){
-            console.log(errors)
+            toast.error((t) => (
+                <Errors errors={errors}/>
+            ), {duration: 5000})
+            
             return {
-                errors,
-                validInputs: {
-                    name,
-                    portions,
-                    output,
-                    time,
-                    timeFormat,
-                    products,
-                    quantity,
-                    unit,
-                    steps
-                }
+                validInputs
             }
         }
 
@@ -109,16 +108,26 @@ export default function RecipeCreation(){
             date: getTimestamp()
         }
 
-        handleRequest({
+        const response = await handleRequest({
             data: newRecipe,
             method: editingRecipe ? "PUT" : "POST"
         })
-      
-        setActiveRecipe(null);
-        if(isMobile){
-            setModalState(null, false)
+        const {success, error} = response;
+        
+        if(error){
+            toast.error(error);
+            return {
+                validInputs
+            };
         }
+        toast.success(success);
 
+        setTimeout(() => {
+            setActiveRecipe(null);
+            if(isMobile){
+                setModalState(null, false)
+            }
+        }, 1500);
         return {errors: null}
     }
 
@@ -134,7 +143,6 @@ export default function RecipeCreation(){
             </span> : null}
         <form action={formAction}>
             <RecipeInfoSection state={formState}/>
-            <Errors errors={formState.errors}/>
             <div className={sectionContainerStyle}>
                <FormList use="Ingredients" state={formState}/>
                <FormList use="Instructions" state={formState}/>

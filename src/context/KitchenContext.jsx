@@ -9,7 +9,9 @@ import { utilityReducer,
 import { basketAPI, 
         dishesAPI, 
         recipesAPI } from "../api/http.js"
-import { filter, sort } from "../util/filterSort.js";
+import { filter, 
+        sort } from "../util/filterSort.js";
+import toast from "react-hot-toast";
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -126,9 +128,13 @@ export default function KitchenContextProvider({children}){
             apiHandler = basketStateHandler;
         }
 
-        if(response.success){
+        const {success, error} = response;
+
+        if(success){
             setAvailableList(apiHandler);
         }
+
+        return response;
     }
 
     const initializeData = () => {
@@ -174,6 +180,8 @@ export default function KitchenContextProvider({children}){
            setEntryStatus(null)
         }
 
+        toggleNavigation();
+
         utilDispatch({
             type: "SET_ACTIVE_SECTION",
             payload: section
@@ -210,16 +218,21 @@ export default function KitchenContextProvider({children}){
 
         setIsFetchingData(true);
 
-        const { data, status } = await api({
+        const { data, error } = await api({
             user: utilState.user.id
-        })
+        }) 
+
+        if(error){
+           toast.error(error);
+        }
 
         kitchenDispatch({
                 type,
-                payload: data
+                payload: !error ? data : []
         })
 
-        ref.current = data;
+        ref.current = !error ? data : [];
+
         setIsFetchingData(false);
     }
      

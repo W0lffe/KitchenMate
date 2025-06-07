@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { KitchenContext } from "../../context/KitchenContext";
 import LoginSignupForm from "../LoginSignupForm/LoginSignupForm";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import { Toaster } from "react-hot-toast";
 
 export default function Modal(){
 
@@ -18,6 +19,7 @@ export default function Modal(){
     return createPortal(
         <div>
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
+                <Toaster />
                 {activeModal === "signup" || activeModal === "login" ? <LoginSignupForm /> : null}
                 {activeModal === "recipes" ? <ContentWrapper /> : null}
                 {activeModal === "dishes" ? <ContentWrapper /> : null}
