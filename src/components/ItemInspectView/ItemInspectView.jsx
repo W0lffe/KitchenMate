@@ -15,6 +15,7 @@ import { bottomSection,
         listSection, 
         topSection } from "./inspectStyles";
 import SubmitButton from "../Buttons/SubmitButton";
+import toast from "react-hot-toast";
 
 export default function ItemInspectView({itemToInspect}){
 
@@ -33,12 +34,18 @@ export default function ItemInspectView({itemToInspect}){
 
     const favorited = isFavorited ? "fav" : "";
 
-    const handleDelete = () => {
-        handleRequest({
+    const handleDelete = async() => {
+        const response = await handleRequest({
             data: {id: item.id},
             method: "DELETE"
         })
+        const {error, success} = response;
+        if(error){
+            toast.error(error);
+            return;
+        }
 
+        toast.success(success);
         if(isMobile){
             setModalState(null, false)
         }
@@ -59,25 +66,41 @@ export default function ItemInspectView({itemToInspect}){
         }
     }
 
-    const handleAddCart = () => {
+    const handleAddCart = async() => {
         let products = item.ingredients
         if(!isRecipe){
             products = item.components.flatMap((component) => component.ingredients)
         }
 
-        handleRequest({
+        const response = await handleRequest({
             data: products,
             method: "POST"
         }, true)
+        const {error, success} = response;
+
+        if(error){
+            toast.error(error);
+            return;
+        }
+
+        toast.success(success);
     }
 
-    const handleFavorite = () => {
+    const handleFavorite = async() => {
         item.favorite = !item.favorite;
         setIsFavorited(item.favorite);
-        handleRequest({
+
+        const response = await handleRequest({
             method: "PUT",
             data: item
         })
+        const {error, success} = response;
+        if(error){
+            toast.error(error)
+            return;
+        }
+
+        toast.success(success);
     }
 
     return(

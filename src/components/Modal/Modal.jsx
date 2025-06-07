@@ -19,7 +19,7 @@ export default function Modal(){
     return createPortal(
         <div>
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
-                <Toaster />
+                {modalIsOpen ? <Toaster /> : null};
                 {activeModal === "signup" || activeModal === "login" ? <LoginSignupForm /> : null}
                 {activeModal === "recipes" ? <ContentWrapper /> : null}
                 {activeModal === "dishes" ? <ContentWrapper /> : null}

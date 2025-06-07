@@ -7,6 +7,7 @@ import { useContext,
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData } from "../../util/util";
 import { validateAll } from "../../util/validation";
+import toast from "react-hot-toast";
 
 export default function ManualBasketEntry(){
 
@@ -34,7 +35,7 @@ export default function ManualBasketEntry(){
 
     const [initialFormState, setInitialFormState] = useState(initialState);
 
-    const manualEntry = (prevFormState, formData) => {
+    const manualEntry = async(prevFormState, formData) => {
         const products = formData.getAll("product");
         const quantity = formData.getAll("quantity");
         const unit = formData.getAll("unit");
@@ -45,8 +46,10 @@ export default function ManualBasketEntry(){
         const combinedProducts = combineProductData(products, quantity, unit);
         
         if(errors.length > 0){
+            toast.error((t) => (
+                 <Errors errors={errors}/>
+            ), {duration: 5000});
             return {
-                errors,
                 validInputs: {
                     products,
                     quantity,
@@ -55,25 +58,26 @@ export default function ManualBasketEntry(){
             }
         }
 
-        if(isEditing){
-            const updatedProducts = [...combinedProducts].map((product, productIndex) => {
-                const updated = initialFormState.obtainedItems.includes(productIndex) ?
+        const productData = !isEditing ? combinedProducts : 
+                            [...combinedProducts].map((product, productIndex) => {
+                            const updated = initialFormState.obtainedItems.includes(productIndex) ?
                                 {...product, obtained: true, id: initialFormState.itemID[productIndex]} :
                                 {...product, id: initialFormState.itemID[productIndex]};
-                return updated;
-            })
-            handleRequest({
-                data: updatedProducts,
-                method: "PUT"
-            })
-        }
-        else{
-             handleRequest({
-                data: combinedProducts,
-                method: "POST"
-            })
+                                return updated;
+                            })
+
+        const response = await handleRequest({
+                data: productData,
+                method: isEditing ? "PUT" : "POST"
+        })
+        const {error, success} = response;
+        
+        if(error){
+            toast.error(error);
+            return;
         }
 
+        toast.success(success);
         setTimeout(() => {
             setEntryStatus(null);
             if(isMobile){
@@ -96,7 +100,6 @@ export default function ManualBasketEntry(){
                     <h3>{heading}</h3>
                 </section>
             ) : null}
-            <Errors errors={formState.errors}/>
             <form action={formAction} className="flex flex-col items-center gap-5">
                 <FormList use={use} state={formState}/>
                 <footer>
