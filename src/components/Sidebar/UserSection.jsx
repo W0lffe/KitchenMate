@@ -25,7 +25,7 @@ export default function UserSection(){
             {userIsLogged ?
                         (<> 
                         <p>Welcome back, {user.name}!</p>
-                        <img alt="IMAGE OF USER" src={user.img || defaultUser}/>
+                        <img alt="IMAGE OF USER" src={user.img || defaultUser} className="size-30"/>
                         <button className={naviButtonStyle} onClick={handleLogout}>
                                 Logout 
                                 <FontAwesomeIcon icon={faRightFromBracket} className="text-gray-200"/>
