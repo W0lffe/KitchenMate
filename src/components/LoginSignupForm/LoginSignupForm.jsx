@@ -58,12 +58,12 @@ export default function LoginSignupForm(){
             <section className={sectionStyle}>
                 <h3 className={headingStyle}>{activeModal === "login" ? "LOGIN" : "SIGNUP"}</h3>
                 <form action={formAction} className={formStyle}>
-                    <label className={labelStyle}>{activeModal === "login" ? "Username:" : "Username (unique):"}</label>
+                    <label className={labelStyle}>{activeModal === "login" ? "Username:" : "Username (1-16 characters):"}</label>
                     <input type="text" name="username" 
                                 placeholder="Enter username" 
                                 className={inputStyle}
                                 defaultValue={formState.validInputs?.name}/>
-                    <label className={labelStyle}>{activeModal === "login" ? "Password:" : "Password (8-16 characters):"}</label>
+                    <label className={labelStyle}>{activeModal === "login" ? "Password:" : "Password (10-16 characters):"}</label>
                     <input type="password" name="passwd" 
                                 placeholder="Enter password" 
                                 className={inputStyle} />

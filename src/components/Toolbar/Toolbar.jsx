@@ -13,9 +13,10 @@ import { getSortOptions } from "./sortOptions";
 
 export default function Toolbar(){
 
-    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterList, sortList, activeSection, setEntryStatus} = useContext(KitchenContext)
+    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterList, sortList, activeSection, setEntryStatus, activeDish} = useContext(KitchenContext)
 
-    const currentOptions = getSortOptions(activeSection)
+    const isCreatingDish = activeDish.mode === "create";
+    const currentOptions = getSortOptions(activeSection, isCreatingDish);
     const labels = !isMobile ? currentOptions.labels : 
                                 currentOptions.icons.map((icon, i) => <FontAwesomeIcon icon={icon} key={i} className={iconStyle}/>)
     

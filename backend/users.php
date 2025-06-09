@@ -76,7 +76,7 @@ function authUser($userFile, $user){
 
 function createNewUser($userFile, $newUser){
 
-    if(strlen($newUser["user"]) === 0 || strlen($newUser["user"]) > 12){
+    if(strlen($newUser["user"]) === 0 || strlen($newUser["user"]) > 16){
         echo json_encode(["error" => "Username is invalid."]);
         exit;
     }

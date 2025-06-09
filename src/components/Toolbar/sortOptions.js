@@ -7,7 +7,20 @@ import { faArrowDownAZ,
         faUtensils, 
         faGears } from "@fortawesome/free-solid-svg-icons";
 
-export const getSortOptions = (activeSection) => {
+export const getSortOptions = (activeSection, isCreatingDish) => {
+
+    if(isCreatingDish){
+         return {
+                labels: ["Name", "Prep Time", "Newest-Oldest", "Favorite"],
+                icons: [
+                        faArrowDownAZ,
+                        faClock,
+                        faCalendarDays,
+                        faStar
+                    ],
+                values: ["name", "time", "date", "fav"]
+            }
+    }
 
     switch(activeSection){
         case "recipes":

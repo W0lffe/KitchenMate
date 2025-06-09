@@ -259,6 +259,16 @@ export default function KitchenContextProvider({children}){
 
     const filterList = (value) => {
 
+        if(kitchenState.activeDish.mode === "create"){
+            filter({
+                    fullList: fetchedRecipes.current,
+                    value,
+                    dispatch: kitchenDispatch,
+                    type: "SET_RECIPES"
+                })
+            return;
+        }
+
         switch(utilState.activeSection){
             case "recipes":
                 filter({
@@ -288,6 +298,16 @@ export default function KitchenContextProvider({children}){
     }
 
     const sortList = (sortBy) => {
+
+        if(kitchenState.activeDish.mode === "create"){
+           sort({
+                    fullList: kitchenState.availableRecipes,
+                    value: sortBy,
+                    dispatch: kitchenDispatch,
+                    type: "SET_RECIPES"
+                })
+            return;
+        }
         
         switch(utilState.activeSection){
             case "recipes":
