@@ -61,7 +61,7 @@ const validateTimeFormat = (timeFormat) => {
 
 export const validateName = (name) => {
 
-    if (name.length > 0 && name.length <= 30) {
+    if (name.length > 0 && name.length <= 50) {
         return true;
     }
 

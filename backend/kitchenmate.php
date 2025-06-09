@@ -61,18 +61,18 @@ function deleteData($user, $endpoint){
             }
 
             if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
-                echo json_encode(["success" => "Data saved successfully!"]);
+                echo json_encode(["success" => "Data deleted successfully!"]);
             }
             else{
-                echo json_encode(["error" => "Data could not be saved."]);
+                echo json_encode(["error" => "Data could not be deleted."]);
             }
         }
         else{
-            echo json_encode(["error" => "Data could not be saved."]);
+            echo json_encode(["error" => "Data could not be deleted."]);
         }
     }
     else{
-        echo json_encode(["error" => "Data could not be saved."]);
+        echo json_encode(["error" => "Data could not be deleted: Directory/file does not exist."]);
     }
 }
 
@@ -113,22 +113,22 @@ function updateData($user, $endpoint){
                 //echo json_encode(["after updating" => $existingData]);
             }
             else{
-                echo json_encode(["error" => "Data could not be saved."]);
+                echo json_encode(["error" => "Data could not be updated."]);
                 exit;
             }
         }
         
         if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
-            echo json_encode(["success" => "Data saved successfully!"]);
+            echo json_encode(["success" => "Data updated successfully!"]);
             exit;
         }
         else{
-            echo json_encode(["error" => "Data could not be saved."]);
+            echo json_encode(["error" => "Data could not be updated."]);
             exit;
         }
     }
     else{
-        echo json_encode(["error" => "Data could not be saved."]);
+        echo json_encode(["error" => "Data could not be updated: Directory/file does not exist."]);
         exit;
     }
 }
@@ -144,7 +144,7 @@ function getData($user, $endpoint){
         exit;
     }
     else{
-        echo json_encode(["error" => "Directory or file does not exist."]);
+        echo json_encode(["error" => "Data could not be retrieved: Directory/file does not exist."]);
         exit;
     }
 }
@@ -188,7 +188,7 @@ function postData($user, $endpoint){
         }
     }
     else{
-        echo json_encode(["error" => "Data could not be saved."]);
+        echo json_encode(["error" => "Data could not be saved: Directory/file does not exist."]);
         exit;
     }
 }

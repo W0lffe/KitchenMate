@@ -9,6 +9,7 @@ import { faEye,
         faSquareCheck, 
         faTrash, 
         faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 
 
 export default function ListItem({item}){
@@ -25,14 +26,22 @@ export default function ListItem({item}){
     let iconToUse = section === "basket" ? faSquareCheck : faEye;
     iconToUse = isCreatingDish || isEditingDish ? faSquarePlus : iconToUse;
 
-    const handleDelete = () => {
-        handleRequest({
+    const handleDelete = async () => {
+        const response = await handleRequest({
             data: {id: item.id},
             method: "DELETE"
         })
+        const {error, success} = response;
+
+        if(error){
+            toast.error(error);
+            return;
+        }
+
+        toast.success(success);
     }
    
-    const handleClick = () => {
+    const handleClick = async () => {
         if(section === "recipes"){
             setActiveRecipe({recipe: item, mode: "detail"});
 
@@ -66,13 +75,22 @@ export default function ListItem({item}){
         }
         else if(section === "basket"){
             const updatedItem = {...item, obtained: !item.obtained};
-            handleRequest({
+            const response = await handleRequest({
                 data: {
                     updatedItem,
                     update: true
                 },
                 method: "PUT"
             });
+
+             const {error} = response;
+
+        if(error){
+            toast.error(error);
+            return;
+        }
+
+        toast.success(`Product is ${!item.obtained ? "obtained!" : "not obtained!"}`);
         }
     }
 

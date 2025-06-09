@@ -77,7 +77,11 @@ export default function ManualBasketEntry(){
             return;
         }
 
-        toast.success(success);
+        console.log(combinedProducts.length)
+        let successToast = (!isEditing && combinedProducts.length === 1) ? "Product added to basket successfully!" : "";
+        successToast = (!isEditing && combinedProducts.length > 1)  ? "Products added to basket successfully!" : successToast;
+
+        toast.success(isEditing ? success : successToast);
         setTimeout(() => {
             setEntryStatus(null);
             if(isMobile){

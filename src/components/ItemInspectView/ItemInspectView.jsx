@@ -83,7 +83,7 @@ export default function ItemInspectView({itemToInspect}){
             return;
         }
 
-        toast.success(success);
+        toast.success("Products added to basket successfully!");
     }
 
     const handleFavorite = async() => {
@@ -94,13 +94,13 @@ export default function ItemInspectView({itemToInspect}){
             method: "PUT",
             data: item
         })
-        const {error, success} = response;
+        const {error} = response;
         if(error){
             toast.error(error)
             return;
         }
-
-        toast.success(success);
+        const object = isRecipe ? "Recipe" : "Dish";
+        toast.success(`${object} is ${item.favorite ? "favorited!" : "unfavorited!"}`);
     }
 
     return(
