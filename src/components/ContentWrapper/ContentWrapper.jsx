@@ -10,31 +10,10 @@ export default function ContentWrapper(){
 
     const {activeSection, activeRecipe, activeDish, isMobile, editStatus} = useContext(KitchenContext)
     
-    let content = null;
-    let mode;
-
-    if(activeSection === "recipes"){
-        mode = activeRecipe?.mode;
-        content = <>
-            {mode === "create" || mode === "edit"  ? <RecipeCreation /> : null}
-            {mode === "detail" ? <ItemInspectView itemToInspect={{recipe: activeRecipe.recipe, mode: activeSection}}/> : null}
-
-        </>
-    }
-
-    if(activeSection === "dishes"){
-        mode = activeDish?.mode;
-        content = <>
-            {mode === "create" ||  mode === "edit" ? <DishCreation /> : null}
-            {mode === "detail" ? <ItemInspectView itemToInspect={{dish: activeDish.dish, mode: activeSection}}/> : null}
-        </>
-    }
-
-    if(activeSection === "basket"){
-        content = <>
-            {editStatus?.status ? <BasketEntryList /> : null}
-        </>
-    }
+    const mode = activeSection === "recipes" ? activeRecipe?.mode :
+                activeSection === "dishes" ? activeDish?.mode :
+                undefined;
+    const content = renderContent(activeSection, mode, activeDish, activeRecipe, editStatus);
 
     return(
             <div className={getContainerStyle(isMobile)} >
@@ -42,3 +21,32 @@ export default function ContentWrapper(){
             </div>
         )
 }
+
+function renderContent(section, mode, activeDish, activeRecipe, editStatus){
+    const modes = ["create", "edit"];
+    const isDetail = mode === "detail";
+
+    if(section === "recipes"){
+
+        return(
+            <>
+                {modes.includes(mode)  && <RecipeCreation />}
+                {isDetail && <ItemInspectView itemToInspect={{recipe: activeRecipe?.recipe || null, mode: section}}/>}
+            </>
+        )
+    }
+
+    if(section === "dishes"){
+        return(
+            <>
+                {modes.includes(mode) && <DishCreation />}
+                {isDetail && <ItemInspectView itemToInspect={{dish: activeDish?.dish || null, mode: section}}/> }
+            </>
+        )
+    }
+
+    if(section === "basket" && editStatus?.status){
+        return <BasketEntryList />;
+    }
+}
+

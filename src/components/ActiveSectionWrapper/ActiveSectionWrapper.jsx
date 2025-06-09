@@ -11,7 +11,7 @@ import ContentWrapper from "../ContentWrapper/ContentWrapper"
 
 export default function ActiveSectionWrapper(){
 
-    const {activeSection, isMobile, activeRecipe, activeDish, editStatus} = useContext(KitchenContext)
+    const {activeSection, isMobile, activeRecipe, activeDish, editStatus} = useContext(KitchenContext);
 
     if(isMobile){
         return <>
@@ -20,38 +20,30 @@ export default function ActiveSectionWrapper(){
         </>
     }
 
-    let heading = "";
-    let content;
-    if(activeSection === "recipes" && activeRecipe?.mode){
-        content = <ContentWrapper />
-        if(activeRecipe.mode === "create"){
-            heading = "Recipe Creation";
+    const headings = {
+        recipes: {
+            create: "Recipe Creation",
+            detail: "Recipe Details",
+            edit: "Recipe Editor",
+        },
+        dishes: {
+            create: "Dish Creation",
+            detail: "Dish Details",
+            edit: "Dish Editor",  
+        },
+        basket: {
+            add: "Add Items to Basket",
+            edit: "Edit Basket",
         }
-        if(activeRecipe.mode === "detail"){
-            heading = "Recipe Details";
-        }
-        if(activeRecipe.mode === "edit"){
-            heading = "Recipe Editor";
-        }
-    }
-    if(activeSection === "dishes" && activeDish?.mode){
-       content = <ContentWrapper />
-       if(activeDish.mode === "detail"){
-            heading = "Dish Details"
-       }
-       if(activeDish.mode === "create"){
-            heading = "Dish Creation"
-       }
-    }
-    if(activeSection === "basket" && editStatus?.mode){
-        content = <ContentWrapper />
-        if(editStatus.mode === "add"){
-            heading = "Add Items to Basket"
-        }
-        if(editStatus.mode === "edit"){
-            heading = "Edit Basket"
-        }
-    }
+    };
+
+    const currentMode = activeSection === "recipes" ? activeRecipe?.mode : 
+                        activeSection === "dishes" ? activeDish?.mode : 
+                        activeSection === "basket" ? editStatus?.mode :
+                        undefined;
+                    
+    const heading = currentMode && headings[activeSection]?.[currentMode];
+    const hasContent = Boolean(currentMode);
 
      return (
             <div className={wrapperStyle}>
@@ -63,7 +55,7 @@ export default function ActiveSectionWrapper(){
                         <header className={creationHeaderStyle}>
                             {content ? <h2 className={headingStyle}>{heading}</h2> : null}
                         </header>
-                {content}
+                {hasContent && <ContentWrapper />}
                 </section>
             </div>
     )

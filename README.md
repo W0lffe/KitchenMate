@@ -70,7 +70,7 @@ All initially planned functionalities have been implemented and manually tested.
 - Front-End
     - [x] Connecting front-end to backend
     - [ ] Optimizing styling
-    - [ ] Error Handling
+    - [x] Error Handling 
     - [ ] Polishing
 - Testing
     - [ ] Testing on different devices

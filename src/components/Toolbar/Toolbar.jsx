@@ -15,7 +15,7 @@ export default function Toolbar(){
 
     const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterList, sortList, activeSection, setEntryStatus, activeDish} = useContext(KitchenContext)
 
-    const isCreatingDish = activeDish.mode === "create";
+    const isCreatingDish = activeDish?.mode === "create";
     const currentOptions = getSortOptions(activeSection, isCreatingDish);
     const labels = !isMobile ? currentOptions.labels : 
                                 currentOptions.icons.map((icon, i) => <FontAwesomeIcon icon={icon} key={i} className={iconStyle}/>)
