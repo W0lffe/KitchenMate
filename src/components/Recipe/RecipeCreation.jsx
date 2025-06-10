@@ -15,25 +15,31 @@ import FormList from "../FormList/FormList";
 import Errors from "../Error/Errors"
 import toast from "react-hot-toast";
 
+const getFormValues = (formData) => {
+    const name = formData.get("name")
+    const portions = formData.get("portions")
+    const output = formData.get("output")
+    const time = formData.get("time")
+    const timeFormat = formData.get("timeFormat")
+    const products = formData.getAll("product");
+    const quantity = formData.getAll("quantity");
+    const unit = formData.getAll("unit");
+    const steps = formData.getAll("step");
+
+    return{ name, portions, output, time, timeFormat, 
+            products, quantity, unit, steps };
+}
+
 export default function RecipeCreation(){
     
     const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext)
-    const [editingRecipe, setEditingRecipe] = useState(false);
+
     const recipeToModify = activeRecipe.recipe;
-    const modifiedId = editingRecipe ? recipeToModify?.id : null;
-    const isFavorited = editingRecipe ? recipeToModify?.favorite : false;
+    const isEditing = activeRecipe.mode === "edit";
+    const modifiedId = isEditing ? recipeToModify?.id : null
+    const isFavorited = isEditing ? recipeToModify?.favorite : false;
 
-    let initialFormState = {errors: null}
-
-    useEffect(() => {
-        if(recipeToModify !== null){
-            setEditingRecipe(true);
-        }
-    }, [recipeToModify])
-
-    if(recipeToModify !== null){
-        initialFormState = {
-            errors: null,
+    const initialFormState = isEditing ? {
             validInputs: {
                     name: recipeToModify.name,
                     portions: recipeToModify.output.portions,
@@ -45,35 +51,19 @@ export default function RecipeCreation(){
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
                     steps: recipeToModify.instructions,
             }
-        }
-    }
-
+        } : { validInputs: null };
+  
     const recipeForm = async(prevFormState, formData) => {
 
-        const name = formData.get("name")
-        const portions = formData.get("portions")
-        const output = formData.get("output")
-        const time = formData.get("time")
-        const timeFormat = formData.get("timeFormat")
-        const products = formData.getAll("product");
-        const quantity = formData.getAll("quantity");
-        const unit = formData.getAll("unit");
-        const steps = formData.getAll("step");
+        const { 
+            name, portions, output, time, timeFormat,
+            products, quantity, unit, steps 
+        } = getFormValues(formData);
 
         const errors = validateAll(name, portions, time, 
-            timeFormat, products, quantity, unit, steps)
+            timeFormat, products, quantity, unit, steps);
 
-        const ingredients = combineProductData(products, quantity, unit)
-
-        const prepTime = {
-            time,
-            format: timeFormat
-        }
-
-        const portionScale = {
-            portions,
-            output
-        }
+        const ingredients = combineProductData(products, quantity, unit);
 
         const validInputs = {
             name,
@@ -99,8 +89,14 @@ export default function RecipeCreation(){
 
         const newRecipe = {
             name,
-            output: portionScale, 
-            prepTime,
+            output: {
+                portions,
+                output
+            }, 
+            prepTime: {
+                time,
+                format: timeFormat
+            },
             ingredients,
             instructions: steps,
             favorite: isFavorited,
@@ -110,7 +106,7 @@ export default function RecipeCreation(){
 
         const response = await handleRequest({
             data: newRecipe,
-            method: editingRecipe ? "PUT" : "POST"
+            method: isEditing ? "PUT" : "POST"
         })
         const {success, error} = response;
 
@@ -120,27 +116,28 @@ export default function RecipeCreation(){
                 validInputs
             };
         }
-        toast.success(success);
 
+        toast.success(success);
         setTimeout(() => {
             setActiveRecipe(null);
             if(isMobile){
-                setModalState(null, false)
+                setModalState(null, false);
             }
         }, 1250);
-        return {errors: null}
+        return {validInputs}
     }
 
     const [formState, formAction] = useActionState(recipeForm , initialFormState)
-    const mobileHeading = !editingRecipe ? "Recipe Creation" : "Recipe Editor";
+    const mobileHeading = !isEditing ? "Recipe Creation" : "Recipe Editor";
 
     return(
        <div className="text-white">
-        {isMobile ? 
+        {isMobile && (
             <span className="flex flex-row justify-end items-center px-2">
                 <h2 className={mobileHeadingStyle}>{mobileHeading}</h2>
                 <SubmitButton use={"close"} func={() => setModalState(null, false)} />
-            </span> : null}
+            </span>
+        )}
         <form action={formAction}>
             <RecipeInfoSection state={formState}/>
             <div className={sectionContainerStyle}>

@@ -53,7 +53,7 @@ export default function ActiveSectionWrapper(){
                 </section>
                 <section className={creationSectionStyle}>
                         <header className={creationHeaderStyle}>
-                            {content ? <h2 className={headingStyle}>{heading}</h2> : null}
+                            {hasContent && <h2 className={headingStyle}>{heading}</h2>}
                         </header>
                 {hasContent && <ContentWrapper />}
                 </section>

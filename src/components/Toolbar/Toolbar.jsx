@@ -21,33 +21,29 @@ export default function Toolbar(){
                                 currentOptions.icons.map((icon, i) => <FontAwesomeIcon icon={icon} key={i} className={iconStyle}/>)
     
     const sortValues = currentOptions.values;
-    let style = toolbarStyle;
+    const style = isMobile ? mobileToolbarStyle : toolbarStyle;
     
-    let func;
-    if(activeSection === "recipes"){
-        func = () => { setActiveRecipe({recipe: null, mode: "create"}) };
+    const initCreatingMode = ()=> {
+        if(activeSection === "recipes"){
+            setActiveRecipe({recipe: null, mode: "create"});
+            return;
+        }
+        else if(activeSection === "dishes"){
+            setActiveDish({dish: null, mode: "create"});
+            return;
+        }
+        else if(activeSection === "basket"){
+            setEntryStatus({status: true, mode: "add"});
+            return;
+        }   
     }
-    if(activeSection === "dishes"){
-        func = () => { setActiveDish({dish: null, mode: "create"}) };
-    }
-    if(activeSection === "basket"){
-             func = () => { setEntryStatus({status: true, mode: "add"}) };
-    }   
-   
 
     const handleMobileClick = () => {
-        if(activeSection === "recipes"){
-            setActiveRecipe({recipe: null, mode: "create"})
-        }
-        if(activeSection === "dishes"){
-            setActiveDish({dish: null, mode: "create"})
-        }
-        if(activeSection === "basket"){
-            setEntryStatus({status: true, mode: "add"});
-        }   
-
+        initCreatingMode();
         setModalState(activeSection, true)
     }
+
+    const clickHandler = isMobile ? handleMobileClick : initCreatingMode;
 
     const handleBasketEdit = () => {
         setEntryStatus({status: true, mode: "edit"});
@@ -55,28 +51,25 @@ export default function Toolbar(){
             setModalState(activeSection, true)
         }
     }
-
-    if(isMobile){
-        style = mobileToolbarStyle;
-        func = handleMobileClick;
-    }
-  
+   
     return(
         <header className={style}>
             <h3 className={headingStyle}>Search and Filter</h3>
-            <input type="text" name="name" 
-                            placeholder="Search..." 
-                            className={inputStyle} 
-                            onChange={(event) => filterList(event.target.value)}/>
+            <input type="text" 
+                        name="name" 
+                        placeholder="Search..." 
+                        className={inputStyle} 
+                        onChange={(event) => filterList(event.target.value)}/>
             <span className={spanStyle}>
                 {labels.map((item, i) => <label key={i} onClick={() => sortList(sortValues[i])}>{item}</label>)}
                 <FontAwesomeIcon icon={faFolderPlus} 
-                                onClick={func} 
+                                onClick={clickHandler} 
                                 className={iconStyle}/>
-                {activeSection === "basket" ? 
-                    (<FontAwesomeIcon icon={faPenToSquare} 
+                {activeSection === "basket" && (
+                    <FontAwesomeIcon icon={faPenToSquare} 
                         onClick={handleBasketEdit} 
-                        className={iconStyle}/>) : null}
+                        className={iconStyle}/>
+                )}
             </span>
         </header>
     )

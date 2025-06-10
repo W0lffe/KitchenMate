@@ -3,20 +3,22 @@ import { getInputStyle,
         productStyle } from "./productStyles"
 
 export default function Product({state, index}){
+
+    const validInputs = state.validInputs || {};
     
     return(
         <div className={productStyle}>
             <input type="text" name="product" 
                             placeholder="Product" 
                             className={getInputStyle("product")} 
-                            defaultValue={state?.validInputs?.products[index]}/>
+                            defaultValue={validInputs.products[index]}/>
             <input type="number" name="quantity" 
                             placeholder="Quantity" 
                             className={getInputStyle("quantity")} 
-                            defaultValue={state?.validInputs?.quantity[index]}/>
+                            defaultValue={validInputs.quantity[index]}/>
             <select name="unit" 
                             className={getInputStyle("unit")} 
-                            defaultValue={state?.validInputs?.unit[index]}>
+                            defaultValue={validInputs.unit[index]}>
                 <option>Unit</option>
                 {units.map((unit) => <option key={unit}>{unit}</option>)}
             </select>
