@@ -14,8 +14,9 @@ import toast from "react-hot-toast";
 
 export default function LoginSignupForm(){
     const {activeModal, setModalState, setUser} = useContext(KitchenContext);
-    
     const isLogin = activeModal === "login";
+    const userHeading = isLogin ? "Username:" : "Username (1-16 characters):";
+    const passHeading = isLogin ? "Password:" : "Password (10-16 characters):";
 
     const loginSignup = async (prevFormState, formData) => {
         const name = formData.get("username")
@@ -45,10 +46,10 @@ export default function LoginSignupForm(){
             }
         }, 1250);
 
-        return {errors: null};
+        return {validInputs: { name }};
     }
 
-    const [formState, formAction] = useActionState(loginSignup , {errors: null})
+    const [formState, formAction] = useActionState(loginSignup , {validInputs: null})
 
     return(
         <div className={containerStyle}>
@@ -56,17 +57,21 @@ export default function LoginSignupForm(){
                 <SubmitButton use={"close"} func={setModalState} />
             </header>
             <section className={sectionStyle}>
-                <h3 className={headingStyle}>{activeModal === "login" ? "LOGIN" : "SIGNUP"}</h3>
+                <h3 className={headingStyle}>{isLogin ? "LOGIN" : "SIGNUP"}</h3>
                 <form action={formAction} className={formStyle}>
-                    <label className={labelStyle}>{activeModal === "login" ? "Username:" : "Username (1-16 characters):"}</label>
-                    <input type="text" name="username" 
-                                placeholder="Enter username" 
-                                className={inputStyle}
-                                defaultValue={formState.validInputs?.name}/>
-                    <label className={labelStyle}>{activeModal === "login" ? "Password:" : "Password (10-16 characters):"}</label>
-                    <input type="password" name="passwd" 
-                                placeholder="Enter password" 
-                                className={inputStyle} />
+                    <label className={labelStyle}>{userHeading}</label>
+                    <input type="text" 
+                            name="username" 
+                            required
+                            placeholder="Enter username" 
+                            className={inputStyle}
+                            defaultValue={formState.validInputs?.name}/>
+                    <label className={labelStyle}>{passHeading}</label>
+                    <input type="password" 
+                            name="passwd" 
+                            required
+                            placeholder="Enter password" 
+                            className={inputStyle} />
                     <SubmitButton use={"login"}/>
                 </form>
             </section>
