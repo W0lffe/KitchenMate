@@ -9,6 +9,8 @@ import {labelStyle,
 
 export default function DishInfoSection({state}){
 
+    const validInputs = state.validInputs || {name: "", course: "", imamge: null}
+
     return(
         <div className={divStyle}>
             <section className={infoSection}>
@@ -18,13 +20,13 @@ export default function DishInfoSection({state}){
                             name="name" 
                             placeholder="Name for dish" 
                             className={inputStyle}
-                            defaultValue={state.validInputs?.name}/>
+                            defaultValue={validInputs.name}/>
                 </span>
                 <span className={spanStyle}>
                     <label className={labelStyle}>Course:</label>
                     <select name="course" 
                             className={inputStyle}
-                            defaultValue={state.validInputs?.course}>
+                            defaultValue={validInputs.course}>
                         <option value="course">Select</option>
                         {courses.map((course) => 
                                     <option value={course} key={course}>{course}</option>)}
@@ -34,7 +36,7 @@ export default function DishInfoSection({state}){
             <section className={imageSection}>
                 {state.validInputs?.image ? 
                     <label htmlFor="image-upload">
-                        <img src={state.validInputs?.image} className={imageStyle} /> 
+                        <img src={validInputs.image} className={imageStyle} /> 
                     </label>
                     :
                     <label htmlFor="image-upload" 

@@ -16,50 +16,52 @@ export default function List(){
     const [useLabel, setUseLabel] = useState("");
 
     useEffect(() => {
-     
-        if(activeSection === "recipes"){
-            setUseLabel(activeSection);
-            setList([...availableRecipes]);
-        }
-        else if(activeSection === "dishes"){
-            if(activeDish?.mode === "create" || activeDish?.mode === "edit"){
-                setUseLabel("recipes");
-                setList([...availableRecipes]);
-            }
-            else{
-                setList([...availableDishes]);
+
+        switch(activeSection){
+            case "recipes":
                 setUseLabel(activeSection);
-            }
-        }
-        else if(activeSection === "basket"){
-            setUseLabel(activeSection);
-            setList([...availableBasket]);
+                setList(availableRecipes);
+                break;
+            case "dishes":
+                if(["create", "edit"].includes(activeDish?.mode)){
+                    setUseLabel("recipes");
+                    setList(availableRecipes);
+                }
+                else{
+                    setList(availableDishes);
+                    setUseLabel(activeSection);
+                }
+                break;
+            case "basket":
+                setUseLabel(activeSection);
+                setList(availableBasket);
+                break;
         }
     }, [activeSection, availableRecipes, availableDishes, availableBasket, activeDish?.mode])
 
     if(isFetchingData){
         return(
             <div className={listContainerStyle}>
-                <p>Fetching data...</p>
+                <p>Loading {useLabel}...</p>
             </div>
         )
     }
 
     return(
         <div className={listContainerStyle}>
-            {list.length > 0 ? 
-            (<>
-            <li className={listHeadingStyle}>
-                {getListLabels(useLabel).map((label, i) => 
-                    <label key={i} className={i === 0 ? nameHeadingStyle : null}>{label}</label>
-                )}
-            </li>
-            <ul className={itemListStyle}>
-                {list.map((item, i) => <ListItem key={i} item={item}/>)}
-            </ul>
-            </>) 
-            : 
-            (<>
+            {list.length > 0 ? (
+                <>
+                    <li className={listHeadingStyle}>
+                        {getListLabels(useLabel).map((label, i) => 
+                            <label key={i} className={i === 0 ? nameHeadingStyle : null}>{label}</label>
+                        )}
+                    </li>
+                    <ul className={itemListStyle}>
+                        {list.map((item, i) => <ListItem key={i} item={item}/>)}
+                    </ul>
+                </>
+            ) : (
+            <>
                 <p>List is empty! Start by creating {activeSection}.</p>
             </>)}
         </div>

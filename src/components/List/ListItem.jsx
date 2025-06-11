@@ -1,7 +1,5 @@
 import { KitchenContext } from "../../context/KitchenContext"
-import { useContext, 
-        useState, 
-        useEffect } from "react"
+import { useContext } from "react"
 import { getListItemStyle, 
         listItemNameStyle } from "./listStyles"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,16 +13,11 @@ import toast from "react-hot-toast";
 export default function ListItem({item}){
 
     const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest} = useContext(KitchenContext)
-    const [section, setSection] = useState(null);
-
-    useEffect(() => {
-        setSection(activeSection)
-    },[activeSection])
-    
+  
     const isCreatingDish = activeDish?.mode === "create";
     const isEditingDish = activeDish?.mode === "edit";
-    let iconToUse = section === "basket" ? faSquareCheck : faEye;
-    iconToUse = isCreatingDish || isEditingDish ? faSquarePlus : iconToUse;
+    const iconToUse = (isCreatingDish || isEditingDish) ? faSquarePlus :
+                        activeSection === "basket" ? faSquareCheck : faEye;
 
     const handleDelete = async () => {
         const response = await handleRequest({
@@ -42,29 +35,27 @@ export default function ListItem({item}){
     }
    
     const handleClick = async () => {
-        if(section === "recipes"){
+        if(activeSection === "recipes"){
             setActiveRecipe({recipe: item, mode: "detail"});
 
             if(isMobile){
                 setModalState(activeSection, true);
             }
         }
-        else if(section === "dishes"){
-            if(isCreatingDish){
-                const existingComponents = activeDish?.components || [];
-                const components = [...existingComponents, item];
-               
-                setActiveDish({dish: null, mode: "create", components})
-            }
-            else if(isEditingDish){
+        else if(activeSection === "dishes"){
+            if(isCreatingDish || isEditingDish){
                 const existingComponents = activeDish.dish?.components || [];
                 const components = [...existingComponents, item];
+
                 setActiveDish({
-                    dish: {
+                    dish: isCreatingDish ? {
+                        components
+                    } : {
                         ...activeDish.dish,
                         components
                     },
-                    mode: "edit"})
+                    mode: isCreatingDish ? "create" : "edit"
+                })
             }
             else{
                 setActiveDish({dish: item, mode: "detail"});
@@ -90,47 +81,55 @@ export default function ListItem({item}){
             return;
         }
 
-        toast.success(`Product is ${!item.obtained ? "obtained!" : "not obtained!"}`);
+        toast.success(`Product is marked as ${!item.obtained ? "obtained!" : "not obtained!"}`);
         }
     }
 
     return(
         <li className={getListItemStyle(isMobile, item.obtained ? item.obtained : null)}>
-            {section === "recipes" || (section === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item}/> : null}
-            {section === "basket" ? <BasketItem item={item}/> : null}
-            {(section === "dishes" && (!isCreatingDish && !isEditingDish)) ? <DishItem item={item} /> : null}
-            <FontAwesomeIcon onClick={handleClick} icon={iconToUse} className={item.obtained ? "text-green-600" : " text-[17px]"}/>
-            {section === "basket" ? <FontAwesomeIcon icon={faTrash} onClick={handleDelete} /> : null}
+            {activeSection === "recipes" || (activeSection === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item}/> : null}
+            {activeSection === "basket" && <BasketItem item={item}/>}
+            {(activeSection === "dishes" && (!isCreatingDish && !isEditingDish)) && <DishItem item={item} />}
+            <FontAwesomeIcon onClick={handleClick} 
+                            icon={iconToUse} 
+                            className={item.obtained ? "text-green-600" : " text-[17px]"}/>
+            {activeSection === "basket" && <FontAwesomeIcon icon={faTrash} onClick={handleDelete} />}
         </li>
     )
 }
 
 function RecipeItem({item}){
+    const {name, output, prepTime} = item;
+
     return(
         <>
-        <label className={listItemNameStyle}>{item.name}</label>
-        <label>{item.output?.portions}</label>
-        <label>{item.prepTime?.time} {item.prepTime?.format}</label>
+        <label className={listItemNameStyle}>{name}</label>
+        <label>{output?.portions}</label>
+        <label>{prepTime?.time} {prepTime?.format}</label>
         </>
     )
 }
 
 function BasketItem({item}){
+    const {product, quantity, unit} = item;
+
     return(
         <>
-        <label className={listItemNameStyle}>{item.product}</label>
-        <label>{item.quantity}</label>
-        <label>{item.unit}</label>
+        <label className={listItemNameStyle}>{product}</label>
+        <label>{quantity}</label>
+        <label>{unit}</label>
         </>
     )
 }
 
 function DishItem({item}){
+    const {name, course, components} = item;
+
     return(
         <>
-        <label className={listItemNameStyle}>{item.name}</label>
-        <label>{item.course}</label>
-        <label>{item.components?.length}</label>
+        <label className={listItemNameStyle}>{name}</label>
+        <label>{course}</label>
+        <label>{components?.length}</label>
         </>
     )
 }

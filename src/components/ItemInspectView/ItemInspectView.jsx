@@ -21,10 +21,11 @@ export default function ItemInspectView({itemToInspect}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
 
-    const isRecipe = itemToInspect.mode === "recipes";
-    const isDish = itemToInspect.mode === "dishes";
-    const item = isRecipe ? itemToInspect.recipe : itemToInspect.dish;
-    const listOfItem = isRecipe ? itemToInspect.recipe.ingredients : itemToInspect.dish.components;
+    const {mode, dish, recipe} = itemToInspect;
+    const isRecipe = mode === "recipes";
+    const isDish = mode === "dishes";
+    const item = isRecipe ? recipe : dish;
+    const listOfItem = isRecipe ? recipe.ingredients : dish.components;
 
     const [isFavorited, setIsFavorited] = useState(item.favorite);
     
@@ -56,13 +57,16 @@ export default function ItemInspectView({itemToInspect}){
 
     const handleModify = () => {
         if(isRecipe){
-            setActiveRecipe({recipe: item, mode: "edit"})
+            setActiveRecipe({recipe: item, mode: "edit"});
+            return;
         }
         if(isDish){
-            setActiveDish({dish: item, mode: "edit"})
+            setActiveDish({dish: item, mode: "edit"});
+            return;
         }
         if(isMobile){
-            setModalState(activeSection, true)
+            setModalState(activeSection, true);
+            return;
         }
     }
 
@@ -94,6 +98,7 @@ export default function ItemInspectView({itemToInspect}){
             method: "PUT",
             data: item
         })
+
         const {error} = response;
         if(error){
             toast.error(error)
@@ -143,14 +148,14 @@ function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handle
                     <FontAwesomeIcon icon={faCartPlus} 
                                      className={getIconStyle()}
                                      onClick={handleAddCart} />
-                    {isMobile ? <SubmitButton use={"close"} func={setModalState}/> : null}
+                    {isMobile && <SubmitButton use={"close"} func={setModalState}/>}
                 </span>
     )
 }
 
 function ItemListSection({isRecipe, list}){
 
-    const style = isRecipe ? "ingredients" : null;
+    const style = isRecipe && "ingredients";
 
     return(
         <section className={listSection}>
@@ -186,7 +191,7 @@ function ItemInfoSection({isRecipe, item}){
             </section>
             {!isRecipe ? (
                 <section className="w-1/2">
-                    <img src={item.image} alt="PHOTO" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
+                    <img src={item.image} alt="Photo cant be displayed" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
                 </section>
             ) : null}
         </div>
