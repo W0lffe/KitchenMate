@@ -64,7 +64,7 @@ export default function ListItem({item}){
                 setModalState(activeSection, true);
             }
         }
-        else if(section === "basket"){
+        else if(activeSection === "basket"){
             const updatedItem = {...item, obtained: !item.obtained};
             const response = await handleRequest({
                 data: {
