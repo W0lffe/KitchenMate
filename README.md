@@ -96,6 +96,7 @@ All initially planned functionalities have been implemented and manually tested.
     - [ ] Checking product duplicates/units
     - [x] Toasts!
     - [ ] Real user authenticating, tokens
+    - [ ] Modular function for handleRequest with toasts, now its repeatitive in multiple components
 
 # Backlog
 ## Front-end
