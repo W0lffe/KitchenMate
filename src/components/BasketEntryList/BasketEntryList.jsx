@@ -2,12 +2,28 @@ import FormList from "../FormList/FormList"
 import SubmitButton from "../Buttons/SubmitButton";
 import Errors from "../Error/Errors"
 import { useContext, 
-        useActionState, 
-        useState } from "react"
+        useActionState } from "react"
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData } from "../../util/util";
 import { validateAll } from "../../util/validation";
 import toast from "react-hot-toast";
+
+const getFormValues = (formData) => {
+    const products = formData.getAll("product");
+    const quantity = formData.getAll("quantity");
+    const unit = formData.getAll("unit");
+
+    return {products, quantity, unit};
+}
+
+const mapProductData = (productData) => {
+    const {products, index, id} = productData;
+    return products.map((product, i) => ({
+        ...product,
+        id: id[i],
+        ...(index.includes(i) && {obtained: true})
+    }))
+}
 
 export default function ManualBasketEntry(){
 
@@ -18,54 +34,48 @@ export default function ManualBasketEntry(){
     const use = isEditing ? "Edit" : "Items"; 
     const availableBasket = fullBasket.current;
 
-    let initialState = {errors: null};
-
-    if (isEditing) {
-            initialState = ({
-                errors: null,
+    const initialState = isEditing ? {
                 validInputs: {
                     products: availableBasket.map((product) => product.product),
                     quantity: availableBasket.map((product) => product.quantity),
                     unit: availableBasket.map((product) => product.unit),
                 },
-                obtainedItems: availableBasket.map((product, index) => product.obtained ? index : null),
-                itemID: availableBasket.map((product) => product.id)
-            });
-    } 
+                obtainedIndexes: availableBasket.map((product, index) => product.obtained ? index : null)
+                                                    .filter(index => index !== null),
+                itemIds: availableBasket.map((product) => product.id)
+            } : {validInputs: null};
 
-    const [initialFormState, setInitialFormState] = useState(initialState);
+    console.log(initialState)
 
     const manualEntry = async(prevFormState, formData) => {
-        const products = formData.getAll("product");
-        const quantity = formData.getAll("quantity");
-        const unit = formData.getAll("unit");
-
+        const {products, quantity, unit} = getFormValues(formData)
         const errors = validateAll(null, null, null, null, 
                                     products, quantity, unit, null);
         
         const combinedProducts = combineProductData(products, quantity, unit);
+        
+        const validInputs = {
+                products,
+                quantity,
+                unit
+        }
         
         if(errors.length > 0){
             toast.error((t) => (
                  <Errors errors={errors}/>
             ), {duration: 5000});
             return {
-                validInputs: {
-                    products,
-                    quantity,
-                    unit
-                }
+                validInputs
             }
         }
 
-        const productData = !isEditing ? combinedProducts : 
-                            [...combinedProducts].map((product, productIndex) => {
-                            const updated = initialFormState.obtainedItems.includes(productIndex) ?
-                                {...product, obtained: true, id: initialFormState.itemID[productIndex]} :
-                                {...product, id: initialFormState.itemID[productIndex]};
-                                return updated;
-                            })
-
+        const productData = !isEditing ? combinedProducts :
+                                        mapProductData({
+                                            products: combinedProducts,
+                                            index: initialState.obtainedIndexes,
+                                            id: initialState.itemIds
+                                        });
+        
         const response = await handleRequest({
                 data: productData,
                 method: isEditing ? "PUT" : "POST"
@@ -74,25 +84,22 @@ export default function ManualBasketEntry(){
         
         if(error){
             toast.error(error);
-            return;
+            return {validInputs}
         }
 
-        console.log(combinedProducts.length)
-        let successToast = (!isEditing && combinedProducts.length === 1) ? "Product added to basket successfully!" : "";
-        successToast = (!isEditing && combinedProducts.length > 1)  ? "Products added to basket successfully!" : successToast;
-
+        const successToast =  `Product${combinedProducts.length > 1 ? "s" : ""} added to basket successfully!`;
         toast.success(isEditing ? success : successToast);
+
         setTimeout(() => {
             setEntryStatus(null);
             if(isMobile){
                 setModalState(null);
             }
         }, 1250);
-        return {errors: null}
+        return {validInputs}
     }
 
-    const [formState, formAction] = useActionState(manualEntry, initialFormState)
-
+    const [formState, formAction] = useActionState(manualEntry, initialState);
 
     return(
         <div className="text-white w-full p-2">

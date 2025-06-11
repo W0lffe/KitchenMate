@@ -4,7 +4,7 @@ import { getInputStyle,
 
 export default function Product({state, index}){
 
-    const validInputs = state.validInputs || {};
+    const validInputs = state.validInputs || {products: [], quantity: [], unit: []};
     
     return(
         <div className={productStyle}>

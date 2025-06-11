@@ -2,7 +2,7 @@ import { input } from "./instructionStyles";
 
 export default function Instruction({step, state, index}){
 
-    const validInputs = state.validInputs || {};
+    const validInputs = state.validInputs || {steps: []};
 
     return(
         <div className="w-9/10">
