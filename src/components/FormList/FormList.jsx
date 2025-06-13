@@ -14,26 +14,19 @@ export default function FormList({use, state}){
     const isEditing = use === "Edit";
     const isProduct = ["Edit", "Ingredients", "Items"].includes(use);
 
-    let initialCount = 1;
-    if(state.validInputs){
-        initialCount = isProduct ? state.validInputs.products.length : state.validInputs.steps.length;
-    }
- 
+    const validInputs = state.validInputs || {products: [], steps: []};
+   
+    const initialCount = isProduct ? validInputs.products.length || 1 
+                                    : validInputs.steps.length || 1;
+  
     const [count, setCount] = useState(initialCount)
 
-    useEffect(() => {
-        if(state.validInputs){
-            const newCount = isProduct ? state.validInputs.products.length : state.validInputs.steps.length;
-            setCount(newCount);
-        }
-    }, [state.validInputs])
- 
     const increment = () => {
         setCount(prev => prev +1)
     }
 
     const decrement = () => {
-        setCount(prev => prev -1)
+        setCount(prev => Math.max(1, prev -1))
     }
 
     return(
@@ -43,7 +36,7 @@ export default function FormList({use, state}){
                 <span className={lineStyle}>
                     <label className={labelStyle}>{use}</label>
                     <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
-                    <FontAwesomeIcon icon={faSquareMinus} onClick={decrement} />
+                    <FontAwesomeIcon icon={faSquareMinus} onClick={decrement}/>
                 </span>
             </> : null}
             <ul className={listStyle}>

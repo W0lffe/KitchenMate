@@ -92,6 +92,7 @@ export default function KitchenContextProvider({children}){
 
 
     useEffect(() => {
+        console.log("buhuu")
         initializeData();
     }, [utilState.user])
 
@@ -201,7 +202,6 @@ export default function KitchenContextProvider({children}){
                 modalState
             }
         })
-
     }
 
     const setAvailableList = async (params) => {
@@ -223,15 +223,17 @@ export default function KitchenContextProvider({children}){
         }) 
 
         if(error){
-           toast.error(error);
+            toast.error(error);
+            setIsFetchingData(false);
+            return;
         }
 
         kitchenDispatch({
                 type,
-                payload: !error ? data : []
+                payload: data
         })
 
-        ref.current = !error ? data : [];
+        ref.current = data;
 
         setIsFetchingData(false);
     }
