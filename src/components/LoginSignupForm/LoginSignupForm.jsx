@@ -29,7 +29,6 @@ export default function LoginSignupForm(){
 
         const response = await userAPI({user, method: isLogin ? "login" : "new"});
         const {error, success, id} = response;
-        //console.log(error, success, id);
      
         if(error){
             toast.error(error);

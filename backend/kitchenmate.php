@@ -16,11 +16,10 @@ if(!isset($user) || !isset($endpoint)){
 
 $config = parse_ini_file("./config.ini", true);
 $dataPath = $config["paths"]["data_point"];
+$userDir = "./$dataPath/$user";
+$endpoint_path = "./$dataPath/$user/$endpoint.json";
 
 $operation = $_SERVER["REQUEST_METHOD"];
-
-$userDir = "$dataPath/$user";
-$endpoint_path = "$dataPath/$user/$endpoint.json";
 
 switch($operation){
 
@@ -28,10 +27,10 @@ switch($operation){
         getData($userDir, $endpoint_path);
         break;
     case "POST":
-        postData($userDir, $endpoint_path);
+        postData($userDir, $endpoint_path, $endpoint);
         break;
     case "PUT":
-        updateData($userDir, $endpoint_path);
+        updateData($userDir, $endpoint_path, $endpoint);
         break;
     case "DELETE":
         deleteData($userDir, $endpoint_path);
@@ -86,7 +85,7 @@ function deleteData($userDir, $endpoint_path){
     }
 }
 
-function updateData($userDir, $endpoint_path){
+function updateData($userDir, $endpoint_path, $endpoint){
 
     if(is_dir($userDir) && file_exists($endpoint_path)){
 
@@ -159,7 +158,7 @@ function getData($userDir, $endpoint_path){
     }
 }
 
-function postData($userDir, $endpoint_path){
+function postData($userDir, $endpoint_path, $endpoint){
 
     if(is_dir($userDir) && file_exists($endpoint_path)){
 
@@ -202,5 +201,4 @@ function postData($userDir, $endpoint_path){
         exit;
     }
 }
-
 ?>

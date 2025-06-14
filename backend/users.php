@@ -1,5 +1,4 @@
 <?php 
-
 //https://kitchenmate-efe45.web.app
 header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app"); 
 header("Access-Control-Allow-Methods: POST");
