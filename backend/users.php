@@ -107,7 +107,10 @@ function createNewUser($userFile, $newUser, $data_point){
         };
     }; 
 
-    $newUser["id"] = count($users) + 1;
+    $idRange = range(1, 1000);
+    $availableIds = array_diff($idRange, array_column($users, "id"));
+    $newUser["id"] = $availableIds[array_rand($availableIds)];
+  
     $cryptedPasswd = password_hash($newUser["passwd"], PASSWORD_BCRYPT);
     $newUser["passwd"] = $cryptedPasswd;
 
