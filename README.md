@@ -71,10 +71,10 @@ All initially planned functionalities have been implemented and manually tested.
     - [x] Connecting front-end to backend
     - [ ] Optimizing styling
     - [x] Error Handling 
-    - [ ] Polishing
+    - [x] Polishing
 - Testing
     - [ ] Testing on different devices
-    - [ ] Bug fixes
+    - [x] Bug fixes
     - [ ] Testing of components
 - Deployment
     - [x] Deploying first version to Firebase

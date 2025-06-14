@@ -90,9 +90,7 @@ export default function KitchenContextProvider({children}){
             ref: fetchedRecipes
     };
 
-
     useEffect(() => {
-        console.log("buhuu")
         initializeData();
     }, [utilState.user])
 

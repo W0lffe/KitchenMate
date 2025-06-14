@@ -1,5 +1,6 @@
 <?php 
 
+//https://kitchenmate-efe45.web.app
 header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -13,33 +14,38 @@ if(!isset($user) || !isset($endpoint)){
     exit;
 };
 
+$config = parse_ini_file("./config.ini", true);
+$dataPath = $config["paths"]["data_point"];
 
 $operation = $_SERVER["REQUEST_METHOD"];
+
+$userDir = "$dataPath/$user";
+$endpoint_path = "$dataPath/$user/$endpoint.json";
 
 switch($operation){
 
     case "GET":
-        getData($user, $endpoint);
+        getData($userDir, $endpoint_path);
         break;
     case "POST":
-        postData($user, $endpoint);
+        postData($userDir, $endpoint_path);
         break;
     case "PUT":
-        updateData($user, $endpoint);
+        updateData($userDir, $endpoint_path);
         break;
     case "DELETE":
-        deleteData($user, $endpoint);
+        deleteData($userDir, $endpoint_path);
         break;
 }
 
-function deleteData($user, $endpoint){
+function deleteData($userDir, $endpoint_path){
 
-    if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
+    if(is_dir($userDir) && file_exists($endpoint_path)){
         $input = file_get_contents("php://input");
         $decodedInput = json_decode($input, true);
         //echo json_encode(["Input" => $decodedInput]);
 
-        $existingData = json_decode(file_get_contents("./$user/$endpoint.json"), true);
+        $existingData = json_decode(file_get_contents($endpoint_path), true);
         //echo json_encode(["existing data" => $existingData]);
 
         $index = null;
@@ -60,25 +66,29 @@ function deleteData($user, $endpoint){
                 $newID++;
             }
 
-            if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
+            if(file_put_contents($endpoint_path, json_encode($existingData, JSON_PRETTY_PRINT))){
                 echo json_encode(["success" => "Data deleted successfully!"]);
+                exit;
             }
             else{
                 echo json_encode(["error" => "Data could not be deleted."]);
+                exit;
             }
         }
         else{
             echo json_encode(["error" => "Data could not be deleted."]);
+            exit;
         }
     }
     else{
         echo json_encode(["error" => "Data could not be deleted: Directory/file does not exist."]);
+        exit;
     }
 }
 
-function updateData($user, $endpoint){
+function updateData($userDir, $endpoint_path){
 
-    if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
+    if(is_dir($userDir) && file_exists($endpoint_path)){
 
         $input = file_get_contents("php://input");
         $decodedInput = json_decode($input, true);
@@ -89,7 +99,7 @@ function updateData($user, $endpoint){
 
         $isBasketUpdate = isset($decodedInput["update"]) && $decodedInput["update"];
 
-        $existingData = json_decode(file_get_contents("./$user/$endpoint.json"), true);
+        $existingData = json_decode(file_get_contents($endpoint_path), true);
         //echo json_encode(["existing data" => $existingData]);
 
         if($endpoint === "basket" && !$isBasketUpdate){
@@ -118,7 +128,7 @@ function updateData($user, $endpoint){
             }
         }
         
-        if(file_put_contents("./$user/$endpoint.json", json_encode($existingData, JSON_PRETTY_PRINT))){
+        if(file_put_contents($endpoint_path, json_encode($existingData, JSON_PRETTY_PRINT))){
             echo json_encode(["success" => "Data updated successfully!"]);
             exit;
         }
@@ -133,10 +143,10 @@ function updateData($user, $endpoint){
     }
 }
 
-function getData($user, $endpoint){
+function getData($userDir, $endpoint_path){
 
-    if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
-        $data = json_decode(file_get_contents("./$user/$endpoint.json"), true);
+    if(is_dir($userDir) && file_exists($endpoint_path)){
+        $data = json_decode(file_get_contents($endpoint_path), true);
         if($data === null){
             $data = [];
         }
@@ -149,14 +159,14 @@ function getData($user, $endpoint){
     }
 }
 
-function postData($user, $endpoint){
+function postData($userDir, $endpoint_path){
 
-    if(is_dir("./$user") && file_exists("./$user/$endpoint.json")){
+    if(is_dir($userDir) && file_exists($endpoint_path)){
 
         $input = file_get_contents("php://input");
         $decodedInput = json_decode($input, true);
 
-        $data = json_decode(file_get_contents("./$user/$endpoint.json"), true);
+        $data = json_decode(file_get_contents($endpoint_path), true);
         if($data === null){
             $data = [];
         }
@@ -178,7 +188,7 @@ function postData($user, $endpoint){
         }
 
 
-        if(file_put_contents("./$user/$endpoint.json" ,json_encode($data, JSON_PRETTY_PRINT))){
+        if(file_put_contents($endpoint_path ,json_encode($data, JSON_PRETTY_PRINT))){
             echo json_encode(["success" => "Data saved successfully!"]);
             exit;
         }

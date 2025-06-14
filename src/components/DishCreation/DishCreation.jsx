@@ -69,7 +69,6 @@ export default function DishCreation(){
 
 
     const addComponent = (item) => {
-        console.log("added component ", item);
         setActiveDish({
             dish: {
                 ...dish,
@@ -80,7 +79,6 @@ export default function DishCreation(){
     }
 
     const deleteComponent = (item) => {
-        console.log("deleted component ", item);
         const filtered = [...components].filter((component, componentIndex) => componentIndex !== item)
         setActiveDish({
             dish: {
