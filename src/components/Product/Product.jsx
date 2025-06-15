@@ -17,8 +17,8 @@ export default function Product({state, index}){
                             className={getInputStyle("quantity")} 
                             defaultValue={validInputs.quantity[index]}/>
             <select name="unit" 
-                            className={getInputStyle("unit")} 
-                            defaultValue={validInputs.unit[index]}>
+                    className={getInputStyle("unit")} 
+                    defaultValue={validInputs.unit[index]}>
                 <option>Unit</option>
                 {units.map((unit) => <option key={unit}>{unit}</option>)}
             </select>

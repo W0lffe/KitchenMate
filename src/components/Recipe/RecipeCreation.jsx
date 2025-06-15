@@ -2,9 +2,7 @@ import { sectionContainerStyle,
         mobileHeadingStyle,
         footerStyle} from "./recipeStyles";
 import { useContext, 
-        useActionState,
-        useState,
-        useEffect} from "react";
+        useActionState } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData,
         getTimestamp} from "../../util/util";
