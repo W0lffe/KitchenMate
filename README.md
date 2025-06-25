@@ -213,7 +213,7 @@ All initially planned functionalities have been implemented and manually tested.
 - [x] authenticateUser
 - [x] createNewUser
 
-- [ ] Connect front-end to backend
+- [x] Connect front-end to backend
 
 ## Backend
 
