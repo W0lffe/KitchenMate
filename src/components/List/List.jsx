@@ -39,7 +39,7 @@ export default function List(){
         }
     }, [activeSection, availableRecipes, availableDishes, availableBasket, activeDish?.mode])
 
-    if(isFetchingData){
+    if(isFetchingData && list.length === 0){
         return(
             <div className={listContainerStyle}>
                 <p>Loading {useLabel}...</p>

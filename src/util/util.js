@@ -62,3 +62,27 @@ export const getTimestamp = () => {
 }
 
 
+export const getReducerType = (method, section, basketAdd) => {
+
+
+    switch (section) {
+        case "recipes":
+            if (method === "POST" && basketAdd) return "ADD_BASKET_ITEM";
+            if (method === "POST" && !basketAdd) return "ADD_RECIPE";
+            if (method === "PUT") return "UPDATE_RECIPE";
+            if (method === "DELETE") return "REMOVE_RECIPE";
+            break;
+        case "dishes":
+            if (method === "POST" && basketAdd) return "ADD_BASKET_ITEM";
+            if (method === "POST" && !!basketAdd) return "ADD_DISH";
+            if (method === "PUT") return "UPDATE_DISH";
+            if (method === "DELETE") return "REMOVE_DISH";
+            break;
+        case "basket":
+            if (method === "POST") return "ADD_BASKET_ITEM";
+            if (method === "DELETE") return "REMOVE_BASKET_ITEM";
+            if (method === "PUT") return "UPDATE_BASKET_ITEM";
+            break;
+    }
+}
+

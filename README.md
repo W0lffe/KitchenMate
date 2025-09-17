@@ -91,7 +91,7 @@ All initially planned functionalities have been implemented and manually tested.
     - [ ] Public recipe bank, visible for every user
     - [ ] Creating a homepage
     - [ ] Dish creation image preview
-    - [ ] Implement useOptimistic
+    - [x] Implement useReducer for local data updating
     - [ ] Delete confirmation
     - [ ] Checking product duplicates/units
     - [x] Toasts!

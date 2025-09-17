@@ -3,7 +3,8 @@ import { createContext,
         useReducer,
          useRef,
          useState} from "react";
-import { getRandomSlogan } from "../util/util";
+import { getRandomSlogan, 
+        getReducerType } from "../util/util";
 import { utilityReducer, 
         kitchenReducer } from "./reducer.js";
 import { basketAPI, 
@@ -62,7 +63,6 @@ export default function KitchenContextProvider({children}){
         activeModal: "",
         modalIsOpen: false,
         isMobile: false,
-        isInitialized: false
     })
 
     const [kitchenState, kitchenDispatch] = useReducer(kitchenReducer, {
@@ -108,6 +108,11 @@ export default function KitchenContextProvider({children}){
             }
 
         let response;
+        const reducerHandler = {
+                type: getReducerType(method, utilState.activeSection, basketAdd),
+                payload: data.updatedItem ? data.updatedItem : data
+        }
+        console.log("handleri", reducerHandler)
         let apiHandler = null;
         
         if(basketAdd){
@@ -130,19 +135,17 @@ export default function KitchenContextProvider({children}){
         const {success, error} = response;
 
         if(success){
+            kitchenDispatch(reducerHandler);
+
+            setTimeout(() => {
             setAvailableList(apiHandler);
+            }, 1500);
         }
 
         return response;
     }
 
     const initializeData = () => {
-        if(!utilState.isInitialized){
-            utilDispatch({
-                type: "SET_INITIALIZED",
-                payload: true
-            })
-        }
 
         setAvailableList(recipesStateHandler)
         setAvailableList(dishesStateHandler)
@@ -364,8 +367,7 @@ export default function KitchenContextProvider({children}){
         editStatus: kitchenState.editStatus,
         setEntryStatus,
         handleRequest,
-        fullBasket: fetchedBasket
-
+        fullBasket: fetchedBasket,
     }
 
     return(
