@@ -86,3 +86,36 @@ export const getReducerType = (method, section, basketAdd) => {
     }
 }
 
+export const scaleRecipe = (operation, itemToScale) => {
+    const recipe = itemToScale.recipe;
+
+    const originalPortions = recipe.output.portions;
+    const originalIngredients = recipe.ingredients;
+
+    let newPortions;
+    if(operation == "+"){
+        newPortions = parseInt(originalPortions) + 1;
+    }
+    else{
+        newPortions = parseInt(originalPortions) - 1;
+    }
+
+    const scaledIngredients = originalIngredients.map((ingredient) => ({
+            product: ingredient.product, 
+            quantity: (ingredient.quantity / originalPortions) * newPortions, 
+            unit: ingredient.unit
+        })
+    );
+
+    return {
+        ...itemToScale,
+        recipe: {
+            ...recipe,
+            output: {
+                ...recipe.output,
+                portions: newPortions,
+            },
+            ingredients: scaledIngredients,
+        },
+    };
+}

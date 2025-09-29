@@ -2,7 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, 
         faPenToSquare, 
         faStar,
-        faCartPlus } from "@fortawesome/free-solid-svg-icons";
+        faCartPlus,
+        faSquareMinus,
+        faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, 
         useEffect, 
         useState } from "react";
@@ -16,28 +18,36 @@ import { bottomSection,
         topSection } from "./inspectStyles";
 import SubmitButton from "../Buttons/SubmitButton";
 import toast from "react-hot-toast";
+import { scaleRecipe } from "../../util/util";
 
-export default function ItemInspectView({itemToInspect}){
-
-    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
-
-    const {mode, dish, recipe} = itemToInspect;
+const deriveState = (itemToDerive) => {
+    const {mode, dish, recipe} = itemToDerive;
     const isRecipe = mode === "recipes";
     const isDish = mode === "dishes";
     const item = isRecipe ? recipe : dish;
     const listOfItem = isRecipe ? recipe.ingredients : dish.components;
 
-    const [isFavorited, setIsFavorited] = useState(item.favorite);
+    return {isDish, isRecipe, item, listOfItem}
+}
+
+export default function ItemInspectView({itemToInspect}){
+
+    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
+    const [inspectableItem, setInspectableItem] = useState(itemToInspect);
+    const [inspectingState, setInspectableState] = useState(deriveState(inspectableItem))
     
+    const [isFavorited, setIsFavorited] = useState(inspectingState.item.favorite);
+
     useEffect(() => {
-        setIsFavorited(item.favorite);
+        setInspectableState(deriveState(itemToInspect));
+        setInspectableItem(itemToInspect);
     }, [itemToInspect])
 
     const favorited = isFavorited ? "fav" : "";
 
     const handleDelete = async() => {
         const response = await handleRequest({
-            data: {id: item.id},
+            data: {id: inspectingState.item.id},
             method: "DELETE"
         })
         const {error, success} = response;
@@ -56,12 +66,12 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleModify = () => {
-        if(isRecipe){
-            setActiveRecipe({recipe: item, mode: "edit"});
+        if(inspectingState.isRecipe){
+            setActiveRecipe({recipe: itemToInspect.recipe, mode: "edit"});
             return;
         }
-        if(isDish){
-            setActiveDish({dish: item, mode: "edit"});
+        if(inspectingState.isDish){
+            setActiveDish({dish: itemToInspect.dish, mode: "edit"});
             return;
         }
         if(isMobile){
@@ -71,9 +81,9 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleAddCart = async() => {
-        let products = item.ingredients
-        if(!isRecipe){
-            products = item.components.flatMap((component) => component.ingredients)
+        let products = inspectingState.item.ingredients
+        if(!inspectingState.isRecipe){
+            products = inspectingState.item.components.flatMap((component) => component.ingredients)
         }
 
         const response = await handleRequest({
@@ -88,15 +98,23 @@ export default function ItemInspectView({itemToInspect}){
         }
 
         toast.success("Products added to basket successfully!");
+
+        if(isMobile){
+            setModalState(null, false)
+        }
     }
 
     const handleFavorite = async() => {
-        item.favorite = !item.favorite;
-        setIsFavorited(item.favorite);
+        inspectingState.item.favorite = !inspectingState.item.favorite;
+        setIsFavorited(inspectingState.item.favorite);
+
+        const item = inspectingState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
 
         const response = await handleRequest({
             method: "PUT",
-            data: item
+            data: {...item, 
+                    favorite: inspectingState.item.favorite
+                }
         })
 
         const {error} = response;
@@ -104,8 +122,14 @@ export default function ItemInspectView({itemToInspect}){
             toast.error(error)
             return;
         }
-        const object = isRecipe ? "Recipe" : "Dish";
-        toast.success(`${object} is ${item.favorite ? "favorited!" : "unfavorited!"}`);
+        const object = inspectingState.isRecipe ? "Recipe" : "Dish";
+        toast.success(`${object} is ${inspectingState.item.favorite ? "favorited!" : "unfavorited!"}`);
+    }
+
+    const handleScaling = (operation) => {
+        const scaledItem = scaleRecipe(operation, inspectableItem);
+        setInspectableItem(scaledItem);
+        setInspectableState(deriveState(scaledItem));
     }
 
     return(
@@ -114,14 +138,14 @@ export default function ItemInspectView({itemToInspect}){
                         handleModify={handleModify} setModalState={setModalState}
                         handleAddCart={handleAddCart} handleFavorite={handleFavorite}
                         fav={favorited}/>
-            <ItemInfoSection isRecipe={isRecipe} item={item} />
+            <ItemInfoSection isRecipe={inspectingState.isRecipe} item={inspectingState.item} scale={handleScaling} />
             <div className={bottomSection}>
-                <ItemListSection isRecipe={isRecipe} list={listOfItem}/>
-                {isRecipe ? (
+                <ItemListSection isRecipe={inspectingState.isRecipe} list={inspectingState.listOfItem}/>
+                {inspectingState.isRecipe ? (
                     <section className={listSection}>
                     <label>Instructions</label>
                     <ul className={getListStyle()}>
-                        {item.instructions.map((step, i) => 
+                        {inspectingState.item.instructions.map((step, i) => 
                             <li key={i}>{`${i+1}. ${step}`}</li>)}
                     </ul>
                     </section>
@@ -176,7 +200,7 @@ function ItemListSection({isRecipe, list}){
     )
 }
 
-function ItemInfoSection({isRecipe, item}){
+function ItemInfoSection({isRecipe, item, scale}){
 
     const name = item.name;
     const subtitle = isRecipe ? `Yield: ${item.output.portions} ${item.output.output}` : `Course: ${item.course}`;
@@ -184,11 +208,30 @@ function ItemInfoSection({isRecipe, item}){
 
     return(
         <div className={topSection}>
-            <section className="w-fit lg:w-1/2 p-5 lg:p-8">
+            <section className="w-full p-5 lg:p-6">
                 <h2 className="text-2xl font-semibold italic">{name}</h2>
-                <h3 className="text-lg">{subtitle}</h3>
+
+                {isRecipe ? (
+                    <section className="flex flex-row gap-15">
+                        <h3 className="text-lg">{subtitle}</h3>
+                        <span className="flex flex-row gap-5 text-xl">
+                            <h3>Scale: </h3>
+                            <FontAwesomeIcon icon={faSquareMinus} 
+                                                className="py-1"
+                                                onClick={() => scale("-")}/>
+                            <FontAwesomeIcon icon={faSquarePlus} 
+                                                className="py-1"
+                                                onClick={() => scale("+")}/>
+                        </span>
+                    </section>) 
+                : 
+                <h3 className="text-lg">{subtitle}</h3>}
+
                 <h3 className="text-lg">{prepTime}</h3>
             </section>
+
+         
+
             {!isRecipe ? (
                 <section className="w-1/2">
                     <img src={item.image} alt="Photo cant be displayed" className="w-54 rounded-[50px] border-gray-900/80 border-2" />

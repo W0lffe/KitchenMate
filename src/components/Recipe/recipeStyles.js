@@ -12,7 +12,7 @@ export const getInputStyle = (half) => {
     return style;
 }
 
-export const sectionContainerStyle = `flex flex-col h-full lg:flex-row gap-3`;
+export const sectionContainerStyle = `flex flex-col items-center h-full lg:flex-row gap-3`;
 
 export const footerStyle = `flex items-center justify-center m-2`;
 
