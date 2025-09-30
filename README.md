@@ -5,9 +5,9 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-First working version is published to Firebase hosting!
+Working version is live on Firebase. All initially planned features have been implemented and are currently being refined for improvements. The app has a stable architecture and consistent styling, functioning properly on both large screens and mobile devices (with further styling adjustments planned).
 
-All initially planned functionalities have been implemented and manually tested. The application features a solid and stable architecture with consistent styling throughout. It includes a complete navigation system, modals, and forms for user authentication (login/signup), as well as for creating dishes, recipes, and basket items. Core CRUD (Create, Read, Update, Delete) functionality is fully operational for all main entities: recipes, dishes, and basket entries. Basic filtering and sorting capabilities are also in place to improve usability. State management is handled efficiently using React's Context API with reducer functions, ensuring a scalable and maintainable codebase. Backend functionalities are fully written and tested via Postman, and integration with the frontend is the final step before release. Further refinements will continue post-launch to enhance performance and user experience.
+It includes basic login functionality and core CRUD operations for recipes, dishes, and basket items. State management is handled via React Context, with reducers, states, and refs for efficient control. The frontend communicates with the backend through a fully functional REST API, which has been tested via Postman and is currently running locally on my server for testing purposes.
 
 ### Planned Stages of Development
 
