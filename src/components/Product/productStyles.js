@@ -1,5 +1,5 @@
 
-export const productStyle = `w-full flex flex-row justify-between text-white px-3 mt-3`;
+export const productStyle = `w-9/10 flex flex-row justify-between text-white pb-2 mt-3`;
 
 export const getInputStyle = (input) =>{
     let style = `border border-white h-8 rounded-custom 
@@ -8,10 +8,10 @@ export const getInputStyle = (input) =>{
 
     switch(input){
         case "product":
-            style += ` w-2/5 p-2`;
+            style += ` w-2/5`;
             return style;
         case "quantity":
-            style += ` w-1/4 p-2`;
+            style += ` w-1/4`;
             return style;
         case "unit":
             style += ` w-1/4`;

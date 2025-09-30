@@ -2,7 +2,8 @@ import { sectionContainerStyle,
         mobileHeadingStyle,
         footerStyle} from "./recipeStyles";
 import { useContext, 
-        useActionState } from "react";
+        useActionState, 
+        useState} from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData,
         getTimestamp} from "../../util/util";
@@ -12,6 +13,7 @@ import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import Errors from "../Error/Errors"
 import toast from "react-hot-toast";
+import Tab from "../Tab/Tab";
 
 const getFormValues = (formData) => {
     const name = formData.get("name")
@@ -30,7 +32,8 @@ const getFormValues = (formData) => {
 
 export default function RecipeCreation(){
     
-    const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext)
+    const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext);
+    const [openTab, setOpenTab] = useState("Ingredients");
 
     const recipeToModify = activeRecipe.recipe;
     const isEditing = activeRecipe.mode === "edit";
@@ -138,10 +141,30 @@ export default function RecipeCreation(){
         )}
         <form action={formAction}>
             <RecipeInfoSection state={formState}/>
-            <div className={sectionContainerStyle}>
-               <FormList use="Ingredients" state={formState}/>
-               <FormList use="Instructions" state={formState}/>
+            {isMobile ? 
+                (
+                <div className={sectionContainerStyle}>
+                    <div className="flex flex-row gap-5">
+                        <button type="button" onClick={() => setOpenTab("Ingredients")}>Ingredients</button>
+                        <button type="button" onClick={() => setOpenTab("Instructions")}>Instructions</button>
+                    </div>
+                    {openTab === "Ingredients" && 
+                        <Tab>
+                            <FormList use={openTab} state={formState}/>
+                        </Tab>
+                    }
+                    {openTab === "Instructions" && 
+                        <Tab>
+                            <FormList use={openTab} state={formState}/>
+                        </Tab>
+                    }
+                </div>) 
+            : 
+            (<div className={sectionContainerStyle}>
+                <FormList use="Ingredients" state={formState}/>
+                <FormList use="Instructions" state={formState}/>
             </div>
+            )}
             <footer className={footerStyle}>
                 <SubmitButton use={"recipe"}/>
             </footer>
