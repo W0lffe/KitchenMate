@@ -10,10 +10,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus, 
         faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { getSortOptions } from "./sortOptions";
+import toast from "react-hot-toast";
 
 export default function Toolbar(){
 
-    const {isMobile, setActiveRecipe, setActiveDish, setModalState, filterList, sortList, activeSection, setEntryStatus, activeDish} = useContext(KitchenContext)
+    const {isMobile, setActiveRecipe, setActiveDish, 
+            setModalState, filterList, sortList, 
+            activeSection, setEntryStatus, activeDish, 
+            handleRequest, fullBasket} = useContext(KitchenContext)
 
     const isCreatingDish = activeDish?.mode === "create";
     const currentOptions = getSortOptions(activeSection, isCreatingDish);
@@ -51,15 +55,46 @@ export default function Toolbar(){
             setModalState(activeSection, true)
         }
     }
+
+    const handleClearBasket = async() => {
+        const basket = fullBasket.current;
+
+        if(basket.length === 0){
+            toast.error("Basket is empty!");
+            return;
+        }
+
+        const response = await handleRequest({
+            data: [],
+            method: "PUT"
+        })
+        const {success, error} = response;
+
+        if(error){
+            toast.error(error);
+            return;
+        }
+
+        toast.success("Basket cleared!");
+    }
    
     return(
         <header className={style}>
             <h3 className={headingStyle}>Search and Filter</h3>
-            <input type="text" 
+            <span className={spanStyle}>
+                <input type="text" 
                         name="name" 
                         placeholder="Search..." 
                         className={inputStyle} 
                         onChange={(event) => filterList(event.target.value)}/>
+                {activeSection === "basket" && 
+                <>
+                    <button type="button"
+                        className="border p-1 rounded-custom bg-gray-500/70 shadow-md 
+                            shadow-black hover:bg-gray-600/70 hover:animate-pulse"
+                            onClick={handleClearBasket}>Clear List</button>
+                </>}
+            </span>
             <span className={spanStyle}>
                 {labels.map((item, i) => <label key={i} onClick={() => sortList(sortValues[i])}>{item}</label>)}
                 <FontAwesomeIcon icon={faFolderPlus} 

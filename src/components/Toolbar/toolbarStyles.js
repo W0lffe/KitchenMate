@@ -8,4 +8,4 @@ export const headingStyle = `text-lg lg:text-xl italic`;
 
 export const inputStyle = `border border-white w-40 rounded-custom p-1 m-2 lg:m-0 text-center`;
 
-export const spanStyle = `flex flex-row gap-12 items-center`;
+export const spanStyle = `flex flex-row gap-10 items-center`;
