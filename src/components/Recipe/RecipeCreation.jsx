@@ -33,14 +33,14 @@ const getFormValues = (formData) => {
 export default function RecipeCreation(){
     
     const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext);
-    const [openTab, setOpenTab] = useState("Ingredients");
+    const [openTab, setOpenTab] = useState(isMobile ? "Ingredients" : null);
+    
+    const [initialState, setInitialState] = useState(()=> {
 
-    const recipeToModify = activeRecipe.recipe;
-    const isEditing = activeRecipe.mode === "edit";
-    const modifiedId = isEditing ? recipeToModify?.id : null
-    const isFavorited = isEditing ? recipeToModify?.favorite : false;
-
-    const initialFormState = isEditing ? {
+        const recipeToModify = activeRecipe.recipe;
+        const isEditing = activeRecipe.mode === "edit";
+        
+        const currentState = isEditing ? {
             validInputs: {
                     name: recipeToModify.name,
                     portions: recipeToModify.output.portions,
@@ -51,15 +51,31 @@ export default function RecipeCreation(){
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
                     steps: recipeToModify.instructions,
-            }
+            },
+            modifiedId: isEditing ? recipeToModify?.id : null,
+            isFavorited: isEditing ? recipeToModify?.favorite : false,
+            isEditing
         } : { validInputs: null };
-  
+
+        return currentState;
+    });
+
     const recipeForm = async(prevFormState, formData) => {
 
-        const { 
+        let { 
             name, portions, output, time, timeFormat,
             products, quantity, unit, steps 
         } = getFormValues(formData);
+
+
+        if(openTab === "Ingredients"){
+            steps = initialState.validInputs?.steps || [];
+        }
+        else if(openTab === "Instructions"){
+            products = initialState.validInputs?.products || [];
+            quantity = initialState.validInputs?.quantity || [];
+            unit = initialState.validInputs?.unit || [];
+        }
 
         const errors = validateAll(name, portions, time, 
             timeFormat, products, quantity, unit, steps);
@@ -100,14 +116,14 @@ export default function RecipeCreation(){
             },
             ingredients,
             instructions: steps,
-            favorite: isFavorited,
-            id: modifiedId,
+            favorite: initialState.isFavorited,
+            id: initialState.modifiedId,
             date: getTimestamp()
         }
 
         const response = await handleRequest({
             data: newRecipe,
-            method: isEditing ? "PUT" : "POST"
+            method: initialState.isEditing ? "PUT" : "POST"
         })
         const {success, error} = response;
 
@@ -128,8 +144,25 @@ export default function RecipeCreation(){
         return {validInputs}
     }
 
-    const [formState, formAction] = useActionState(recipeForm , initialFormState)
-    const mobileHeading = !isEditing ? "Recipe Creation" : "Recipe Editor";
+    const [formState, formAction] = useActionState(recipeForm , initialState)
+    const mobileHeading = !initialState.isEditing ? "Recipe Creation" : "Recipe Editor";
+
+    const handleTabChange = (nextTab) => {
+        const formData = new FormData(document.querySelector("form"));
+        const { products, quantity, unit, steps } = getFormValues(formData);
+
+        setInitialState({
+            ...initialState,
+            validInputs: {
+                products: products.length > 0 ? products : (initialState.validInputs?.products || []),
+                quantity: quantity.length > 0 ? quantity : (initialState.validInputs?.quantity || []),
+                unit: unit.length > 0 ? unit : (initialState.validInputs?.unit || []),
+                steps: steps.length > 0 ? steps : (initialState.validInputs?.steps || []),
+            }
+        });
+
+        setOpenTab(nextTab);
+    }
 
     return(
        <div className="text-white">
@@ -145,17 +178,17 @@ export default function RecipeCreation(){
                 (
                 <div className={sectionContainerStyle}>
                     <div className="flex flex-row gap-5">
-                        <button type="button" onClick={() => setOpenTab("Ingredients")}>Ingredients</button>
-                        <button type="button" onClick={() => setOpenTab("Instructions")}>Instructions</button>
+                        <button type="button" onClick={() => handleTabChange("Ingredients")}>Ingredients</button>
+                        <button type="button" onClick={() => handleTabChange("Instructions")}>Instructions</button>
                     </div>
                     {openTab === "Ingredients" && 
                         <Tab>
-                            <FormList use={openTab} state={formState}/>
+                            <FormList use="Ingredients" state={initialState}/>
                         </Tab>
                     }
                     {openTab === "Instructions" && 
                         <Tab>
-                            <FormList use={openTab} state={formState}/>
+                            <FormList use="Instructions" state={initialState}/>
                         </Tab>
                     }
                 </div>) 

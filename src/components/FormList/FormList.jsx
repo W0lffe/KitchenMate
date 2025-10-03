@@ -16,8 +16,8 @@ export default function FormList({use, state}){
 
     const validInputs = state.validInputs || {products: [], steps: []};
    
-    const initialCount = isProduct ? validInputs.products.length || 1 
-                                    : validInputs.steps.length || 1;
+    const initialCount = isProduct ? validInputs.products?.length || 1 
+                                    : validInputs.steps?.length || 1;
   
     const [count, setCount] = useState(initialCount)
 
