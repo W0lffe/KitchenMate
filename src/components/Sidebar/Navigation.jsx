@@ -17,13 +17,13 @@ export default function Navigation(){
 
     return(
         <>
-        <section className={topStyle}>
-            <FontAwesomeIcon icon={navigationIsOpen ? faBackward : faForward} 
+            <section className={topStyle}>
+                <FontAwesomeIcon icon={navigationIsOpen ? faBackward : faForward} 
                                 className={navigationIsOpen ? "text-gray-400 animate-pulse" : "text-gray-400"}
                                 onClick={handleClick}/>
-        </section>
-        <UserSection />
-        <NaviSection />
+            </section>
+            <UserSection />
+            <NaviSection />
         </>
     )
 }

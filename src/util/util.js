@@ -62,3 +62,75 @@ export const getTimestamp = () => {
 }
 
 
+export const getReducerType = (method, section, basketAdd) => {
+
+
+    switch (section) {
+        case "recipes":
+            if (method === "POST" && basketAdd) return "ADD_BASKET_ITEM";
+            if (method === "POST" && !basketAdd) return "ADD_RECIPE";
+            if (method === "PUT") return "UPDATE_RECIPE";
+            if (method === "DELETE") return "REMOVE_RECIPE";
+            break;
+        case "dishes":
+            if (method === "POST" && basketAdd) return "ADD_BASKET_ITEM";
+            if (method === "POST" && !!basketAdd) return "ADD_DISH";
+            if (method === "PUT") return "UPDATE_DISH";
+            if (method === "DELETE") return "REMOVE_DISH";
+            break;
+        case "basket":
+            if (method === "POST") return "ADD_BASKET_ITEM";
+            if (method === "DELETE") return "REMOVE_BASKET_ITEM";
+            if (method === "PUT") return "UPDATE_BASKET_ITEM";
+            break;
+    }
+}
+
+export const scaleRecipe = (operation, itemToScale) => {
+    const recipe = itemToScale.recipe;
+
+    const originalPortions = recipe.output.portions;
+    const originalIngredients = recipe.ingredients;
+
+    let newPortions;
+    if(operation == "+"){
+        newPortions = parseInt(originalPortions) + 1;
+    }
+    else{
+        newPortions = parseInt(originalPortions) - 1;
+    }
+
+    const scaledIngredients = originalIngredients.map((ingredient) => ({
+            product: ingredient.product, 
+            quantity: (ingredient.quantity / originalPortions) * newPortions, 
+            unit: ingredient.unit
+        })
+    );
+
+    return {
+        ...itemToScale,
+        recipe: {
+            ...recipe,
+            output: {
+                ...recipe.output,
+                portions: newPortions,
+            },
+            ingredients: scaledIngredients,
+        },
+    };
+}
+
+export const getFormValues = (formData) => {
+    const name = formData.get("name")
+    const portions = formData.get("portions")
+    const output = formData.get("output")
+    const time = formData.get("time")
+    const timeFormat = formData.get("timeFormat")
+    const products = formData.getAll("product");
+    const quantity = formData.getAll("quantity");
+    const unit = formData.getAll("unit");
+    const steps = formData.getAll("step");
+
+    return{ name, portions, output, time, timeFormat, 
+            products, quantity, unit, steps };
+}

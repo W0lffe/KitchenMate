@@ -12,10 +12,20 @@ export const getInputStyle = (half) => {
     return style;
 }
 
-export const sectionContainerStyle = `flex flex-col h-full lg:flex-row gap-3`;
+export const sectionContainerStyle = `flex flex-col items-center h-full lg:flex-row gap-3`;
 
 export const footerStyle = `flex items-center justify-center m-2`;
 
 export const labelStyle = `text-[16px] font-semibold`;
 
 export const lineStyle = `flex gap-6 m-2 items-center flex-row`;
+
+export const tabButtonStyle = `underline animate-pulse p-2 m-1 font-[700]`
+
+export const getButtonStyle = (active) => {
+    let style = `border border-white  rounded-[20px] w-10 h-10
+                transition-all duration-300 ease-out bg-gray-400/60 
+                text-center`
+    style += active ? `border-black bg-white/90 text-black animate-pulse` : ``
+    return style;
+}

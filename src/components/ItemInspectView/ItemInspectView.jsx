@@ -10,35 +10,51 @@ import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
         containerStyle, 
         getIconStyle, 
-        getListStyle, 
-        iconSpan, 
-        listSection, 
-        topSection } from "./inspectStyles";
+        iconSpan} from "./inspectStyles";
 import SubmitButton from "../Buttons/SubmitButton";
+import toast from "react-hot-toast";
+import { scaleRecipe } from "../../util/util";
+import ItemInfoSection from "./ItemInfoSection";
+import ItemListSection from "./ItemListSection";
+import ItemInstructionSection from "./ItemInstructionSection";
+
+const deriveState = (itemToDerive) => {
+    const {mode, dish, recipe} = itemToDerive;
+    const isRecipe = mode === "recipes";
+    const isDish = mode === "dishes";
+    const item = isRecipe ? recipe : dish;
+    const listOfItem = isRecipe ? recipe.ingredients : dish.components;
+
+    return {isDish, isRecipe, item, listOfItem}
+}
 
 export default function ItemInspectView({itemToInspect}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
-
-    const isRecipe = itemToInspect.mode === "recipes";
-    const isDish = itemToInspect.mode === "dishes";
-    const item = isRecipe ? itemToInspect.recipe : itemToInspect.dish;
-    const listOfItem = isRecipe ? itemToInspect.recipe.ingredients : itemToInspect.dish.components;
-
-    const [isFavorited, setIsFavorited] = useState(item.favorite);
+    const [inspectableItem, setInspectableItem] = useState(itemToInspect);
+    const [inspectingState, setInspectableState] = useState(deriveState(inspectableItem))
     
+    const [isFavorited, setIsFavorited] = useState(inspectingState.item.favorite);
+
     useEffect(() => {
-        setIsFavorited(item.favorite);
+        setInspectableState(deriveState(itemToInspect));
+        setInspectableItem(itemToInspect);
     }, [itemToInspect])
 
     const favorited = isFavorited ? "fav" : "";
 
-    const handleDelete = () => {
-        handleRequest({
-            data: {id: item.id},
+    const handleDelete = async() => {
+        const response = await handleRequest({
+            data: {id: inspectingState.item.id},
             method: "DELETE"
         })
+        const {error, success} = response;
+        if(error){
+            toast.error(error);
+            return;
+        }
 
+        toast.success(success);
         if(isMobile){
             setModalState(null, false)
         }
@@ -48,36 +64,70 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleModify = () => {
-        if(isRecipe){
-            setActiveRecipe({recipe: item, mode: "edit"})
+        if(inspectingState.isRecipe){
+            setActiveRecipe({recipe: itemToInspect.recipe, mode: "edit"});
+            return;
         }
-        if(isDish){
-            setActiveDish({dish: item, mode: "edit"})
+        if(inspectingState.isDish){
+            setActiveDish({dish: itemToInspect.dish, mode: "edit"});
+            return;
         }
         if(isMobile){
-            setModalState(activeSection, true)
+            setModalState(activeSection, true);
+            return;
         }
     }
 
-    const handleAddCart = () => {
-        let products = item.ingredients
-        if(!isRecipe){
-            products = item.components.flatMap((component) => component.ingredients)
+    const handleAddCart = async() => {
+        let products = inspectingState.item.ingredients
+        if(!inspectingState.isRecipe){
+            products = inspectingState.item.components.flatMap((component) => component.ingredients)
         }
 
-        handleRequest({
+        const response = await handleRequest({
             data: products,
             method: "POST"
         }, true)
+        const {error, success} = response;
+
+        if(error){
+            toast.error(error);
+            return;
+        }
+
+        toast.success("Products added to basket successfully!");
+
+        if(isMobile){
+            setModalState(null, false)
+        }
     }
 
-    const handleFavorite = () => {
-        item.favorite = !item.favorite;
-        setIsFavorited(item.favorite);
-        handleRequest({
+    const handleFavorite = async() => {
+        inspectingState.item.favorite = !inspectingState.item.favorite;
+        setIsFavorited(inspectingState.item.favorite);
+
+        const item = inspectingState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
+
+        const response = await handleRequest({
             method: "PUT",
-            data: item
+            data: {...item, 
+                    favorite: inspectingState.item.favorite
+                }
         })
+
+        const {error} = response;
+        if(error){
+            toast.error(error)
+            return;
+        }
+        const object = inspectingState.isRecipe ? "Recipe" : "Dish";
+        toast.success(`${object} is ${inspectingState.item.favorite ? "favorited!" : "unfavorited!"}`);
+    }
+
+    const handleScaling = (operation) => {
+        const scaledItem = scaleRecipe(operation, inspectableItem);
+        setInspectableItem(scaledItem);
+        setInspectableState(deriveState(scaledItem));
     }
 
     return(
@@ -86,19 +136,11 @@ export default function ItemInspectView({itemToInspect}){
                         handleModify={handleModify} setModalState={setModalState}
                         handleAddCart={handleAddCart} handleFavorite={handleFavorite}
                         fav={favorited}/>
-            <ItemInfoSection isRecipe={isRecipe} item={item} />
+            <ItemInfoSection isRecipe={inspectingState.isRecipe} item={inspectingState.item} scale={handleScaling} />
             <div className={bottomSection}>
-                <ItemListSection isRecipe={isRecipe} list={listOfItem}/>
-                {isRecipe ? (
-                    <section className={listSection}>
-                    <label>Instructions</label>
-                    <ul className={getListStyle()}>
-                        {item.instructions.map((step, i) => 
-                            <li key={i}>{`${i+1}. ${step}`}</li>)}
-                    </ul>
-                    </section>
-                ) : 
-                null}
+                <ItemListSection isRecipe={inspectingState.isRecipe} list={inspectingState.listOfItem}/>
+
+                {inspectingState.isRecipe && <ItemInstructionSection instructions={inspectingState.item.instructions} />}
             </div>
         </div>
     )
@@ -120,52 +162,8 @@ function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handle
                     <FontAwesomeIcon icon={faCartPlus} 
                                      className={getIconStyle()}
                                      onClick={handleAddCart} />
-                    {isMobile ? <SubmitButton use={"close"} func={setModalState}/> : null}
+                    {isMobile && <SubmitButton use={"close"} func={setModalState}/>}
                 </span>
     )
 }
 
-function ItemListSection({isRecipe, list}){
-
-    const style = isRecipe ? "ingredients" : null;
-
-    return(
-        <section className={listSection}>
-            <label>{isRecipe ? "Ingredients" : "Components"}</label>
-                <ul className={getListStyle(style)}>
-                {list.map((listItem, i) => 
-                    <li key={i} className="flex w-2/3 justify-between">
-                        <label className="w-30">{listItem.product || listItem.name }</label>
-                        {isRecipe ? (
-                            <>
-                                <label>{listItem.quantity}</label>
-                                <label>{listItem.unit}</label>
-                            </>
-                        ) : null}
-                    </li>)}
-                 </ul>
-        </section>
-    )
-}
-
-function ItemInfoSection({isRecipe, item}){
-
-    const name = item.name;
-    const subtitle = isRecipe ? `Yield: ${item.output.portions} ${item.output.output}` : `Course: ${item.course}`;
-    const prepTime = isRecipe ? `Prep Time: ${item.prepTime.time} ${item.prepTime.format}` : null;
-
-    return(
-        <div className={topSection}>
-            <section className="w-fit lg:w-1/2 p-5 lg:p-8">
-                <h2 className="text-2xl font-semibold italic">{name}</h2>
-                <h3 className="text-lg">{subtitle}</h3>
-                <h3 className="text-lg">{prepTime}</h3>
-            </section>
-            {!isRecipe ? (
-                <section className="w-1/2">
-                    <img src={item.image} alt="PHOTO" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
-                </section>
-            ) : null}
-        </div>
-    )
-}

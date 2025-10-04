@@ -3,13 +3,16 @@ import { createContext,
         useReducer,
          useRef,
          useState} from "react";
-import { getRandomSlogan } from "../util/util";
+import { getRandomSlogan, 
+        getReducerType } from "../util/util";
 import { utilityReducer, 
         kitchenReducer } from "./reducer.js";
 import { basketAPI, 
         dishesAPI, 
         recipesAPI } from "../api/http.js"
-import { filter, sort } from "../util/filterSort.js";
+import { filter, 
+        sort } from "../util/filterSort.js";
+import toast from "react-hot-toast";
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -60,7 +63,6 @@ export default function KitchenContextProvider({children}){
         activeModal: "",
         modalIsOpen: false,
         isMobile: false,
-        isInitialized: false
     })
 
     const [kitchenState, kitchenDispatch] = useReducer(kitchenReducer, {
@@ -88,7 +90,6 @@ export default function KitchenContextProvider({children}){
             ref: fetchedRecipes
     };
 
-
     useEffect(() => {
         initializeData();
     }, [utilState.user])
@@ -107,6 +108,11 @@ export default function KitchenContextProvider({children}){
             }
 
         let response;
+        const reducerHandler = {
+                type: getReducerType(method, utilState.activeSection, basketAdd),
+                payload: data.updatedItem ? data.updatedItem : data
+        }
+        console.log("handleri", reducerHandler)
         let apiHandler = null;
         
         if(basketAdd){
@@ -126,18 +132,20 @@ export default function KitchenContextProvider({children}){
             apiHandler = basketStateHandler;
         }
 
-        if(response.success){
+        const {success, error} = response;
+
+        if(success){
+            kitchenDispatch(reducerHandler);
+
+            setTimeout(() => {
             setAvailableList(apiHandler);
+            }, 1500);
         }
+
+        return response;
     }
 
     const initializeData = () => {
-        if(!utilState.isInitialized){
-            utilDispatch({
-                type: "SET_INITIALIZED",
-                payload: true
-            })
-        }
 
         setAvailableList(recipesStateHandler)
         setAvailableList(dishesStateHandler)
@@ -174,6 +182,8 @@ export default function KitchenContextProvider({children}){
            setEntryStatus(null)
         }
 
+        toggleNavigation();
+
         utilDispatch({
             type: "SET_ACTIVE_SECTION",
             payload: section
@@ -193,7 +203,6 @@ export default function KitchenContextProvider({children}){
                 modalState
             }
         })
-
     }
 
     const setAvailableList = async (params) => {
@@ -210,9 +219,15 @@ export default function KitchenContextProvider({children}){
 
         setIsFetchingData(true);
 
-        const { data, status } = await api({
+        const { data, error } = await api({
             user: utilState.user.id
-        })
+        }) 
+
+        if(error){
+            toast.error(error);
+            setIsFetchingData(false);
+            return;
+        }
 
         kitchenDispatch({
                 type,
@@ -220,6 +235,7 @@ export default function KitchenContextProvider({children}){
         })
 
         ref.current = data;
+
         setIsFetchingData(false);
     }
      
@@ -245,6 +261,16 @@ export default function KitchenContextProvider({children}){
 
 
     const filterList = (value) => {
+
+        if(kitchenState.activeDish?.mode === "create"){
+            filter({
+                    fullList: fetchedRecipes.current,
+                    value,
+                    dispatch: kitchenDispatch,
+                    type: "SET_RECIPES"
+                })
+            return;
+        }
 
         switch(utilState.activeSection){
             case "recipes":
@@ -275,6 +301,16 @@ export default function KitchenContextProvider({children}){
     }
 
     const sortList = (sortBy) => {
+
+        if(kitchenState.activeDish?.mode === "create"){
+           sort({
+                    fullList: kitchenState.availableRecipes,
+                    value: sortBy,
+                    dispatch: kitchenDispatch,
+                    type: "SET_RECIPES"
+                })
+            return;
+        }
         
         switch(utilState.activeSection){
             case "recipes":
@@ -331,8 +367,7 @@ export default function KitchenContextProvider({children}){
         editStatus: kitchenState.editStatus,
         setEntryStatus,
         handleRequest,
-        fullBasket: fetchedBasket
-
+        fullBasket: fetchedBasket,
     }
 
     return(

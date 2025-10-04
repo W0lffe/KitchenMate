@@ -1,38 +1,38 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
-        footerStyle} from "./recipeStyles";
+        footerStyle,
+        getButtonStyle} from "./recipeStyles";
 import { useContext, 
-        useActionState,
-        useState,
-        useEffect} from "react";
+        useActionState, 
+        useState} from "react";
 import { KitchenContext } from "../../context/KitchenContext";
-import { combineProductData,
-        getTimestamp} from "../../util/util";
-import { validateAll } from "../../util/validation";
 import SubmitButton from "../Buttons/SubmitButton";
 import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
-import Errors from "../Error/Errors"
+import { useRecipeForm } from "../../hooks/useRecipeForm";
+import { getFormValues } from "../../util/util";
+import ItemInfoSection from "../ItemInspectView/ItemInfoSection";
+import ItemListSection from "../ItemInspectView/ItemListSection";
+import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";
+
+const SECTIONS = {
+    GENERAL: "General",
+    INGREDIENTS: "Ingredients",
+    INSTRUCTIONS: "Instructions",
+    CONFIRMATION: "Confirmation"
+}
 
 export default function RecipeCreation(){
     
-    const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext)
-    const [editingRecipe, setEditingRecipe] = useState(false);
-    const recipeToModify = activeRecipe.recipe;
-    const modifiedId = editingRecipe ? recipeToModify?.id : null;
-    const isFavorited = editingRecipe ? recipeToModify?.favorite : false;
+    const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext);
+    const [openTab, setOpenTab] = useState(isMobile ? SECTIONS.GENERAL : null);
 
-    let initialFormState = {errors: null}
+    const [currentFormValues, setCurrentFormValues] = useState(()=> {
 
-    useEffect(() => {
-        if(recipeToModify !== null){
-            setEditingRecipe(true);
-        }
-    }, [recipeToModify])
-
-    if(recipeToModify !== null){
-        initialFormState = {
-            errors: null,
+        const recipeToModify = activeRecipe.recipe;
+        const isEditing = activeRecipe.mode === "edit";
+        
+        const currentState = isEditing ? {
             validInputs: {
                     name: recipeToModify.name,
                     portions: recipeToModify.output.portions,
@@ -43,104 +43,105 @@ export default function RecipeCreation(){
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
                     steps: recipeToModify.instructions,
+            },
+            modifiedId: isEditing ? recipeToModify?.id : null,
+            isFavorited: isEditing ? recipeToModify?.favorite : false,
+            isEditing
+        } : { validInputs: null };
+
+        return currentState;
+    });
+
+    const recipeForm = useRecipeForm({
+        isMobile,
+        currentFormValues,
+        handleRequest,
+        setActiveRecipe,
+        setModalState
+    });
+
+    const [formState, formAction] = useActionState(recipeForm , currentFormValues)
+    const mobileHeading = !currentFormValues.isEditing ? "Recipe Creation" : "Recipe Editor";
+
+    const handleTabChange = (nextTab) => {
+        const formData = new FormData(document.querySelector("form"));
+
+        const { 
+            name, portions, output, time, timeFormat,
+            products, quantity, unit, steps 
+        } = getFormValues(formData);
+
+        setCurrentFormValues({
+            ...currentFormValues,
+            validInputs: {
+                name: name === null ? currentFormValues.validInputs?.name : name,
+                portions: portions === null ? currentFormValues.validInputs?.portions : portions,
+                output: output === null ? currentFormValues.validInputs?.output : output,
+                time: time === null ? currentFormValues.validInputs?.time : time,
+                timeFormat: timeFormat === null ? currentFormValues.validInputs?.timeFormat : timeFormat,
+                products: products.length > 0 ? products : (currentFormValues.validInputs?.products || []),
+                quantity: quantity.length > 0 ? quantity : (currentFormValues.validInputs?.quantity || []),
+                unit: unit.length > 0 ? unit : (currentFormValues.validInputs?.unit || []),
+                steps: steps.length > 0 ? steps : (currentFormValues.validInputs?.steps || []),
             }
-        }
+        });
+
+        setOpenTab(nextTab);
     }
-
-    const recipeForm = async(prevFormState, formData) => {
-
-        const name = formData.get("name")
-        const portions = formData.get("portions")
-        const output = formData.get("output")
-        const time = formData.get("time")
-        const timeFormat = formData.get("timeFormat")
-        const products = formData.getAll("product");
-        const quantity = formData.getAll("quantity");
-        const unit = formData.getAll("unit");
-        const steps = formData.getAll("step");
-
-        let errors = validateAll(name, portions, time, 
-            timeFormat, products, quantity, unit, steps)
-
-        let ingredients;
-        if(products.length === unit.length && unit.length === quantity.length){
-            ingredients = combineProductData(products, quantity, unit)
-        }
-        else{
-            errors.push("Error creating recipe.")
-        }
-
-        const prepTime = {
-            time,
-            format: timeFormat
-        }
-
-        const portionScale = {
-            portions,
-            output
-        }
-
-        if(errors.length > 0){
-            console.log(errors)
-            return {
-                errors,
-                validInputs: {
-                    name,
-                    portions,
-                    output,
-                    time,
-                    timeFormat,
-                    products,
-                    quantity,
-                    unit,
-                    steps
-                }
-            }
-        }
-
-        const newRecipe = {
-            name,
-            output: portionScale, 
-            prepTime,
-            ingredients,
-            instructions: steps,
-            favorite: isFavorited,
-            id: modifiedId,
-            date: getTimestamp()
-        }
-
-        handleRequest({
-            data: newRecipe,
-            method: editingRecipe ? "PUT" : "POST"
-        })
-      
-        setActiveRecipe(null);
-        if(isMobile){
-            setModalState(null, false)
-        }
-
-        return {errors: null}
-    }
-
-    const [formState, formAction] = useActionState(recipeForm , initialFormState)
-    const mobileHeading = !editingRecipe ? "Recipe Creation" : "Recipe Editor";
 
     return(
        <div className="text-white">
-        {isMobile ? 
+        {isMobile && (
             <span className="flex flex-row justify-end items-center px-2">
                 <h2 className={mobileHeadingStyle}>{mobileHeading}</h2>
                 <SubmitButton use={"close"} func={() => setModalState(null, false)} />
-            </span> : null}
+            </span>
+        )}
         <form action={formAction}>
-            <RecipeInfoSection state={formState}/>
-            <Errors errors={formState.errors}/>
-            <div className={sectionContainerStyle}>
-               <FormList use="Ingredients" state={formState}/>
-               <FormList use="Instructions" state={formState}/>
-            </div>
+            {isMobile ? 
+            (
+                <>
+                    <div className="flex gap-5 w-full justify-center h-15">
+                        {Object.values(SECTIONS).map((section, i) => (
+                            <button type="button" 
+                            onClick={() => {handleTabChange(section)}}
+                            className={getButtonStyle(openTab === section)}>{i+1}</button>
+                        ))}
+                    </div>
+                    <div className={sectionContainerStyle}>
+                        {openTab === SECTIONS.GENERAL && 
+                            <RecipeInfoSection state={currentFormValues}/>
+                        }
+                        {openTab === SECTIONS.INGREDIENTS && 
+                            <FormList use={SECTIONS.INGREDIENTS} state={currentFormValues}/>
+                        }
+                        {openTab === SECTIONS.INSTRUCTIONS && 
+                            <FormList use={SECTIONS.INSTRUCTIONS} state={currentFormValues}/>
+                        }
+                        {openTab === SECTIONS.CONFIRMATION && 
+                            <>
+                                <ItemInfoSection isRecipe={true} state={currentFormValues}/>
+                                <ItemListSection isRecipe={true} state={currentFormValues}/>
+                                <ItemInstructionSection instructions={currentFormValues.validInputs.steps} />
+                            </>
+                        }
+                    </div>
+                </>
+            ) : (
+                <>
+                    <RecipeInfoSection state={formState}/>
+                    <div className={sectionContainerStyle}>
+                        <FormList use={SECTIONS.INGREDIENTS} state={formState}/>
+                        <FormList use={SECTIONS.INSTRUCTIONS} state={formState}/>
+                    </div>
+                </>
+            )}
             <footer className={footerStyle}>
-                <SubmitButton use={"recipe"}/>
+               {isMobile ? (
+                    openTab === SECTIONS.CONFIRMATION && <SubmitButton use={"recipe"} /> 
+                ) : (
+                    <SubmitButton use={"recipe"} />
+                )}
             </footer>
             </form>
         </div>

@@ -5,7 +5,9 @@ To create a simple program to create and manage recipies, and create dishes out 
 
 ## State of Project
 
-The project is nearly ready for its first public release. All initially planned functionalities have been implemented and manually tested. The application features a solid and stable architecture with consistent styling throughout. It includes a complete navigation system, modals, and forms for user authentication (login/signup), as well as for creating dishes, recipes, and basket items. Core CRUD (Create, Read, Update, Delete) functionality is fully operational for all main entities: recipes, dishes, and basket entries. Basic filtering and sorting capabilities are also in place to improve usability. State management is handled efficiently using React's Context API with reducer functions, ensuring a scalable and maintainable codebase. Backend functionalities are fully written and tested via Postman, and integration with the frontend is the final step before release. Further refinements will continue post-launch to enhance performance and user experience.
+Working version is live on Firebase. All initially planned features have been implemented and are currently being refined for improvements. The app has a stable architecture and consistent styling, functioning properly on both large screens and mobile devices (with further styling adjustments planned).
+
+It includes basic login functionality and core CRUD operations for recipes, dishes, and basket items. State management is handled via React Context, with reducers, states, and refs for efficient control. The frontend communicates with the backend through a fully functional REST API, which has been tested via Postman and is currently running locally on my server for testing purposes.
 
 ### Planned Stages of Development
 
@@ -42,7 +44,7 @@ The project is nearly ready for its first public release. All initially planned 
         - [x] Modify
         - [x] Delete
 
-#### Stage 3 
+#### Stage 3 **COMPLETED**
     Backend Functionality
 - [x] GET
     - [x] Basket
@@ -66,16 +68,19 @@ The project is nearly ready for its first public release. All initially planned 
 #### Stage 4 
     Final Integration & Testing
 - Front-End
-    - [ ] Connecting front-end to backend
-    - [ ] Optimizing styling
-    - [ ] Error Handling
-    - [ ] Polishing
+    - [x] Connecting front-end to backend
+    - [ ] Optimizing styling 
+        - **POSTPONED**
+    - [x] Error Handling 
+    - [x] Polishing
 - Testing
     - [ ] Testing on different devices
-    - [ ] Bug fixes
-    - [ ] Testing of components
+        - **POSTPONED**
+    - [x] Bug fixes
+    - [ ] Testing of components 
+        - **POSTPONED**
 - Deployment
-    - [ ] Deploying first version to Firebase
+    - [x] Deploying first version to Firebase
 
 
 #### Stage 5
@@ -84,15 +89,19 @@ The project is nearly ready for its first public release. All initially planned 
     - [ ] Sections for creation modals
         - NOTE: Idea is to traverse through sections like Basic Info -> Ingredients -> Steps etc. 
                 Instead of showing all things at once.
+        - Work In Progress, tab system works for RecipeCreation. Next up DishCreation.
     - [ ] Possibility to show whole recipe in dish creation instead of just recipe name
     - [ ] Recipe scalability feature
+         - Work In Progress, currently only scales on the same output f.ex. portions -> portions, GN -> GN
     - [ ] Public recipe bank, visible for every user
     - [ ] Creating a homepage
     - [ ] Dish creation image preview
-    - [ ] Implement useOptimistic
+    - [x] Implement useReducer for local data updating
     - [ ] Delete confirmation
     - [ ] Checking product duplicates/units
-    - [ ] Toasts!
+    - [x] Toasts!
+    - [ ] Real user authenticating, tokens
+    - [ ] Modular function for handleRequest with toasts, now its repeatitive in multiple components
 
 # Backlog
 ## Front-end
@@ -209,7 +218,7 @@ The project is nearly ready for its first public release. All initially planned 
 - [x] authenticateUser
 - [x] createNewUser
 
-- [ ] Connect front-end to backend
+- [x] Connect front-end to backend
 
 ## Backend
 

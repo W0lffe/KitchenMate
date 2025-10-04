@@ -12,14 +12,36 @@ import NaviButton from "../Buttons/NaviButton";
 
 export default function NaviSection(){
 
-    const {navigationIsOpen, setActiveSection} = useContext(KitchenContext)
+    const {navigationIsOpen, setActiveSection} = useContext(KitchenContext);
+
+    const NAV_VALUES = [
+        {
+            value: "recipes",
+            label: "Recipes",
+            icon: faBookOpen
+        },
+        {
+            value: "dishes",
+            label: "Dishes",
+            icon: faUtensils
+        },
+        {
+            value: "basket",
+            label: "Basket",
+            icon: faClipboardList
+        },
+
+    ]
 
     return(
         <section className={getSectionStyle(navigationIsOpen)}>
             <h4 className={headingStyle}>NAVIGATION</h4>
-            <NaviButton func={setActiveSection} value={"recipes"}>Recipe Management <FontAwesomeIcon icon={faBookOpen} className="text-gray-200"/></NaviButton>
-            <NaviButton func={setActiveSection} value={"dishes"}>Dish Management <FontAwesomeIcon icon={faUtensils} className="text-gray-200"/></NaviButton>
-            <NaviButton func={setActiveSection} value={"basket"}>Basket Management <FontAwesomeIcon icon={faClipboardList} className="text-gray-200"/></NaviButton>
+            {NAV_VALUES.map(({value, label, icon}, i) => (
+                <NaviButton func={setActiveSection} value={value} key={i}>
+                    {label}
+                    <FontAwesomeIcon icon={icon} className="text-gray-200"/>
+                </NaviButton>
+            ))}
         </section>
     )
 }

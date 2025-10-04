@@ -7,7 +7,8 @@ import SubmitButton from "../Buttons/SubmitButton"
 import DishInfoSection from "./DishInfoSection"
 import Errors from "../Error/Errors"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSquarePlus, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faSquarePlus, 
+        faTrash } from "@fortawesome/free-solid-svg-icons"
 import { footerStyle, 
         headerSpanStyle, 
         labelStyle, 
@@ -16,88 +17,98 @@ import { footerStyle,
         listSpanStyle, 
         listStyle } from "./dishCreationStyles"
 import { validateName } from "../../util/validation"
+import toast from "react-hot-toast";
+
+const validateInputs = (inputs) => {
+
+    const {name, course, components} = inputs;
+    let errors = [];
+
+    if(!validateName(name)){
+            errors.push("Dish name is invalid!");
+    }
+    if(course === "course"){
+            errors.push("Please select a course!");
+    }
+    if(components.length === 0){
+            errors.push("Please add components!");
+    }
+
+    return errors;
+}
 
 export default function DishCreation(){
 
     const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest} = useContext(KitchenContext);
     const [components, setComponents] = useState([]);
-    const [isEditingDish, setIsEditingDish] = useState(false);
 
+    const {mode, dish} = activeDish;
     const isCreatingDish = activeDish?.mode === "create";
+    const isEditing = activeDish?.mode === "edit";
 
     const mobileHeading = "Dish Creation";
+    const modifiedID = isEditing ? dish.id : null;
+    const isFavorite = isEditing ? dish.favorite : null;
 
-    const dishToModify = activeDish.dish;
-    const modifiedID = isEditingDish ? activeDish.dish?.id : null;
-    const isFavorite = isEditingDish ? activeDish.dish?.favorite : null;
-    let initialFormState = {errors: null};
-
-    if(dishToModify !== null){
-        initialFormState = {
-            errors: null,
+    const initialFormState = isEditing ? {
             validInputs: {
-                name: dishToModify.name,
-                course: dishToModify.course,
-                image: dishToModify.image
+                name: dish.name,
+                course: dish.course,
+                image: dish.image
             }
-        }
-    }
+        } : {validInputs: null}
    
     useEffect(() => {
-        if(isCreatingDish && activeDish.components){
-            setComponents([...activeDish?.components])
+        if(isCreatingDish){
+            setComponents(dish?.components || [])
         }
-        if(dishToModify !== null){
-            setIsEditingDish(true);
-            setComponents([...activeDish.dish?.components] || [])
+        if(isEditing && dish.components){
+            setComponents(dish.components)
         }
-    }, [isCreatingDish, activeDish?.components, dishToModify])
+    }, [mode, dish])
 
 
     const addComponent = (item) => {
-        setComponents([...components, item])   
+        setActiveDish({
+            dish: {
+                ...dish,
+                components: [...components, item]
+            },
+            mode: isCreatingDish ? "create" : "edit"
+        });
     }
 
     const deleteComponent = (item) => {
-        const filtered = [...components].filter((component, i) => i !== item)
-        setComponents(filtered);
+        const filtered = [...components].filter((component, componentIndex) => componentIndex !== item)
         setActiveDish({
-            dish: isCreatingDish ? null : {
-                ...dishToModify,
+            dish: {
+                ...dish,
                 components: filtered
             },
             mode: isCreatingDish ? "create" : "edit"
-        })
+        });
     }
 
-    const dishForm = (prevFormState, formData) => {
+    const dishForm = async (prevFormState, formData) => {
         const name = formData.get("name");
         const course = formData.get("course");
         const image = formData.get("image");
 
-        console.log(name, course, image);
+        const errors = validateInputs({name, course, components})
+        const hasImage = image && image.size > 0;
 
-        let errors = [];
-
-        if(!validateName(name)){
-            errors.push("Dish name is invalid!");
-        }
-        if(course === "course"){
-            errors.push("Please select a course!");
-        }
-        if(components.length === 0){
-            errors.push("Dish can't be created with zero components!");
-
+        const validInputs = {
+            name,
+            course,
+            image: hasImage ? image : null
         }
         
         if(errors.length > 0){
+            toast.error((t) => (
+                <Errors errors={errors}/>
+            ), {duration: 5000})
             return {
-                errors,
-                validInputs: {
-                    name,
-                    course,
-                    image
-                }
+                validInputs
             }
         }
 
@@ -110,18 +121,27 @@ export default function DishCreation(){
             components
         }
 
-        console.log(newDish);
-        handleRequest({
+        const response = await handleRequest({
             data: newDish,
-            method: isEditingDish ? "PUT" : "POST"
+            method: isEditing ? "PUT" : "POST"
         })
+        const {error, success} = response;
 
-        setActiveDish(null)
-        if(isMobile){
-            setModalState(null)
+        if(error){
+            toast.error(error);
+            return {
+                validInputs
+            }
         }
 
-        return {errors: null};
+        toast.success(success);
+        setTimeout(() => {
+            setActiveDish(null)
+            if(isMobile){
+                setModalState(null)
+            }
+        }, 1250);
+        return {validInputs};
     }
 
     const [formState, formAction] = useActionState(dishForm, initialFormState);
@@ -136,7 +156,6 @@ export default function DishCreation(){
             : null}
             <form action={formAction}>
             <DishInfoSection state={formState}/>
-            <Errors errors={formState.errors}/>
             {isMobile ? <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> : null}
             <ComponentRecipeList list={components} func={deleteComponent}/>
             <footer className={footerStyle}>

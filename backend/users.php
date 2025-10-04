@@ -1,13 +1,17 @@
 <?php 
-
-header("Access-Control-Allow-Origin: *");
+//https://kitchenmate-efe45.web.app
+header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app"); 
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-$userFile = "./users/users.json";
+$config = parse_ini_file("./config.ini", true);
+$users = $config["paths"]["users"];
+$file = $config["files"]["user_file"];
+$userFile = "$users/$file";
+$data_point = $config["paths"]["data_point"];
 
-if(!initDir($userFile)){
+if(!initDir($users, $userFile)){
     echo json_encode(["error" => "Error initializing directory!"]);
     exit;
 }
@@ -25,16 +29,16 @@ $method = $data["method"];
 
 switch($method){
     case "new":
-        createNewUser($userFile, $userData);
+        createNewUser($userFile, $userData, $data_point);
         break;
     case "login": 
         authUser($userFile, $userData);
         break;
 }
 
-function initDir($userFile){
-    if(!is_dir("./users")){
-        if(!mkdir("./users", 0764, true)){
+function initDir($users, $userFile){
+    if(!is_dir($users)){
+        if(!mkdir($users, 0764, true)){
             return false;
         };
     };
@@ -74,9 +78,9 @@ function authUser($userFile, $user){
 
 }
 
-function createNewUser($userFile, $newUser){
+function createNewUser($userFile, $newUser, $data_point){
 
-    if(strlen($newUser["user"]) === 0 || strlen($newUser["user"]) > 12){
+    if(strlen($newUser["user"]) === 0 || strlen($newUser["user"]) > 16){
         echo json_encode(["error" => "Username is invalid."]);
         exit;
     }
@@ -103,7 +107,10 @@ function createNewUser($userFile, $newUser){
         };
     }; 
 
-    $newUser["id"] = count($users) + 1;
+    $idRange = range(1, 1000);
+    $availableIds = array_diff($idRange, array_column($users, "id"));
+    $newUser["id"] = $availableIds[array_rand($availableIds)];
+  
     $cryptedPasswd = password_hash($newUser["passwd"], PASSWORD_BCRYPT);
     $newUser["passwd"] = $cryptedPasswd;
 
@@ -111,7 +118,7 @@ function createNewUser($userFile, $newUser){
 
     if(file_put_contents($userFile ,json_encode($users, JSON_PRETTY_PRINT))){
 
-        if(initEndpoints($newUser["id"])){
+        if(initEndpoints($newUser["id"], $data_point)){
             echo json_encode(["success" => "User created successfully!"]);
             exit;
         }
@@ -126,9 +133,9 @@ function createNewUser($userFile, $newUser){
     }
 }
 
-function initEndpoints($dir){
+function initEndpoints($dir, $datapoint){
 
-    $path = "./$dir";
+    $path = "$datapoint/$dir";
     $ep = ["recipes.json", "dishes.json", "basket.json"];
 
     if(!mkdir($path, 0764, true)){

@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { KitchenContext } from "../../context/KitchenContext";
 import LoginSignupForm from "../LoginSignupForm/LoginSignupForm";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import { Toaster } from "react-hot-toast";
 
 export default function Modal(){
 
@@ -14,15 +15,16 @@ export default function Modal(){
     useEffect(() => {
         modalIsOpen ? modal.current.showModal() : modal.current.close();
     }, [modalIsOpen])
+
+    const isLoginSignup = ["signup", "login"].includes(activeModal);
+    const showContent = ["recipes", "dishes"].includes(activeModal) || editStatus?.status;
    
     return createPortal(
-        <div>
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
-                {activeModal === "signup" || activeModal === "login" ? <LoginSignupForm /> : null}
-                {activeModal === "recipes" ? <ContentWrapper /> : null}
-                {activeModal === "dishes" ? <ContentWrapper /> : null}
-                {editStatus?.status ? <ContentWrapper /> : null}
-            </dialog>
-        </div>,document.getElementById("modal")
+                {modalIsOpen ? <Toaster /> : null}
+                {isLoginSignup ? <LoginSignupForm /> : null}
+                {showContent ? <ContentWrapper /> : null}
+            </dialog>,
+            document.getElementById("modal")
     )
 }

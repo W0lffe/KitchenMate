@@ -1,7 +1,7 @@
 
 export const containerStyle = `flex flex-col gap-2  w-full h-full text-white`;
 
-export const topSection = ` h-2/10 flex flex-row justify-start border-b-1 border-white/20 rounded-custom`;
+export const topSection = ` h-3/10 flex flex-row justify-start border-b-1 border-white/20 rounded-custom`;
 
 export const bottomSection =  ` h-8/10 flex flex-col lg:flex-row`;
 
@@ -16,7 +16,7 @@ export const getListStyle =  (list) => {
     return style;
 }
 
-export const iconSpan = `flex flex-row justify-end items-center gap-6 mt-2 px-5`;
+export const iconSpan = `flex flex-row justify-end items-center gap-6 mt-2 px-5 `;
 
 export const getIconStyle = (icon) => {
     
