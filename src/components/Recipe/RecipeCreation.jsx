@@ -10,7 +10,9 @@ import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
 import { getFormValues } from "../../util/util";
-import RecipePreview from "./RecipePreview";
+import ItemInfoSection from "../ItemInspectView/ItemInfoSection";
+import ItemListSection from "../ItemInspectView/ItemListSection";
+import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";
 
 const SECTIONS = {
     GENERAL: "General",
@@ -116,7 +118,11 @@ export default function RecipeCreation(){
                             <FormList use={SECTIONS.INSTRUCTIONS} state={currentFormValues}/>
                         }
                         {openTab === SECTIONS.CONFIRMATION && 
-                            <RecipePreview />
+                            <>
+                                <ItemInfoSection isRecipe={true} state={currentFormValues}/>
+                                <ItemListSection isRecipe={true} state={currentFormValues}/>
+                                <ItemInstructionSection instructions={currentFormValues.validInputs.steps} />
+                            </>
                         }
                     </div>
                 </>

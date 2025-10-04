@@ -2,9 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, 
         faPenToSquare, 
         faStar,
-        faCartPlus,
-        faSquareMinus,
-        faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+        faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, 
         useEffect, 
         useState } from "react";
@@ -14,11 +12,13 @@ import { bottomSection,
         getIconStyle, 
         getListStyle, 
         iconSpan, 
-        listSection, 
-        topSection } from "./inspectStyles";
+        listSection } from "./inspectStyles";
 import SubmitButton from "../Buttons/SubmitButton";
 import toast from "react-hot-toast";
 import { scaleRecipe } from "../../util/util";
+import ItemInfoSection from "./ItemInfoSection";
+import ItemListSection from "./ItemListSection";
+import ItemInstructionSection from "./ItemInstructionSection";
 
 const deriveState = (itemToDerive) => {
     const {mode, dish, recipe} = itemToDerive;
@@ -35,6 +35,8 @@ export default function ItemInspectView({itemToInspect}){
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
     const [inspectableItem, setInspectableItem] = useState(itemToInspect);
     const [inspectingState, setInspectableState] = useState(deriveState(inspectableItem))
+    console.log("inspecting state", inspectingState);
+    console.log("inspectable item", inspectableItem);
     
     const [isFavorited, setIsFavorited] = useState(inspectingState.item.favorite);
 
@@ -141,16 +143,8 @@ export default function ItemInspectView({itemToInspect}){
             <ItemInfoSection isRecipe={inspectingState.isRecipe} item={inspectingState.item} scale={handleScaling} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={inspectingState.isRecipe} list={inspectingState.listOfItem}/>
-                {inspectingState.isRecipe ? (
-                    <section className={listSection}>
-                    <label>Instructions</label>
-                    <ul className={getListStyle()}>
-                        {inspectingState.item.instructions.map((step, i) => 
-                            <li key={i}>{`${i+1}. ${step}`}</li>)}
-                    </ul>
-                    </section>
-                ) : 
-                null}
+
+                {inspectingState.isRecipe && <ItemInstructionSection instructions={inspectingState.item.instructions} />}
             </div>
         </div>
     )
@@ -177,66 +171,3 @@ function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handle
     )
 }
 
-function ItemListSection({isRecipe, list}){
-
-    const style = isRecipe && "ingredients";
-
-    return(
-        <section className={listSection}>
-            <label>{isRecipe ? "Ingredients" : "Components"}</label>
-                <ul className={getListStyle(style)}>
-                {list.map((listItem, i) => 
-                    <li key={i} className="flex w-2/3 justify-between">
-                        <label className="w-30">{listItem.product || listItem.name }</label>
-                        {isRecipe ? (
-                            <>
-                                <label>{listItem.quantity}</label>
-                                <label>{listItem.unit}</label>
-                            </>
-                        ) : null}
-                    </li>)}
-                 </ul>
-        </section>
-    )
-}
-
-function ItemInfoSection({isRecipe, item, scale}){
-
-    const name = item.name;
-    const subtitle = isRecipe ? `Yield: ${item.output.portions} ${item.output.output}` : `Course: ${item.course}`;
-    const prepTime = isRecipe ? `Prep Time: ${item.prepTime.time} ${item.prepTime.format}` : null;
-
-    return(
-        <div className={topSection}>
-            <section className="w-full p-5 lg:p-6">
-                <h2 className="text-2xl font-semibold italic">{name}</h2>
-
-                {isRecipe ? (
-                    <section className="flex flex-row gap-15">
-                        <h3 className="text-lg">{subtitle}</h3>
-                        <span className="flex flex-row gap-5 text-xl">
-                            <h3>Scale: </h3>
-                            <FontAwesomeIcon icon={faSquareMinus} 
-                                                className="py-1"
-                                                onClick={() => scale("-")}/>
-                            <FontAwesomeIcon icon={faSquarePlus} 
-                                                className="py-1"
-                                                onClick={() => scale("+")}/>
-                        </span>
-                    </section>) 
-                : 
-                <h3 className="text-lg">{subtitle}</h3>}
-
-                <h3 className="text-lg">{prepTime}</h3>
-            </section>
-
-         
-
-            {!isRecipe ? (
-                <section className="w-1/2">
-                    <img src={item.image} alt="Photo cant be displayed" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
-                </section>
-            ) : null}
-        </div>
-    )
-}
