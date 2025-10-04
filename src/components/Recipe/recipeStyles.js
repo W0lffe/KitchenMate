@@ -19,3 +19,5 @@ export const footerStyle = `flex items-center justify-center m-2`;
 export const labelStyle = `text-[16px] font-semibold`;
 
 export const lineStyle = `flex gap-6 m-2 items-center flex-row`;
+
+export const tabButtonStyle = `underline animate-pulse p-2 m-1 font-[700]`

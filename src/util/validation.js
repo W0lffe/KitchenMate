@@ -81,6 +81,10 @@ const validateNumber = (userInput) => {
 
 const validateArray = (array) => {
 
+    if(array.length === 0){
+        return false;
+    }
+
     let allInputsFound = true;
 
     array.forEach(element => {

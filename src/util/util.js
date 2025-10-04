@@ -119,3 +119,18 @@ export const scaleRecipe = (operation, itemToScale) => {
         },
     };
 }
+
+export const getFormValues = (formData) => {
+    const name = formData.get("name")
+    const portions = formData.get("portions")
+    const output = formData.get("output")
+    const time = formData.get("time")
+    const timeFormat = formData.get("timeFormat")
+    const products = formData.getAll("product");
+    const quantity = formData.getAll("quantity");
+    const unit = formData.getAll("unit");
+    const steps = formData.getAll("step");
+
+    return{ name, portions, output, time, timeFormat, 
+            products, quantity, unit, steps };
+}
