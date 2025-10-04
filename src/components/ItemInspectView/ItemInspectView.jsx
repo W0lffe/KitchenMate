@@ -10,9 +10,7 @@ import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
         containerStyle, 
         getIconStyle, 
-        getListStyle, 
-        iconSpan, 
-        listSection } from "./inspectStyles";
+        iconSpan} from "./inspectStyles";
 import SubmitButton from "../Buttons/SubmitButton";
 import toast from "react-hot-toast";
 import { scaleRecipe } from "../../util/util";
@@ -35,8 +33,6 @@ export default function ItemInspectView({itemToInspect}){
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
     const [inspectableItem, setInspectableItem] = useState(itemToInspect);
     const [inspectingState, setInspectableState] = useState(deriveState(inspectableItem))
-    console.log("inspecting state", inspectingState);
-    console.log("inspectable item", inspectableItem);
     
     const [isFavorited, setIsFavorited] = useState(inspectingState.item.favorite);
 

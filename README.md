@@ -69,13 +69,16 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     Final Integration & Testing
 - Front-End
     - [x] Connecting front-end to backend
-    - [ ] Optimizing styling
+    - [ ] Optimizing styling 
+        - **POSTPONED**
     - [x] Error Handling 
     - [x] Polishing
 - Testing
     - [ ] Testing on different devices
+        - **POSTPONED**
     - [x] Bug fixes
-    - [ ] Testing of components
+    - [ ] Testing of components 
+        - **POSTPONED**
 - Deployment
     - [x] Deploying first version to Firebase
 
@@ -86,7 +89,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [ ] Sections for creation modals
         - NOTE: Idea is to traverse through sections like Basic Info -> Ingredients -> Steps etc. 
                 Instead of showing all things at once.
-        - Work In Progress, added tab system to RecipeCreation but it does not save data yet.
+        - Work In Progress, tab system works for RecipeCreation. Next up DishCreation.
     - [ ] Possibility to show whole recipe in dish creation instead of just recipe name
     - [ ] Recipe scalability feature
          - Work In Progress, currently only scales on the same output f.ex. portions -> portions, GN -> GN

@@ -17,17 +17,17 @@ export default function NaviSection(){
     const NAV_VALUES = [
         {
             value: "recipes",
-            label: "Recipe Management",
+            label: "Recipes",
             icon: faBookOpen
         },
         {
             value: "dishes",
-            label: "Dish Management",
+            label: "Dishes",
             icon: faUtensils
         },
         {
             value: "basket",
-            label: "Basket Management",
+            label: "Basket",
             icon: faClipboardList
         },
 

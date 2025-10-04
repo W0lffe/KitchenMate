@@ -5,7 +5,6 @@ export default function ItemListSection({isRecipe, list, state}){
 
     const isPreview = state !== undefined;
 
-    console.log("state", state);
     const combinedList = (isRecipe && isPreview) && combineProductData(state.validInputs.products, state.validInputs.quantity, state.validInputs.unit);
     const gotList = isPreview ? combinedList : list;
 

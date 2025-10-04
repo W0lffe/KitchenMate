@@ -1,6 +1,7 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
-        footerStyle} from "./recipeStyles";
+        footerStyle,
+        getButtonStyle} from "./recipeStyles";
 import { useContext, 
         useActionState, 
         useState} from "react";
@@ -100,11 +101,11 @@ export default function RecipeCreation(){
             {isMobile ? 
             (
                 <>
-                    <div className="flex gap-5 w-full justify-center">
+                    <div className="flex gap-5 w-full justify-center h-15">
                         {Object.values(SECTIONS).map((section, i) => (
                             <button type="button" 
                             onClick={() => {handleTabChange(section)}}
-                            className={openTab === section ? "underline" : null}>{i+1}</button>
+                            className={getButtonStyle(openTab === section)}>{i+1}</button>
                         ))}
                     </div>
                     <div className={sectionContainerStyle}>
