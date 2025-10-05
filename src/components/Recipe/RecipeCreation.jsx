@@ -1,7 +1,6 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
-        footerStyle,
-        getButtonStyle} from "./recipeStyles";
+        footerStyle} from "./recipeStyles";
 import { useContext, 
         useActionState, 
         useState} from "react";
@@ -14,6 +13,7 @@ import { getFormValues } from "../../util/util";
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection";
 import ItemListSection from "../ItemInspectView/ItemListSection";
 import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";
+import TabButtons from "../Buttons/TabButtons";
 
 const SECTIONS = {
     GENERAL: "General",
@@ -103,13 +103,7 @@ export default function RecipeCreation(){
             {isMobile ? 
             (
                 <>
-                    <div className="flex gap-5 w-full justify-center h-15">
-                        {Object.values(SECTIONS).map((section, i) => (
-                            <button key={i} type="button" 
-                            onClick={() => {handleTabChange(section)}}
-                            className={getButtonStyle(openTab === section)}>{i+1}</button>
-                        ))}
-                    </div>
+                    <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
                     <div className={sectionContainerStyle}>
                         {openTab === SECTIONS.GENERAL && 
                             <RecipeInfoSection state={currentFormValues}/>

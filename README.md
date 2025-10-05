@@ -90,9 +90,9 @@ It includes basic login functionality and core CRUD operations for recipes, dish
         - NOTE: Idea is to traverse through sections like Basic Info -> Ingredients -> Steps etc. 
                 Instead of showing all things at once.
         - Work In Progress, tab system works for RecipeCreation. Next up DishCreation.
-    - [ ] Possibility to show whole recipe in dish creation instead of just recipe name
+    - [ ] Possibility to show whole recipe in dish inspection instead of just recipe name
     - [ ] Recipe scalability feature
-         - Work In Progress, currently only scales on the same output f.ex. portions -> portions, GN -> GN
+         - Work In Progress, currently only scales on portions, does not consider output
     - [ ] Public recipe bank, visible for every user
     - [ ] Creating a homepage
     - [ ] Dish creation image preview

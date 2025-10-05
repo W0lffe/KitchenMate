@@ -7,8 +7,6 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
     const isPreview = state !== undefined;
     const gotItem = isPreview ? state.validInputs : item;
 
-    console.log("got item", gotItem);
-
     const name = gotItem.name.length > 0 ? gotItem.name : "Name not set";
     
     let outputValue = isRecipe && `${gotItem.portions} Portions`;

@@ -25,3 +25,11 @@ export const getSubmitButtonStyle = (use) =>{
     }
 }
     
+
+export const getTabButtonStyle = (active) => {
+    let style = `border border-white  rounded-[20px] w-10 h-10
+                transition-all duration-300 ease-out bg-gray-400/60 
+                text-center`
+    style += active ? `border-black bg-white/90 text-black animate-pulse` : ``
+    return style;
+}

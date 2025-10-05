@@ -18,6 +18,13 @@ import { footerStyle,
         listStyle } from "./dishCreationStyles"
 import { validateName } from "../../util/validation"
 import toast from "react-hot-toast";
+import TabButtons from "../Buttons/TabButtons"
+
+const SECTIONS = {
+    GENERAL: "General",
+    COMPONENTS: "Components",
+    CONFIRMATION: "Confirmation"
+}
 
 const validateInputs = (inputs) => {
 
@@ -40,6 +47,8 @@ const validateInputs = (inputs) => {
 export default function DishCreation(){
 
     const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest} = useContext(KitchenContext);
+    const [openTab, setOpenTab] = useState(SECTIONS.GENERAL);
+
     const [components, setComponents] = useState([]);
 
     const {mode, dish} = activeDish;
@@ -144,22 +153,46 @@ export default function DishCreation(){
         return {validInputs};
     }
 
+    const handleTabChange = (nextTab) => {
+       setOpenTab(nextTab);
+    }
+
     const [formState, formAction] = useActionState(dishForm, initialFormState);
 
     return(
         <div className="text-white">
-           {isMobile ? 
-                       <span className={headerSpanStyle}>
-                           <h2 className={`${labelStyle} w-full text-center`}>{mobileHeading}</h2>
-                           <SubmitButton use={"close"} func={setModalState} />
-                       </span> 
-            : null}
+           {isMobile &&
+                <span className={headerSpanStyle}>
+                    <h2 className={`${labelStyle} w-full text-center`}>{mobileHeading}</h2>
+                    <SubmitButton use={"close"} func={setModalState} />
+                </span> 
+            }
             <form action={formAction}>
-            <DishInfoSection state={formState}/>
-            {isMobile ? <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> : null}
-            <ComponentRecipeList list={components} func={deleteComponent}/>
+
+            {isMobile ? (
+                <>
+                    <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
+                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={formState}/>}
+                    {openTab === SECTIONS.COMPONENTS && 
+                    <>
+                        <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> 
+                        <ComponentRecipeList list={components} func={deleteComponent}/> 
+                    </>
+                    }
+                    {openTab === SECTIONS.CONFIRMATION && <div>TEST</div>}
+                </>
+            ) : (
+                <>
+                    <DishInfoSection state={formState}/>
+                    <ComponentRecipeList list={components} func={deleteComponent}/>
+                </>
+            )}
             <footer className={footerStyle}>
-                <SubmitButton use="recipe"/>
+                {isMobile ? (
+                    openTab === SECTIONS.CONFIRMATION && <SubmitButton use={"recipe"} />
+                ) : (
+                    <SubmitButton use="recipe"/>
+                )}
             </footer>
             </form>
         </div>
