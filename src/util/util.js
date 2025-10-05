@@ -11,14 +11,15 @@ export const units = [
     "kg", "l", "g", "dl", "pcs"
 ]
 
-export const outputs  = [
-    "Portions", "GN 1/6-10", "GN 1/6-15", "GN 1/3-10", "GN 1/3-15", 
-    "GN 1/2-10", "GN 1/2-15", "GN 1/1-10", "GN 1/1-15", "GN 1/1-6.5",
-    "6L Piping"
-]
+export const outputs = {
+  "N/A": [],
+  "GN": ["GN 1/6-10", "GN 1/6-15", "GN 1/3-10", "GN 1/3-15", "GN 1/2-10", "GN 1/2-15", "GN 1/1-10", "GN 1/1-15", "GN 1/1-6.5"],
+  "Piping": ["6L Piping"],
+  "Box": ["0.5L Box", "1L Box", "2L Box", "3L Box"]
+};
 
 export const courses = [
-    "Starter", "Main", "Dessert", "Amuse-bouche",
+    "Starter", "Main", "Dessert", "Amuse-bouche", "Snack", "Lunch", "Dinner", "Breakfast"
 ]
 
 export const getListLabels = (activeList)=> {
@@ -89,7 +90,7 @@ export const getReducerType = (method, section, basketAdd) => {
 export const scaleRecipe = (operation, itemToScale) => {
     const recipe = itemToScale.recipe;
 
-    const originalPortions = recipe.output.portions;
+    const originalPortions = recipe.portions;
     const originalIngredients = recipe.ingredients;
 
     let newPortions;
@@ -111,10 +112,7 @@ export const scaleRecipe = (operation, itemToScale) => {
         ...itemToScale,
         recipe: {
             ...recipe,
-            output: {
-                ...recipe.output,
-                portions: newPortions,
-            },
+            portions: newPortions,
             ingredients: scaledIngredients,
         },
     };
@@ -124,6 +122,7 @@ export const getFormValues = (formData) => {
     const name = formData.get("name")
     const portions = formData.get("portions")
     const output = formData.get("output")
+    const outputType = formData.get("outputType")
     const time = formData.get("time")
     const timeFormat = formData.get("timeFormat")
     const products = formData.getAll("product");
@@ -131,6 +130,6 @@ export const getFormValues = (formData) => {
     const unit = formData.getAll("unit");
     const steps = formData.getAll("step");
 
-    return{ name, portions, output, time, timeFormat, 
+    return{ name, portions, output, outputType, time, timeFormat, 
             products, quantity, unit, steps };
 }

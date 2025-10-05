@@ -7,9 +7,15 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
     const isPreview = state !== undefined;
     const gotItem = isPreview ? state.validInputs : item;
 
+    console.log("got item", gotItem);
+
     const name = gotItem.name.length > 0 ? gotItem.name : "Name not set";
-    const outputValue = isRecipe && (isPreview ? `${gotItem.portions} ${gotItem.output}` : `${gotItem.output.portions} ${gotItem.output.output}`);
-    const timeValue = isRecipe && (isPreview ? `${gotItem.time} ${gotItem.timeFormat}` : `${gotItem.prepTime.time} ${gotItem.prepTime.format}`);
+    
+    let outputValue = isRecipe && `${gotItem.portions} Portions`;
+    gotItem.outputType !== null && (outputValue += `, ${gotItem.outputType}`);
+
+    const timeValue = isRecipe && `${gotItem.time} ${gotItem.timeFormat}`;
+    
     const output = isRecipe ? `Yield: ${outputValue}` : `Course: ${gotItem.course}`;
     const prepTime = isRecipe && `Prep Time: ${timeValue}`;
 

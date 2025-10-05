@@ -35,10 +35,11 @@ export default function RecipeCreation(){
         const currentState = isEditing ? {
             validInputs: {
                     name: recipeToModify.name,
-                    portions: recipeToModify.output.portions,
-                    output: recipeToModify.output.output,
-                    time: recipeToModify.prepTime.time,
-                    timeFormat: recipeToModify.prepTime.format,
+                    portions: recipeToModify.portions,
+                    output: recipeToModify.output,
+                    outputType: recipeToModify.outputType,
+                    time: recipeToModify.time,
+                    timeFormat: recipeToModify.timeFormat,
                     products: recipeToModify.ingredients.map(ingredient => ingredient.product),
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
@@ -67,7 +68,7 @@ export default function RecipeCreation(){
         const formData = new FormData(document.querySelector("form"));
 
         const { 
-            name, portions, output, time, timeFormat,
+            name, portions, output, outputType, time, timeFormat,
             products, quantity, unit, steps 
         } = getFormValues(formData);
 
@@ -77,6 +78,7 @@ export default function RecipeCreation(){
                 name: name === null ? currentFormValues.validInputs?.name : name,
                 portions: portions === null ? currentFormValues.validInputs?.portions : portions,
                 output: output === null ? currentFormValues.validInputs?.output : output,
+                outputType: output === "N/A" ? null : (outputType === null ? currentFormValues.validInputs?.outputType : outputType),
                 time: time === null ? currentFormValues.validInputs?.time : time,
                 timeFormat: timeFormat === null ? currentFormValues.validInputs?.timeFormat : timeFormat,
                 products: products.length > 0 ? products : (currentFormValues.validInputs?.products || []),
@@ -103,7 +105,7 @@ export default function RecipeCreation(){
                 <>
                     <div className="flex gap-5 w-full justify-center h-15">
                         {Object.values(SECTIONS).map((section, i) => (
-                            <button type="button" 
+                            <button key={i} type="button" 
                             onClick={() => {handleTabChange(section)}}
                             className={getButtonStyle(openTab === section)}>{i+1}</button>
                         ))}

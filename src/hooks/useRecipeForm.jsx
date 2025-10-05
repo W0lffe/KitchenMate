@@ -13,18 +13,19 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       const name = state.validInputs?.name || "";
       const portions = state.validInputs?.portions || 0;
       const output = state.validInputs?.output || "";
+      const outputType = state.validInputs?.outputType || "";
       const time = state.validInputs?.time || 0;
       const timeFormat = state.validInputs?.timeFormat || null;
       const products = state.validInputs?.products || [];
       const quantity = state.validInputs?.quantity || [];
       const unit = state.validInputs?.unit || [];
       const steps = state.validInputs?.steps || [];
-      return { name, portions, output, time, timeFormat, products, quantity, unit, steps };
+      return { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps };
     };
 
     const formValues = !isMobile ? getFormValues(formData) : deriveValues(currentFormValues);
     
-    const { name, portions, output, time, timeFormat, products, quantity, unit, steps } = formValues;
+    const { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps } = formValues;
 
     const errors = validateAll(name, portions, time, timeFormat, products, quantity, unit, steps);
     const ingredients = combineProductData(products, quantity, unit);
@@ -38,14 +39,19 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
 
     const newRecipe = {
       name,
-      output: { portions, output },
-      prepTime: { time, format: timeFormat },
+      portions,
+      output,
+      outputType,
+      time, 
+      timeFormat,
       ingredients,
       instructions: steps,
       favorite: currentFormValues.isFavorited,
       id: currentFormValues.modifiedId,
       date: getTimestamp()
     };
+
+    console.log("new rec",newRecipe);
 
     const response = await handleRequest({
       data: newRecipe,

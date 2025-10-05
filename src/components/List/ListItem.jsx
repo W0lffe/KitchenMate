@@ -99,13 +99,13 @@ export default function ListItem({item}){
 }
 
 function RecipeItem({item}){
-    const {name, output, prepTime} = item;
+    const {name, portions, time, timeFormat} = item;
 
     return(
         <>
         <label className={listItemNameStyle}>{name}</label>
-        <label>{output?.portions}</label>
-        <label>{prepTime?.time} {prepTime?.format}</label>
+        <label>{portions}</label>
+        <label>{time} {timeFormat}</label>
         </>
     )
 }
