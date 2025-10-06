@@ -7,8 +7,7 @@ import SubmitButton from "../Buttons/SubmitButton"
 import DishInfoSection from "./DishInfoSection"
 import Errors from "../Error/Errors"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSquarePlus, 
-        faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faSquareCheck } from "@fortawesome/free-solid-svg-icons"
 import { footerStyle, 
         headerSpanStyle, 
         labelStyle, 
@@ -19,6 +18,7 @@ import { footerStyle,
 import { validateName } from "../../util/validation"
 import toast from "react-hot-toast";
 import TabButtons from "../Buttons/TabButtons"
+import SearchBar from "../Toolbar/SearchBar"
 
 const SECTIONS = {
     GENERAL: "General",
@@ -46,7 +46,7 @@ const validateInputs = (inputs) => {
 
 export default function DishCreation(){
 
-    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest} = useContext(KitchenContext);
+    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest, filterList} = useContext(KitchenContext);
     const [openTab, setOpenTab] = useState(SECTIONS.GENERAL);
 
     const [components, setComponents] = useState([]);
@@ -175,8 +175,7 @@ export default function DishCreation(){
                     {openTab === SECTIONS.GENERAL && <DishInfoSection state={formState}/>}
                     {openTab === SECTIONS.COMPONENTS && 
                     <>
-                        <ComponentRecipeList use="recipe" list={availableRecipes} func={addComponent}/> 
-                        <ComponentRecipeList list={components} func={deleteComponent}/> 
+                        <ComponentRecipeList isMobile={isMobile} isRecipe={true} list={availableRecipes} func={addComponent} filter={filterList}/> 
                     </>
                     }
                     {openTab === SECTIONS.CONFIRMATION && <div>TEST</div>}
@@ -199,33 +198,49 @@ export default function DishCreation(){
     )
 }
 
-function ComponentRecipeList({use, list, func}){
+function ComponentRecipeList({isMobile, isRecipe, list, func, filter}){
 
-    const isRecipes = use === "recipe";
-    const header = isRecipes ? "Add Recipes to Dish" : "Components";
-    const fallback = isRecipes ? "Recipe list is empty." : "No components added yet";
+    const header = isRecipe ? "Add Recipes to Dish" : "Components";
+    const fallback = isRecipe ? "Recipe list is empty." : "No components added yet";
 
     return(
-        <div className={listDivStyle}>
+        isMobile ? (
+            <div className={listDivStyle}>
                 <span className={listSpanStyle}>
                     <label className={labelStyle}>{header}</label>
-                <ul className={listStyle}>
-                    {list.length === 0 ? <p>{fallback}</p> : null}
-                    {isRecipes && list.length > 0 ? 
-                        list.map((recipe, i) => 
-                        <li key={i} className={listItemStyle}>
-                            <label>{recipe.name}</label>
-                             <FontAwesomeIcon icon={faSquarePlus}
-                                        onClick={() => func(recipe)}/>
-                        </li>) 
-                    : 
-                        list.map((component, i) => 
-                        <li key={i} className={listItemStyle}>
-                            <label>{component.name}</label>
-                            <FontAwesomeIcon icon={faTrash} onClick={() => func(i)}/>
-                        </li>)}
-                </ul>
+                    <SearchBar filter={filter} />
+                    {list.length > 0 ? (isRecipe &&
+                        <ul>
+                            {list.map((recipe, i) => 
+                            <li key={i} className={listItemStyle}>
+                                <label>{recipe.name}</label>
+                                <FontAwesomeIcon icon={faSquareCheck}
+                                                onClick={() => func(recipe.id)}/>
+                            </li>)}
+                        </ul>
+                    ) : (
+                        <label>{fallback}</label>
+                    )}
                 </span>
-        </div>
+            </div>
+        ) : (
+            <div>
+                {list.length > 0 ? (
+                    <ul className={listStyle}>
+                        {list.map((component, i) => 
+                          <li key={i} className={listItemStyle}>
+                                <label>{component.name}</label>
+                                <FontAwesomeIcon icon={faSquareCheck}
+                                                onClick={() => func(component.id)}/>
+                          </li>)} 
+                    </ul>
+                ) : (
+                    <label>{fallback}</label>
+                )}
+                    
+                    
+            </div>
+        )
+        
     )
 }

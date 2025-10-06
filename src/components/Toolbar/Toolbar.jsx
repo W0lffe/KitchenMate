@@ -1,6 +1,5 @@
 import { headingStyle, 
         iconStyle, 
-        inputStyle, 
         mobileToolbarStyle, 
         spanStyle, 
         toolbarStyle } from "./toolbarStyles";
@@ -11,6 +10,7 @@ import { faFolderPlus,
         faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { getSortOptions } from "./sortOptions";
 import toast from "react-hot-toast";
+import SearchBar from "./SearchBar";
 
 export default function Toolbar(){
 
@@ -82,11 +82,7 @@ export default function Toolbar(){
         <header className={style}>
             <h3 className={headingStyle}>Search and Filter</h3>
             <span className={spanStyle}>
-                <input type="text" 
-                        name="name" 
-                        placeholder="Search..." 
-                        className={inputStyle} 
-                        onChange={(event) => filterList(event.target.value)}/>
+                <SearchBar filter={filterList} />
                 {activeSection === "basket" && 
                 <>
                     <button type="button"

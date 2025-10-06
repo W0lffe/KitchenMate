@@ -65,7 +65,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Recipes
     - [x] Dishes
 
-#### Stage 4 
+#### Stage 4 **PARTIALLY COMPLETED**
     Final Integration & Testing
 - Front-End
     - [x] Connecting front-end to backend
