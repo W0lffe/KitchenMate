@@ -22,16 +22,16 @@ export const courses = [
     "Starter", "Main", "Dessert", "Amuse-bouche", "Snack", "Lunch", "Dinner", "Breakfast"
 ]
 
+export const LIST_LABELS = {
+    1: ["Name", "Portions", "Prep Time", "View"],
+    2: ["Name", "Course", "Components", "View"],
+    3: ["Product", "Quantity", "Unit", "Collected", "Cut"],
+    4: ["Name", "Add"],
+};
+
 export const getListLabels = (activeList)=> {
 
-    switch(activeList){
-        case "recipes":
-            return ["Name", "Portions", "Prep Time", "View"]
-        case "dishes":
-            return [ "Name", "Course", "Components", "View"]
-        case "basket":
-            return ["Product", "Quantity", "Unit", "Collected", "Cut"]
-    }
+    return LIST_LABELS[activeList] || [];
 }
 
 

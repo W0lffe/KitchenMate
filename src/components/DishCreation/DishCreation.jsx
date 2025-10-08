@@ -98,6 +98,9 @@ export default function DishCreation(){
         });
     }
 
+    const hasItem = (item) => {
+    }
+
     const dishForm = async (prevFormState, formData) => {
         const name = formData.get("name");
         const course = formData.get("course");
@@ -173,12 +176,12 @@ export default function DishCreation(){
                 <>
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
                     {openTab === SECTIONS.GENERAL && <DishInfoSection state={formState}/>}
-                    {openTab === SECTIONS.COMPONENTS && 
-                    <>
-                        <ComponentRecipeList isMobile={isMobile} isRecipe={true} list={availableRecipes} func={addComponent} filter={filterList}/> 
-                    </>
+                    {openTab === SECTIONS.COMPONENTS && <ComponentRecipeList isMobile={isMobile} isRecipe={true} 
+                                                                            list={availableRecipes} func={addComponent} 
+                                                                            filter={filterList}/> }
+                    {openTab === SECTIONS.CONFIRMATION && 
+                        <div>TEST</div>
                     }
-                    {openTab === SECTIONS.CONFIRMATION && <div>TEST</div>}
                 </>
             ) : (
                 <>

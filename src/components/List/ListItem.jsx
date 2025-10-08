@@ -87,7 +87,7 @@ export default function ListItem({item}){
 
     return(
         <li className={getListItemStyle(isMobile, item.obtained ? item.obtained : null)}>
-            {activeSection === "recipes" || (activeSection === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item}/> : null}
+            {activeSection === "recipes" || (activeSection === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item} isCreatingDish={isCreatingDish || isEditingDish}/> : null}
             {activeSection === "basket" && <BasketItem item={item}/>}
             {(activeSection === "dishes" && (!isCreatingDish && !isEditingDish)) && <DishItem item={item} />}
             <FontAwesomeIcon onClick={handleClick} 
@@ -98,14 +98,18 @@ export default function ListItem({item}){
     )
 }
 
-function RecipeItem({item}){
+function RecipeItem({item, isCreatingDish}){
     const {name, portions, time, timeFormat} = item;
 
     return(
         <>
         <label className={listItemNameStyle}>{name}</label>
-        <label>{portions}</label>
-        <label>{time} {timeFormat}</label>
+        {!isCreatingDish && 
+            <>
+                <label>{portions}</label>
+                <label>{time} {timeFormat}</label>
+            </>
+        }
         </>
     )
 }

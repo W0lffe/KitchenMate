@@ -19,21 +19,21 @@ export default function List(){
 
         switch(activeSection){
             case "recipes":
-                setUseLabel(activeSection);
+                setUseLabel(1);
                 setList(availableRecipes);
                 break;
             case "dishes":
                 if(["create", "edit"].includes(activeDish?.mode)){
-                    setUseLabel("recipes");
+                    setUseLabel(4);
                     setList(availableRecipes);
                 }
                 else{
                     setList(availableDishes);
-                    setUseLabel(activeSection);
+                    setUseLabel(2);
                 }
                 break;
             case "basket":
-                setUseLabel(activeSection);
+                setUseLabel(3);
                 setList(availableBasket);
                 break;
         }
