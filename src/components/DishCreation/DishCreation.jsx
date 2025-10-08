@@ -6,19 +6,14 @@ import { KitchenContext } from "../../context/KitchenContext"
 import SubmitButton from "../Buttons/SubmitButton"
 import DishInfoSection from "./DishInfoSection"
 import Errors from "../Error/Errors"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSquareCheck } from "@fortawesome/free-solid-svg-icons"
 import { footerStyle, 
         headerSpanStyle, 
-        labelStyle, 
-        listDivStyle, 
-        listItemStyle, 
-        listSpanStyle, 
-        listStyle } from "./dishCreationStyles"
+        labelStyle } from "./dishCreationStyles"
 import { validateName } from "../../util/validation"
 import toast from "react-hot-toast";
 import TabButtons from "../Buttons/TabButtons"
-import SearchBar from "../Toolbar/SearchBar"
+import { getRecipeInfo } from "../../util/util"
+import ComponentList from "./ComponentList"
 
 const SECTIONS = {
     GENERAL: "General",
@@ -46,59 +41,81 @@ const validateInputs = (inputs) => {
 
 export default function DishCreation(){
 
-    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest, filterList} = useContext(KitchenContext);
+    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest, filterList, } = useContext(KitchenContext);
     const [openTab, setOpenTab] = useState(SECTIONS.GENERAL);
-
-    const [components, setComponents] = useState([]);
 
     const {mode, dish} = activeDish;
     const isCreatingDish = activeDish?.mode === "create";
     const isEditing = activeDish?.mode === "edit";
 
-    const mobileHeading = "Dish Creation";
-    const modifiedID = isEditing ? dish.id : null;
-    const isFavorite = isEditing ? dish.favorite : null;
+    const mobileHeading =  isCreatingDish ? "Dish Creation" : "Dish Editor";
 
-    const initialFormState = isEditing ? {
+    const [currentFormValues, setCurrentFormValues] = useState(() => {
+
+       const currentState = isEditing ? {
             validInputs: {
                 name: dish.name,
                 course: dish.course,
-                image: dish.image
-            }
-        } : {validInputs: null}
+                image: dish.image,
+                components: dish.components,
+                isFavorite: isEditing ? dish.favorite : null,
+                modifiedId: isEditing ? dish?.id : null,
+            },
+            isFavorite: isEditing ? dish.favorite : null,
+            modifiedId: isEditing ? dish?.id : null,
+            isEditing
+       } : {validInputs: null};
+
+       return currentState;
+    })
    
     useEffect(() => {
         if(isCreatingDish){
-            setComponents(dish?.components || [])
+            setCurrentFormValues({
+                ...currentFormValues,
+                validInputs: {
+                    ...currentFormValues.validInputs,
+                    components: getRecipeInfo(availableRecipes, dish?.components || [])
+                }
+            })
         }
         if(isEditing && dish.components){
-            setComponents(dish.components)
+            setCurrentFormValues({
+                ...currentFormValues,
+                validInputs: {
+                    ...currentFormValues.validInputs,
+                    components: getRecipeInfo(availableRecipes, dish.components)
+                }
+            })
         }
     }, [mode, dish])
 
 
-    const addComponent = (item) => {
-        setActiveDish({
-            dish: {
-                ...dish,
-                components: [...components, item]
-            },
-            mode: isCreatingDish ? "create" : "edit"
-        });
+    const addComponent = (itemID) => {
+        setCurrentFormValues({
+            ...currentFormValues,
+            validInputs: {
+                ...currentFormValues.validInputs,
+                components: [...(currentFormValues.validInputs?.components || []), itemID]
+            }
+        })
     }
 
-    const deleteComponent = (item) => {
-        const filtered = [...components].filter((component, componentIndex) => componentIndex !== item)
-        setActiveDish({
-            dish: {
-                ...dish,
+    const deleteComponent = (itemID) => {
+
+        const filtered = [...currentFormValues.validInputs.components].filter((component) => component !== itemID)
+        setCurrentFormValues({
+            ...currentFormValues,
+            validInputs: {
+                ...currentFormValues.validInputs,
                 components: filtered
-            },
-            mode: isCreatingDish ? "create" : "edit"
-        });
+            }
+        })
     }
 
-    const hasItem = (item) => {
+    const updateComponents = (item) => {
+        const foundComponent = currentFormValues.validInputs?.components.find(component => component === item) || false;
+        foundComponent ? deleteComponent(foundComponent) : addComponent(item);
     }
 
     const dishForm = async (prevFormState, formData) => {
@@ -106,7 +123,12 @@ export default function DishCreation(){
         const course = formData.get("course");
         const image = formData.get("image");
 
-        const errors = validateInputs({name, course, components})
+        const errors = validateInputs({
+            name, 
+            course, 
+            components: currentFormValues.validInputs?.components
+        })
+        
         const hasImage = image && image.size > 0;
 
         const validInputs = {
@@ -128,9 +150,9 @@ export default function DishCreation(){
             name,
             course,
             image,
-            favorite: isFavorite,
-            id: modifiedID,
-            components
+            favorite: currentFormValues.validInputs?.isFavorite || false,
+            id: currentFormValues.validInputs?.modifiedId || null,
+            components: currentFormValues.validInputs?.components
         }
 
         const response = await handleRequest({
@@ -157,10 +179,27 @@ export default function DishCreation(){
     }
 
     const handleTabChange = (nextTab) => {
-       setOpenTab(nextTab);
+        const formData = new FormData(document.querySelector("form"));
+        const name = formData.get("name");
+        const course = formData.get("course");
+        const image = formData.get("image");
+
+
+        console.log("name", name);
+
+        setCurrentFormValues({
+            ...currentFormValues,
+            validInputs: {
+                name: name === null ? currentFormValues.validInputs?.name : name
+            }
+        });
+
+        setOpenTab(nextTab);
+
+        console.log("current form values", currentFormValues);
     }
 
-    const [formState, formAction] = useActionState(dishForm, initialFormState);
+    const [formState, formAction] = useActionState(dishForm, currentFormValues);
 
     return(
         <div className="text-white">
@@ -175,18 +214,18 @@ export default function DishCreation(){
             {isMobile ? (
                 <>
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
-                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={formState}/>}
-                    {openTab === SECTIONS.COMPONENTS && <ComponentRecipeList isMobile={isMobile} isRecipe={true} 
-                                                                            list={availableRecipes} func={addComponent} 
+                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues}/>}
+                    {openTab === SECTIONS.COMPONENTS && <ComponentList isMobile={isMobile} isRecipe={true} 
+                                                                            list={availableRecipes} func={updateComponents} 
                                                                             filter={filterList}/> }
                     {openTab === SECTIONS.CONFIRMATION && 
-                        <div>TEST</div>
+                        <div>{currentFormValues.validInputs?.name}</div>
                     }
                 </>
             ) : (
                 <>
                     <DishInfoSection state={formState}/>
-                    <ComponentRecipeList list={components} func={deleteComponent}/>
+                    <ComponentList list={currentFormValues.validInputs?.components || []} func={deleteComponent}/>
                 </>
             )}
             <footer className={footerStyle}>
@@ -201,49 +240,3 @@ export default function DishCreation(){
     )
 }
 
-function ComponentRecipeList({isMobile, isRecipe, list, func, filter}){
-
-    const header = isRecipe ? "Add Recipes to Dish" : "Components";
-    const fallback = isRecipe ? "Recipe list is empty." : "No components added yet";
-
-    return(
-        isMobile ? (
-            <div className={listDivStyle}>
-                <span className={listSpanStyle}>
-                    <label className={labelStyle}>{header}</label>
-                    <SearchBar filter={filter} />
-                    {list.length > 0 ? (isRecipe &&
-                        <ul>
-                            {list.map((recipe, i) => 
-                            <li key={i} className={listItemStyle}>
-                                <label>{recipe.name}</label>
-                                <FontAwesomeIcon icon={faSquareCheck}
-                                                onClick={() => func(recipe.id)}/>
-                            </li>)}
-                        </ul>
-                    ) : (
-                        <label>{fallback}</label>
-                    )}
-                </span>
-            </div>
-        ) : (
-            <div>
-                {list.length > 0 ? (
-                    <ul className={listStyle}>
-                        {list.map((component, i) => 
-                          <li key={i} className={listItemStyle}>
-                                <label>{component.name}</label>
-                                <FontAwesomeIcon icon={faSquareCheck}
-                                                onClick={() => func(component.id)}/>
-                          </li>)} 
-                    </ul>
-                ) : (
-                    <label>{fallback}</label>
-                )}
-                    
-                    
-            </div>
-        )
-        
-    )
-}

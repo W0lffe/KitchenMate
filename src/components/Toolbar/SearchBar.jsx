@@ -4,7 +4,7 @@ export default function SearchBar({filter}){
 
     return(
         <input type="text" 
-                                name="name" 
+                                name="search" 
                                 placeholder="Search..." 
                                 className={inputStyle} 
                                 onChange={(event) => filter(event.target.value)}/>

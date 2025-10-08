@@ -51,7 +51,7 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       date: getTimestamp()
     };
 
-    console.log("new rec",newRecipe);
+    console.log("new recipe!",newRecipe);
 
     const response = await handleRequest({
       data: newRecipe,

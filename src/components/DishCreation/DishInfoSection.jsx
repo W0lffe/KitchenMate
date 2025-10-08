@@ -9,7 +9,7 @@ import {labelStyle,
 
 export default function DishInfoSection({state}){
 
-    const validInputs = state.validInputs || {name: "", course: "", image: null}
+    const validInputs = state.validInputs || {}
 
     return(
         <div className={divStyle}>
@@ -19,7 +19,7 @@ export default function DishInfoSection({state}){
                     <label className={labelStyle}>Name:</label>
                     <input type="text" 
                             name="name" 
-                            placeholder="Name for dish" 
+                            placeholder="Dish Name" 
                             className={inputStyle}
                             defaultValue={validInputs.name}/>
                 </span>

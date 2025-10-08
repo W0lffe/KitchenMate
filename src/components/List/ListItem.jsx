@@ -16,6 +16,7 @@ export default function ListItem({item}){
   
     const isCreatingDish = activeDish?.mode === "create";
     const isEditingDish = activeDish?.mode === "edit";
+
     const iconToUse = (isCreatingDish || isEditingDish) ? faSquarePlus :
                         activeSection === "basket" ? faSquareCheck : faEye;
 
@@ -44,8 +45,9 @@ export default function ListItem({item}){
         }
         else if(activeSection === "dishes"){
             if(isCreatingDish || isEditingDish){
+
                 const existingComponents = activeDish.dish?.components || [];
-                const components = [...existingComponents, item];
+                const components = [...existingComponents, item.id];
 
                 setActiveDish({
                     dish: isCreatingDish ? {

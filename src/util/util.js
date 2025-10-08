@@ -133,3 +133,15 @@ export const getFormValues = (formData) => {
     return{ name, portions, output, outputType, time, timeFormat, 
             products, quantity, unit, steps };
 }
+
+export const getRecipeInfo = (list, id) => {
+
+    if(list.length === 0 || id.length === 0) return [];
+
+    let recipes = []
+    id.forEach(id => {
+        recipes.push(list.find(item => item.id === id));
+    });
+
+    return recipes;
+}
