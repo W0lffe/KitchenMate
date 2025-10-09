@@ -47,8 +47,6 @@ export default function ComponentList({isMobile, isRecipe, list, func, filter}){
                 ) : (
                     <label>{fallback}</label>
                 )}
-                    
-                    
             </div>
         )
         
