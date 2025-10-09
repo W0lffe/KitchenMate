@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { validateAll } from "../util/validation";
-import { getFormValues } from "../util/util";
+import { validateRecipe } from "../util/validation";
+import { getRecipeFormValues, deriveFormStateValues } from "../util/util";
 import { combineProductData, getTimestamp } from "../util/util";
 import toast from "react-hot-toast";
 import Errors from "../components/Error/Errors";
@@ -9,25 +9,11 @@ import Errors from "../components/Error/Errors";
 export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setActiveRecipe, setModalState }) {
   return useCallback(async (prevFormState, formData) => {
 
-    const deriveValues = (state) => {
-      const name = state.validInputs?.name || "";
-      const portions = state.validInputs?.portions || 0;
-      const output = state.validInputs?.output || "";
-      const outputType = state.validInputs?.outputType || "";
-      const time = state.validInputs?.time || 0;
-      const timeFormat = state.validInputs?.timeFormat || null;
-      const products = state.validInputs?.products || [];
-      const quantity = state.validInputs?.quantity || [];
-      const unit = state.validInputs?.unit || [];
-      const steps = state.validInputs?.steps || [];
-      return { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps };
-    };
-
-    const formValues = !isMobile ? getFormValues(formData) : deriveValues(currentFormValues);
+    const formValues = !isMobile ? getRecipeFormValues(formData) : deriveFormStateValues(currentFormValues, true);
     
     const { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps } = formValues;
 
-    const errors = validateAll(name, portions, time, timeFormat, products, quantity, unit, steps);
+    const errors = validateRecipe(name, portions, time, timeFormat, products, quantity, unit, steps);
     const ingredients = combineProductData(products, quantity, unit);
 
     const validInputs = { name, portions, output, time, timeFormat, products, quantity, unit, steps };

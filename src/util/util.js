@@ -22,7 +22,7 @@ export const courses = [
     "Starter", "Main", "Dessert", "Amuse-bouche", "Snack", "Lunch", "Dinner", "Breakfast"
 ]
 
-export const LIST_LABELS = {
+const LIST_LABELS = {
     1: ["Name", "Portions", "Prep Time", "View"],
     2: ["Name", "Course", "Components", "View"],
     3: ["Product", "Quantity", "Unit", "Collected", "Cut"],
@@ -33,7 +33,6 @@ export const getListLabels = (activeList)=> {
 
     return LIST_LABELS[activeList] || [];
 }
-
 
 export const getRandomSlogan = () => {
     return slogans[Math.floor(Math.random() * slogans.length)];
@@ -64,7 +63,6 @@ export const getTimestamp = () => {
 
 
 export const getReducerType = (method, section, basketAdd) => {
-
 
     switch (section) {
         case "recipes":
@@ -118,7 +116,7 @@ export const scaleRecipe = (operation, itemToScale) => {
     };
 }
 
-export const getFormValues = (formData) => {
+export const getRecipeFormValues = (formData) => {
     const name = formData.get("name")
     const portions = formData.get("portions")
     const output = formData.get("output")
@@ -145,3 +143,35 @@ export const getRecipeInfo = (list, id) => {
 
     return recipes;
 }
+
+export const getDishFromValues = (formData, state) => {
+    const name = formData.get("name");
+    const course = formData.get("course");
+    const image = formData.get("image");
+    const components = state?.validInputs?.components || [];
+    return { name, course, image, components };
+}
+
+export const deriveFormStateValues = (state, isRecipe) => {
+    if(isRecipe){
+        const name = state.validInputs?.name || "";
+        const portions = state.validInputs?.portions || 0;
+        const output = state.validInputs?.output || "";
+        const outputType = state.validInputs?.outputType || "";
+        const time = state.validInputs?.time || 0;
+        const timeFormat = state.validInputs?.timeFormat || null;
+        const products = state.validInputs?.products || [];
+        const quantity = state.validInputs?.quantity || [];
+        const unit = state.validInputs?.unit || [];
+        const steps = state.validInputs?.steps || [];
+        return { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps };
+    }
+    else{
+        const name = state.validInputs?.name || "";
+        const course = state.validInputs?.course || "";
+        const image = state.validInputs?.image || null;
+        const components = state.validInputs?.components || [];
+        return { name, course, image, components };
+    }
+};
+

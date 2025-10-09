@@ -9,7 +9,7 @@ import SubmitButton from "../Buttons/SubmitButton";
 import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
-import { getFormValues } from "../../util/util";
+import { getRecipeFormValues } from "../../util/util";
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection";
 import ItemListSection from "../ItemInspectView/ItemListSection";
 import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";
@@ -70,7 +70,7 @@ export default function RecipeCreation(){
         const { 
             name, portions, output, outputType, time, timeFormat,
             products, quantity, unit, steps 
-        } = getFormValues(formData);
+        } = getRecipeFormValues(formData);
 
         setCurrentFormValues({
             ...currentFormValues,

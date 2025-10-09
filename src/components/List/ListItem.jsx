@@ -8,11 +8,17 @@ import { faEye,
         faTrash, 
         faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
+import createComponentUpdater from "../DishCreation/dishUtil";
 
 
 export default function ListItem({item}){
 
     const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest} = useContext(KitchenContext)
+
+    const {mode, dish} = activeDish || {};
+    const {updateComponents} = createComponentUpdater({
+        dish, mode, setActiveDish}
+    );
   
     const isCreatingDish = activeDish?.mode === "create";
     const isEditingDish = activeDish?.mode === "edit";
@@ -45,19 +51,7 @@ export default function ListItem({item}){
         }
         else if(activeSection === "dishes"){
             if(isCreatingDish || isEditingDish){
-
-                const existingComponents = activeDish.dish?.components || [];
-                const components = [...existingComponents, item.id];
-
-                setActiveDish({
-                    dish: isCreatingDish ? {
-                        components
-                    } : {
-                        ...activeDish.dish,
-                        components
-                    },
-                    mode: isCreatingDish ? "create" : "edit"
-                })
+                updateComponents(item.id);
             }
             else{
                 setActiveDish({dish: item, mode: "detail"});

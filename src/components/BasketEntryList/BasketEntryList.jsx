@@ -5,7 +5,7 @@ import { useContext,
         useActionState } from "react"
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData } from "../../util/util";
-import { validateAll } from "../../util/validation";
+import { validateProducts } from "../../util/validation";
 import toast from "react-hot-toast";
 
 const getFormValues = (formData) => {
@@ -49,8 +49,7 @@ export default function ManualBasketEntry(){
 
     const manualEntry = async(prevFormState, formData) => {
         const {products, quantity, unit} = getFormValues(formData)
-        const errors = validateAll(null, null, null, null, 
-                                    products, quantity, unit, null);
+        const errors = validateProducts(products, quantity, unit);
         
         const combinedProducts = combineProductData(products, quantity, unit);
         

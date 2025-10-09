@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareCheck } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "../Toolbar/SearchBar";
 
-export default function ComponentList({isMobile, isRecipe, list, func, filter}){
+export default function ComponentList({isMobile, isRecipe, list, handleUpdate, filter}){
 
     const header = isRecipe ? "Add Recipes to Dish" : "Components";
     const fallback = isRecipe ? "Recipe list is empty." : "No components added yet";
@@ -24,7 +24,7 @@ export default function ComponentList({isMobile, isRecipe, list, func, filter}){
                             <li key={i} className={listItemStyle}>
                                 <label>{recipe.name}</label>
                                 <FontAwesomeIcon icon={faSquareCheck}
-                                                onClick={() => func(recipe.id)}/>
+                                                onClick={() => handleUpdate(recipe.id)}/>
                             </li>)}
                         </ul>
                     ) : (
@@ -40,8 +40,6 @@ export default function ComponentList({isMobile, isRecipe, list, func, filter}){
                         {list.map((component, i) => 
                           <li key={i} className={listItemStyle}>
                                 <label>{component.name}</label>
-                                <FontAwesomeIcon icon={faSquareCheck}
-                                                onClick={() => func(component.id)}/>
                           </li>)} 
                     </ul>
                 ) : (

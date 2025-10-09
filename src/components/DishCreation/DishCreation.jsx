@@ -9,23 +9,19 @@ import { footerStyle,
         headerSpanStyle, 
         labelStyle } from "./dishCreationStyles"
 import TabButtons from "../Buttons/TabButtons"
-import { getRecipeInfo } from "../../util/util"
+import { getRecipeInfo, 
+        getDishFromValues } from "../../util/util"
 import ComponentList from "./ComponentList"
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection"
 import useDishForm from "../../hooks/useDishForm"
+import createComponentUpdater from "./dishUtil"
+import ItemListSection from "../ItemInspectView/ItemListSection"
+
 
 const SECTIONS = {
     GENERAL: "General",
     COMPONENTS: "Components",
     CONFIRMATION: "Confirmation"
-}
-
-const getFormDataValues = (formData, state) => {
-    const name = formData.get("name");
-    const course = formData.get("course");
-    const image = formData.get("image");
-    const components = state?.validInputs?.components || [];
-    return { name, course, image, components };
 }
 
 export default function DishCreation(){
@@ -38,6 +34,7 @@ export default function DishCreation(){
     const isEditing = activeDish?.mode === "edit";
     const mobileHeading =  isCreatingDish ? "Dish Creation" : "Dish Editor";
 
+    const {updateComponents} = createComponentUpdater({dish, mode, setActiveDish});
     const [componentRecipes, setComponentRecipes] = useState([]);
     const [currentFormValues, setCurrentFormValues] = useState(() => {
 
@@ -79,50 +76,9 @@ export default function DishCreation(){
         }
     }, [mode, dish])
 
-    const addComponent = (itemID) => {
-
-        setActiveDish({
-            dish: {
-                ...dish,
-                components: [...(dish?.components || []), itemID]
-            },
-            mode: mode
-        })
-    }
-
-    const deleteComponent = (itemID) => {
-        console.log("deleting component id", itemID);
-        const filtered = dish.components.filter((component) => component !== itemID)
-        
-        setActiveDish({
-            dish: {
-                ...dish,
-                components: filtered
-            },
-            mode: mode
-        })
-    }
-
-    const updateComponents = (item) => {
-        
-        console.log("updating components", item);
-
-        const foundComponent = dish?.components.find((component) => component === item) || false;
-        console.log("found component", foundComponent);
-        
-        if(foundComponent){
-            console.log("deleting component", foundComponent);
-            deleteComponent(item);
-        }
-        else{
-            console.log("adding component", item);
-            addComponent(item);
-        }
-    }
-
     const handleTabChange = (nextTab) => {
         const formData = new FormData(document.querySelector("form"));
-        const {name, course, image } = getFormDataValues(formData);
+        const {name, course, image } = getDishFromValues(formData);
 
         setCurrentFormValues({
             ...currentFormValues,
@@ -161,19 +117,19 @@ export default function DishCreation(){
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
                     {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues}/>}
                     {openTab === SECTIONS.COMPONENTS && <ComponentList isMobile={isMobile} isRecipe={true} 
-                                                                            list={availableRecipes} func={updateComponents} 
+                                                                            list={availableRecipes} handleUpdate={updateComponents} 
                                                                             filter={filterList}/> }
                     {openTab === SECTIONS.CONFIRMATION && 
                         <>
                             <ItemInfoSection state={currentFormValues}/>
-                            <ComponentList list={componentRecipes} func={deleteComponent}/>
+                            <ItemListSection list={componentRecipes} />
                         </>
                     }
                 </>
             ) : (
                 <>
                     <DishInfoSection state={formState}/>
-                    <ComponentList list={componentRecipes} func={deleteComponent}/>
+                    <ComponentList list={componentRecipes} />
                 </>
             )}
             <footer className={footerStyle}>

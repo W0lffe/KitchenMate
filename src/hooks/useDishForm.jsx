@@ -1,52 +1,18 @@
 import { useCallback } from "react";
-import { validateName } from "../util/validation";
 import Errors from "../components/Error/Errors"
 import toast from "react-hot-toast";
-
-const validateInputs = (inputs) => {
-
-    const {name, course, components} = inputs;
-    let errors = [];
-
-    if(!validateName(name)){
-            errors.push("Dish name is invalid!");
-    }
-    if(course === "course"){
-            errors.push("Please select a course!");
-    }
-    if(components.length === 0){
-            errors.push("Please add components!");
-    }
-
-    return errors;
-}
-
-const deriveValues = (state) => {
-    const name = state.validInputs?.name || "";
-    const course = state.validInputs?.course || "";
-    const image = state.validInputs?.image || null;
-    const components = state.validInputs?.components || [];
-    return { name, course, image, components };
-}
-
-const getFormDataValues = (formData, state) => {
-    const name = formData.get("name");
-    const course = formData.get("course");
-    const image = formData.get("image");
-    const components = state?.validInputs?.components || [];
-    return { name, course, image, components };
-}
-
+import { validateDish } from "../util/validation";
+import { deriveFormStateValues, getDishFromValues } from "../util/util";
 
 export default function useDishForm({isMobile, currentFormValues, handleRequest, setActiveDish, setModalState}) {
     return useCallback(async (prevFormState, formData) => {
         
         const formValues = !isMobile ? 
-        getFormDataValues(formData, currentFormValues) : deriveValues(currentFormValues);
+        getDishFromValues(formData, currentFormValues) : deriveFormStateValues(currentFormValues);
 
         const {name, course, image, components} = formValues;
 
-        const errors = validateInputs({
+        const errors = validateDish({
             name, 
             course, 
             components

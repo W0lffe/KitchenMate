@@ -17,6 +17,7 @@ import { scaleRecipe } from "../../util/util";
 import ItemInfoSection from "./ItemInfoSection";
 import ItemListSection from "./ItemListSection";
 import ItemInstructionSection from "./ItemInstructionSection";
+import { getRecipeInfo } from "../../util/util";
 
 const deriveState = (itemToDerive) => {
     const {mode, dish, recipe} = itemToDerive;
@@ -41,6 +42,8 @@ export default function ItemInspectView({itemToInspect}){
         setInspectableItem(itemToInspect);
     }, [itemToInspect])
 
+
+    console.log(inspectableItem);
     const favorited = isFavorited ? "fav" : "";
 
     const handleDelete = async() => {
