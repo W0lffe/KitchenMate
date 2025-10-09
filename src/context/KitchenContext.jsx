@@ -370,6 +370,7 @@ export default function KitchenContextProvider({children}){
         setEntryStatus,
         handleRequest,
         fullBasket: fetchedBasket,
+        fullRecipes: fetchedRecipes
     }
 
     return(

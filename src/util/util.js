@@ -85,8 +85,7 @@ export const getReducerType = (method, section, basketAdd) => {
     }
 }
 
-export const scaleRecipe = (operation, itemToScale) => {
-    const recipe = itemToScale.recipe;
+export const scaleRecipe = (operation, recipe) => {
 
     const originalPortions = recipe.portions;
     const originalIngredients = recipe.ingredients;
@@ -107,12 +106,9 @@ export const scaleRecipe = (operation, itemToScale) => {
     );
 
     return {
-        ...itemToScale,
-        recipe: {
-            ...recipe,
-            portions: newPortions,
-            ingredients: scaledIngredients,
-        },
+        ...recipe,
+        portions: newPortions,
+        ingredients: scaledIngredients,
     };
 }
 

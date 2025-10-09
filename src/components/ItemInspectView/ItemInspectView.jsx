@@ -19,36 +19,34 @@ import ItemListSection from "./ItemListSection";
 import ItemInstructionSection from "./ItemInstructionSection";
 import { getRecipeInfo } from "../../util/util";
 
-const deriveState = (itemToDerive) => {
-    const {mode, dish, recipe} = itemToDerive;
-    const isRecipe = mode === "recipes";
-    const isDish = mode === "dishes";
-    const item = isRecipe ? recipe : dish;
-    const listOfItem = isRecipe ? recipe.ingredients : dish.components;
-
-    return {isDish, isRecipe, item, listOfItem}
-}
-
 export default function ItemInspectView({itemToInspect}){
 
-    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
-    const [inspectableItem, setInspectableItem] = useState(itemToInspect);
-    const [inspectingState, setInspectableState] = useState(deriveState(inspectableItem))
+    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes}  = useContext(KitchenContext);
+    const [viewState, setViewState] = useState(() => {
+
+        const {dish, recipe} = itemToInspect;
+        const isRecipe = recipe;
+
+        const currentView = {
+            item: isRecipe ? recipe : dish,
+            list: isRecipe ? recipe.ingredients : getRecipeInfo(fullRecipes.current, dish.components),
+            isRecipe
+        }
+
+        return currentView;
+    })
     
-    const [isFavorited, setIsFavorited] = useState(inspectingState.item.favorite);
-
-    useEffect(() => {
-        setInspectableState(deriveState(itemToInspect));
-        setInspectableItem(itemToInspect);
-    }, [itemToInspect])
+    const [isFavorited, setIsFavorited] = useState(viewState.item.favorite);
 
 
-    console.log(inspectableItem);
+    console.log("item to inspect, given parameter", itemToInspect)
+    console.log("inspectableItem, useState", viewState);
+
     const favorited = isFavorited ? "fav" : "";
 
     const handleDelete = async() => {
         const response = await handleRequest({
-            data: {id: inspectingState.item.id},
+            data: {id: viewState.item.id},
             method: "DELETE"
         })
         const {error, success} = response;
@@ -67,11 +65,11 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleModify = () => {
-        if(inspectingState.isRecipe){
+        if(viewState.isRecipe){
             setActiveRecipe({recipe: itemToInspect.recipe, mode: "edit"});
             return;
         }
-        if(inspectingState.isDish){
+        if(viewState.isDish){
             setActiveDish({dish: itemToInspect.dish, mode: "edit"});
             return;
         }
@@ -82,9 +80,9 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleAddCart = async() => {
-        let products = inspectingState.item.ingredients
-        if(!inspectingState.isRecipe){
-            products = inspectingState.item.components.flatMap((component) => component.ingredients)
+        let products = viewState.item.ingredients
+        if(!viewState.isRecipe){
+            products = viewState.item.components.flatMap((component) => component.ingredients)
         }
 
         const response = await handleRequest({
@@ -106,15 +104,15 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleFavorite = async() => {
-        inspectingState.item.favorite = !inspectingState.item.favorite;
-        setIsFavorited(inspectingState.item.favorite);
+        viewState.item.favorite = !viewState.item.favorite;
+        setIsFavorited(viewState.item.favorite);
 
-        const item = inspectingState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
+        const item = viewState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
 
         const response = await handleRequest({
             method: "PUT",
             data: {...item, 
-                    favorite: inspectingState.item.favorite
+                    favorite: viewState.item.favorite
                 }
         })
 
@@ -123,14 +121,17 @@ export default function ItemInspectView({itemToInspect}){
             toast.error(error)
             return;
         }
-        const object = inspectingState.isRecipe ? "Recipe" : "Dish";
-        toast.success(`${object} is ${inspectingState.item.favorite ? "favorited!" : "unfavorited!"}`);
+        const object = viewState.isRecipe ? "Recipe" : "Dish";
+        toast.success(`${object} is ${viewState.item.favorite ? "favorited!" : "unfavorited!"}`);
     }
 
     const handleScaling = (operation) => {
-        const scaledItem = scaleRecipe(operation, inspectableItem);
-        setInspectableItem(scaledItem);
-        setInspectableState(deriveState(scaledItem));
+        const scaledItem = scaleRecipe(operation, viewState.item);
+        setViewState({
+            ...viewState,
+            item: scaledItem,
+            list: scaledItem.ingredients
+        });
     }
 
     return(
@@ -139,11 +140,11 @@ export default function ItemInspectView({itemToInspect}){
                         handleModify={handleModify} setModalState={setModalState}
                         handleAddCart={handleAddCart} handleFavorite={handleFavorite}
                         fav={favorited}/>
-            <ItemInfoSection isRecipe={inspectingState.isRecipe} item={inspectingState.item} scale={handleScaling} />
+            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scale={handleScaling} />
             <div className={bottomSection}>
-                <ItemListSection isRecipe={inspectingState.isRecipe} list={inspectingState.listOfItem}/>
+                <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
 
-                {inspectingState.isRecipe && <ItemInstructionSection instructions={inspectingState.item.instructions} />}
+                {viewState.isRecipe && <ItemInstructionSection instructions={viewState.item.instructions} />}
             </div>
         </div>
     )
