@@ -7,7 +7,7 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
     const isPreview = state !== undefined;
     const gotItem = isPreview ? state.validInputs : item;
 
-    const name = gotItem.name.length > 0 ? gotItem.name : "Name not set";
+    const name = gotItem.name.length > 0 && gotItem.name;
     
     let outputString = ""
     if(gotItem.outputType !== null){
@@ -17,8 +17,8 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
 
     const timeValue = isRecipe && `${gotItem.time} ${gotItem.timeFormat}`;
     
-    const output = isRecipe ? `Yield: ${outputString}` : `Course: ${gotItem.course}`;
-    const prepTime = isRecipe && `Prep Time: ${timeValue}`;
+    const output = isRecipe ? ((gotItem.portions > 0 || gotItem.outputType !== null) && `Yield: ${outputString}`) : (gotItem.course !== "course" && `Course: ${gotItem.course}`);
+    const prepTime = (isRecipe && gotItem.time > 0) && `Prep Time: ${timeValue}`;
 
     return(
         <div className={topSection}>
@@ -44,7 +44,7 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
                 <h3 className="text-lg">{prepTime}</h3>
             </section>
 
-            {!isRecipe && (
+            {(!isRecipe && gotItem?.image) && (
                 <section className="w-1/2">
                     <img src={gotItem.image} alt="Photo cant be displayed" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
                 </section>

@@ -117,7 +117,9 @@ export default function DishCreation(){
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
                     {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues}/>}
                     {openTab === SECTIONS.COMPONENTS && <ComponentList isMobile={isMobile} isRecipe={true} 
-                                                                            list={availableRecipes} handleUpdate={updateComponents} 
+                                                                            listToUse={availableRecipes} 
+                                                                            isSelected={currentFormValues?.validInputs?.components || []} 
+                                                                            handleUpdate={updateComponents} 
                                                                             filter={filterList}/> }
                     {openTab === SECTIONS.CONFIRMATION && 
                         <>
@@ -129,7 +131,7 @@ export default function DishCreation(){
             ) : (
                 <>
                     <DishInfoSection state={formState}/>
-                    <ComponentList list={componentRecipes} />
+                    <ComponentList listToUse={componentRecipes} />
                 </>
             )}
             <footer className={footerStyle}>

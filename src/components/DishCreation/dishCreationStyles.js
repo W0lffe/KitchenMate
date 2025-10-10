@@ -13,12 +13,10 @@ export const infoSection = "flex flex-col lg:w-1/2 gap-2";
 export const divStyle = `flex flex-col lg:flex-row w-full p-2 lg:p-5 gap-5 mt-2 h-fit border-b-1 
                             border-white/20 rounded-[16px]`;
 
-export const listDivStyle = `flex flex-col list-none w-full max-h-50 h-50 overflow-y-auto gap-1 
-                                items-center border-b-gray-400/40 border-b rounded-custom mt-3`;
+export const listDivStyle = `flex flex-col  w-full  gap-1 
+                                items-center border-gray-400/40 border-1 rounded-custom mt-3`;
 
-export const listSpanStyle = `flex flex-col gap-2 h-full w-4/6 items-center`;
-
-export const listStyle = `flex flex-col gap-1 w-full`;
+export const listStyle = `flex flex-col gap-1 w-5/6 max-h-130 min-h-15 overflow-y-auto list-none`;
 
 export const listItemStyle = `flex flex-row w-full justify-between`;
 
