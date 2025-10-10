@@ -102,6 +102,9 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Toasts!
     - [ ] Real user authenticating, tokens
     - [ ] Modular function for handleRequest with toasts, now its repeatitive in multiple components
+    - [ ] More details to recipe creation
+        - Like category, optional heat for oven/sous-vide
+        - Time per instruction step
 
 # Backlog
 ## Front-end

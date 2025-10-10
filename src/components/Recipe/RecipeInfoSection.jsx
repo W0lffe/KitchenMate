@@ -26,16 +26,6 @@ export default function RecipeInfoSection({state}){
             </span>
 
             <span className={lineStyle}>
-                <label className={labelStyle}>Portions:</label>
-                <input type="number" 
-                        name="portions" 
-                        min="1"
-                        placeholder="Amount" 
-                        className={getInputStyle(true)} 
-                        defaultValue={validInputs.portions}/>        
-            </span>
-
-            <span className={lineStyle}>
                 <label className={labelStyle}>Output:</label>
                 <select
                     name="output"
@@ -52,6 +42,16 @@ export default function RecipeInfoSection({state}){
                         {outputs[selectedOutput].map((output, i) => <option key={i}>{output}</option> )}
                     </select>
                 }
+            </span>
+
+            <span className={lineStyle}>
+                <label className={labelStyle}>Portions:</label>
+                <input type="number" 
+                        name="portions" 
+                        min="1"
+                        placeholder="Amount" 
+                        className={getInputStyle(true)} 
+                        defaultValue={validInputs.portions}/>        
             </span>
 
             <span className={lineStyle}>

@@ -19,30 +19,36 @@ import ItemListSection from "./ItemListSection";
 import ItemInstructionSection from "./ItemInstructionSection";
 import { getRecipeInfo } from "../../util/util";
 
+const deriveViewState = (itemToInspect, fullRecipes) => {
+    const {dish, recipe} = itemToInspect;
+    const isRecipe = recipe;
+    const isDish = dish;
+
+    const currentView = {
+        item: isRecipe ? recipe : dish,
+        list: isRecipe ? recipe.ingredients : getRecipeInfo(fullRecipes.current, dish.components),
+        isRecipe,
+        isDish,
+        isFavorite: isRecipe ? recipe.favorite : dish.favorite
+    }
+
+    return currentView;
+}
+
 export default function ItemInspectView({itemToInspect}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes}  = useContext(KitchenContext);
-    const [viewState, setViewState] = useState(() => {
+    const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
+    const [isFavorite, setIsFavorite] = useState(viewState.isFavorite);
 
-        const {dish, recipe} = itemToInspect;
-        const isRecipe = recipe;
-
-        const currentView = {
-            item: isRecipe ? recipe : dish,
-            list: isRecipe ? recipe.ingredients : getRecipeInfo(fullRecipes.current, dish.components),
-            isRecipe
-        }
-
-        return currentView;
-    })
-    
-    const [isFavorited, setIsFavorited] = useState(viewState.item.favorite);
+    useEffect(() => {
+        setViewState(deriveViewState(itemToInspect, fullRecipes))
+    }, [itemToInspect])
 
 
     console.log("item to inspect, given parameter", itemToInspect)
-    console.log("inspectableItem, useState", viewState);
-
-    const favorited = isFavorited ? "fav" : "";
+    //console.log("inspectableItem, useState", viewState);
+    //console.log("isFavorite", isFavorite);
 
     const handleDelete = async() => {
         const response = await handleRequest({
@@ -80,9 +86,9 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleAddCart = async() => {
-        let products = viewState.item.ingredients
+        let products = viewState.list
         if(!viewState.isRecipe){
-            products = viewState.item.components.flatMap((component) => component.ingredients)
+            products = viewState.list.flatMap((component) => component.ingredients)
         }
 
         const response = await handleRequest({
@@ -104,15 +110,20 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleFavorite = async() => {
-        viewState.item.favorite = !viewState.item.favorite;
-        setIsFavorited(viewState.item.favorite);
+
+        const newFavoriteValue = !isFavorite;
+        setIsFavorite(newFavoriteValue);
+        setViewState({
+            ...viewState,
+            isFavorite: newFavoriteValue
+        })
 
         const item = viewState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
 
         const response = await handleRequest({
             method: "PUT",
             data: {...item, 
-                    favorite: viewState.item.favorite
+                    favorite: newFavoriteValue
                 }
         })
 
@@ -122,7 +133,7 @@ export default function ItemInspectView({itemToInspect}){
             return;
         }
         const object = viewState.isRecipe ? "Recipe" : "Dish";
-        toast.success(`${object} is ${viewState.item.favorite ? "favorited!" : "unfavorited!"}`);
+        toast.success(`${object} is ${newFavoriteValue ? "favorited!" : "unfavorited!"}`);
     }
 
     const handleScaling = (operation) => {
@@ -139,7 +150,7 @@ export default function ItemInspectView({itemToInspect}){
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
                         handleModify={handleModify} setModalState={setModalState}
                         handleAddCart={handleAddCart} handleFavorite={handleFavorite}
-                        fav={favorited}/>
+                        fav={isFavorite ? "fav" : ""}/>
             <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scale={handleScaling} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>

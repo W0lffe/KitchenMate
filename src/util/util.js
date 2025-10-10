@@ -95,7 +95,12 @@ export const scaleRecipe = (operation, recipe) => {
         newPortions = parseInt(originalPortions) + 1;
     }
     else{
-        newPortions = parseInt(originalPortions) - 1;
+        if(originalPortions === 1){
+            newPortions = originalPortions;
+        }
+        else{
+            newPortions = parseInt(originalPortions) - 1;
+        }
     }
 
     const scaledIngredients = originalIngredients.map((ingredient) => ({

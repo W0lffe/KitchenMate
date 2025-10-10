@@ -9,12 +9,15 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
 
     const name = gotItem.name.length > 0 ? gotItem.name : "Name not set";
     
-    let outputValue = isRecipe && `${gotItem.portions} Portions`;
-    gotItem.outputType !== null && (outputValue += `, ${gotItem.outputType}`);
+    let outputString = ""
+    if(gotItem.outputType !== null){
+        outputString += `${gotItem.outputType}, `;
+    }
+    outputString += gotItem.portions > 0 ? `approx. ${gotItem.portions} portions` : "";
 
     const timeValue = isRecipe && `${gotItem.time} ${gotItem.timeFormat}`;
     
-    const output = isRecipe ? `Yield: ${outputValue}` : `Course: ${gotItem.course}`;
+    const output = isRecipe ? `Yield: ${outputString}` : `Course: ${gotItem.course}`;
     const prepTime = isRecipe && `Prep Time: ${timeValue}`;
 
     return(
