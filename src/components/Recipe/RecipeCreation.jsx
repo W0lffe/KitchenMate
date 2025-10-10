@@ -72,8 +72,6 @@ export default function RecipeCreation(){
             products, quantity, unit, steps 
         } = getRecipeFormValues(formData);
 
-        console.log("timeformat", timeFormat)
-
         setCurrentFormValues({
             ...currentFormValues,
             validInputs: {

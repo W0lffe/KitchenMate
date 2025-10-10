@@ -10,7 +10,7 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
   return useCallback(async (prevFormState, formData) => {
 
     const formValues = !isMobile ? getRecipeFormValues(formData) : deriveFormStateValues(currentFormValues, true);
-    
+
     const { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps } = formValues;
 
     const errors = validateRecipe(name, portions, time, timeFormat, products, quantity, unit, steps);
@@ -36,8 +36,6 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       id: currentFormValues.modifiedId,
       date: getTimestamp()
     };
-
-    console.log("new recipe!",newRecipe);
 
     const response = await handleRequest({
       data: newRecipe,

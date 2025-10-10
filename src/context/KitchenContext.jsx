@@ -100,6 +100,8 @@ export default function KitchenContextProvider({children}){
         const isDish = utilState.activeSection === "dishes";
         const isBasket = utilState.activeSection === "basket";
 
+        console.log("dataTohandle",dataToHandle)
+
         const {data, method} = dataToHandle;
         const body = {
                 data,

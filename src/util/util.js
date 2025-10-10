@@ -157,8 +157,8 @@ export const deriveFormStateValues = (state, isRecipe) => {
     if(isRecipe){
         const name = state.validInputs?.name || "";
         const portions = state.validInputs?.portions || 0;
-        const output = state.validInputs?.output || "";
-        const outputType = state.validInputs?.outputType || "";
+        const output = state.validInputs?.output || "N/A";
+        const outputType = state.validInputs?.outputType || null;
         const time = state.validInputs?.time || 0;
         const timeFormat = state.validInputs?.timeFormat || null;
         const products = state.validInputs?.products || [];
