@@ -14,9 +14,7 @@ export default function ComponentList({isMobile, isRecipe, listToUse, isSelected
     const fallback = isRecipe ? "Recipe list is empty." : "No components added yet";
 
     const isComponentSelected = (recipeID) => {
-        console.log(isSelected)
         const componentSelected = isSelected.includes(recipeID);
-        console.log("recipe id:",recipeID, "is selected", componentSelected)
         return componentSelected;
     }
 

@@ -1,13 +1,10 @@
 import { topSection } from "./inspectStyles";
-import { faSquareMinus, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Scale from "../Scale/Scale";
 
 export default function ItemInfoSection({isRecipe, item, scale, state}){
 
     const isPreview = state !== undefined;
     const gotItem = isPreview ? state.validInputs : item;
-
-    console.log("got item", gotItem)
 
     const name = gotItem.name.length > 0 && gotItem.name;
     
@@ -30,20 +27,12 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
                 {isRecipe ? (
                     <section className="flex flex-row gap-15">
                         <h3 className="text-lg">{output}</h3>
-                        {scale && 
-                        <span className="flex flex-row gap-5 text-xl">
-                            <h3>Scale: </h3>
-                            <FontAwesomeIcon icon={faSquareMinus} 
-                                                className="py-1"
-                                                onClick={() => scale("-")}/>
-                            <FontAwesomeIcon icon={faSquarePlus} 
-                                                className="py-1"
-                                                onClick={() => scale("+")}/>
-                        </span> }
                     </section>) 
                 : 
-                <h3 className="text-lg">{output}</h3>}
+                    <h3 className="text-lg">{output}</h3>
+                }
                 <h3 className="text-lg">{prepTime}</h3>
+                {isRecipe && <Scale scale={scale} /> }
             </section>
 
             {(!isRecipe && gotItem?.image) && (
