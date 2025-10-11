@@ -21,19 +21,20 @@ import { getRecipeInfo } from "../../util/util";
 
 const deriveViewState = (itemToInspect, fullRecipes) => {
     const {dish, recipe} = itemToInspect;
-    const isRecipe = recipe;
-    const isDish = dish;
+    const isRecipe = recipe !== undefined;
+    const isDish = dish !== undefined;
 
     const currentView = {
         item: isRecipe ? recipe : dish,
         list: isRecipe ? recipe.ingredients : getRecipeInfo(fullRecipes.current, dish.components),
         isRecipe,
         isDish,
-        isFavorite: isRecipe ? recipe.favorite : dish.favorite
+        isFavorite: isRecipe ? recipe.favorite : dish.favorite,
     }
 
     return currentView;
 }
+
 
 export default function ItemInspectView({itemToInspect}){
 
@@ -45,9 +46,8 @@ export default function ItemInspectView({itemToInspect}){
         setViewState(deriveViewState(itemToInspect, fullRecipes))
     }, [itemToInspect])
 
-
     console.log("item to inspect, given parameter", itemToInspect)
-    //console.log("inspectableItem, useState", viewState);
+    console.log("inspectableItem, useState", viewState);
     //console.log("isFavorite", isFavorite);
 
     const handleDelete = async() => {
@@ -136,12 +136,15 @@ export default function ItemInspectView({itemToInspect}){
         toast.success(`${object} is ${newFavoriteValue ? "favorited!" : "unfavorited!"}`);
     }
 
-    const handleScaling = (operation) => {
-        const scaledItem = scaleRecipe(operation, viewState.item);
+    const handleScaling = (scaledIngredients) => {
+        console.log("scaled ingredients", scaledIngredients)
         setViewState({
             ...viewState,
-            item: scaledItem,
-            list: scaledItem.ingredients
+            item: {
+                ...viewState.item,
+                ingredients: scaledIngredients
+            },
+            list: scaledIngredients
         });
     }
 
@@ -151,7 +154,7 @@ export default function ItemInspectView({itemToInspect}){
                         handleModify={handleModify} setModalState={setModalState}
                         handleAddCart={handleAddCart} handleFavorite={handleFavorite}
                         fav={isFavorite ? "fav" : ""}/>
-            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scale={handleScaling} />
+            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} setToViewState={handleScaling} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
 

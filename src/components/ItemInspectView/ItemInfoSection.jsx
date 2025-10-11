@@ -1,23 +1,23 @@
 import { topSection } from "./inspectStyles";
 import Scale from "../Scale/Scale";
 
-export default function ItemInfoSection({isRecipe, item, scale, state}){
+export default function ItemInfoSection({isRecipe, item, setToViewState, state}){
 
-    const isPreview = state !== undefined;
-    const gotItem = isPreview ? state.validInputs : item;
+    console.log(item)
+    const itemToUse = state !== undefined ? state.validInputs : item;
 
-    const name = gotItem.name.length > 0 && gotItem.name;
+    const name = itemToUse.name.length > 0 && itemToUse.name;
     
     let outputString = ""
-    if(gotItem.outputType !== null){
-        outputString += `${gotItem.outputType}, `;
+    if(itemToUse.outputType !== null){
+        outputString += `${itemToUse.outputType}, `;
     }
-    outputString += gotItem.portions > 0 ? `approx. ${gotItem.portions} portions` : "";
+    outputString += itemToUse.portions > 0 ? `approx. ${itemToUse.portions} portions` : "";
 
-    const timeValue = isRecipe && `${gotItem.time} ${gotItem.timeFormat}`;
+    const timeValue = isRecipe && `${itemToUse.time} ${itemToUse.timeFormat}`;
     
-    const output = isRecipe ? ((gotItem.portions > 0 || gotItem.outputType !== null) && `Yield: ${outputString}`) : (gotItem.course !== "course" && `Course: ${gotItem.course}`);
-    const prepTime = (isRecipe && gotItem.time > 0) && `Prep Time: ${timeValue}`;
+    const output = isRecipe ? ((itemToUse.portions > 0 || itemToUse.outputType !== null) && `Yield: ${outputString}`) : (itemToUse.course !== "course" && `Course: ${itemToUse.course}`);
+    const prepTime = (isRecipe && itemToUse.time > 0) && `Prep Time: ${timeValue}`;
 
     return(
         <div className={topSection}>
@@ -32,12 +32,12 @@ export default function ItemInfoSection({isRecipe, item, scale, state}){
                     <h3 className="text-lg">{output}</h3>
                 }
                 <h3 className="text-lg">{prepTime}</h3>
-                {isRecipe && <Scale scale={scale} /> }
+                {(isRecipe && setToViewState) && <Scale itemToScale={item} setToViewState={setToViewState} /> }
             </section>
 
-            {(!isRecipe && gotItem?.image) && (
+            {(!isRecipe && itemToUse?.image) && (
                 <section className="w-1/2">
-                    <img src={gotItem.image} alt="Photo cant be displayed" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
+                    <img src={itemToUse.image} alt="Photo cant be displayed" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
                 </section>
             )}
         </div>
