@@ -5,7 +5,7 @@ import { useContext,
         useActionState, 
         useState} from "react";
 import { KitchenContext } from "../../context/KitchenContext";
-import SubmitButton from "../Buttons/SubmitButton";
+import Button from "../Buttons/Button";
 import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
@@ -96,7 +96,7 @@ export default function RecipeCreation(){
         {isMobile && (
             <span className="flex flex-row justify-end items-center px-2">
                 <h2 className={mobileHeadingStyle}>{mobileHeading}</h2>
-                <SubmitButton use={"close"} func={() => setModalState(null, false)} />
+                <Button use={"close"} />
             </span>
         )}
         <form action={formAction}>
@@ -134,9 +134,9 @@ export default function RecipeCreation(){
             )}
             <footer className={footerStyle}>
                {isMobile ? (
-                    openTab === SECTIONS.CONFIRMATION && <SubmitButton use={"recipe"} /> 
+                    openTab === SECTIONS.CONFIRMATION && <Button use={"recipe"} /> 
                 ) : (
-                    <SubmitButton use={"recipe"} />
+                    <Button use={"recipe"} />
                 )}
             </footer>
             </form>

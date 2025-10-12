@@ -88,8 +88,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
 - Front-End
     - [x] Sections for creation modals
     - [ ] Possibility to show whole recipe in dish inspection instead of just recipe name
-    - [ ] Recipe scalability feature
-         - Work In Progress, currently only scales on portions, does not consider output
+    - [x] Recipe scalability feature
     - [ ] Public recipe bank, visible for every user
     - [ ] Creating a homepage
     - [ ] Dish creation image preview

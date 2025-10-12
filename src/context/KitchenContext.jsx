@@ -138,10 +138,7 @@ export default function KitchenContextProvider({children}){
 
         if(success){
             kitchenDispatch(reducerHandler);
-
-            setTimeout(() => {
             setAvailableList(apiHandler);
-            }, 1500);
         }
 
         return response;
@@ -209,6 +206,7 @@ export default function KitchenContextProvider({children}){
 
     const setAvailableList = async (params) => {
         
+
         const {type, api, ref} = params;
 
         if(utilState.user === null){
@@ -220,6 +218,7 @@ export default function KitchenContextProvider({children}){
         }
 
         setIsFetchingData(true);
+
 
         const { data, error } = await api({
             user: utilState.user.id
@@ -239,6 +238,7 @@ export default function KitchenContextProvider({children}){
         ref.current = data;
 
         setIsFetchingData(false);
+
     }
      
     const setActiveRecipe = (recipe) => {

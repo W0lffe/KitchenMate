@@ -9,11 +9,12 @@ import { faEye,
         faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
 import createComponentUpdater from "../DishCreation/dishUtil";
+import IconButton from "../Buttons/IconButton";
 
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest, isFetchingData} = useContext(KitchenContext)
 
     const {mode, dish} = activeDish || {};
     const {updateComponents} = createComponentUpdater({
@@ -86,10 +87,15 @@ export default function ListItem({item}){
             {activeSection === "recipes" || (activeSection === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item} isCreatingDish={isCreatingDish || isEditingDish}/> : null}
             {activeSection === "basket" && <BasketItem item={item}/>}
             {(activeSection === "dishes" && (!isCreatingDish && !isEditingDish)) && <DishItem item={item} />}
-            <FontAwesomeIcon onClick={handleClick} 
-                            icon={iconToUse} 
-                            className={item.obtained ? "text-green-600" : " text-[17px]"}/>
-            {activeSection === "basket" && <FontAwesomeIcon icon={faTrash} onClick={handleDelete} />}
+            <IconButton func={handleClick}>
+                 <FontAwesomeIcon icon={iconToUse} 
+                                className={item.obtained ? "text-green-600" : " text-[17px]"}/>
+            </IconButton>
+            {activeSection === "basket" && 
+                <IconButton func={handleDelete}>
+                    <FontAwesomeIcon icon={faTrash} />
+                </IconButton>
+            }
         </li>
     )
 }

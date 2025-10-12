@@ -87,9 +87,8 @@ export const getReducerType = (method, section, basketAdd) => {
 
 export const scaleRecipe = (scaleParams) => {
 
-    const {ingredients, operation, output, scaledTo} = scaleParams;
+    const {ingredients, operation, scaledTo} = scaleParams;
 
-    console.log("params", scaleParams)
     
     const originalPortions = scaledTo;
     const originalIngredients = ingredients;

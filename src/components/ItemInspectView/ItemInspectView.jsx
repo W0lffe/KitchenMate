@@ -1,23 +1,15 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, 
-        faPenToSquare, 
-        faStar,
-        faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, 
         useEffect, 
         useState } from "react";
 import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
-        containerStyle, 
-        getIconStyle, 
-        iconSpan} from "./inspectStyles";
-import SubmitButton from "../Buttons/SubmitButton";
+        containerStyle} from "./inspectStyles";
 import toast from "react-hot-toast";
-import { scaleRecipe } from "../../util/util";
 import ItemInfoSection from "./ItemInfoSection";
 import ItemListSection from "./ItemListSection";
 import ItemInstructionSection from "./ItemInstructionSection";
 import { getRecipeInfo } from "../../util/util";
+import ButtonBar from "../Buttons/ButtonBar";
 
 const deriveViewState = (itemToInspect, fullRecipes) => {
     const {dish, recipe} = itemToInspect;
@@ -30,6 +22,7 @@ const deriveViewState = (itemToInspect, fullRecipes) => {
         isRecipe,
         isDish,
         isFavorite: isRecipe ? recipe.favorite : dish.favorite,
+        isScaled: isRecipe && false
     }
 
     return currentView;
@@ -38,7 +31,7 @@ const deriveViewState = (itemToInspect, fullRecipes) => {
 
 export default function ItemInspectView({itemToInspect}){
 
-    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes}  = useContext(KitchenContext);
+    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
     const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
     const [isFavorite, setIsFavorite] = useState(viewState.isFavorite);
 
@@ -46,8 +39,8 @@ export default function ItemInspectView({itemToInspect}){
         setViewState(deriveViewState(itemToInspect, fullRecipes))
     }, [itemToInspect])
 
-    console.log("item to inspect, given parameter", itemToInspect)
-    console.log("inspectableItem, useState", viewState);
+    //console.log("item to inspect, given parameter", itemToInspect)
+    //console.log("inspectableItem, useState", viewState);
     //console.log("isFavorite", isFavorite);
 
     const handleDelete = async() => {
@@ -137,51 +130,32 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleScaling = (scaledIngredients) => {
-        console.log("scaled ingredients", scaledIngredients)
         setViewState({
             ...viewState,
             item: {
                 ...viewState.item,
-                ingredients: scaledIngredients
+                ingredients: scaledIngredients,
             },
-            list: scaledIngredients
+            list: scaledIngredients,
+            isScaled: true
         });
+    }
+
+    const resetScaling = () => {
+        setViewState(deriveViewState(itemToInspect, fullRecipes))
     }
 
     return(
         <div className={containerStyle}>
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
-                        handleModify={handleModify} setModalState={setModalState}
-                        handleAddCart={handleAddCart} handleFavorite={handleFavorite}
-                        fav={isFavorite ? "fav" : ""}/>
-            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} setToViewState={handleScaling} />
+                        handleModify={handleModify} handleAddCart={handleAddCart} 
+                        handleFavorite={handleFavorite}
+                        fav={isFavorite ? "fav" : ""} fetching={isFetchingData}/>
+            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={{setScaledState: handleScaling, reset: resetScaling, isScaled: viewState.isScaled}} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
-
                 {viewState.isRecipe && <ItemInstructionSection instructions={viewState.item.instructions} />}
             </div>
         </div>
     )
 }
-
-function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handleAddCart, setModalState, fav}){
-
-    return(
-        <span className={iconSpan}>
-                    <FontAwesomeIcon icon={faTrash} 
-                                    className={getIconStyle("del")}
-                                    onClick={handleDelete}/>
-                    <FontAwesomeIcon icon={faPenToSquare} 
-                                    className={getIconStyle()}
-                                    onClick={handleModify} />
-                    <FontAwesomeIcon icon={faStar} 
-                                    className={getIconStyle(fav)}
-                                    onClick={handleFavorite} />
-                    <FontAwesomeIcon icon={faCartPlus} 
-                                     className={getIconStyle()}
-                                     onClick={handleAddCart} />
-                    {isMobile && <SubmitButton use={"close"} func={setModalState}/>}
-                </span>
-    )
-}
-

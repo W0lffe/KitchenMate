@@ -1,5 +1,5 @@
 import FormList from "../FormList/FormList"
-import SubmitButton from "../Buttons/SubmitButton";
+import Button from "../Buttons/Button";
 import Errors from "../Error/Errors"
 import { useContext, 
         useActionState } from "react"
@@ -45,7 +45,6 @@ export default function ManualBasketEntry(){
                 itemIds: availableBasket.map((product) => product.id)
             } : {validInputs: null};
 
-    console.log(initialState)
 
     const manualEntry = async(prevFormState, formData) => {
         const {products, quantity, unit} = getFormValues(formData)
@@ -105,7 +104,7 @@ export default function ManualBasketEntry(){
             {isMobile ? (
                 <section className="flex flex-col items-center mb-5 gap-2">
                     <header className="flex w-full justify-end">
-                        <SubmitButton use={"close"} func={setModalState} />
+                        <Button use={"close"} />
                     </header>
                     <h3>{heading}</h3>
                 </section>
@@ -113,7 +112,7 @@ export default function ManualBasketEntry(){
             <form action={formAction} className="flex flex-col items-center gap-5">
                 <FormList use={use} state={formState}/>
                 <footer>
-                    <SubmitButton use={"basket"}/>
+                    <Button use={"basket"}/>
                 </footer>
             </form>
         </div>

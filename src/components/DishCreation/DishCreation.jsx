@@ -3,7 +3,7 @@ import { useActionState,
         useEffect, 
         useState } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
-import SubmitButton from "../Buttons/SubmitButton"
+import Button from "../Buttons/Button"
 import DishInfoSection from "./DishInfoSection"
 import { footerStyle, 
         headerSpanStyle, 
@@ -107,7 +107,7 @@ export default function DishCreation(){
            {isMobile &&
                 <span className={headerSpanStyle}>
                     <h2 className={`${labelStyle} w-full text-center`}>{mobileHeading}</h2>
-                    <SubmitButton use={"close"} func={setModalState} />
+                    <Button use={"close"} />
                 </span> 
             }
             <form action={formAction}>
@@ -136,9 +136,9 @@ export default function DishCreation(){
             )}
             <footer className={footerStyle}>
                 {isMobile ? (
-                    openTab === SECTIONS.CONFIRMATION && <SubmitButton use={"recipe"} />
+                    openTab === SECTIONS.CONFIRMATION && <Button use={"recipe"} />
                 ) : (
-                    <SubmitButton use="recipe"/>
+                    <Button use="recipe"/>
                 )}
             </footer>
             </form>

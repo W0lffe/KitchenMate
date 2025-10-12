@@ -1,7 +1,7 @@
 import { useContext, 
         useActionState } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
-import SubmitButton from "../Buttons/SubmitButton";
+import Button from "../Buttons/Button";
 import { userAPI } from "../../api/http";
 import { containerStyle, 
         headerStyle, 
@@ -53,7 +53,7 @@ export default function LoginSignupForm(){
     return(
         <div className={containerStyle}>
             <header className={headerStyle}>
-                <SubmitButton use={"close"} func={setModalState} />
+                <Button use={"close"} />
             </header>
             <section className={sectionStyle}>
                 <h3 className={headingStyle}>{isLogin ? "LOGIN" : "SIGNUP"}</h3>
@@ -71,7 +71,7 @@ export default function LoginSignupForm(){
                             required
                             placeholder="Enter password" 
                             className={inputStyle} />
-                    <SubmitButton use={"login"}/>
+                    <Button use={"login"}/>
                 </form>
             </section>
         </div>

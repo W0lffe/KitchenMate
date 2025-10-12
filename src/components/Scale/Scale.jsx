@@ -1,6 +1,6 @@
-import { faSquareMinus, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRotateLeft, faSquareMinus, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { scaleRecipe } from "../../util/util";
 
 const getOutputOptions = (recipeOutput) => {
@@ -13,52 +13,52 @@ const getOutputOptions = (recipeOutput) => {
     }
 }
 
-export default function Scale({ itemToScale, setToViewState }) {
+export default function Scale({ itemToScale, scaleFunctions }) {
     const [expandState, setExpandState] = useState(false);
     const [scaledTo, setScaledTo] = useState({
         portions: itemToScale.portions,
-        output: itemToScale.output
     })
     const selectRef = useRef(null);
 
-    const handleChange = (e) => {
-        if(e.toLowerCase().includes("portions")){
-            setScaledTo({...scaledTo, portions: itemToScale.portions})
-        }
-        else{
-            setScaledTo({...scaledTo, portions: 1})
+    const {setScaledState, reset, isScaled} = scaleFunctions;
 
-        }
+    const handleChange = (e) => {
+        isScaled && reset();
+        e.toLowerCase().includes("portions") ? setScaledTo({...scaledTo, portions: itemToScale.portions}) : setScaledTo({...scaledTo, portions: 1});
     }
 
+    useEffect(() => {
+        if(!isScaled){
+            const refValue = selectRef.current.value;
+            refValue.toLowerCase().includes("portions") ? setScaledTo({portions: itemToScale.portions}) : setScaledTo({portions: 1});
+        }
+    },[isScaled])
+
     const handleScale = (operation) => {
-        console.log(selectRef.current.value)
         const scaleParams = {
             ingredients: itemToScale.ingredients,
             operation,
-            output: selectRef.current.value,
             scaledTo: scaledTo.portions
         }
         const {portions, ingredients} = scaleRecipe(scaleParams)
-        setScaledTo({...scaledTo, portions})
-        setToViewState(ingredients);
+        setScaledTo({portions})
+        setScaledState(ingredients);
     }
 
     const expandString = `Click to ${expandState ? "Contract" : "Expand"}`;
 
     return (
-        <div className={`flex flex-col items-start transition-all ease-in overflow-hidden duration-1000 ${expandState ? "max-h-50" : "max-h-5"}`}>
+        <div className={`flex flex-col items-start p-1 gap-1`}>
             <h3 onClick={() => setExpandState(prev => !prev)}>{expandString}</h3>
-            {expandState && 
-                <span className={`flex flex-row gap-5 transition-all duration-300 ease-in ${expandState ? "text-lg" : "text-sm"}`}>
+            <span className={`flex flex-row gap-4 py-1 px-2 text-xl overflow-hidden transition-all ease-in-out duration-300 border-1 border-white/40 rounded-custom bg-gray-600/40 ${expandState ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}`}>
                 <FontAwesomeIcon icon={faSquareMinus}
                     className="py-1"
                     onClick={() => handleScale("-")} />
                 <h3>{scaledTo.portions}</h3>
                 <select name="output" ref={selectRef}
-                        onChange={(event) => handleChange(event.target.value)}>
+                        onChange={(event) => handleChange(event.target.value)} tabIndex={-1} className="focus:text-black">
                     {
-                        getOutputOptions(scaledTo.output).map((option, i) =>
+                        getOutputOptions(itemToScale.output).map((option, i) =>
                             <option key={i} value={option}>
                                 {option}
                             </option>
@@ -68,9 +68,10 @@ export default function Scale({ itemToScale, setToViewState }) {
                 <FontAwesomeIcon icon={faSquarePlus}
                     className="py-1"
                     onClick={() => handleScale("+")} />
+                <FontAwesomeIcon icon={faArrowRotateLeft}
+                    className="py-1"
+                    onClick={reset} />
             </span>
-            }
-            
         </div>
     )
 }
