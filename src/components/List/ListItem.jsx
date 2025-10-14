@@ -28,19 +28,7 @@ export default function ListItem({item}){
                         activeSection === "basket" ? faSquareCheck : faEye;
 
     const handleDelete = async () => {
-         setModalState({section: activeSection, toDelete: item.id}, true);
-        /* const response = await handleRequest({
-            data: {id: item.id},
-            method: "DELETE"
-        })
-        const {error, success} = response;
-
-        if(error){
-            toast.error(error);
-            return;
-        }
-
-        toast.success(success); */
+        setModalState({section: activeSection, toDelete: item.id}, true);
     }
    
     const handleClick = async () => {

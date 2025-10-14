@@ -93,7 +93,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [ ] Creating a homepage
     - [ ] Dish creation image preview
     - [x] Implement useReducer for local data updating
-    - [ ] Delete confirmation
+    - [x] Delete confirmation
     - [ ] Checking product duplicates/units
     - [x] Toasts!
     - [ ] Real user authenticating, tokens
@@ -101,7 +101,8 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [ ] More details to recipe creation
         - Like category, optional heat for oven/sous-vide
         - Time per instruction step
-
+    - [ ] Error handling for dishes, that contain a recipe that has been deleted
+    
 # Backlog
 ## Front-end
 

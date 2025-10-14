@@ -42,7 +42,7 @@ export default function List(){
     if(isFetchingData && list.length === 0){
         return(
             <div className={listContainerStyle}>
-                <p>Loading {useLabel}...</p>
+                <p>Loading {getListLabels(useLabel)}...</p>
             </div>
         )
     }

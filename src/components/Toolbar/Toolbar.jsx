@@ -63,19 +63,7 @@ export default function Toolbar(){
             toast.error("Basket is empty!");
             return;
         }
-
-        const response = await handleRequest({
-            data: [],
-            method: "PUT"
-        })
-        const {success, error} = response;
-
-        if(error){
-            toast.error(error);
-            return;
-        }
-
-        toast.success("Basket cleared!");
+        setModalState({section: activeSection, toDelete: basket}, true);
     }
    
     return(

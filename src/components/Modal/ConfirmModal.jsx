@@ -3,9 +3,9 @@ import {confirmModalStyle, confirmButtonStyle, headerStyle, headingStyle, spanSt
 
 export default function ConfirmModal({section, toDelete, contextProps}){
 
-    console.log("delete", toDelete)
 
     const {setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState} = contextProps;
+    const clearBasket = Array.isArray(toDelete);
 
     let message = "Delete ";
     if (section.toLowerCase().includes("recipes")) {
@@ -16,18 +16,24 @@ export default function ConfirmModal({section, toDelete, contextProps}){
         message += "product?";
     }
 
+    if(clearBasket){
+        message = "Empty basket?"
+    }
+
     const handleDelete = async() => {
+
         const response = await handleRequest({
-            data: {id: toDelete},
-            method: "DELETE"
+           data: clearBasket ? [] : {id: toDelete},
+           method: clearBasket ? "PUT" : "DELETE"
         })
+
         const {error, success} = response;
         if(error){
             toast.error(error);
             return;
         }
 
-        toast.success(success);
+        clearBasket ? toast.success("Basket cleared!") : toast.success(success)
 
         setModalState({}, false)
         setActiveDish(null);
