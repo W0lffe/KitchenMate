@@ -28,7 +28,7 @@ export const KitchenContext = createContext({
     modalIsOpen: false,
     isMobile: false,
     setIsMobile: () => {},
-    activeModal: "",
+    activeModal: {},
     availableRecipes: [],
     activeRecipe: null,
     setActiveRecipe: () => {},
@@ -60,7 +60,7 @@ export default function KitchenContextProvider({children}){
         user: {
             id: 0
         },
-        activeModal: "",
+        activeModal: {},
         modalIsOpen: false,
         isMobile: false,
     })
@@ -194,18 +194,17 @@ export default function KitchenContextProvider({children}){
             payload: user
         })
     }
-    const setModalState = (section, modalState) => {
+    const setModalState = (activeModal, modalState) => {
         utilDispatch({
             type: "SET_MODAL_STATE",
             payload: {
-                section,
+                activeModal,
                 modalState
             }
         })
     }
 
     const setAvailableList = async (params) => {
-        
 
         const {type, api, ref} = params;
 

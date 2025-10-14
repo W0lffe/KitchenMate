@@ -7,14 +7,14 @@ import { KitchenContext } from "../../context/KitchenContext";
 
 export default function Button({use}){
 
-    const {setActiveDish, setActiveRecipe, setEntryStatus, setModalState, isFetchingData} = useContext(KitchenContext)
+    const {setActiveDish, setActiveRecipe, setEntryStatus, setModalState} = useContext(KitchenContext)
     const {pending} = useFormStatus()
     
     const handleClosingClick = () =>{
         setActiveDish(null);
         setActiveRecipe(null);
         setEntryStatus(null);
-        setModalState(null, false)
+        setModalState({}, false)
     }
 
     if(use === "close"){

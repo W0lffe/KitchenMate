@@ -62,7 +62,7 @@ export default function useDishForm({isMobile, currentFormValues, handleRequest,
         setTimeout(() => {
             setActiveDish(null)
             if(isMobile){
-                setModalState(null)
+                setModalState({}, false)
             }
         }, 1250);
         return {validInputs};

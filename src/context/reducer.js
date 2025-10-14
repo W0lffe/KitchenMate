@@ -21,7 +21,7 @@ export const utilityReducer = (state, action) => {
         case "SET_MODAL_STATE":
             return {
                 ...state, 
-                activeModal: action.payload.section,
+                activeModal: action.payload.activeModal,
                 modalIsOpen: action.payload.modalState
             }
         case "SET_MOBILE":

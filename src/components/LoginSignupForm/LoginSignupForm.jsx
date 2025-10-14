@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 export default function LoginSignupForm(){
     const {activeModal, setModalState, setUser} = useContext(KitchenContext);
-    const isLogin = activeModal === "login";
+    const isLogin = activeModal.section === "login";
     const userHeading = isLogin ? "Username:" : "Username (1-16 characters):";
     const passHeading = isLogin ? "Password:" : "Password (10-16 characters):";
 
@@ -39,7 +39,7 @@ export default function LoginSignupForm(){
 
         toast.success(success);
         setTimeout(() => {
-            setModalState(null);
+            setModalState({}, false);
             if(isLogin){
                 setUser({name, id});
             }

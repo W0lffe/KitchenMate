@@ -91,7 +91,7 @@ export default function ManualBasketEntry(){
         setTimeout(() => {
             setEntryStatus(null);
             if(isMobile){
-                setModalState(null);
+                setModalState({},false);
             }
         }, 1250);
         return {validInputs}

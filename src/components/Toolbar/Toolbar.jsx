@@ -44,7 +44,7 @@ export default function Toolbar(){
 
     const handleMobileClick = () => {
         initCreatingMode();
-        setModalState(activeSection, true)
+        setModalState({section: activeSection}, true)
     }
 
     const clickHandler = isMobile ? handleMobileClick : initCreatingMode;
@@ -52,7 +52,7 @@ export default function Toolbar(){
     const handleBasketEdit = () => {
         setEntryStatus({status: true, mode: "edit"});
         if(isMobile){
-            setModalState(activeSection, true)
+            setModalState({section: activeSection}, true)
         }
     }
 

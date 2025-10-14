@@ -14,11 +14,11 @@ export default function UserSection(){
     const {navigationIsOpen, user, setModalState, setUser} = useContext(KitchenContext);
     const userIsLogged = user.name !== undefined && user.id !== null;
 
-    const handleLoginClick = () => { setModalState("login", true) };
+    const handleLoginClick = () => { setModalState({section: "login"}, true) };
 
     const handleLogout = () => { setUser({id: 0}) };
 
-    const handleSignupClick = () => { () => setModalState("signup", true) };
+    const handleSignupClick = () => { () => setModalState({section: "signup"}, true) };
 
     return(
         <section className={getSectionStyle(navigationIsOpen)}>

@@ -14,7 +14,7 @@ import IconButton from "../Buttons/IconButton";
 
 export default function ListItem({item}){
 
-    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest, isFetchingData} = useContext(KitchenContext)
+    const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest} = useContext(KitchenContext)
 
     const {mode, dish} = activeDish || {};
     const {updateComponents} = createComponentUpdater({
@@ -28,7 +28,8 @@ export default function ListItem({item}){
                         activeSection === "basket" ? faSquareCheck : faEye;
 
     const handleDelete = async () => {
-        const response = await handleRequest({
+         setModalState({section: activeSection, toDelete: item.id}, true);
+        /* const response = await handleRequest({
             data: {id: item.id},
             method: "DELETE"
         })
@@ -39,7 +40,7 @@ export default function ListItem({item}){
             return;
         }
 
-        toast.success(success);
+        toast.success(success); */
     }
    
     const handleClick = async () => {
@@ -47,7 +48,7 @@ export default function ListItem({item}){
             setActiveRecipe({recipe: item, mode: "detail"});
 
             if(isMobile){
-                setModalState(activeSection, true);
+                setModalState({section: activeSection}, true);
             }
         }
         else if(activeSection === "dishes"){
@@ -58,7 +59,7 @@ export default function ListItem({item}){
                 setActiveDish({dish: item, mode: "detail"});
             }
             if(isMobile){
-                setModalState(activeSection, true);
+                setModalState({section: activeSection}, true);
             }
         }
         else if(activeSection === "basket"){

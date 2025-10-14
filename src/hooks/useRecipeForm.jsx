@@ -52,7 +52,7 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
     setTimeout(() => {
       setActiveRecipe(null);
       if (isMobile) {
-        setModalState(null, false);
+        setModalState({}, false)
       }
     }, 1250);
     return { validInputs: null };

@@ -44,23 +44,7 @@ export default function ItemInspectView({itemToInspect}){
     //console.log("isFavorite", isFavorite);
 
     const handleDelete = async() => {
-        const response = await handleRequest({
-            data: {id: viewState.item.id},
-            method: "DELETE"
-        })
-        const {error, success} = response;
-        if(error){
-            toast.error(error);
-            return;
-        }
-
-        toast.success(success);
-        if(isMobile){
-            setModalState(null, false)
-        }
-
-        setActiveDish(null);
-        setActiveRecipe(null);
+        setModalState({section: activeSection, toDelete: viewState.item.id}, true);
     }
 
     const handleModify = () => {
@@ -73,7 +57,7 @@ export default function ItemInspectView({itemToInspect}){
             return;
         }
         if(isMobile){
-            setModalState(activeSection, true);
+            setModalState({section: activeSection}, true);
             return;
         }
     }
@@ -98,7 +82,7 @@ export default function ItemInspectView({itemToInspect}){
         toast.success("Products added to basket successfully!");
 
         if(isMobile){
-            setModalState(null, false)
+            setModalState({}, false)
         }
     }
 
