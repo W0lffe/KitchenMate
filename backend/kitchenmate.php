@@ -174,12 +174,18 @@ function postData($userDir, $endpoint_path, $endpoint){
 
         if($endpoint === "basket"){
 
-            for($i = 0; $i < count($decodedInput); $i++){
-                $decodedInput[$i]["id"] = $startingID;
-                $startingID++;
-            }
+            if(count($data) === 0){
+                for($i = 0; $i < count($decodedInput); $i++){
+                    $decodedInput[$i]["id"] = $startingID;
+                    $startingID++;
+                }
          
-            $data = array_merge($data, $decodedInput);
+                $data = array_merge($data, $decodedInput);
+            }
+            else{
+                $checkedData = checkDuplicates($decodedInput, $data);
+                $data = $checkedData;
+            }   
         }
         else{
             $decodedInput["id"] = $startingID;
@@ -200,5 +206,33 @@ function postData($userDir, $endpoint_path, $endpoint){
         echo json_encode(["error" => "Data could not be saved: Directory/file does not exist."]);
         exit;
     }
+}
+
+
+function checkDuplicates($decodedInput, $data){
+
+    $startingID = count($data) + 1;
+
+    foreach ($decodedInput as $newItem) {
+        $itemFound = false;
+
+        foreach ($data as &$existingItem) {
+            if(strtolower($newItem["product"]) === strtolower($existingItem["product"])){
+                $newQuantity = intval($existingItem["quantity"]) + intval($newItem["quantity"]);
+                $existingItem["quantity"] = $newQuantity;
+                $itemFound = true;
+                break;
+            }
+        }
+
+        if($itemFound === false){
+            $newItem["id"] = $startingID;
+            array_push($data, $newItem);
+            $startingID++;
+        }
+
+    }
+  
+    return $data;
 }
 ?>

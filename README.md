@@ -94,7 +94,8 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [ ] Dish creation image preview
     - [x] Implement useReducer for local data updating
     - [x] Delete confirmation
-    - [ ] Checking product duplicates/units
+    - [x] Checking product duplicates/units
+        - Work In Progress, currently only checks if product names matches and combines quantity, does not consider units yet!
     - [x] Toasts!
     - [ ] Real user authenticating, tokens
     - [ ] Modular function for handleRequest with toasts, now its repeatitive in multiple components
