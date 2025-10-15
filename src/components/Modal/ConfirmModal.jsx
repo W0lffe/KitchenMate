@@ -70,9 +70,13 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
                 <h3 className={headingStyle}>Confirm</h3>
                 <label>{message}</label>
                 {dependencies.length > 0 && 
-                    fullDishes.current
-                    .filter((dish) => dependencies.includes(dish.id))
-                    .map((dish, i) => (<li key={i}>{dish.name}</li>))
+                    <ul className="list-disc flex flex-col items-start px-5 gap-1">
+                        {
+                        fullDishes.current
+                        .filter((dish) => dependencies.includes(dish.id))
+                        .map((dish, i) => (<li key={i} className="font-light animate-pulse">{dish.name}</li>))
+                        }
+                    </ul>
                 }
             </header>
             <span className={spanStyle}>
