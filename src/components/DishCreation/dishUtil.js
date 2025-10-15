@@ -12,7 +12,7 @@ export default function createComponentUpdater({dish, mode, setActiveDish}) {
     }
 
     const deleteComponent = (itemID) => {
-        console.log("deleting component id", itemID);
+        //console.log("deleting component id", itemID);
         const filtered = dish.components.filter((component) => component !== itemID)
 
         setActiveDish({
@@ -25,17 +25,17 @@ export default function createComponentUpdater({dish, mode, setActiveDish}) {
     }
 
     const updateComponents = (itemID) => {
-        console.log("updating components", itemID);
+        //console.log("updating components", itemID);
 
         const foundComponent = dish?.components.includes(itemID);
-        console.log("found component", foundComponent);
+        //console.log("found component", foundComponent);
 
         if (foundComponent) {
-            console.log("deleting component", foundComponent);
+            //console.log("deleting component", foundComponent);
             deleteComponent(itemID);
         }
         else {
-            console.log("adding component", itemID);
+            //console.log("adding component", itemID);
             addComponent(itemID);
         }
     }

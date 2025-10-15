@@ -78,7 +78,7 @@ export default function ListItem({item}){
             {(activeSection === "dishes" && (!isCreatingDish && !isEditingDish)) && <DishItem item={item} />}
             <IconButton func={handleClick}>
                  <FontAwesomeIcon icon={iconToUse} 
-                                className={item.obtained ? "text-green-600" : " text-[17px]"}/>
+                                className={` p-3 min-w-10 ${item.obtained ? "text-green-600" : " text-[17px]"}`}/>
             </IconButton>
             {activeSection === "basket" && 
                 <IconButton func={handleDelete}>
@@ -90,14 +90,13 @@ export default function ListItem({item}){
 }
 
 function RecipeItem({item, isCreatingDish}){
-    const {name, portions, time, timeFormat} = item;
+    const {name, time, timeFormat} = item;
 
     return(
         <>
         <label className={listItemNameStyle}>{name}</label>
         {!isCreatingDish && 
             <>
-                <label>{portions}</label>
                 <label>{time} {timeFormat}</label>
             </>
         }

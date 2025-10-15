@@ -5,7 +5,7 @@ export const listHeadingStyle = `h-10 w-9/10 flex justify-between items-center l
 
 export const itemListStyle = `w-full h-max-8/10 p-1 flex flex-col justify-start items-center overflow-y-auto`;
 
-export const nameHeadingStyle = `w-18 lg:w-45`;
+export const nameHeadingStyle = `w-26 lg:w-46`;
 
 export const getListItemStyle = (isMobile, obtained) => {
 
@@ -17,4 +17,4 @@ export const getListItemStyle = (isMobile, obtained) => {
     return style;
 } 
 
-export const listItemNameStyle = `w-21 lg:w-45 break-words`;
+export const listItemNameStyle = `w-30 lg:w-50  break-words`;

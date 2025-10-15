@@ -23,7 +23,7 @@ export const courses = [
 ]
 
 const LIST_LABELS = {
-    1: ["Name", "Portions", "Prep Time", "View"],
+    1: ["Name", "Prep Time", "View"],
     2: ["Name", "Course", "Components", "View"],
     3: ["Product", "Quantity", "Unit", "Collected", "Cut"],
     4: ["Name", "Add"],
@@ -73,7 +73,7 @@ export const getReducerType = (method, section, basketAdd) => {
             break;
         case "dishes":
             if (method === "POST" && basketAdd) return "ADD_BASKET_ITEM";
-            if (method === "POST" && !!basketAdd) return "ADD_DISH";
+            if (method === "POST" && !basketAdd) return "ADD_DISH";
             if (method === "PUT") return "UPDATE_DISH";
             if (method === "DELETE") return "REMOVE_DISH";
             break;
@@ -110,7 +110,7 @@ export const scaleRecipe = (scaleParams) => {
 
     scaledIngredients = originalIngredients.map((ingredient) => ({
             product: ingredient.product, 
-            quantity: (ingredient.quantity / originalPortions) * newPortions, 
+            quantity: ((ingredient.quantity / originalPortions) * newPortions).toFixed(1), 
             unit: ingredient.unit
         })
     );
