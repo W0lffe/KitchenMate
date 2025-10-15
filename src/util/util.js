@@ -149,6 +149,20 @@ export const getRecipeInfo = (list, id) => {
     return recipes;
 }
 
+export const findRecipeDependencies = (recipeID, dishes) => {
+    const dependencies = [];
+
+    dishes.forEach(dish => {
+        const dishComponents = dish.components;
+        const includes = dishComponents.includes(recipeID);
+        if(includes){
+            dependencies.push(dish.id)
+        }
+    });
+
+    return dependencies;
+}
+
 export const getDishFromValues = (formData, state) => {
     const name = formData.get("name");
     const course = formData.get("course");

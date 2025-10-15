@@ -44,6 +44,9 @@ export const KitchenContext = createContext({
     setFavorite: () => {},
     handleRequest: () => {},
     fullBasket: [],
+    fullRecipes: [],
+    fullDishes: []
+
 })
 
 export default function KitchenContextProvider({children}){
@@ -371,7 +374,9 @@ export default function KitchenContextProvider({children}){
         setEntryStatus,
         handleRequest,
         fullBasket: fetchedBasket,
-        fullRecipes: fetchedRecipes
+        fullRecipes: fetchedRecipes,
+        fullDishes: fetchedDishes
+
     }
 
     return(

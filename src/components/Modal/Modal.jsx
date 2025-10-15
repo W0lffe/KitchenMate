@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 
 export default function Modal(){
 
-    const {activeModal, modalIsOpen, editStatus, setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState} = useContext(KitchenContext)
+    const {activeModal, modalIsOpen, editStatus, setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes} = useContext(KitchenContext)
 
     const {section, toDelete} = activeModal;
     const modal = useRef()
@@ -19,7 +19,8 @@ export default function Modal(){
         handleRequest, 
         setActiveDish, 
         setActiveRecipe,
-        isMobile
+        isMobile,
+        fullDishes
     }
 
     useEffect(() => {
