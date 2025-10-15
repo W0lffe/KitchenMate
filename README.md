@@ -100,7 +100,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [ ] More details to recipe creation
         - Like category, optional heat for oven/sous-vide
         - Time per instruction step
-    - [ ] Error handling for dishes, that contain a recipe that has been deleted
+    - [x] Error handling for dishes, that contain a recipe that has been deleted
   - Backend
     - [x] Checking product duplicates/units
         - Work In Progress, currently only checks if product names matches and combines quantity, does not consider units yet!

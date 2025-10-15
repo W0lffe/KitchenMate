@@ -17,7 +17,7 @@ export default function Toolbar(){
     const {isMobile, setActiveRecipe, setActiveDish, 
             setModalState, filterList, sortList, 
             activeSection, setEntryStatus, activeDish, 
-            handleRequest, fullBasket} = useContext(KitchenContext)
+            fullBasket} = useContext(KitchenContext)
 
     const isCreatingDish = activeDish?.mode === "create";
     const currentOptions = getSortOptions(activeSection, isCreatingDish);
