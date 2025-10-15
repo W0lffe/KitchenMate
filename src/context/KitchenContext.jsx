@@ -142,6 +142,9 @@ export default function KitchenContextProvider({children}){
         if(success){
             kitchenDispatch(reducerHandler);
             setAvailableList(apiHandler);
+            if(data.dependencies !== undefined){
+                setAvailableList(dishesStateHandler);
+            }
         }
 
         return response;
@@ -152,6 +155,21 @@ export default function KitchenContextProvider({children}){
         setAvailableList(recipesStateHandler)
         setAvailableList(dishesStateHandler)
         setAvailableList(basketStateHandler);
+    }
+
+    const resetToUnfiltered = () => {
+       kitchenDispatch({
+        type: basketStateHandler.type,
+        payload: fetchedBasket.current
+       })
+       kitchenDispatch({
+        type: recipesStateHandler.type,
+        payload: fetchedRecipes.current
+       })
+       kitchenDispatch({
+        type: dishesStateHandler.type,
+        payload: fetchedDishes.current
+       })
     }
 
     /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
@@ -177,6 +195,8 @@ export default function KitchenContextProvider({children}){
         if(section === utilState.activeSection){
             section = undefined;
         }
+
+        resetToUnfiltered();
 
         if(section !== null){
            setActiveRecipe(null)
@@ -212,7 +232,7 @@ export default function KitchenContextProvider({children}){
         const {type, api, ref} = params;
 
         if(utilState.user === null){
-             kitchenDispatch({
+            kitchenDispatch({
                 type,
                 payload: []
         })
