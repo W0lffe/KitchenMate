@@ -268,7 +268,7 @@ export default function KitchenContextProvider({children}){
 
         console.log("filtering", value)
 
-        if(kitchenState.activeDish?.mode === "create"){
+        if(["edit", "create"].includes(kitchenState.activeDish?.mode)){
             filter({
                     fullList: fetchedRecipes.current,
                     value,

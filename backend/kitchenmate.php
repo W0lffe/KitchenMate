@@ -1,7 +1,7 @@
 <?php 
 
 //https://kitchenmate-efe45.web.app
-header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
@@ -17,9 +17,14 @@ if(!isset($user) || !isset($endpoint)){
 $config = parse_ini_file("./config.ini", true);
 $dataPath = $config["paths"]["data_point"];
 $userDir = "./$dataPath/$user";
-$endpoint_path = "./$dataPath/$user/$endpoint.json";
+
+function getEndpointPath($userDir, $endpoint) {
+    return "$userDir/$endpoint.json";
+}
 
 $operation = $_SERVER["REQUEST_METHOD"];
+
+$endpoint_path = getEndpointPath($userDir, $endpoint);
 
 switch($operation){
 
@@ -56,14 +61,26 @@ function deleteData($userDir, $endpoint_path){
             }
         }
 
+        if(isset($decodedInput["dependencies"]) && !empty($decodedInput["dependencies"])){
+            $dishesPath = getEndpointPath($userDir, "dishes");
+            //echo json_encode(["new path" => $dishesPath]);
+
+            if (file_exists($dishesPath)) {
+                $dishesData = json_decode(file_get_contents($dishesPath), true);
+                //echo json_encode(["dishes" => $dishesData]);
+
+                $updatedDishes = array_filter($dishesData, function($dish) use ($decodedInput) {
+                    return !in_array($dish['id'], $decodedInput['dependencies']);
+                });
+
+                //echo json_encode(["updated " => $updatedDishes]);
+                file_put_contents($dishesPath, json_encode($updatedDishes, JSON_PRETTY_PRINT));
+             
+            }
+        }
+
         if($index !== null){
             array_splice($existingData, $index, 1);
-
-            $newID = 1;
-            for($i = 0; $i < count($existingData); $i++){
-                $existingData[$i]["id"] = $newID;
-                $newID++;
-            }
 
             if(file_put_contents($endpoint_path, json_encode($existingData, JSON_PRETTY_PRINT))){
                 echo json_encode(["success" => "Data deleted successfully!"]);
@@ -170,7 +187,8 @@ function postData($userDir, $endpoint_path, $endpoint){
             $data = [];
         }
 
-        $startingID = count($data) + 1;
+        $maxID = !empty($data) ? max(array_column($data, 'id')) : 0;
+        $startingID = $maxID + 1;
 
         if($endpoint === "basket"){
 

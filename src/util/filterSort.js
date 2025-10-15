@@ -33,8 +33,8 @@ export const sort = (parameters) => {
 
         switch(key){
             case "time":
-                valA = a.prepTime.time;
-                valB = b.prepTime.time;
+                valA = a.time;
+                valB = b.time;
                 return valA - valB;
             case "name":
                 valA = a.name ? a.name : a.product;

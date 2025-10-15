@@ -16,12 +16,12 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
     const clearBasket = Array.isArray(toDelete);
 
 
-    const dependecies = [];
+    const dependencies = [];
     let message = "Delete ";
     if (section.toLowerCase().includes("recipes")) {
         message += "recipe?";
-        dependecies.push(...findRecipeDependencies(toDelete, fullDishes.current));
-        if(dependecies.length > 0){
+        dependencies.push(...findRecipeDependencies(toDelete, fullDishes.current));
+        if(dependencies.length > 0){
             message = "Deleting this recipe will also delete the following dishes:";
         }
     } else if (section.toLowerCase().includes("dishes")) {
@@ -36,7 +36,7 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
 
     const handleDelete = async () => {
 
-        const dataToDelete = dependecies.length > 0 ? {id: toDelete, dependecies} : {id: toDelete};
+        const dataToDelete = dependencies.length > 0 ? {id: toDelete, dependencies} : {id: toDelete};
 
         const response = await handleRequest({
             data: clearBasket ? [] : dataToDelete,
@@ -69,10 +69,10 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
             <header className={headerStyle}>
                 <h3 className={headingStyle}>Confirm</h3>
                 <label>{message}</label>
-                {dependecies.length > 0 && 
+                {dependencies.length > 0 && 
                     fullDishes.current
-                    .filter((dish) => dependecies.includes(dish.id))
-                    .map((dish) => (<li>{dish.name}</li>))
+                    .filter((dish) => dependencies.includes(dish.id))
+                    .map((dish, i) => (<li key={i}>{dish.name}</li>))
                 }
             </header>
             <span className={spanStyle}>
