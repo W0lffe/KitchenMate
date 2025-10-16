@@ -1,11 +1,12 @@
 import FormList from "../FormList/FormList"
 import Button from "../Buttons/Button";
-import Errors from "../Error/Errors"
 import { useContext, 
         useActionState } from "react"
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData } from "../../util/util";
 import { validateProducts } from "../../util/validation";
+import { handleToast } from "../../util/toast";
+import handleErrorsToast from "../Error/Errors";
 import toast from "react-hot-toast";
 
 const getFormValues = (formData) => {
@@ -47,7 +48,7 @@ export default function ManualBasketEntry(){
 
 
     const manualEntry = async(prevFormState, formData) => {
-        const {products, quantity, unit} = getFormValues(formData)
+        const {products, quantity, unit} = getFormValues(formData);
         const errors = validateProducts(products, quantity, unit);
         
         const combinedProducts = combineProductData(products, quantity, unit);
@@ -56,16 +57,12 @@ export default function ManualBasketEntry(){
                 products,
                 quantity,
                 unit
-        }
+        };
         
         if(errors.length > 0){
-            toast.error((t) => (
-                 <Errors errors={errors}/>
-            ), {duration: 5000});
-            return {
-                validInputs
-            }
-        }
+            handleErrorsToast(errors);
+            return { validInputs };
+        };
 
         const productData = !isEditing ? combinedProducts :
                                         mapProductData({
@@ -77,23 +74,18 @@ export default function ManualBasketEntry(){
         const response = await handleRequest({
                 data: productData,
                 method: isEditing ? "PUT" : "POST"
-        })
+        });
         const {error, success} = response;
-        
-        if(error){
-            toast.error(error);
-            return {validInputs}
-        }
 
         const successToast =  `Product${combinedProducts.length > 1 ? "s" : ""} added to basket successfully!`;
-        toast.success(isEditing ? success : successToast);
 
-        setTimeout(() => {
-            setEntryStatus(null);
-            if(isMobile){
-                setModalState({},false);
-            }
-        }, 1250);
+        handleToast({
+            error,
+            success: isEditing ? success : successToast,
+            setEntryStatus,
+            setModalState,
+        })
+
         return {validInputs}
     }
 

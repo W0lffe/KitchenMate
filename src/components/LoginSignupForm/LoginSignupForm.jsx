@@ -10,7 +10,7 @@ import { containerStyle,
         formStyle,
         labelStyle,
         inputStyle} from "./loginStyles";
-import toast from "react-hot-toast";
+import { handleToast } from "../../util/toast";
 
 export default function LoginSignupForm(){
     const {activeModal, setModalState, setUser} = useContext(KitchenContext);
@@ -29,26 +29,21 @@ export default function LoginSignupForm(){
 
         const response = await userAPI({user, method: isLogin ? "login" : "new"});
         const {error, success, id} = response;
-     
-        if(error){
-            toast.error(error);
-            return {
-                validInputs: { name }
-            }
-        }
 
-        toast.success(success);
-        setTimeout(() => {
-            setModalState({}, false);
-            if(isLogin){
-                setUser({name, id});
-            }
-        }, 1250);
+        handleToast({
+            error,
+            success,
+            setModalState,
+        })
+
+        if(isLogin && success){
+            setUser({name, id});
+        }
 
         return {validInputs: { name }};
     }
 
-    const [formState, formAction] = useActionState(loginSignup , {validInputs: null})
+    const [formState, formAction] = useActionState(loginSignup , {validInputs: null});
 
     return(
         <div className={containerStyle}>

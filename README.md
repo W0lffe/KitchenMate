@@ -96,7 +96,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Delete confirmation
     - [x] Toasts!
     - [ ] Real user authenticating, tokens
-    - [ ] Modular function for handleRequest with toasts, now its repeatitive in multiple components
+    - [x] Modular function for toasts
     - [ ] More details to recipe creation
         - Like category, optional heat for oven/sous-vide
         - Time per instruction step
@@ -104,6 +104,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
   - Backend
     - [x] Checking product duplicates/units
         - Work In Progress, currently only checks if product names matches and combines quantity, does not consider units yet!
+    - [ ] Re-arrange ID's when deleting items from basket
     
 # Backlog
 ## Front-end

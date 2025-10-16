@@ -7,9 +7,9 @@ import { faEye,
         faSquareCheck, 
         faTrash, 
         faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-import toast from "react-hot-toast";
 import createComponentUpdater from "../DishCreation/dishUtil";
 import IconButton from "../Buttons/IconButton";
+import { handleToast } from "../../util/toast";
 
 
 export default function ListItem({item}){
@@ -60,14 +60,12 @@ export default function ListItem({item}){
                 method: "PUT"
             });
 
-             const {error} = response;
+            const {error} = response;
 
-        if(error){
-            toast.error(error);
-            return;
-        }
-
-        toast.success(`Product is marked as ${!item.obtained ? "obtained!" : "not obtained!"}`);
+            handleToast({
+                error,
+                success: `Product is marked as ${!item.obtained ? "obtained!" : "not obtained!"}`
+            })
         }
     }
 

@@ -2,8 +2,8 @@ import { useCallback } from "react";
 import { validateRecipe } from "../util/validation";
 import { getRecipeFormValues, deriveFormStateValues } from "../util/util";
 import { combineProductData, getTimestamp } from "../util/util";
-import toast from "react-hot-toast";
-import Errors from "../components/Error/Errors";
+import handleErrorsToast from "../components/Error/Errors";
+import { handleToast } from "../util/toast";
 
 
 export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setActiveRecipe, setModalState }) {
@@ -19,16 +19,16 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
     const validInputs = { name, portions, output, time, timeFormat, products, quantity, unit, steps };
 
     if (errors.length > 0) {
-      toast.error((t) => (<Errors errors={errors}/>), { duration: 5000 });
+      handleErrorsToast(errors);
       return { validInputs };
-    }
+    };
 
     const newRecipe = {
       name,
       portions,
       output,
       outputType,
-      time, 
+      time,
       timeFormat,
       ingredients,
       instructions: steps,
@@ -43,18 +43,13 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
     });
     const { success, error } = response;
 
-    if (error) {
-      toast.error(error);
-      return;
-    }
+    handleToast({
+      error,
+      success,
+      setActiveRecipe,
+      setModalState,
+    })
 
-    toast.success(success);
-    setTimeout(() => {
-      setActiveRecipe(null);
-      if (isMobile) {
-        setModalState({}, false)
-      }
-    }, 1250);
-    return { validInputs: null };
+    return { validInputs };
   }, [isMobile, currentFormValues, handleRequest, setActiveRecipe, setModalState]);
 }

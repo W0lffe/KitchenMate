@@ -4,12 +4,12 @@ import { useContext,
 import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
         containerStyle} from "./inspectStyles";
-import toast from "react-hot-toast";
 import ItemInfoSection from "./ItemInfoSection";
 import ItemListSection from "./ItemListSection";
 import ItemInstructionSection from "./ItemInstructionSection";
 import { getRecipeInfo } from "../../util/util";
 import ButtonBar from "../Buttons/ButtonBar";
+import { handleToast } from "../../util/toast";
 
 const deriveViewState = (itemToInspect, fullRecipes) => {
     const {dish, recipe} = itemToInspect;
@@ -72,18 +72,15 @@ export default function ItemInspectView({itemToInspect}){
             data: products,
             method: "POST"
         }, true)
-        const {error, success} = response;
+        const {error} = response;
 
-        if(error){
-            toast.error(error);
-            return;
-        }
+        handleToast({
+            error,
+            success: "Products added to basket successfully!",
+            isMobile,
+            setModalState
+        })
 
-        toast.success("Products added to basket successfully!");
-
-        if(isMobile){
-            setModalState({}, false)
-        }
     }
 
     const handleFavorite = async() => {
@@ -105,12 +102,13 @@ export default function ItemInspectView({itemToInspect}){
         })
 
         const {error} = response;
-        if(error){
-            toast.error(error)
-            return;
-        }
+
         const object = viewState.isRecipe ? "Recipe" : "Dish";
-        toast.success(`${object} is ${newFavoriteValue ? "favorited!" : "unfavorited!"}`);
+        handleToast({
+            error,
+            success: `${object} is ${newFavoriteValue ? "favorited!" : "unfavorited!"}`,
+        })
+
     }
 
     const handleScaling = (scaledIngredients) => {

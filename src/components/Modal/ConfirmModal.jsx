@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import {
     confirmModalStyle,
     confirmButtonStyle,
@@ -8,11 +7,12 @@ import {
     cancelButtonStyle
 } from "./modalStyles.js"
 import { findRecipeDependencies, getRecipeInfo } from "../../util/util.js";
+import { handleToast } from "../../util/toast.js";
 
 export default function ConfirmModal({ section, toDelete, contextProps }) {
 
 
-    const { setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes } = contextProps;
+    const { setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes, isFetchingData } = contextProps;
     const clearBasket = Array.isArray(toDelete);
 
 
@@ -44,24 +44,21 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
         })
 
         const { error, success } = response;
-        if (error) {
-            toast.error(error);
-            return;
-        }
 
-        clearBasket ? toast.success("Basket cleared!") : toast.success(success)
- 
-        setModalState({}, false)
-        setActiveDish(null);
-        setActiveRecipe(null);
+        handleToast({
+            error,
+            success: clearBasket ? "Basket cleared!" : success,
+            setModalState,
+            setActiveDish,
+            setActiveRecipe,
+            delay: 0
+        })
     }
 
     const handleCancel = () => {
         const modalState = !isMobile ? false : (section === "basket" ? false : true);
 
-        setModalState({
-            section
-        }, modalState)
+        setModalState({section}, modalState)
     }
 
     return (
@@ -81,7 +78,7 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
             </header>
             <span className={spanStyle}>
                 <button onClick={handleCancel} className={cancelButtonStyle}>Cancel</button>
-                <button onClick={handleDelete} className={confirmButtonStyle}>Confirm</button>
+                <button onClick={handleDelete} className={confirmButtonStyle} disabled={isFetchingData}>Confirm</button>
             </span>
         </div>
     )
