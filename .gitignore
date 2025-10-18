@@ -32,6 +32,7 @@ firebase.json
 
 # Other
 backend/api.js
-backend/config.ini
+backend/config/*
+backend/data/*
 
 

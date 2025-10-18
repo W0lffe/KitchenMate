@@ -1,17 +1,15 @@
 <?php 
 //https://kitchenmate-efe45.web.app
-header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app"); 
+header("Access-Control-Allow-Origin: *"); 
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
 $config = parse_ini_file("./config.ini", true);
-$users = $config["paths"]["users"];
-$file = $config["files"]["user_file"];
-$userFile = "$users/$file";
+$usersFile = $config["files"]["user_file"];
 $data_point = $config["paths"]["data_point"];
 
-if(!initDir($users, $userFile)){
+if(!initDir($usersFile)){
     echo json_encode(["error" => "Error initializing directory!"]);
     exit;
 }
