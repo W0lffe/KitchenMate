@@ -5,13 +5,44 @@ function getEndpointPath($user, $endpoint) {
     //echo getcwd();
     $config = parse_ini_file(__DIR__ . "/../config/config.ini", true);
     $dataPath = $config["paths"]["data_point"];
+    $userFile = $config["files"]["user_file"];
     $userDir = "$dataPath/$user";
-    $paths = [
-        "userDir" => $userDir, 
-        "endpointFile" => "$dataPath/$user/$endpoint.json"
-    ];
-    return $paths;
+    
+    if($endpoint === "users"){
+        return [
+            "userFile" => $userFile,
+            "dataPath" => $dataPath
+        ];
+    }
+    else{
+        return [
+            "userDir" => $userDir, 
+            "endpointFile" => "$dataPath/$user/$endpoint.json"
+        ];
+    }
 }
+
+function initEndpoints($dir, $dataPath){
+
+    $path = "$dataPath/$dir";
+    $ep = ["recipes.json", "dishes.json", "basket.json"];
+
+    if(!mkdir($path, 0770, true)){
+        return false;
+    }
+
+    foreach ($ep as $endpoint) {
+        if(!file_put_contents("$path/$endpoint", json_encode([]))){
+            return false;
+        }
+
+        if((!chmod("$path/$endpoint", 0770))){
+            return false;
+        }
+    };
+
+    return true;
+} 
 
 function checkDuplicates($data, $existingData){
 

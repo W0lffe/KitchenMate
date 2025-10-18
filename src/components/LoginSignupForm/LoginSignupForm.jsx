@@ -27,7 +27,12 @@ export default function LoginSignupForm(){
             passwd: pass
         }
 
-        const response = await userAPI({user, method: isLogin ? "login" : "new"});
+        const response = await userAPI({
+            user: true,
+            method: "POST",
+            data: {user, operation: isLogin ? "login" : "new"},
+        });
+
         const {error, success, id} = response;
 
         handleToast({

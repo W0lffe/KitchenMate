@@ -18,7 +18,7 @@ export default function UserSection(){
 
     const handleLogout = () => { setUser({id: 0}) };
 
-    const handleSignupClick = () => { () => setModalState({section: "signup"}, true) };
+    const handleSignupClick = () => { setModalState({section: "signup"}, true) };
 
     return(
         <section className={getSectionStyle(navigationIsOpen)}>
