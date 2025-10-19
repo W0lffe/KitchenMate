@@ -6,7 +6,7 @@ export default function IconButton({children, func}){
     const {isFetchingData} = useContext(KitchenContext)
 
     return(
-        <button disabled={isFetchingData} onClick={func}>
+        <button disabled={isFetchingData} type="button" onClick={func}>
             {children}
         </button>
     )
