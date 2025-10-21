@@ -1,11 +1,37 @@
 <?php
 
+function initDataDir(){
+    $config = parse_ini_file(__DIR__ . "/../config/config.ini", true); 
+    $data = $config["paths"]["data"];
+    $dataPoint = $config["paths"]["data_point"];
+    $userFile = $config["files"]["user_file"];
+
+    if(is_dir($data) && is_dir($dataPoint) && file_exists($userFile)){
+        return true;
+    }
+    else{
+        if(!mkdir($data, 0770, true)){
+            return false;
+        }
+        if(!mkdir($dataPoint, 0770, true)){
+            return false;
+        }
+        if(!file_put_contents($userFile, json_encode([]))){
+            return false;
+        }
+        if((!chmod($userFile, 0770))){
+            return false;
+        }
+    }
+}
+
 function getEndpointPath($user, $endpoint) {
 
     //echo getcwd();
     $config = parse_ini_file(__DIR__ . "/../config/config.ini", true);
     $dataPath = $config["paths"]["data_point"];
     $userFile = $config["files"]["user_file"];
+    $uploadDir = $config["paths"]["uploads"];
     $userDir = "$dataPath/$user";
     
     if($endpoint === "users"){
@@ -13,6 +39,9 @@ function getEndpointPath($user, $endpoint) {
             "userFile" => $userFile,
             "dataPath" => $dataPath
         ];
+    }
+    else if($endpoint === "uploads"){
+        return "$uploadDir/$user/uploads/";
     }
     else{
         return [
@@ -110,5 +139,6 @@ function findIndex($data, $existingData){
 
     return $index;
 }
+
 
 ?>

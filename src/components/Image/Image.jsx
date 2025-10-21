@@ -6,11 +6,20 @@ import { imageSection,
 import IconButton from "../Buttons/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { BASE_URL } from "../../../backend/api";
 
 export default function Image({img, disable}) {
 
     const [imagePreview, setImagePreview] = useState(() => {
-        return img ? URL.createObjectURL(img) : null;
+        if(img === null) return null;
+
+        if(img instanceof File){
+            return URL.createObjectURL(img);
+        }
+
+        if(typeof img === "string"){
+            return `${BASE_URL}/${img}`;
+        }
     });
 
     const handleImageChange = (e) => {

@@ -13,11 +13,11 @@ if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
     $resource = [
         "endpoint" => $paths["endpointFile"], 
         "api" => $api, 
-        "data" => $resource["input"]["data"]
+        "data" => $resource["input"]
     ];
     $method = $_SERVER["REQUEST_METHOD"];
 
-    //echo json_encode(["Resources at dishes.php:" => $resource]);
+   // echo json_encode(["Resources at dishes.php:" => $resource]);
 
     switch($method){
 

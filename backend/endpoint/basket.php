@@ -13,7 +13,7 @@ if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
     $resource = [
         "endpoint" => $paths["endpointFile"], 
         "api" => $api, 
-        "data" => $resource["input"]["data"]
+        "data" => $resource["input"]
     ];
     $method = $_SERVER["REQUEST_METHOD"];
 

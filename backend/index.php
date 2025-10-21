@@ -1,50 +1,34 @@
 <?php 
 
+//error_log("UPLOAD MAX FILESIZE: " . ini_get('upload_max_filesize'));
+//error_log("POST MAX SIZE: " . ini_get('post_max_size'));
+
 //https://kitchenmate-efe45.web.app
-header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
 
-$resource = [];
-$endpoint = "";
+require_once __DIR__ . "/util/helpers.php";
+require_once __DIR__ . "/util/requestHandler.php";
+require_once __DIR__ . "/util/methods.php";
 
-if($_SERVER["REQUEST_METHOD"] === "GET"){
-    $user = $_GET["user"] ?? null;
-    $endpoint = $_GET["endpoint"] ?? null;
-    $resource = [
-        "user" => $user,
-        "endpoint" => $endpoint
-    ];
-}
-else{
-    $input = json_decode(file_get_contents("php://input"), true);
-    $user = $input["user"] ?? null;
-    $endpoint = $input["endpoint"] ?? null;
-    $resource = [
-            "user" => $user,
-            "endpoint" => $endpoint,
-            "input" => $input
-    ];
-};
-
-if(!isset($resource["user"]) || !isset($endpoint)){
-    echo json_encode(["error" => "Critical error with fetch!"]);
+if(!initDataDir()){
+    echo json_encode(["error" => "Critical error initiating data directories!"]);
     exit;
-};
+}
+
+$resource = parseRequest();
 
 //echo json_encode(["Resources at index.php:" => $resource]);
 
-require_once __DIR__ . "/util/helpers.php";
-require_once __DIR__ . "/util/methods.php";
-$endpointFile = __DIR__ . "/endpoint/$endpoint.php";
+$endpointFile = __DIR__ . "/endpoint/" . $resource["endpoint"] . ".php";
 
 if(file_exists($endpointFile)){
     require_once $endpointFile;
     handleRequest($resource);
 }
 else{
-    echo json_encode(["error" => "Error with endpoint: ${endpoint}"]);
+    echo json_encode(["error" => "Error with endpoint: {$resource["endpoint"]}"]);
 }
 
 ?>
