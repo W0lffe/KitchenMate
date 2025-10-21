@@ -86,6 +86,7 @@ export default function DishCreation(){
                 name: name === null ? currentFormValues.validInputs?.name : name,
                 course: course === null ? currentFormValues.validInputs?.course : course,
                 components: currentFormValues.validInputs?.components || [],
+                image: (image === null || image.size === 0) ? currentFormValues.validInputs?.image : image
             }
         });
 

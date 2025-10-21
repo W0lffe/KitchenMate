@@ -7,4 +7,11 @@ export const inputStyle =  `text-6xl border rounded-custom p-1 text-center borde
 
 export const imageStyle = `w-full h-full object-cover object-center aspect-auto border-white/30 border-2 rounded-[26px]`;
 
-export const imageDivStyle = `flex overflow-hidden w-[calc(100%-5px)] max-h-66 justify-center`;
+export const getImageDivStyle = (inspecting) => {
+    let style = `flex flex-row overflow-hidden justify-center`
+
+    style += inspecting ? " w-1/1 max-h-46" : " w-3/4 max-h-52";
+
+    return style;
+
+}

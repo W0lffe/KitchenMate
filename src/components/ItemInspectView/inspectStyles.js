@@ -1,7 +1,7 @@
 
 export const containerStyle = `flex flex-col gap-2  w-full h-full text-white`;
 
-export const topSection = ` h-3/10 flex flex-row justify-start border-b-1 border-white/20 rounded-custom`;
+export const topSection = ` h-3/10 flex flex-row justify-start border-b-1 border-white/20 rounded-custom p-2`;
 
 export const bottomSection =  ` h-8/10 flex flex-col lg:flex-row`;
 
@@ -28,4 +28,3 @@ export const getIconStyle = (icon) => {
     return style;
 }
 
-export const imageStyle = `w-54 rounded-[50px] border-gray-900/80 border-2`

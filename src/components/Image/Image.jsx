@@ -1,30 +1,29 @@
 import { useState } from "react"
 import { imageSection, 
     inputStyle, 
-    imageStyle, 
-    imageDivStyle } from "./imageStyles"
+    imageStyle,
+    getImageDivStyle} from "./imageStyles"
 import IconButton from "../Buttons/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
-export default function Image() {
+export default function Image({img, disable}) {
 
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
+    const [imagePreview, setImagePreview] = useState(() => {
+        return img ? URL.createObjectURL(img) : null;
+    });
 
     const handleImageChange = (e) => {
 
         const image = e.target.files[0];
-        console.log(image)
         if(image){
-            setSelectedFile(image);
             setImagePreview(URL.createObjectURL(image));
         }
     }
 
     return (
         <section className={imageSection}>
-            <div className={imageDivStyle}>
+            <div className={getImageDivStyle(disable)}>
                 {imagePreview ?
                 (
                     <label htmlFor="image-upload">
@@ -45,6 +44,7 @@ export default function Image() {
                     accept="image/*"
                     multiple={false}
                     onChange={(e) => handleImageChange(e)}
+                    disabled={disable}
             />
             </div>
         </section>

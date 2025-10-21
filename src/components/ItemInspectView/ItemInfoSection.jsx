@@ -1,11 +1,12 @@
 import { topSection } from "./inspectStyles";
 import Scale from "../Scale/Scale";
+import Image from "../Image/Image";
 
 export default function ItemInfoSection({isRecipe, item, scaleFunctions, state}){
 
     const itemToUse = state !== undefined ? state.validInputs : item;
     const name = itemToUse.name.length > 0 && itemToUse.name;
-    
+
     let outputString = ""
     if(itemToUse.outputType !== null){
         outputString += `${itemToUse.outputType}, `;
@@ -33,9 +34,7 @@ export default function ItemInfoSection({isRecipe, item, scaleFunctions, state})
             </section>
 
             {(!isRecipe && itemToUse?.image) && (
-                <section className="w-1/2">
-                    <img src={itemToUse.image} alt="Photo cant be displayed" className="w-54 rounded-[50px] border-gray-900/80 border-2" />
-                </section>
+                <Image img={itemToUse.image} disable={true}/>
             )}
         </div>
     )

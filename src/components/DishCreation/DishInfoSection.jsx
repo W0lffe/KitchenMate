@@ -12,7 +12,7 @@ export default function DishInfoSection({state}){
 
     return(
         <div className={divStyle}>
-            <Image />
+            <Image img={validInputs?.image}/>
             <section className={infoSection}>
                 <span className={spanStyle}>
                     <label className={labelStyle}>Name:</label>
