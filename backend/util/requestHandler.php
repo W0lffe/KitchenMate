@@ -27,6 +27,7 @@ function parseRequest(){
     else if(stripos($contentType, "multipart/form-data") !== false){
         $user = $_POST["user"] ?? null;
         $endpoint = $_POST["endpoint"] ?? null;
+        $isUpdate = isset($_POST["update"]) && $_POST["update"] === "true";
         $data = json_decode($_POST["data"], true) ?? null;
             
         error_log("POST KEYS:" . implode(", ", array_keys($_POST)));
@@ -61,7 +62,8 @@ function parseRequest(){
         $resource = [
             "user" => $user,
             "endpoint" => $endpoint,
-            "input" => $data
+            "input" => $data,
+            "isUpdate" => $isUpdate
         ];
     };
         

@@ -61,7 +61,7 @@ export default function KitchenContextProvider({children}){
         navigationIsOpen: true,
         activeSection: "",
         user: {
-            id: 695
+            id: 0
         },
         activeModal: {},
         modalIsOpen: false,
@@ -103,7 +103,7 @@ export default function KitchenContextProvider({children}){
         const isDish = utilState.activeSection === "dishes";
         const isBasket = utilState.activeSection === "basket";
 
-        console.log("dataTohandle",dataToHandle)
+        //console.log("dataTohandle",dataToHandle)
 
         const {data, method} = dataToHandle;
         const body = {
@@ -117,7 +117,7 @@ export default function KitchenContextProvider({children}){
                 type: getReducerType(method, utilState.activeSection, basketAdd),
                 payload: data.updatedItem ? data.updatedItem : data
         }
-        console.log("handleri", reducerHandler)
+        //console.log("handleri", reducerHandler)
         let apiHandler = null;
         
         if(basketAdd){
@@ -286,7 +286,7 @@ export default function KitchenContextProvider({children}){
 
     const filterList = (value) => {
 
-        console.log("filtering", value)
+        //console.log("filtering", value)
 
         if(["edit", "create"].includes(kitchenState.activeDish?.mode)){
             filter({

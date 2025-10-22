@@ -7,21 +7,15 @@ export const recipesAPI = async (data) => fetchAPI({ ...data, endpoint: "recipes
 
 const fetchAPI = async (params) => {    
 
-    console.log("params",params)
-
     const payload = createRequestPayload(params);
-
-    console.log(payload);
 
     const { user, method = "GET", endpoint } = params;
 
-    console.log(method, user, endpoint)
+    //console.log(method, user, endpoint)
 
     const fetchUrl = method === "GET"
         ? `${BASE_URL}/index.php?user=${encodeURIComponent(user)}&endpoint=${encodeURIComponent(endpoint)}`
         : `${BASE_URL}/index.php`;
-
-    console.log(fetchUrl);
 
     try {
         const response = await fetch(fetchUrl, payload);
@@ -31,11 +25,9 @@ const fetchAPI = async (params) => {
         }
 
         const resData = await response.json();
-        console.log(resData);
         return resData;
 
     } catch (error) {
-        console.log(error);
         return { error: "Error occured while fetching data!" };
     }
 
@@ -57,21 +49,26 @@ const createRequestPayload = (params) => {
         formData.append("user", user);
         formData.append("endpoint", endpoint);
 
+        if(method === "PUT"){
+            formData.append("update", "true");
+        }
+
         const dishData = {};
         for (const key in data) {
             if (key !== "image") {
                 if (key !== "image"){
-                    console.log(data[key]);
+                    //console.log(data[key]);
                     dishData[key] = data[key];
-                    console.log(dishData);
+                    //console.log(dishData);
                 }
             }
         }
         
         formData.append("data",JSON.stringify(dishData));
-        console.log(...formData.values());
 
-        return {method, body: formData};
+        //console.log([...formData.values()]);
+
+        return {method: "POST", body: formData};
     }
     else{
         const jsonPayload = {

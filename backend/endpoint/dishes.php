@@ -8,7 +8,9 @@ $paths = getEndpointPath($resource["user"], $api);
 //echo json_encode(["Dishes paths" => $paths]);
 
 if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
-    //echo json_encode(["success" => "Dir and file exist!"]);
+    //echo json_encode(["success" => "Dir and file exist!"]);   
+
+    $isUpdate = $resource["isUpdate"];
 
     $resource = [
         "endpoint" => $paths["endpointFile"], 
@@ -16,6 +18,10 @@ if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
         "data" => $resource["input"]
     ];
     $method = $_SERVER["REQUEST_METHOD"];
+
+    if($isUpdate){
+        $method = "PUT";
+    }
 
    // echo json_encode(["Resources at dishes.php:" => $resource]);
 
@@ -36,7 +42,8 @@ if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
     }
 }
 else{
-    echo json_encode(["error" => "Directory or file does not exist!", "Requested:" => [$user, $api]]);
+    echo json_encode(["error" => "Directory or file does not exist!", "Requested:" => [$resource["user"], $api]]);
 }
+
 }
 ?>

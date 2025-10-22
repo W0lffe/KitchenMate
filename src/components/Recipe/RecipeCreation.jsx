@@ -44,6 +44,7 @@ export default function RecipeCreation(){
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
                     steps: recipeToModify.instructions,
+                    category: recipeToModify.category
             },
             modifiedId: isEditing ? recipeToModify?.id : null,
             isFavorited: isEditing ? recipeToModify?.favorite : false,
@@ -85,6 +86,7 @@ export default function RecipeCreation(){
                 quantity: quantity.length > 0 ? quantity : (currentFormValues.validInputs?.quantity || []),
                 unit: unit.length > 0 ? unit : (currentFormValues.validInputs?.unit || []),
                 steps: steps.length > 0 ? steps : (currentFormValues.validInputs?.steps || []),
+                category: null //to be changed
             }
         });
 

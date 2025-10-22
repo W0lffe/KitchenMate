@@ -4,7 +4,7 @@ function handleRequest($resource){
 
     //echo json_encode(["success" => "got resources", "resources" => $resource]);
 
-    $data = $resource["input"]["data"];
+    $data = $resource["input"];
     $endpoint = $resource["endpoint"];
 
     if(isset($data) && isset($endpoint)){
@@ -32,7 +32,7 @@ function handleRequest($resource){
     
     }
     else{
-        echo json_encode(["error" => "errorriii"]);
+        echo json_encode(["error" => "Invalid resources"]);
         exit;
     }
 
