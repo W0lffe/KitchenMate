@@ -91,7 +91,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Recipe scalability feature
     - [ ] Public recipe bank, visible for every user
     - [ ] Creating a homepage
-    - [ ] Dish creation image preview
+    - [x] Dish creation image preview
     - [x] Implement useReducer for local data updating
     - [x] Delete confirmation
     - [x] Toasts!
@@ -104,7 +104,9 @@ It includes basic login functionality and core CRUD operations for recipes, dish
   - Backend
     - [x] Checking product duplicates/units
         - Work In Progress, currently only checks if product names matches and combines quantity, does not consider units yet!
-    - [ ] Re-arrange ID's when deleting items from basket
+    - [x] Re-arrange ID's when deleting items from basket
+    - [x] Restructured backend to only expose index.php to web-access
+    - [x] Image uploading
     
 # Backlog
 ## Front-end

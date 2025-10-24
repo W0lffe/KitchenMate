@@ -18,12 +18,15 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
             components
         });
 
-        const hasImage = image && image.size > 0;
+        const currentImage = currentFormValues?.validInputs?.image ?? null;
+        const hasNewImage = image && image.size > 0;
+
+        console.log({current: currentImage, hasNewImage})
 
         const validInputs = {
             name,
             course,
-            image: hasImage ? image : null,
+            image: hasNewImage ? image : currentImage,
             components
         };
 
@@ -35,11 +38,13 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
         const newDish = {
             name,
             course,
-            image,
+            image: hasNewImage ? image : currentImage,
             favorite: currentFormValues?.isFavorite || false,
             id: currentFormValues?.modifiedId || null,
             components
         };
+
+        console.log("new dish", newDish.image)
 
         const response = await handleRequest({
             data: newDish,

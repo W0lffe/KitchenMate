@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { imageSection, 
     inputStyle, 
     imageStyle,
@@ -7,20 +7,32 @@ import IconButton from "../Buttons/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { BASE_URL } from "../../../backend/api";
+import { KitchenContext } from "../../context/KitchenContext";
+import { useContext } from "react";
+
+
+export const getImagePreview = (img, user) => {
+
+    if(img instanceof File){
+        return URL.createObjectURL(img);
+    }
+
+    if(typeof img === "string"){
+        return `${BASE_URL}/index.php?user=${user.id}&endpoint=image&image=${img}`;
+    }
+
+    return null;
+}
 
 export default function Image({img, disable}) {
 
-    const [imagePreview, setImagePreview] = useState(() => {
-        if(img === null) return null;
+    const {user} = useContext(KitchenContext);
 
-        if(img instanceof File){
-            return URL.createObjectURL(img);
-        }
+    const [imagePreview, setImagePreview] = useState(getImagePreview(img, user));
 
-        if(typeof img === "string"){
-            return `${BASE_URL}/${img}`;
-        }
-    });
+    useEffect(() => {
+        setImagePreview(getImagePreview(img, user));
+    }, [img])
 
     const handleImageChange = (e) => {
 
@@ -36,7 +48,7 @@ export default function Image({img, disable}) {
                 {imagePreview ?
                 (
                     <label htmlFor="image-upload">
-                        <img src={imagePreview} className={imageStyle} />
+                        <img src={imagePreview} className={imageStyle} name="image" />
                     </label>
                 ) : ( 
                     <IconButton>

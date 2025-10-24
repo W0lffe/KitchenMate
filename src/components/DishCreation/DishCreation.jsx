@@ -26,7 +26,7 @@ const SECTIONS = {
 
 export default function DishCreation(){
 
-    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest, filterList} = useContext(KitchenContext);
+    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest, filterList, user} = useContext(KitchenContext);
     const [openTab, setOpenTab] = useState(SECTIONS.GENERAL);
 
     const {mode, dish} = activeDish;
@@ -42,7 +42,7 @@ export default function DishCreation(){
             validInputs: {
                 name: dish.name,
                 course: dish.course,
-                image: dish.image,
+                image: dish.image, user,
                 components: dish.components,
             },
             isFavorite: isEditing ? dish.favorite : null,

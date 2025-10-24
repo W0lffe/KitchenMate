@@ -7,6 +7,8 @@ export default function ItemInfoSection({isRecipe, item, scaleFunctions, state})
     const itemToUse = state !== undefined ? state.validInputs : item;
     const name = itemToUse.name.length > 0 && itemToUse.name;
 
+    //console.log("item to use", item)
+
     let outputString = ""
     if(itemToUse.outputType !== null){
         outputString += `${itemToUse.outputType}, `;

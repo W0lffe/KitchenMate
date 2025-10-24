@@ -1,10 +1,18 @@
 <?php
 
 function initDataDir(){
+
+    //echo getcwd();
+
     $config = parse_ini_file(__DIR__ . "/../config/config.ini", true); 
-    $data = $config["paths"]["data"];
+    $data = $config["paths"]["data"]; 
     $dataPoint = $config["paths"]["data_point"];
     $userFile = $config["files"]["user_file"];
+/*
+    echo json_encode(["data dir" => $data]);
+    echo json_encode(["datapoint dir" => $dataPoint]);
+    echo json_encode(["userfile " => $userFile]);
+*/
 
     if(is_dir($data) && is_dir($dataPoint) && file_exists($userFile)){
         return true;
@@ -31,7 +39,6 @@ function getEndpointPath($user, $endpoint) {
     $config = parse_ini_file(__DIR__ . "/../config/config.ini", true);
     $dataPath = $config["paths"]["data_point"];
     $userFile = $config["files"]["user_file"];
-    $uploadDir = $config["paths"]["uploads"];
     $userDir = "$dataPath/$user";
     
     if($endpoint === "users"){
@@ -41,7 +48,7 @@ function getEndpointPath($user, $endpoint) {
         ];
     }
     else if($endpoint === "uploads"){
-        return "$uploadDir/$user/uploads/";
+        return "$dataPath/$user/uploads/";
     }
     else{
         return [

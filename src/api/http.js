@@ -11,8 +11,6 @@ const fetchAPI = async (params) => {
 
     const { user, method = "GET", endpoint } = params;
 
-    //console.log(method, user, endpoint)
-
     const fetchUrl = method === "GET"
         ? `${BASE_URL}/index.php?user=${encodeURIComponent(user)}&endpoint=${encodeURIComponent(endpoint)}`
         : `${BASE_URL}/index.php`;
@@ -41,7 +39,7 @@ const createRequestPayload = (params) => {
         return {method}
     }
 
-    const hasImage = data?.image instanceof File;
+    const hasImage = (data?.image instanceof File && data?.image.size > 0);
 
     if(hasImage){
         const formData = new FormData();

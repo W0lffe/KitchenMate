@@ -13,6 +13,9 @@ function parseRequest(){
             "user" => $user,
             "endpoint" => $endpoint
         ];
+        if($_GET["image"] !== null){
+            $resource["image"] = $_GET["image"];
+        }
     }
     else if(stripos($contentType, "application/json") !== false){
         $input = json_decode(file_get_contents("php://input"), true);
@@ -36,27 +39,25 @@ function parseRequest(){
         error_log("FILE \n" . print_R($_FILES, true));
         
         if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
-        $uploadDir = getEndpointPath($user, "uploads");
+            $uploadDir = getEndpointPath($user, "uploads");
 
         // Create upload directory if missing
-        if (!is_dir($uploadDir)) {
-            if (!mkdir($uploadDir, 0770, true)) {
-                error_log("Failed to create upload directory: $uploadDir");
+            if (!is_dir($uploadDir)) {
+                if (!mkdir($uploadDir, 0770, true)) {
+                    error_log("Failed to create upload directory: $uploadDir");
+                }
             }
-        }
 
-        // Sanitize filename to avoid special chars
-        $filename = preg_replace("/[^a-zA-Z0-9\._-]/", "_", $_FILES["image"]["name"]);
-        $targetPath = $uploadDir . $filename;
-
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
-            $data["image"] = $targetPath;
-            error_log("File uploaded successfully to $targetPath");
-        } else {
-            error_log("Failed to move uploaded file from {$_FILES['image']['tmp_name']} to $targetPath");
-        }
-        } elseif (isset($_FILES["image"])) {
-            error_log("Image upload error code: " . $_FILES["image"]["error"]);
+            $extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+            $randomName = hash('sha256', $_FILES["image"]["name"] . microtime(true) . random_bytes(8));
+            $filename = $randomName . '.' . $extension;
+            $targetPath = $uploadDir . $filename;
+        
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
+                $data["image"] = $filename;
+            } else {
+                error_log("Failed to move uploaded file from {$_FILES['image']['tmp_name']} to $targetPath");
+            }
         }
         
         $resource = [
@@ -67,7 +68,7 @@ function parseRequest(){
         ];
     };
         
-  // echo json_encode(["error" => $resource]);
+    //echo json_encode(["resources in requesthandler" => $resource]);
     if(!isset($resource["user"]) || !isset($resource["endpoint"])){
         echo json_encode(["error" => "Critical error with fetch!"]);
         exit;
