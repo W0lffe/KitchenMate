@@ -88,7 +88,10 @@ function checkDuplicates($data, $existingData){
         $itemFound = false;
 
         foreach ($existingData as &$existingItem) {
-            if(strtolower($newItem["product"]) === strtolower($existingItem["product"])){
+            $sameProduct = strtolower($newItem["product"]) === strtolower($existingItem["product"]);
+            $sameUnit = strtolower($newItem["unit"]) === strtolower($existingItem["unit"]);
+            
+            if($sameProduct && $sameUnit){
                 $newQuantity = intval($existingItem["quantity"]) + intval($newItem["quantity"]);
                 $existingItem["quantity"] = $newQuantity;
                 $itemFound = true;
