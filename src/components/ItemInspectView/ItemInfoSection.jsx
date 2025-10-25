@@ -1,6 +1,6 @@
 import { topSection } from "./inspectStyles";
 import Scale from "../Scale/Scale";
-import Image from "../Image/Image";
+import Photo from "../Image/Photo";
 
 export default function ItemInfoSection({isRecipe, item, scaleFunctions, state}){
 
@@ -36,7 +36,7 @@ export default function ItemInfoSection({isRecipe, item, scaleFunctions, state})
             </section>
 
             {(!isRecipe && itemToUse?.image) && (
-                <Image img={itemToUse.image} disable={true}/>
+                <Photo img={itemToUse.image} disable={true}/>
             )}
         </div>
     )

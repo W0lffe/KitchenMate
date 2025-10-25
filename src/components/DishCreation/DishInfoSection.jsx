@@ -4,7 +4,7 @@ import {labelStyle,
         inputStyle, 
         infoSection, 
         divStyle} from "./dishCreationStyles"
-import Image from "../Image/Image"
+import Photo from "../Image/Photo"
 
 export default function DishInfoSection({state}){
 
@@ -12,7 +12,7 @@ export default function DishInfoSection({state}){
 
     return(
         <div className={divStyle}>
-            <Image img={validInputs?.image}/>
+            <Photo img={validInputs?.image}/>
             <section className={infoSection}>
                 <span className={spanStyle}>
                     <label className={labelStyle}>Name:</label>

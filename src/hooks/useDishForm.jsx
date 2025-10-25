@@ -12,6 +12,8 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
 
         const { name, course, image, components } = formValues;
 
+        //console.log("form",formValues);
+
         const errors = validateDish({
             name,
             course,
@@ -21,7 +23,7 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
         const currentImage = currentFormValues?.validInputs?.image ?? null;
         const hasNewImage = image && image.size > 0;
 
-        console.log({current: currentImage, hasNewImage})
+        //console.log({current: currentImage, hasNewImage})
 
         const validInputs = {
             name,
@@ -44,7 +46,7 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
             components
         };
 
-        console.log("new dish", newDish.image)
+        //console.log("new dish", newDish)
 
         const response = await handleRequest({
             data: newDish,
