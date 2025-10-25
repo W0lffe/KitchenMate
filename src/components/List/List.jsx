@@ -9,6 +9,29 @@ import { listContainerStyle,
 import ListItem from "./ListItem";
 import { getListLabels } from "../../util/util";
 
+
+const categorize = (itemlist) => {
+
+    const categorized = itemlist.reduce((acc, item) => {
+        //console.log("start",acc, "item", item)
+
+        if(!acc[item.category]){
+            acc[item.category] = [];
+        }
+
+        acc[item.category].push(item);
+        //console.log("end",acc, "item", item)
+
+        return acc;
+    }, {});
+    
+    return Object.entries(categorized).map(([category, items]) => ({
+        category,
+        items
+    }))
+}
+
+
 export default function List(){
 
     const {activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish} = useContext(KitchenContext);
@@ -20,6 +43,8 @@ export default function List(){
         switch(activeSection){
             case "recipes":
                 setUseLabel(1);
+                const categorized = categorize(availableRecipes);
+                console.log(categorized)
                 setList(availableRecipes);
                 break;
             case "dishes":
@@ -57,7 +82,7 @@ export default function List(){
                         )}
                     </li>
                     <ul className={itemListStyle}>
-                        {list.map((item, i) => <ListItem key={i} item={item}/>)}
+                        {list.map((item, i) => ( <ListItem key={i} item={item}/>))}
                     </ul>
                 </>
             ) : (

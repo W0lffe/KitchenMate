@@ -11,12 +11,16 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
 
     const formValues = !isMobile ? getRecipeFormValues(formData) : deriveFormStateValues(currentFormValues, true);
 
-    const { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps } = formValues;
+    console.log(formValues);
+
+    const { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps , category} = formValues;
+
+    console.log(category);
 
     const errors = validateRecipe(name, portions, time, timeFormat, products, quantity, unit, steps);
     const ingredients = combineProductData(products, quantity, unit);
 
-    const validInputs = { name, portions, output, time, timeFormat, products, quantity, unit, steps };
+    const validInputs = { name, portions, output, time, timeFormat, products, quantity, unit, steps, category };
 
     if (errors.length > 0) {
       handleErrorsToast(errors);
@@ -34,7 +38,8 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       instructions: steps,
       favorite: currentFormValues.isFavorited,
       id: currentFormValues.modifiedId,
-      date: getTimestamp()
+      date: getTimestamp(),
+      category
     };
 
     const response = await handleRequest({

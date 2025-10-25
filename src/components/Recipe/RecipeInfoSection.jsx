@@ -4,6 +4,7 @@ import { recipeInfoStyle,
         getInputStyle } from "./recipeStyles"
 import { outputs } from "../../util/util"
 import { useState } from "react";
+import { categories } from "../../util/util";
 
 export default function RecipeInfoSection({state}){
 
@@ -75,8 +76,8 @@ export default function RecipeInfoSection({state}){
                 <label className={labelStyle}>Category:</label>
                 <select name="category" 
                         className={getInputStyle(true)} 
-                        defaultValue={""} >
-                    <option>Coming soon</option>
+                        defaultValue={validInputs.category} >
+                    {categories.map((category, i) => <option key={i}>{category}</option>)}
                 </select>
             </span>
 

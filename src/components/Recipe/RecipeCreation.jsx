@@ -70,7 +70,7 @@ export default function RecipeCreation(){
 
         const { 
             name, portions, output, outputType, time, timeFormat,
-            products, quantity, unit, steps 
+            products, quantity, unit, steps, category 
         } = getRecipeFormValues(formData);
 
         setCurrentFormValues({
@@ -86,7 +86,7 @@ export default function RecipeCreation(){
                 quantity: quantity.length > 0 ? quantity : (currentFormValues.validInputs?.quantity || []),
                 unit: unit.length > 0 ? unit : (currentFormValues.validInputs?.unit || []),
                 steps: steps.length > 0 ? steps : (currentFormValues.validInputs?.steps || []),
-                category: null //to be changed
+                category: category === null ? currentFormValues.validInputs?.category : category
             }
         });
 

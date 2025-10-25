@@ -29,6 +29,12 @@ const LIST_LABELS = {
     4: ["Name", "Add"],
 };
 
+export const categories = [
+    "Uncategorized","Proteins", "Starches & Grains", "Vegetables & Produce",
+    "Sauces & Dressings", "Condiments & Seasonings", "Garnishes", "Bases & Stocks", 
+    "Sweets & Desserts", "Pastry & Bread"
+]
+
 export const getListLabels = (activeList)=> {
 
     return LIST_LABELS[activeList] || [];
@@ -132,9 +138,11 @@ export const getRecipeFormValues = (formData) => {
     const quantity = formData.getAll("quantity");
     const unit = formData.getAll("unit");
     const steps = formData.getAll("step");
+    const category = formData.get("category");
+
 
     return{ name, portions, output, outputType, time, timeFormat, 
-            products, quantity, unit, steps };
+            products, quantity, unit, steps, category };
 }
 
 export const getRecipeInfo = (list, id) => {
@@ -183,7 +191,8 @@ export const deriveFormStateValues = (state, isRecipe) => {
         const quantity = state.validInputs?.quantity || [];
         const unit = state.validInputs?.unit || [];
         const steps = state.validInputs?.steps || [];
-        return { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps };
+        const category = state.validInputs?.category || "Uncategorized";
+        return { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps, category };
     }
     else{
         const name = state.validInputs?.name || "";
