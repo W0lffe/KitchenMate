@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, 
         faSquareCheck, 
         faTrash, 
-        faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+        faSquarePlus,
+        faSquareMinus } from "@fortawesome/free-solid-svg-icons";
 import createComponentUpdater from "../DishCreation/dishUtil";
 import IconButton from "../Buttons/IconButton";
 import { handleToast } from "../../util/toast";
@@ -24,7 +25,7 @@ export default function ListItem({item}){
     const isCreatingDish = activeDish?.mode === "create";
     const isEditingDish = activeDish?.mode === "edit";
 
-    const iconToUse = (isCreatingDish || isEditingDish) ? faSquarePlus :
+    let iconToUse = (isCreatingDish || isEditingDish) ? faSquarePlus :
                         activeSection === "basket" ? faSquareCheck : faEye;
 
     const handleDelete = async () => {
@@ -70,8 +71,16 @@ export default function ListItem({item}){
         }
     }
 
+    const isComponentSelected = (recipeID) => {
+        const componentSelected = activeDish?.dish?.components?.includes(recipeID);
+        if(componentSelected){
+            iconToUse = faSquareMinus;
+        }
+        return componentSelected;
+    }
+
     return(
-        <li className={getListItemStyle(isMobile, item.obtained ? item.obtained : null)}>
+        <li className={getListItemStyle(isMobile, item.obtained ? item.obtained : null, isComponentSelected(item.id))}>
             {activeSection === "recipes" || (activeSection === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item} isCreatingDish={isCreatingDish || isEditingDish}/> : null}
             {activeSection === "basket" && <BasketItem item={item}/>}
             {(activeSection === "dishes" && (!isCreatingDish && !isEditingDish)) && <DishItem item={item} />}
@@ -116,12 +125,11 @@ function BasketItem({item}){
 }
 
 function DishItem({item}){
-    const {name, course, components} = item;
+    const {name, components} = item;
 
     return(
         <>
         <label className={listItemNameStyle}>{name}</label>
-        <label>{course}</label>
         <label>{components?.length}</label>
         </>
     )

@@ -24,7 +24,7 @@ export const courses = [
 
 const LIST_LABELS = {
     1: ["Name", "Prep Time", "View"],
-    2: ["Name", "Course", "Components", "View"],
+    2: ["Name", "Components", "View"],
     3: ["Product", "Quantity", "Unit", "Collected", "Cut"],
     4: ["Name", "Add"],
 };

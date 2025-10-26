@@ -99,10 +99,10 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Modular function for toasts
     - [ ] More details to recipe creation
         - Like category, optional heat for oven/sous-vide
-            - Categories are Work In Progress
+            - Categories are DONE for recipes and dishes, categories itself might be changed but logic is there
         - Time per instruction step
     - [x] Error handling for dishes, that contain a recipe that has been deleted
-    - [ ] Add visual changes for items that are included in dish (DISH CREATION)
+    - [x] Add visual changes for items that are included in dish (DISH CREATION) 
   - Backend
     - [x] Checking product duplicates/units
         - Work In Progress, currently only checks if product names matches and combines quantity, does not consider units yet!

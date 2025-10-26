@@ -1,59 +1,77 @@
 import { KitchenContext } from "../../context/KitchenContext"
-import { useContext, 
-        useEffect, 
-        useState} from "react"
-import { listContainerStyle, 
-        listHeadingStyle, 
-        itemListStyle, 
-        nameHeadingStyle } from "./listStyles";
-import ListItem from "./ListItem";
-import { getListLabels } from "../../util/util";
+import {
+    useContext,
+    useEffect,
+    useState
+} from "react"
+import {listContainerStyle} from "./listStyles";
+import CategorizedList from "./CategorizedList";
+import SimpleList from "./SimpleList";
 
 
-const categorize = (itemlist) => {
+const categorize = (itemlist, isRecipe) => {
 
     const categorized = itemlist.reduce((acc, item) => {
         //console.log("start",acc, "item", item)
+        if(isRecipe){
+            if (!acc[item.category]) {
+                acc[item.category] = [];
+            }
 
-        if(!acc[item.category]){
-            acc[item.category] = [];
+            acc[item.category].push(item);
         }
+        else{
+            if (!acc[item.course]) {
+                acc[item.course] = [];
+            }
 
-        acc[item.category].push(item);
+            acc[item.course].push(item);
+        }
+       
         //console.log("end",acc, "item", item)
 
         return acc;
     }, {});
     
-    return Object.entries(categorized).map(([category, items]) => ({
-        category,
-        items
-    }))
+    if(isRecipe){
+        return Object.entries(categorized).map(([category, items]) => ({
+            group: category,
+            items
+        }))
+    }
+    else{
+        return Object.entries(categorized).map(([course, items]) => ({
+            group: course,
+            items
+        }))
+    }
 }
 
 
-export default function List(){
+export default function List() {
 
-    const {activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish} = useContext(KitchenContext);
+    const { activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish } = useContext(KitchenContext);
     const [list, setList] = useState([]);
-    const [useLabel, setUseLabel] = useState("");
+    const [useLabel, setUseLabel] = useState(null);
 
     useEffect(() => {
 
-        switch(activeSection){
+        switch (activeSection) {
             case "recipes":
                 setUseLabel(1);
-                const categorized = categorize(availableRecipes);
-                console.log(categorized)
-                setList(availableRecipes);
+                const categorized = categorize(availableRecipes, true);
+                //console.log(categorized)
+                setList(categorized);
                 break;
             case "dishes":
-                if(["create", "edit"].includes(activeDish?.mode)){
+                if (["create", "edit"].includes(activeDish?.mode)) {
                     setUseLabel(4);
                     setList(availableRecipes);
                 }
-                else{
-                    setList(availableDishes);
+                else {
+                    const categorized = categorize(availableDishes, false);
+                    //console.log(categorized)
+                    setList(categorized);
                     setUseLabel(2);
                 }
                 break;
@@ -64,31 +82,29 @@ export default function List(){
         }
     }, [activeSection, availableRecipes, availableDishes, availableBasket, activeDish?.mode])
 
-    if(isFetchingData && list.length === 0){
-        return(
+    if (isFetchingData && list.length === 0) {
+        return (
             <div className={listContainerStyle}>
-                <p>Loading {getListLabels(useLabel)}...</p>
+                <p>Loading {activeSection}...</p>
             </div>
         )
     }
 
-    return(
+    const isCategorized = list.length > 0 && list[0].group !== undefined && list[0].items !== undefined;
+
+    return (
         <div className={listContainerStyle}>
             {list.length > 0 ? (
-                <>
-                    <li className={listHeadingStyle}>
-                        {getListLabels(useLabel).map((label, i) => 
-                            <label key={i} className={i === 0 ? nameHeadingStyle : null}>{label}</label>
-                        )}
-                    </li>
-                    <ul className={itemListStyle}>
-                        {list.map((item, i) => ( <ListItem key={i} item={item}/>))}
-                    </ul>
-                </>
+                isCategorized ? (
+                    list.map((group, i) => (
+                    <CategorizedList group={group} key={i} useLabel={useLabel} />
+                ))
+                ) : (
+                    <SimpleList list={list} useLabel={useLabel}/>
+                )
             ) : (
-            <>
-                <p>List is empty! Start by creating {activeSection}.</p>
-            </>)}
-        </div>
+                <p>List is empty! Start by creating a {activeSection}.</p>
+            )}
+        </div >
     )
 }

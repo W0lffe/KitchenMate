@@ -11,6 +11,7 @@ import { faFolderPlus,
 import { getSortOptions } from "./sortOptions";
 import toast from "react-hot-toast";
 import SearchBar from "./SearchBar";
+import { handleToast } from "../../util/toast";
 
 export default function Toolbar(){
 
@@ -26,6 +27,8 @@ export default function Toolbar(){
     
     const sortValues = currentOptions.values;
     const style = isMobile ? mobileToolbarStyle : toolbarStyle;
+
+    const basket = fullBasket.current;
     
     const initCreatingMode = ()=> {
         if(activeSection === "recipes"){
@@ -50,6 +53,13 @@ export default function Toolbar(){
     const clickHandler = isMobile ? handleMobileClick : initCreatingMode;
 
     const handleBasketEdit = () => {
+        if(basket.length === 0){
+            handleToast({
+                error: "Can't edit empty basket!"
+            })
+            return;
+        }
+
         setEntryStatus({status: true, mode: "edit"});
         if(isMobile){
             setModalState({section: activeSection}, true)
@@ -57,10 +67,11 @@ export default function Toolbar(){
     }
 
     const handleClearBasket = async() => {
-        const basket = fullBasket.current;
 
         if(basket.length === 0){
-            toast.error("Basket is empty!");
+            handleToast({
+                error: "Basket is empty!"
+            })
             return;
         }
         setModalState({section: activeSection, toDelete: basket}, true);
