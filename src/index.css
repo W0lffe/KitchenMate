@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-#root, body, html {
+#root,
+body,
+html {
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,7 +12,49 @@
   color: white;
 }
 
-@theme{
+@theme {
   --radius-custom: 12px;
-}
 
+  --animate-rotation: rotation 5s infinite;
+
+  @keyframes rotation{
+
+    0% {
+      transform: rotate(0deg);
+      scale: 1;
+    }
+    25% {
+      transform: rotate(90deg);
+      scale: 2
+    }
+    50% {
+      transform: rotate(180deg);
+      scale: 1
+    }
+    75% {
+      transform: rotate(270deg);
+      scale: 2
+    }
+    100% {
+      transform: rotate(360deg);
+      scale: 1
+    }
+   
+  }
+
+   --animate-pulsing: pulsing 4s ease-in-out infinite;
+
+  @keyframes pulsing {
+
+    0% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.3;
+    }
+   
+  }
+}

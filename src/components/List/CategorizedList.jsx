@@ -18,7 +18,7 @@ export default function CategorizedList({ group, useLabel }) {
                                 className={`transition-all duration-250 ease-in-out ${isOpen ? "rotate-0" : "rotate-180"}`}/>
             </span>
             <ul
-                className={`flex flex-col w-full transition-all duration-500 items-center
+                className={`flex flex-col w-full transition-all transition-discrete delay-200 duration-500 items-center
                         ease-in-out ${isOpen ? "max-h-104 overflow-y-auto opacity-100" : "max-h-0 overflow-hidden opacity-0"}
                         `}
             >

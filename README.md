@@ -91,6 +91,7 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Recipe scalability feature
     - [ ] Public recipe bank, visible for every user
     - [ ] Creating a homepage
+        - Work In Progress, using React Router
     - [x] Dish creation image preview
     - [x] Implement useReducer for local data updating
     - [x] Delete confirmation
@@ -109,6 +110,11 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Re-arrange ID's when deleting items from basket
     - [x] Restructured backend to only expose index.php to web-access
     - [x] Image uploading
+
+#### FUTURE
+
+- Front-End
+    - [ ] Convert app from being only conditional rendering to use React Router with separate "pages" for different sections
     
 # Backlog
 ## Front-end
