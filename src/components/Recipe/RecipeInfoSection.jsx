@@ -10,9 +10,11 @@ export default function RecipeInfoSection({state}){
 
     const validInputs = state.validInputs || {};
     const [selectedOutput, setSelectedOutput] = useState(() => {
-        const output = validInputs?.output ? validInputs?.output: Object.keys(outputs)[0];
+        const output = validInputs?.output ? validInputs?.output : 0;
         return output;
     });
+
+    console.log(selectedOutput)
   
     return(
         <div className={recipeInfoStyle}>
@@ -34,13 +36,13 @@ export default function RecipeInfoSection({state}){
                     defaultValue={validInputs.output}
                     onChange={e => setSelectedOutput(e.target.value)}
                 >
-                    {Object.keys(outputs).map((output, i) => <option key={i} value={output}>{output}</option> )}
+                    {outputs.map((output, i) => <option key={i} value={i}>{output.output}</option> )}
                 </select>
-                {outputs[selectedOutput].length > 0 && 
+                {outputs[selectedOutput].type.length > 0 && 
                     <select name="outputType"
                         className={getInputStyle(true)} 
                         defaultValue={validInputs.outputType} >
-                        {outputs[selectedOutput].map((output, i) => <option key={i}>{output}</option> )}
+                        {outputs[selectedOutput].type.map((type, i) => <option key={i}>{type}</option> )}
                     </select>
                 }
             </span>
