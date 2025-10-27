@@ -1,8 +1,5 @@
-export const lineStyle = `flex gap-6 m-1 items-center flex-row`;
+export const lineStyle = `flex flex-row gap-6 text-lg py-2 mt-2`;
 
-export const labelStyle = `text-[16px] font-semibold`;
+export const sectionStyle = `flex flex-col w-full gap-2 items-center border-1 border-custom-whiteborder p-1 rounded-custom-med`
 
-export const sectionStyle = `max-h-fit h-80 lg:max-h-115 w-[calc(100%-10px)] flex flex-col items-center 
-                             border border-white/40 rounded-[6px] bg-gray-400/10`
-
-export const listStyle = `max-h-fit lg:max-h-fit overflow-y-auto w-full flex flex-col items-center`;
+export const listStyle = `flex flex-col w-full overflow-y-auto items-center gap-3`;

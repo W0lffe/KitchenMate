@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Product from "../Product/Product"
 import Instruction from "../Instruction/Instruction"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus, 
         faSquareMinus } from "@fortawesome/free-solid-svg-icons";
-import { labelStyle, 
-        lineStyle, 
+import { lineStyle, 
         sectionStyle, 
         listStyle } from "./formListStyles";
 
@@ -34,7 +33,7 @@ export default function FormList({use, state}){
             {!isEditing ? 
             <>
                 <span className={lineStyle}>
-                    <label className={labelStyle}>{use}</label>
+                    <label>{use}</label>
                     <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
                     <FontAwesomeIcon icon={faSquareMinus} onClick={decrement}/>
                 </span>

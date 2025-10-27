@@ -1,8 +1,8 @@
 
-export const productStyle = `w-9/10 flex flex-row justify-between text-white pb-2 mt-3`;
+export const productStyle = `flex flex-row w-full justify-between px-2`;
 
 export const getInputStyle = (input) =>{
-    let style = `border border-white h-8 rounded-custom 
+    let style = `border border-white h-8 rounded-custom-low 
                 transition[background] duration-300 ease-out bg-gray-400/60 hover:bg-white/60
                 focus:bg-white/90 focus:text-black focus:border-black text-center`
 

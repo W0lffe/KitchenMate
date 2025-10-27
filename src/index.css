@@ -14,7 +14,12 @@ html {
 }
 
 @theme {
-  --radius-custom: 12px;
+  --radius-custom-low: 12px;
+  --radius-custom-med: 18px;
+
+  --color-custom-whiteborder: #FFFFFF66; 
+  --color-custom-bgblue: #030712D9;
+  --color-custom-bggray: #4B5563B3;
 
   --animate-rotation: rotation 5s infinite;
 

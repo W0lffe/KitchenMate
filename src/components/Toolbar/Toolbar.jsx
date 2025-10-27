@@ -85,8 +85,8 @@ export default function Toolbar(){
                 {activeSection === "basket" && 
                 <>
                     <button type="button"
-                        className="border p-1 rounded-custom bg-gray-500/70 shadow-md 
-                            shadow-black hover:bg-gray-600/70 hover:animate-pulse"
+                        className="border p-1 rounded-custom-low bg-gray-500/70 shadow-md 
+                            shadow-black hover:bg-custom-bggray hover:animate-pulse"
                             onClick={handleClearBasket}>Clear List</button>
                 </>}
             </span>

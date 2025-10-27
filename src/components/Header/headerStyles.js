@@ -1,7 +1,8 @@
 
-export const HeaderStyle = `fixed w-full flex flex-col h-fit justify-center items-center 
-                            bg-gradient-to-l from-gray-200/30 via-gray-600/70 to gray-700/30 rounded-b-[20px] `;
+export const HeaderStyle = `flex flex-col w-full items-center justify-center 
+                            bg-gradient-to-l from-gray-600/40 via-gray-800/70 to gray-900/40 
+                            shadow-2xl shadow-black/80 rounded-b-custom-med`;
 
-export const logoStyle = `w-md h-15 lg:size-1/4 px-5 lg:px-10`;
+export const logoStyle = `w-md size-15`;
 
-export const sloganStyle = `text-[16px] lg:text-2xl font-medium text-white italic mb-2`;
+export const sloganStyle = `text-[16px] w-3/4 break-words md:text-xl mb-1 italic md:w-fit`;

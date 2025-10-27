@@ -17,7 +17,7 @@ export default function Header(){
     return(
         <header className={HeaderStyle}>
            <img src={logo} alt="KitchenMate" className={logoStyle} />
-            <h2 className={sloganStyle}>{slogan}</h2>
+            <label className={sloganStyle}>{slogan}</label>
         </header>
     )
 }

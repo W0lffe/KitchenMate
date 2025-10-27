@@ -92,16 +92,16 @@ export default function ManualBasketEntry(){
     const [formState, formAction] = useActionState(manualEntry, initialState);
 
     return(
-        <div className="text-white w-full p-2">
+        <div className="">
             {isMobile ? (
-                <section className="flex flex-col items-center mb-5 gap-2">
-                    <header className="flex w-full justify-end">
+                <section className="">
+                    <header className="">
                         <Button use={"close"} />
                     </header>
                     <h3>{heading}</h3>
                 </section>
             ) : null}
-            <form action={formAction} className="flex flex-col items-center gap-5">
+            <form action={formAction} className="">
                 <FormList use={use} state={formState}/>
                 <footer>
                     <Button use={"basket"}/>

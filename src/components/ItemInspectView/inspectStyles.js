@@ -1,11 +1,11 @@
 
-export const containerStyle = `flex flex-col gap-2  w-full h-full text-white`;
+export const containerStyle = ``;
 
-export const topSection = ` h-3/10 flex flex-row justify-start border-b-1 border-white/20 rounded-custom p-2`;
+export const topSection = ` `;
 
-export const bottomSection =  ` h-8/10 flex flex-col lg:flex-row`;
+export const bottomSection =  ``;
 
-export const listSection = `flex flex-col items-center h-1/2 lg:h-full w-full lg:w-1/2 border-b-1 border-white/20 lg:border-0 rounded-custom`;
+export const listSection = ``;
 
 export const getListStyle =  (list) => {
 
@@ -16,11 +16,11 @@ export const getListStyle =  (list) => {
     return style;
 }
 
-export const iconSpan = `flex flex-row justify-end items-center gap-6 mt-2 px-5 `;
+export const iconSpan = ``;
 
 export const getIconStyle = (icon) => {
     
-    let style = `text-2xl lg:text-3xl transition-all duration-300 ease-out`;
+    let style = ``;
 
     style += icon === "del" ? ` hover:text-red-700` : ` hover:text-gray-400/30`
     style += icon === "fav" ? ` text-amber-400` : ` `; 

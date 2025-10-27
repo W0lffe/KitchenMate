@@ -1,23 +1,19 @@
-export const labelStyle = "text-[16px] font-semibold";
+export const labelStyle = "";
 
-export const spanStyle = "flex flex-row gap-3";
+export const spanStyle = "";
 
-export const inputStyle =  `border rounded-custom p-1 text-center
-                    transition[background] duration-300 ease-out bg-gray-400/60 hover:bg-white/60
-                    focus:bg-white/90 focus:text-black focus:border-black w-50`;
+export const inputStyle =  ``;
 
-export const infoSection = "flex flex-col lg:w-1/2 gap-2";
+export const infoSection = "";
 
-export const divStyle = `flex flex-col lg:flex-row w-full p-2 lg:p-5 gap-5 mt-2 h-fit border-b-1 
-                            border-white/20 rounded-[16px]`;
+export const divStyle = ``;
 
-export const listDivStyle = `flex flex-col  w-full  gap-1 
-                                items-center border-gray-400/40 border-1 rounded-custom mt-3`;
+export const listDivStyle = ``;
 
-export const listStyle = `flex flex-col gap-1 w-5/6 max-h-130 min-h-15 overflow-y-auto list-none`;
+export const listStyle = ``;
 
-export const listItemStyle = `flex flex-row w-full justify-between`;
+export const listItemStyle = ``;
 
-export const footerStyle = `flex items-center justify-center m-2`;
+export const footerStyle = ``;
 
-export const headerSpanStyle = `flex flex-row justify-end items-center p-2`;
+export const headerSpanStyle = ``;

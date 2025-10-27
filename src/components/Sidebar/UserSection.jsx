@@ -22,23 +22,25 @@ export default function UserSection(){
 
     return(
         <section className={getSectionStyle(navigationIsOpen)}>
-            {userIsLogged ?
-                        (<> 
+            {userIsLogged ? (
+                <> 
                         <p>Welcome back, {user.name}!</p>
                         <img alt="IMAGE OF USER" src={user.img || defaultUser} className="size-30"/>
                         <button className={naviButtonStyle} onClick={handleLogout}>
                                 Logout 
                                 <FontAwesomeIcon icon={faRightFromBracket} className="text-gray-200"/>
                         </button>  
-                        </>
-                        ) : (
-                        <>
-                        <FontAwesomeIcon icon={faUser} className="text-gray-200"/>
+                </>
+                ) : (
+                <>
+                        <FontAwesomeIcon icon={faUser} className="text-gray-400"/>
                         <button onClick={handleLoginClick} className={naviButtonStyle}>
                                 Login 
                                 <FontAwesomeIcon icon={faRightToBracket} className="text-gray-200"/>
-                        </button>   </>)}
-                        {!userIsLogged && <p className={signupStyle} onClick={handleSignupClick}>Not an user yet? Click here to begin.</p>}
+                        </button>   
+                </>
+                )}
+                {!userIsLogged && <p className={signupStyle} onClick={handleSignupClick}>Not an user yet? Click here to begin.</p>}
         </section>
     )
 }

@@ -1,6 +1,7 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
-        footerStyle} from "./recipeStyles";
+        footerStyle,
+        mobileHeaderStyle} from "./recipeStyles";
 import { useContext, 
         useActionState, 
         useState} from "react";
@@ -96,7 +97,7 @@ export default function RecipeCreation(){
     return(
        <div className="text-white">
         {isMobile && (
-            <span className="flex flex-row justify-end items-center px-2">
+            <span className={mobileHeaderStyle}>
                 <h2 className={mobileHeadingStyle}>{mobileHeading}</h2>
                 <Button use={"close"} />
             </span>

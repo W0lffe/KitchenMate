@@ -14,8 +14,6 @@ export default function RecipeInfoSection({state}){
         return output;
     });
 
-    console.log(selectedOutput)
-  
     return(
         <div className={recipeInfoStyle}>
 
@@ -32,7 +30,7 @@ export default function RecipeInfoSection({state}){
                 <label className={labelStyle}>Output:</label>
                 <select
                     name="output"
-                    className={getInputStyle(true)}
+                    className={getInputStyle(false)}
                     defaultValue={validInputs.output}
                     onChange={e => setSelectedOutput(e.target.value)}
                 >
@@ -40,7 +38,7 @@ export default function RecipeInfoSection({state}){
                 </select>
                 {outputs[selectedOutput].type.length > 0 && 
                     <select name="outputType"
-                        className={getInputStyle(true)} 
+                        className={getInputStyle(false)} 
                         defaultValue={validInputs.outputType} >
                         {outputs[selectedOutput].type.map((type, i) => <option key={i}>{type}</option> )}
                     </select>
@@ -53,7 +51,7 @@ export default function RecipeInfoSection({state}){
                         name="portions" 
                         min="1"
                         placeholder="Amount" 
-                        className={getInputStyle(true)} 
+                        className={getInputStyle(false)} 
                         defaultValue={validInputs.portions}/>        
             </span>
 
@@ -62,11 +60,11 @@ export default function RecipeInfoSection({state}){
                 <input type="number" 
                         name="time"
                         min="1" 
-                        placeholder="Preparation Time"  
+                        placeholder="Prep Time"  
                         className={getInputStyle(true)} 
                         defaultValue={validInputs.time} />
                 <select name="timeFormat" 
-                        className={getInputStyle(true)} 
+                        className={getInputStyle(false)} 
                         defaultValue={validInputs.timeFormat} >
                     <option>Unit</option>
                     <option>minute(s)</option>
@@ -77,7 +75,7 @@ export default function RecipeInfoSection({state}){
             <span className={lineStyle}>
                 <label className={labelStyle}>Category:</label>
                 <select name="category" 
-                        className={getInputStyle(true)} 
+                        className={getInputStyle(false)} 
                         defaultValue={validInputs.category} >
                     {categories.map((category, i) => <option key={i}>{category}</option>)}
                 </select>

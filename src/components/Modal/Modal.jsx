@@ -30,7 +30,7 @@ export default function Modal(){
 
     return createPortal(
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
-                {modalIsOpen ? <Toaster /> : null}
+                {modalIsOpen && <Toaster />}
                 {toDelete === undefined ? (
                     <ContentModal section={section} editStatus={editStatus}/>
                 ) : (

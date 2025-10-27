@@ -1,8 +1,8 @@
 
-export const naviButtonStyle = `border border-white p-2 lg:p-5 w-9/10 m-2 lg:m-4 
-                            whitespace-nowrap rounded-custom bg-gray-500/70 shadow-md 
-                            shadow-black hover:bg-gray-600/70 hover:p-7 hover:animate-pulse transition-all
-                            flex gap-3 items-center justify-center`;
+export const naviButtonStyle = `border-2 border-custom-whiteborder p-2 lg:p-5 w-9/10 m-2 lg:m-4 
+                            rounded-custom-low bg-custom-bggray shadow-md 
+                            shadow-black/80 hover:bg-custom-bggray hover:p-7 hover:animate-pulse transition-all
+                            flex gap-3 items-center justify-center duration-250`;
 
 export const getSubmitButtonStyle = (use) =>{
     if(use === "close"){
@@ -17,7 +17,7 @@ export const getSubmitButtonStyle = (use) =>{
             style += ` border-gray-900  hover:bg-gray-600/60 mt-8`
             return style;
         case "recipe":
-            style += ` bg-gray-500/70 hover:bg-gray-600/60`
+            style += ` bg-gray-500/70 hover:bg-gray-600/60 rounded-custom-low`
             return style;
         case "basket":
             style += ` bg-gray-500/70 hover:bg-gray-600/60`
