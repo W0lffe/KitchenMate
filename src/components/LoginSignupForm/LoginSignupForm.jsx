@@ -5,7 +5,6 @@ import Button from "../Buttons/Button";
 import { userAPI } from "../../api/http";
 import { containerStyle, 
         headerStyle, 
-        sectionStyle,
         headingStyle,
         formStyle,
         labelStyle,
@@ -53,10 +52,10 @@ export default function LoginSignupForm(){
     return(
         <div className={containerStyle}>
             <header className={headerStyle}>
+                <h3 className={headingStyle}>{isLogin ? "LOGIN" : "SIGNUP"}</h3>
                 <Button use={"close"} />
             </header>
-            <section className={sectionStyle}>
-                <h3 className={headingStyle}>{isLogin ? "LOGIN" : "SIGNUP"}</h3>
+            <section>
                 <form action={formAction} className={formStyle}>
                     <label className={labelStyle}>{userHeading}</label>
                     <input type="text" 

@@ -7,7 +7,6 @@ import { combineProductData } from "../../util/util";
 import { validateProducts } from "../../util/validation";
 import { handleToast } from "../../util/toast";
 import handleErrorsToast from "../Error/Errors";
-import toast from "react-hot-toast";
 
 const getFormValues = (formData) => {
     const products = formData.getAll("product");
@@ -92,18 +91,16 @@ export default function ManualBasketEntry(){
     const [formState, formAction] = useActionState(manualEntry, initialState);
 
     return(
-        <div className="">
-            {isMobile ? (
-                <section className="">
-                    <header className="">
-                        <Button use={"close"} />
-                    </header>
-                    <h3>{heading}</h3>
+        <div className={`text-white`}>
+            {isMobile && (
+                <section className="flex p-2">
+                    <h3 className="w-full text-center text-lg italic">{heading}</h3>
+                    <Button use={"close"} />
                 </section>
-            ) : null}
-            <form action={formAction} className="">
+            )}
+            <form action={formAction} className={`flex flex-col`}>
                 <FormList use={use} state={formState}/>
-                <footer>
+                <footer className={`flex flex-row w-full items-center justify-center p-2`}>
                     <Button use={"basket"}/>
                 </footer>
             </form>

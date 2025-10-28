@@ -6,7 +6,7 @@ export const naviButtonStyle = `border-2 border-custom-whiteborder p-2 lg:p-5 w-
 
 export const getSubmitButtonStyle = (use) =>{
     if(use === "close"){
-        return ` text-2xl w-5 hover:bg-red-600/95 hover:animate-pulse` 
+        return ` text-2xl w-5 hover:animate-pulse` 
     }
 
     let style = `border w-60 h-10 rounded-custom shadow-xs p-1
@@ -14,13 +14,13 @@ export const getSubmitButtonStyle = (use) =>{
 
     switch(use){
         case "login":
-            style += ` border-gray-900  hover:bg-gray-600/60 mt-8`
+            style += ` border-gray-900  hover:bg-gray-600/60 mt-8 rounded-custom-low font-semibold`
             return style;
         case "recipe":
             style += ` bg-gray-500/70 hover:bg-gray-600/60 rounded-custom-low`
             return style;
         case "basket":
-            style += ` bg-gray-500/70 hover:bg-gray-600/60`
+            style += ` bg-gray-500/70 hover:bg-gray-600/60 rounded-custom-low`
             return style;
     }
 }

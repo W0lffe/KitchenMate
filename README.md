@@ -69,8 +69,8 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     Final Integration & Testing
 - Front-End
     - [x] Connecting front-end to backend
-    - [ ] Optimizing styling 
-        - **POSTPONED**
+    - [x] Optimizing styling 
+        - **DONE - StageFive**
     - [x] Error Handling 
     - [x] Polishing
 - Testing

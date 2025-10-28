@@ -27,4 +27,4 @@ export const getListItemStyle = (isMobile, obtained, inComponents) => {
     return style;
 } 
 
-export const listItemNameStyle = `w-25 lg:w-50  break-words`;
+export const listItemNameStyle = `w-30 lg:w-50  break-words`;

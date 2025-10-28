@@ -61,7 +61,7 @@ export default function KitchenContextProvider({children}){
         navigationIsOpen: true,
         activeSection: "",
         user: {
-            id: 502
+            id: 0
         },
         activeModal: {},
         modalIsOpen: false,
