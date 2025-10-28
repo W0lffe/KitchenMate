@@ -1,4 +1,4 @@
-import { topSection } from "./inspectStyles";
+import { detailSection, infoSection } from "./inspectStyles";
 import Scale from "../Scale/Scale";
 import Photo from "../Image/Photo";
 
@@ -20,21 +20,13 @@ export default function ItemInfoSection({isRecipe, item, scaleFunctions, state})
     const prepTime = (isRecipe && itemToUse.time > 0) && `Prep Time: ${timeValue}`;
 
     return(
-        <div className={topSection}>
-            <section className="w-full p-5 lg:p-6">
+        <div className={infoSection + `${isRecipe ? "flex-col" : "flex-row"}`}>
+            <section className={detailSection + `${isRecipe ? " w-full" : " w-1/2"}`}>
                 <h2 className="text-2xl font-semibold italic">{name}</h2>
-
-                {isRecipe ? (
-                    <section className="flex flex-row gap-15">
-                        <h3 className="text-lg">{output}</h3>
-                    </section>) 
-                : 
-                    <h3 className="text-lg">{output}</h3>
-                }
+                <h3 className="text-lg">{output}</h3>
                 <h3 className="text-lg">{prepTime}</h3>
-                {(isRecipe && scaleFunctions) && <Scale itemToScale={item} scaleFunctions={scaleFunctions} /> }
             </section>
-
+            {(isRecipe && scaleFunctions) && <Scale itemToScale={item} scaleFunctions={scaleFunctions} /> }
             {(!isRecipe && itemToUse?.image) && (
                 <Photo img={itemToUse.image} disable={true}/>
             )}

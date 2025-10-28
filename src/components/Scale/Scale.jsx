@@ -2,6 +2,7 @@ import { faArrowRotateLeft, faSquareMinus, faSquarePlus } from "@fortawesome/fre
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useRef, useEffect } from "react";
 import { scaleRecipe } from "../../util/util";
+import { containerStyle, spanStyle } from "./scaleStyles";
 
 const getOutputOptions = (recipeOutput) => {
 
@@ -45,18 +46,19 @@ export default function Scale({ itemToScale, scaleFunctions }) {
         setScaledState(ingredients);
     }
 
-    const expandString = `Click to ${expandState ? "Contract" : "Expand"}`;
+    const expandString = `Click to ${expandState ? "Hide" : "Show"}`;
 
     return (
-        <div className={`flex flex-col items-start p-1 gap-1`}>
-            <h3 onClick={() => setExpandState(prev => !prev)}>{expandString}</h3>
-            <span className={`flex flex-row gap-4 py-1 px-2 text-xl overflow-hidden transition-all ease-in-out duration-300 border-1 border-white/40 rounded-custom bg-gray-600/40 ${expandState ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}`}>
+        <section className={containerStyle}>
+            <h3 onClick={() => setExpandState(prev => !prev)} className="cursor-pointer">{expandString}</h3>
+            <span className={spanStyle + `${expandState ? "max-h-20 opacity-100" : "max-h-0 opacity-0"}`}>
                 <FontAwesomeIcon icon={faSquareMinus}
                     className="py-1"
                     onClick={() => handleScale("-")} />
                 <h3>{scaledTo.portions}</h3>
                 <select name="output" ref={selectRef}
-                        onChange={(event) => handleChange(event.target.value)} tabIndex={-1} className="focus:text-black">
+                        onChange={(event) => handleChange(event.target.value)} 
+                        className="focus:text-black">
                     {
                         getOutputOptions(itemToScale.output).map((option, i) =>
                             <option key={i} value={option}>
@@ -72,6 +74,6 @@ export default function Scale({ itemToScale, scaleFunctions }) {
                     className="py-1"
                     onClick={reset} />
             </span>
-        </div>
+        </section>
     )
 }

@@ -4,14 +4,14 @@ import { faTrash,
         faPenToSquare, 
         faStar,
         faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { getIconStyle, iconSpan } from "../ItemInspectView/inspectStyles";
+import { getIconStyle, topButtonBar } from "../ItemInspectView/inspectStyles";
 import IconButton from "./IconButton";
 import Button from "./Button";
 
 export default function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handleAddCart, fav}){
 
     return(
-        <span className={iconSpan}>
+        <span className={topButtonBar + `${isMobile ? " sticky top-0 bg-gray-950/90" : ""}`}>
             <IconButton func={handleDelete}>
                 <FontAwesomeIcon icon={faTrash} 
                                     className={getIconStyle("del")}

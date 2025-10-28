@@ -107,7 +107,7 @@ export default function RecipeCreation(){
             (
                 <>
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
-                    <div className={sectionContainerStyle}>
+                    <div className={sectionContainerStyle + `${"flex-col"}`}>
                         {openTab === SECTIONS.GENERAL && 
                             <RecipeInfoSection state={currentFormValues}/>
                         }

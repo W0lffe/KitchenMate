@@ -72,7 +72,7 @@ export default function ListItem({item}){
     }
 
     const isComponentSelected = (recipeID) => {
-        const componentSelected = activeDish?.dish?.components?.includes(recipeID);
+        const componentSelected = ["create", "edit"].includes(mode) && activeDish?.dish?.components?.includes(recipeID);
         if(componentSelected){
             iconToUse = faSquareMinus;
         }

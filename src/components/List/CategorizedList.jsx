@@ -18,7 +18,7 @@ export default function CategorizedList({ group, useLabel }) {
                                 onClick={() => setIsOpen(prev => !prev)}
                                 className={categorizedListIconStyle + `${isOpen ? "rotate-0" : "rotate-180"}`}/>
             </span>
-            <ul className={categorizedListStyle + `${isOpen ? "max-h-116 overflow-y-auto opacity-100" : "max-h-0 overflow-hidden opacity-0"}`}>
+            <ul className={categorizedListStyle + `${isOpen ? "max-h-112 overflow-y-auto opacity-100" : "max-h-0 overflow-hidden opacity-0"}`}>
                 <ListLabels useLabel={useLabel} />
                 {group.items.map((item, j) => (
                     <ListItem key={j} item={item} />

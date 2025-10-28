@@ -1,6 +1,6 @@
-export const toolbarStyle = `h-fit w-full flex flex-col p-2 items-center`;
+export const toolbarStyle = `h-fit w-full flex flex-col p-2 gap-2 items-center`;
 
-export const mobileToolbarStyle = `h-fit w-full flex flex-col items-center`;
+export const mobileToolbarStyle = `h-fit w-full flex flex-col items-center gap-1`;
 
 export const iconStyle = `text-gray-200 text-xl`;
 

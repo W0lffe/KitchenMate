@@ -107,7 +107,7 @@ export default function DishCreation(){
         <div className="text-white">
            {isMobile &&
                 <span className={headerSpanStyle}>
-                    <h2 className={`${labelStyle} w-full text-center`}>{mobileHeading}</h2>
+                    <h2 className={`${labelStyle} w-full text-center italic`}>{mobileHeading}</h2>
                     <Button use={"close"} />
                 </span> 
             }

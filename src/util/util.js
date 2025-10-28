@@ -9,12 +9,12 @@ export const units = [
     "kg", "l", "g", "dl", "pcs"
 ]
 
-export const outputs = [
-    {output: "N/A", type: []},
-    {output: "GN", type: ["GN 1/6-10", "GN 1/6-15", "GN 1/3-10", "GN 1/3-15", "GN 1/2-10", "GN 1/2-15", "GN 1/1-10", "GN 1/1-15", "GN 1/1-6.5"]},
-    {output: "Piping", type:  ["6L Piping"]},
-    {output: "Box", type: ["0.5L Box", "1L Box", "2L Box", "3L Box"]}
-];
+export const outputs = {
+  "N/A": [],
+  "GN": ["GN 1/6-10", "GN 1/6-15", "GN 1/3-10", "GN 1/3-15", "GN 1/2-10", "GN 1/2-15", "GN 1/1-10", "GN 1/1-15", "GN 1/1-6.5"],
+  "Piping": ["6L Piping"],
+  "Box": ["0.5L Box", "1L Box", "2L Box", "3L Box"]
+};
 
 export const courses = [
     "Starter", "Main", "Dessert", "Amuse-bouche", "Snack", "Lunch", "Dinner", "Breakfast"
