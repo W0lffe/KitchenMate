@@ -9,11 +9,12 @@ import { categorizedListIconStyle, categorizedListSpanStyle, categorizedDivStyle
 export default function CategorizedList({ group, useLabel }) {
 
     const [isOpen, setIsOpen] = useState(false);
+    const itemCount = group.items.length;
 
     return (
         <div className={categorizedDivStyle}>
             <span className={categorizedListSpanStyle + `${isOpen && "animate-pulse"}`}>
-                <h3>{group.group}</h3>
+                <h3>{`${group.group} (${itemCount})`}</h3>
                 <FontAwesomeIcon icon={faChevronUp} 
                                 onClick={() => setIsOpen(prev => !prev)}
                                 className={categorizedListIconStyle + `${isOpen ? "rotate-0" : "rotate-180"}`}/>

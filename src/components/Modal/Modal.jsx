@@ -11,8 +11,11 @@ export default function Modal(){
 
     const {activeModal, modalIsOpen, editStatus, setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes, isFetchingData} = useContext(KitchenContext)
 
-    const {section, toDelete} = activeModal;
+    const {section, toDelete, ingredients} = activeModal;
+    const useConfirm = (toDelete || ingredients) !== undefined;
     const modal = useRef()
+
+    console.log(useConfirm)
 
     const contextProps = {
         setModalState,
@@ -31,10 +34,10 @@ export default function Modal(){
     return createPortal(
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
                 {modalIsOpen && <Toaster />}
-                {toDelete === undefined ? (
+                {!useConfirm ? (
                     <ContentModal section={section} editStatus={editStatus}/>
                 ) : (
-                    <ConfirmModal section={section} toDelete={toDelete} contextProps={contextProps}/>
+                    <ConfirmModal props={activeModal} contextProps={contextProps}/>
                 )}
             </dialog>,
             document.getElementById("modal")

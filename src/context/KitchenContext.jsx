@@ -94,7 +94,19 @@ export default function KitchenContextProvider({children}){
     };
 
     useEffect(() => {
-        initializeData();
+        console.log(utilState.user.id)
+        if(utilState.user.id !== null){
+            console.log("fetch")
+            initializeData();
+        }
+
+        if(kitchenState.activeRecipe){
+            setActiveRecipe(null)
+        }
+        if(kitchenState.activeDish){
+            setActiveDish(null)
+        }
+      
     }, [utilState.user])
 
     const handleRequest = async (dataToHandle, basketAdd) => {

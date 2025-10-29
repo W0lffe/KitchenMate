@@ -40,6 +40,7 @@ export default function ItemInspectView({itemToInspect}){
     }, [itemToInspect])
 
     //console.log("item to inspect, given parameter", itemToInspect)
+    //console.log("item list", viewState.list)
     //console.log("inspectableItem, useState", viewState);
     //console.log("isFavorite", isFavorite);
 
@@ -63,10 +64,17 @@ export default function ItemInspectView({itemToInspect}){
     }
 
     const handleAddCart = async() => {
-        let products = viewState.list
         if(!viewState.isRecipe){
-            products = viewState.list.flatMap((component) => component.ingredients)
+            setModalState({
+                section: activeSection, 
+                ingredients: viewState.list.flatMap((component) => component.ingredients)
+            }, true)
+            return;
+            //products = viewState.list.flatMap((component) => component.ingredients)
+            //console.log(products)
         }
+
+        const products = viewState.list;
 
         const response = await handleRequest({
             data: products,
@@ -127,13 +135,19 @@ export default function ItemInspectView({itemToInspect}){
         setViewState(deriveViewState(itemToInspect, fullRecipes))
     }
 
+    const scalingFunctions = {
+        setScaledState: handleScaling, 
+        reset: resetScaling, 
+        isScaled: viewState.isScaled
+    };
+
     return(
         <div className={containerStyle}>
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
                         handleModify={handleModify} handleAddCart={handleAddCart} 
                         handleFavorite={handleFavorite}
                         fav={isFavorite ? "fav" : ""} fetching={isFetchingData}/>
-            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={{setScaledState: handleScaling, reset: resetScaling, isScaled: viewState.isScaled}} />
+            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={scalingFunctions} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
                 {viewState.isRecipe && <ItemInstructionSection instructions={viewState.item.instructions} />}

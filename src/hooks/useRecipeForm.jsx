@@ -11,11 +11,7 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
 
     const formValues = !isMobile ? getRecipeFormValues(formData) : deriveFormStateValues(currentFormValues, true);
 
-    console.log(formValues);
-
     const { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps , category} = formValues;
-
-    console.log(category);
 
     const errors = validateRecipe(name, portions, time, timeFormat, products, quantity, unit, steps);
     const ingredients = combineProductData(products, quantity, unit);

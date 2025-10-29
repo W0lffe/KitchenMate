@@ -6,37 +6,52 @@ import {
     spanStyle,
     cancelButtonStyle
 } from "./modalStyles.js"
-import { findRecipeDependencies, getRecipeInfo } from "../../util/util.js";
+import { findRecipeDependencies } from "../../util/util.js";
 import { handleToast } from "../../util/toast.js";
 
-export default function ConfirmModal({ section, toDelete, contextProps }) {
+export default function ConfirmModal({ props, contextProps }) {
 
+    const {section, toDelete, ingredients} = props;
+    const isDelete = toDelete !== undefined && ingredients === undefined;
 
-    const { setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes, isFetchingData } = contextProps;
-    const clearBasket = Array.isArray(toDelete);
+    const { 
+        setActiveDish,
+        setActiveRecipe,
+        handleRequest, 
+        isMobile, 
+        setModalState, 
+        fullDishes, 
+        isFetchingData } = contextProps;
 
-
+    let message = "";
     const dependencies = [];
-    let message = "Delete ";
-    if (section.toLowerCase().includes("recipes")) {
-        message += "recipe?";
-        dependencies.push(...findRecipeDependencies(toDelete, fullDishes.current));
-        if(dependencies.length > 0){
-            message = "Deleting this recipe will also delete the following dishes:";
+     
+    if(toDelete){
+        const clearBasket = Array.isArray(toDelete);
+        if (clearBasket) {
+            message = "Empty basket?"
         }
-    } else if (section.toLowerCase().includes("dishes")) {
-        message += "dish?";
-    } else {
-        message += "product?";
-    }
+        else if (section.toLowerCase().includes("recipes")) {
+            message = "Delete recipe?";
 
-    if (clearBasket) {
-        message = "Empty basket?"
+            const foundDependencies = findRecipeDependencies(toDelete, fullDishes.current);
+            if (foundDependencies.length > 0) {
+                message = "Deleting this recipe will also delete the following dishes:";
+                dependencies.push(foundDependencies);
+            }
+        } else if (section.toLowerCase().includes("dishes")) {
+            message = "Delete dish?";
+        } else {
+            message = "Delete product?";
+        }
+    }
+    if(ingredients){
+
     }
 
     const handleDelete = async () => {
 
-        const dataToDelete = dependencies.length > 0 ? {id: toDelete, dependencies} : {id: toDelete};
+        const dataToDelete = dependencies.length > 0 ? { id: toDelete, dependencies } : { id: toDelete };
 
         const response = await handleRequest({
             data: clearBasket ? [] : dataToDelete,
@@ -58,7 +73,7 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
     const handleCancel = () => {
         const modalState = !isMobile ? false : (section === "basket" ? false : true);
 
-        setModalState({section}, modalState)
+        setModalState({ section }, modalState)
     }
 
     return (
@@ -66,15 +81,20 @@ export default function ConfirmModal({ section, toDelete, contextProps }) {
             <header className={headerStyle}>
                 <h3 className={headingStyle}>Confirm</h3>
                 <label>{message}</label>
-                {dependencies.length > 0 && 
+                {isDelete ? (
+                    dependencies.length > 0 &&
                     <ul className="list-disc flex flex-col items-start px-5 gap-1">
                         {
-                        fullDishes.current
-                        .filter((dish) => dependencies.includes(dish.id))
-                        .map((dish, i) => (<li key={i} className="font-light animate-pulse">{dish.name}</li>))
+                            fullDishes.current
+                                .filter((dish) => dependencies.includes(dish.id))
+                                .map((dish, i) => (<li key={i} className="font-light animate-pulse">{dish.name}</li>))
                         }
                     </ul>
-                }
+                
+                ) : (
+                    <>
+                    test</>
+                )}
             </header>
             <span className={spanStyle}>
                 <button onClick={handleCancel} className={cancelButtonStyle}>Cancel</button>

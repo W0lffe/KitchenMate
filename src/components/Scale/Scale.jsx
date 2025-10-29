@@ -29,11 +29,17 @@ export default function Scale({ itemToScale, scaleFunctions }) {
     }
 
     useEffect(() => {
+        if(!isScaled && itemToScale){
+            setScaledTo({portions: itemToScale.portions})
+            return;
+        }
+
         if(!isScaled){
             const refValue = selectRef.current.value;
             refValue.toLowerCase().includes("portions") ? setScaledTo({portions: itemToScale.portions}) : setScaledTo({portions: 1});
         }
-    },[isScaled])
+
+    },[isScaled, itemToScale])
 
     const handleScale = (operation) => {
         const scaleParams = {
