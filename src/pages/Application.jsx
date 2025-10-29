@@ -8,7 +8,7 @@ export default function Application(){
 
     return(
         <div className="flex flex-col items-center w-full h-full">
-            <Toaster />
+            <Toaster position='top-center'/>
             <Modal />
             <Navigation />
             <Header />  

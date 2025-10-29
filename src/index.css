@@ -48,18 +48,12 @@ html {
    
   }
 
-   --animate-pulsing: pulsing 4s ease-in-out infinite;
+   --animate-pulsing: pulsing 3s ease-in-out infinite;
 
   @keyframes pulsing {
 
-    0% {
-      opacity: 0.3;
-    }
     50% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0.3;
+      background-color: #ffffff80;
     }
    
   }

@@ -70,8 +70,6 @@ export default function ItemInspectView({itemToInspect}){
                 ingredients: viewState.list.flatMap((component) => component.ingredients)
             }, true)
             return;
-            //products = viewState.list.flatMap((component) => component.ingredients)
-            //console.log(products)
         }
 
         const products = viewState.list;

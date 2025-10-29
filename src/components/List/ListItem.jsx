@@ -53,7 +53,6 @@ export default function ListItem({item}){
         }
         else if(activeSection === "basket"){
             const updatedItem = {...item, obtained: !item.obtained};
-            console.log(updatedItem)
             const response = await handleRequest({
                 data: {
                     item: updatedItem, 

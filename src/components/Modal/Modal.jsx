@@ -15,8 +15,6 @@ export default function Modal(){
     const useConfirm = (toDelete || ingredients) !== undefined;
     const modal = useRef()
 
-    console.log(useConfirm)
-
     const contextProps = {
         setModalState,
         handleRequest, 

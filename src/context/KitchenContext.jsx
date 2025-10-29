@@ -94,9 +94,7 @@ export default function KitchenContextProvider({children}){
     };
 
     useEffect(() => {
-        console.log(utilState.user.id)
         if(utilState.user.id !== null){
-            console.log("fetch")
             initializeData();
         }
 
@@ -252,7 +250,6 @@ export default function KitchenContextProvider({children}){
         }
 
         setIsFetchingData(true);
-
 
         const { data, error } = await api({
             user: utilState.user.id

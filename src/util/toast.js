@@ -7,7 +7,7 @@ export const handleToast = ({
     setModalState,
     setActiveDish,
     setEntryStatus,
-    delay = 500,
+    delay = 250,
     close = true
 }) => {
     

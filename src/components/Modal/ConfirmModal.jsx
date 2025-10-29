@@ -4,30 +4,36 @@ import {
     headerStyle,
     headingStyle,
     spanStyle,
-    cancelButtonStyle
+    cancelButtonStyle,
+    listStyle,
+    inputStyle
 } from "./modalStyles.js"
 import { findRecipeDependencies } from "../../util/util.js";
 import { handleToast } from "../../util/toast.js";
+import { useState } from "react";
+import { scaleRecipe } from "../../util/util.js";
 
 export default function ConfirmModal({ props, contextProps }) {
 
-    const {section, toDelete, ingredients} = props;
+    const { section, toDelete, ingredients } = props;
     const isDelete = toDelete !== undefined && ingredients === undefined;
+    const [count, setCount] = useState(1);
 
-    const { 
+    const {
         setActiveDish,
         setActiveRecipe,
-        handleRequest, 
-        isMobile, 
-        setModalState, 
-        fullDishes, 
+        handleRequest,
+        isMobile,
+        setModalState,
+        fullDishes,
         isFetchingData } = contextProps;
 
     let message = "";
     const dependencies = [];
-     
-    if(toDelete){
-        const clearBasket = Array.isArray(toDelete);
+    const clearBasket = Array.isArray(toDelete);
+
+    if (toDelete) {
+
         if (clearBasket) {
             message = "Empty basket?"
         }
@@ -37,7 +43,7 @@ export default function ConfirmModal({ props, contextProps }) {
             const foundDependencies = findRecipeDependencies(toDelete, fullDishes.current);
             if (foundDependencies.length > 0) {
                 message = "Deleting this recipe will also delete the following dishes:";
-                dependencies.push(foundDependencies);
+                dependencies.push(...foundDependencies);
             }
         } else if (section.toLowerCase().includes("dishes")) {
             message = "Delete dish?";
@@ -45,12 +51,11 @@ export default function ConfirmModal({ props, contextProps }) {
             message = "Delete product?";
         }
     }
-    if(ingredients){
-
+    if (ingredients) {
+        message = "How many portions?";
     }
 
     const handleDelete = async () => {
-
         const dataToDelete = dependencies.length > 0 ? { id: toDelete, dependencies } : { id: toDelete };
 
         const response = await handleRequest({
@@ -70,35 +75,71 @@ export default function ConfirmModal({ props, contextProps }) {
         })
     }
 
+    const handleAddCart = async () => {
+        
+        const products = scaleRecipe({
+            ingredients,
+            scaledTo: 1,
+            scaleTo: count
+        })
+
+        const response = await handleRequest({
+            data: products.ingredients,
+            method: "POST"
+        }, true)
+
+        const { error } = response;
+
+        handleToast({
+            error,
+            success: "Products added to basket successfully!",
+            isMobile,
+            setModalState
+        })
+    }
+
+    const onClick = isDelete ? handleDelete : handleAddCart;
+
     const handleCancel = () => {
         const modalState = !isMobile ? false : (section === "basket" ? false : true);
 
         setModalState({ section }, modalState)
     }
 
+
     return (
         <div className={confirmModalStyle}>
             <header className={headerStyle}>
                 <h3 className={headingStyle}>Confirm</h3>
-                <label>{message}</label>
-                {isDelete ? (
-                    dependencies.length > 0 &&
-                    <ul className="list-disc flex flex-col items-start px-5 gap-1">
-                        {
-                            fullDishes.current
-                                .filter((dish) => dependencies.includes(dish.id))
-                                .map((dish, i) => (<li key={i} className="font-light animate-pulse">{dish.name}</li>))
-                        }
-                    </ul>
-                
-                ) : (
-                    <>
-                    test</>
-                )}
             </header>
+            {isDelete ? (
+                <>
+                    <label>{isFetchingData ? "Deleting..." : message}</label>
+                    {dependencies.length > 0 &&
+                        <ul className={listStyle}>
+                            {
+                                fullDishes.current
+                                    .filter((dish) => dependencies.includes(dish.id))
+                                    .map((dish, i) => (<li key={i} className="font-light animate-pulse">{dish.name}</li>))
+                            }
+                        </ul>
+                    }
+                </>
+            ) : (
+                <label className="text-lg w-max p-1">
+                    Add
+                    <input type="number"
+                        className={inputStyle}
+                        min={1}
+                        defaultValue={count}
+                        onChange={(event) => setCount(event.target.value)}
+                    />
+                    portions to basket
+                </label>
+            )}
             <span className={spanStyle}>
                 <button onClick={handleCancel} className={cancelButtonStyle}>Cancel</button>
-                <button onClick={handleDelete} className={confirmButtonStyle} disabled={isFetchingData}>Confirm</button>
+                <button onClick={onClick} className={confirmButtonStyle} disabled={isFetchingData}>Confirm</button>
             </span>
         </div>
     )

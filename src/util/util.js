@@ -92,18 +92,15 @@ export const getReducerType = (method, section, basketAdd) => {
 export const scaleRecipe = (scaleParams) => {
 
     const {ingredients, operation, scaledTo, scaleTo} = scaleParams;
-
-    
     const originalPortions = scaledTo;
     const originalIngredients = ingredients;
     
     let newPortions = 0;
-    let scaledIngredients = [];
 
-    if(operation == "+"){
+    if(operation === "+"){
         newPortions = parseInt(originalPortions) + 1;
     }
-    else if(operation == "-"){
+    else if(operation === "-"){
         if(originalPortions === 1){
             newPortions = originalPortions;
         }
@@ -116,7 +113,7 @@ export const scaleRecipe = (scaleParams) => {
         newPortions = scaleTo;
     }
 
-    scaledIngredients = originalIngredients.map((ingredient) => ({
+    const scaledIngredients = originalIngredients.map((ingredient) => ({
             product: ingredient.product, 
             quantity: ((ingredient.quantity / originalPortions) * newPortions).toFixed(1), 
             unit: ingredient.unit
