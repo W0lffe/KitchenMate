@@ -36,7 +36,7 @@ const createRequestPayload = (params) => {
     const { user, data, method = "GET", endpoint } = params;
     
     if(method === "GET"){
-        return {method}
+        return {method, /* credentials: 'include' */ };
     }
 
     const hasImage = (data?.image instanceof File && data?.image.size > 0);
@@ -66,11 +66,12 @@ const createRequestPayload = (params) => {
 
         //console.log([...formData.values()]);
 
-        return {method: "POST", body: formData};
+        return {method: "POST", /* credentials: 'include', */ body: formData};
     }
     else{
         const jsonPayload = {
             method,
+            /* credentials: 'include', */
             headers: {
                 "Content-Type": "application/json"
             },

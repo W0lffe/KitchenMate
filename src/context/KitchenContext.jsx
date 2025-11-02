@@ -12,7 +12,7 @@ import { basketAPI,
         recipesAPI } from "../api/http.js"
 import { filter, 
         sort } from "../util/filterSort.js";
-import toast from "react-hot-toast";
+import { handleToast } from "../util/toast.js";
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -45,13 +45,14 @@ export const KitchenContext = createContext({
     handleRequest: () => {},
     fullBasket: [],
     fullRecipes: [],
-    fullDishes: []
-
+    fullDishes: [],
+    isOnline: true,
 })
 
 export default function KitchenContextProvider({children}){
 
     const [isFetchingData, setIsFetchingData] = useState(false);
+    const [isOnline, setIsOnline] = useState(true);
     const fetchedRecipes = useRef()
     const fetchedDishes = useRef()
     const fetchedBasket = useRef()
@@ -202,6 +203,14 @@ export default function KitchenContextProvider({children}){
         })
     }
     const setActiveSection = (section) => {
+
+        if(!isOnline){
+            handleToast({
+                error: "Error with connection to server."
+            });
+            return;
+        }
+
         if(section === utilState.activeSection){
             section = undefined;
         }
@@ -253,10 +262,11 @@ export default function KitchenContextProvider({children}){
 
         const { data, error } = await api({
             user: utilState.user.id
-        }) 
+        });
 
         if(error){
-            toast.error(error);
+            handleToast({error});
+            setIsOnline(false);
             setIsFetchingData(false);
             return;
         }
@@ -269,7 +279,6 @@ export default function KitchenContextProvider({children}){
         ref.current = data;
 
         setIsFetchingData(false);
-
     }
      
     const setActiveRecipe = (recipe) => {
@@ -404,7 +413,8 @@ export default function KitchenContextProvider({children}){
         handleRequest,
         fullBasket: fetchedBasket,
         fullRecipes: fetchedRecipes,
-        fullDishes: fetchedDishes
+        fullDishes: fetchedDishes,
+        isOnline
 
     }
 

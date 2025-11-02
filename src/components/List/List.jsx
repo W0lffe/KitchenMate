@@ -10,6 +10,10 @@ import SimpleList from "./SimpleList";
 
 
 const categorize = (itemlist, isRecipe) => {
+    
+    if(!itemlist || itemlist.length === 0){
+        return [];
+    }
 
     const categorized = itemlist.reduce((acc, item) => {
         //console.log("start",acc, "item", item)
@@ -77,7 +81,7 @@ export default function List() {
                 break;
             case "basket":
                 setUseLabel(3);
-                setList(availableBasket);
+                setList(availableBasket || []);
                 break;
         }
     }, [activeSection, availableRecipes, availableDishes, availableBasket, activeDish?.mode])

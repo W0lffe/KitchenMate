@@ -26,7 +26,7 @@ const SECTIONS = {
 
 export default function DishCreation(){
 
-    const {isMobile, setModalState, activeDish, availableRecipes, setActiveDish, handleRequest, filterList, user} = useContext(KitchenContext);
+    const {isMobile, setModalState, activeDish, availableRecipes, fullRecipes, setActiveDish, handleRequest, filterList, user} = useContext(KitchenContext);
     const [openTab, setOpenTab] = useState(SECTIONS.GENERAL);
 
     const {mode, dish} = activeDish;
@@ -54,7 +54,7 @@ export default function DishCreation(){
     })
 
     useEffect(() => {
-        setComponentRecipes(getRecipeInfo(availableRecipes, dish?.components || []))
+        setComponentRecipes(getRecipeInfo(fullRecipes.current, dish?.components || []))
         
         if(isCreatingDish){
             setCurrentFormValues({
