@@ -4,12 +4,11 @@ import { buttonStyle,
         labelStyle, 
         sectionStyle } from "./infoStyles";
 
-export default function Info({ item, reverse, isMobile, isFirst, isLast, navigate, ref }) {
-
+export default function Info({ item, reverse, isMobile, isFirst, isLast, ref, navigate }) {
 
     return (
-        <div className="flex flex-col w-full items-center">
-            <div className={infoDiv + `${reverse ? " md:flex-row-reverse" : ""} ${!isLast ? " snap-center" : " snap-start"}`}>
+        <div className="flex flex-col w-full items-center ">
+            <div className={infoDiv + `${reverse ? " md:flex-row-reverse" : ""} ${!isMobile ? " snap-center" : " "}`}>
                 <section className={sectionStyle + " gap-5"}>
                     {item.header &&
                         <span className="w-fit md:w-1/2 text-xl md:text-4xl font-bold italic">
@@ -28,13 +27,13 @@ export default function Info({ item, reverse, isMobile, isFirst, isLast, navigat
                                  <img
                                 src={item.mobile}
                                 alt="yes"
-                                className="object-contain max-h-100 w-auto"
+                                className="object-contain max-h-90 w-auto"
                             />
                         ) : (
                             <img
                                 src={reverse ? item.desktopImage : item.mobile}
                                 alt="yes"
-                                className="object-contain max-h-100 xl:max-h-140 w-auto "
+                                className="object-contain max-h-120 xl:max-h-140 w-auto "
                             />
                         )}
                     </div>
@@ -43,7 +42,7 @@ export default function Info({ item, reverse, isMobile, isFirst, isLast, navigat
             {isFirst &&
                     <label className={labelStyle + " animate-bounce"}>SCROLL DOWN FOR MORE</label>
             }
-            {isLast && 
+            {(isLast) &&
                 <label onClick={() => ref.current.scrollTo({ top: 0, behavior: 'smooth' })}  className={labelStyle}>BACK TO TOP</label>
             }
         </div>
