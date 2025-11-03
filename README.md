@@ -74,8 +74,8 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Error Handling 
     - [x] Polishing
 - Testing
-    - [ ] Testing on different devices
-        - **POSTPONED**
+    - [x] Testing on different devices
+        - **DONE - StageFive**
     - [x] Bug fixes
     - [ ] Testing of components 
         - **POSTPONED**
@@ -87,21 +87,22 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     Implementing and testing new visions for app
 - Front-End
     - [x] Sections for creation modals
-    - [ ] Possibility to show whole recipe in dish inspection instead of just recipe name
+    - [ ] Possibility to show whole recipe in dish inspection instead of just recipe name **POSTPONED**
     - [x] Recipe scalability feature
-    - [ ] Public recipe bank, visible for every user
-    - [ ] Creating a homepage
+    - [ ] Public recipe bank, visible for every user **POSTPONED**
+    - [x] Creating a homepage
         - Work In Progress, using React Router
     - [x] Dish creation image preview
     - [x] Implement useReducer for local data updating
     - [x] Delete confirmation
     - [x] Toasts!
     - [ ] Real user authenticating, tokens
+        - Work In Progress
     - [x] Modular function for toasts
     - [ ] More details to recipe creation
         - Like category, optional heat for oven/sous-vide
             - Categories are DONE for recipes and dishes, categories itself might be changed but logic is there
-        - Time per instruction step
+        - Time per instruction step **POSTPONED**
     - [x] Error handling for dishes, that contain a recipe that has been deleted
     - [x] Add visual changes for items that are included in dish (DISH CREATION) 
   - Backend

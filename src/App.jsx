@@ -8,8 +8,8 @@ export default function App() {
   return (
     <KitchenContextProvider>
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Application />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/app" element={<Application />} />
       </Routes>
     </KitchenContextProvider>
   )
