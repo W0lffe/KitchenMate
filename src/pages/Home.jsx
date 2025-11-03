@@ -19,7 +19,7 @@ export default function Home(){
 
 
     return(
-        <div className="w-full h-full overflow-y-hidden flex flex-col bg-gray-950/95 items-center">
+        <div className="w-full h-full overflow-y-hidden flex flex-col bg-gray-800/70 items-center">
             <div ref={containerRef} className="w-full h-auto flex flex-col overflow-y-auto snap-y snap-mandatory scroll-smooth items-center gap-150 first:pt-50 last:pb-50">
                     {setupInfo().map((item, i) => 
                         <Info key={i} 

@@ -28,13 +28,13 @@ export default function Info({ item, reverse, isMobile, isFirst, isLast, navigat
                                  <img
                                 src={item.mobile}
                                 alt="yes"
-                                className="object-contain max-h-120 w-auto"
+                                className="object-contain max-h-100 w-auto"
                             />
                         ) : (
                             <img
                                 src={reverse ? item.desktopImage : item.mobile}
                                 alt="yes"
-                                className="object-contain max-h-120 xl:max-h-160 w-auto "
+                                className="object-contain max-h-100 xl:max-h-140 w-auto "
                             />
                         )}
                     </div>
