@@ -91,7 +91,6 @@ It includes basic login functionality and core CRUD operations for recipes, dish
     - [x] Recipe scalability feature
     - [ ] Public recipe bank, visible for every user **POSTPONED**
     - [x] Creating a homepage
-        - Work In Progress, using React Router
     - [x] Dish creation image preview
     - [x] Implement useReducer for local data updating
     - [x] Delete confirmation
