@@ -9,10 +9,11 @@ import { utilityReducer,
         kitchenReducer } from "./reducer.js";
 import { basketAPI, 
         dishesAPI, 
-        recipesAPI } from "../api/http.js"
+        recipesAPI, 
+        login } from "../api/http.js"
 import { filter, 
         sort } from "../util/filterSort.js";
-import toast from "react-hot-toast";
+import { handleToast } from "../util/toast.js";
 
 export const KitchenContext = createContext({
     slogan: "",
@@ -28,7 +29,7 @@ export const KitchenContext = createContext({
     modalIsOpen: false,
     isMobile: false,
     setIsMobile: () => {},
-    activeModal: "",
+    activeModal: {},
     availableRecipes: [],
     activeRecipe: null,
     setActiveRecipe: () => {},
@@ -44,11 +45,15 @@ export const KitchenContext = createContext({
     setFavorite: () => {},
     handleRequest: () => {},
     fullBasket: [],
+    fullRecipes: [],
+    fullDishes: [],
+    isOnline: true,
 })
 
 export default function KitchenContextProvider({children}){
 
     const [isFetchingData, setIsFetchingData] = useState(false);
+    const [isOnline, setIsOnline] = useState(true);
     const fetchedRecipes = useRef()
     const fetchedDishes = useRef()
     const fetchedBasket = useRef()
@@ -57,10 +62,8 @@ export default function KitchenContextProvider({children}){
         slogan: "",
         navigationIsOpen: true,
         activeSection: "",
-        user: {
-            id: 0
-        },
-        activeModal: "",
+        user: null,
+        activeModal: {},
         modalIsOpen: false,
         isMobile: false,
     })
@@ -91,7 +94,26 @@ export default function KitchenContextProvider({children}){
     };
 
     useEffect(() => {
-        initializeData();
+        const run = async () => {
+
+            if(!utilState.user){
+                const {user, error} = await login();
+                if(user) setUser(user);
+            }
+
+            if(utilState.user && utilState.user?.id !== null){
+                initializeData();
+            }
+
+            if(kitchenState.activeRecipe){
+                setActiveRecipe(null)
+            }
+            if(kitchenState.activeDish){
+                setActiveDish(null)
+            }
+        }
+        run();
+      
     }, [utilState.user])
 
     const handleRequest = async (dataToHandle, basketAdd) => {
@@ -100,10 +122,11 @@ export default function KitchenContextProvider({children}){
         const isDish = utilState.activeSection === "dishes";
         const isBasket = utilState.activeSection === "basket";
 
+        //console.log("dataTohandle",dataToHandle)
+
         const {data, method} = dataToHandle;
         const body = {
                 data,
-                user: utilState.user.id,
                 method
             }
 
@@ -112,7 +135,7 @@ export default function KitchenContextProvider({children}){
                 type: getReducerType(method, utilState.activeSection, basketAdd),
                 payload: data.updatedItem ? data.updatedItem : data
         }
-        console.log("handleri", reducerHandler)
+        //console.log("handleri", reducerHandler)
         let apiHandler = null;
         
         if(basketAdd){
@@ -136,20 +159,34 @@ export default function KitchenContextProvider({children}){
 
         if(success){
             kitchenDispatch(reducerHandler);
-
-            setTimeout(() => {
             setAvailableList(apiHandler);
-            }, 1500);
+            if(data.dependencies !== undefined){
+                setAvailableList(dishesStateHandler);
+            }
         }
 
         return response;
     }
 
     const initializeData = () => {
-
-        setAvailableList(recipesStateHandler)
-        setAvailableList(dishesStateHandler)
+        setAvailableList(recipesStateHandler);
+        setAvailableList(dishesStateHandler);
         setAvailableList(basketStateHandler);
+    }
+
+    const resetToUnfiltered = () => {
+       kitchenDispatch({
+        type: basketStateHandler.type,
+        payload: fetchedBasket.current
+       })
+       kitchenDispatch({
+        type: recipesStateHandler.type,
+        payload: fetchedRecipes.current
+       })
+       kitchenDispatch({
+        type: dishesStateHandler.type,
+        payload: fetchedDishes.current
+       })
     }
 
     /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
@@ -172,17 +209,19 @@ export default function KitchenContextProvider({children}){
         })
     }
     const setActiveSection = (section) => {
+
         if(section === utilState.activeSection){
-            section = undefined;
+            section = null;
         }
+
+        resetToUnfiltered();
 
         if(section !== null){
-           setActiveRecipe(null)
-           setActiveDish(null)
-           setEntryStatus(null)
+            setActiveRecipe(null)
+            setActiveDish(null)
+            setEntryStatus(null)
+            toggleNavigation();
         }
-
-        toggleNavigation();
 
         utilDispatch({
             type: "SET_ACTIVE_SECTION",
@@ -194,23 +233,24 @@ export default function KitchenContextProvider({children}){
             type: "SET_USER",
             payload: user
         })
+        setActiveSection(null);
     }
-    const setModalState = (section, modalState) => {
+    const setModalState = (activeModal, modalState) => {
         utilDispatch({
             type: "SET_MODAL_STATE",
             payload: {
-                section,
+                activeModal,
                 modalState
             }
         })
     }
 
     const setAvailableList = async (params) => {
-        
+
         const {type, api, ref} = params;
 
-        if(utilState.user === null){
-             kitchenDispatch({
+        if(!utilState.user){
+            kitchenDispatch({
                 type,
                 payload: []
         })
@@ -221,10 +261,10 @@ export default function KitchenContextProvider({children}){
 
         const { data, error } = await api({
             user: utilState.user.id
-        }) 
+        });
 
         if(error){
-            toast.error(error);
+            handleToast({error});
             setIsFetchingData(false);
             return;
         }
@@ -262,7 +302,9 @@ export default function KitchenContextProvider({children}){
 
     const filterList = (value) => {
 
-        if(kitchenState.activeDish?.mode === "create"){
+        //console.log("filtering", value)
+
+        if(["edit", "create"].includes(kitchenState.activeDish?.mode)){
             filter({
                     fullList: fetchedRecipes.current,
                     value,
@@ -368,6 +410,10 @@ export default function KitchenContextProvider({children}){
         setEntryStatus,
         handleRequest,
         fullBasket: fetchedBasket,
+        fullRecipes: fetchedRecipes,
+        fullDishes: fetchedDishes,
+        isOnline
+
     }
 
     return(

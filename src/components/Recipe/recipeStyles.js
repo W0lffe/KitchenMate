@@ -1,31 +1,25 @@
 
-export const mobileHeadingStyle = `w-full text-center text-md font-medium m-2`;
+export const mobileHeadingStyle = `text-[20px] italic text-center w-full font-md`;
 
-export const recipeInfoStyle = `h-fit w-full flex flex-col justify-center items-start lg:p-2`;
+export const recipeInfoStyle = `flex flex-col w-full h-fit gap-5  justify-start p-2`;
 
 
 export const getInputStyle = (half) => {
-    let style =  `border rounded-custom p-1 text-center
+    let style =  `border rounded-custom-med p-1 text-center
                     transition[background] duration-300 ease-out bg-gray-400/60 hover:bg-white/60
                     focus:bg-white/90 focus:text-black focus:border-black`
-    style += half ? ` w-25 lg:w-30` : ` w-50`
+    style += half ? ` w-25 lg:w-30` : ` w-fit`
     return style;
 }
 
-export const sectionContainerStyle = `flex flex-col items-center h-full lg:flex-row gap-3`;
+export const sectionContainerStyle = `flex gap-2 h-fit p-1 `;
 
-export const footerStyle = `flex items-center justify-center m-2`;
+export const footerStyle = `flex flex-row w-full items-center justify-center p-2`;
 
-export const labelStyle = `text-[16px] font-semibold`;
+export const labelStyle = `italic text-[16px]`;
 
-export const lineStyle = `flex gap-6 m-2 items-center flex-row`;
+export const lineStyle = `flex flex-row gap-5`;
 
-export const tabButtonStyle = `underline animate-pulse p-2 m-1 font-[700]`
+export const tabButtonStyle = ``
 
-export const getButtonStyle = (active) => {
-    let style = `border border-white  rounded-[20px] w-10 h-10
-                transition-all duration-300 ease-out bg-gray-400/60 
-                text-center`
-    style += active ? `border-black bg-white/90 text-black animate-pulse` : ``
-    return style;
-}
+export const mobileHeaderStyle = `flex flex-row justify-end items-center p-2`;

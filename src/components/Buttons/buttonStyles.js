@@ -1,12 +1,12 @@
 
-export const naviButtonStyle = `border border-white p-2 lg:p-5 w-9/10 m-2 lg:m-4 
-                            whitespace-nowrap rounded-custom bg-gray-500/70 shadow-md 
-                            shadow-black hover:bg-gray-600/70 hover:p-7 hover:animate-pulse transition-all
-                            flex gap-3 items-center justify-center`;
+export const naviButtonStyle = `border-2 border-custom-whiteborder p-2 lg:p-5 w-9/10 m-2 lg:m-4 
+                            rounded-custom-low bg-custom-bggray shadow-md 
+                            shadow-black/80 hover:bg-custom-bggray hover:p-7 hover:animate-pulse transition-all
+                            flex gap-3 items-center justify-center duration-250`;
 
 export const getSubmitButtonStyle = (use) =>{
     if(use === "close"){
-        return ` text-2xl w-5 hover:bg-red-600/95 hover:animate-pulse` 
+        return ` text-2xl w-5 hover:animate-pulse` 
     }
 
     let style = `border w-60 h-10 rounded-custom shadow-xs p-1
@@ -14,14 +14,22 @@ export const getSubmitButtonStyle = (use) =>{
 
     switch(use){
         case "login":
-            style += ` border-gray-900  hover:bg-gray-600/60 mt-8`
+            style += ` border-gray-900  hover:bg-gray-600/60 mt-8 rounded-custom-low font-semibold`
             return style;
         case "recipe":
-            style += ` bg-gray-500/70 hover:bg-gray-600/60`
+            style += ` bg-gray-500/70 hover:bg-gray-600/60 rounded-custom-low`
             return style;
         case "basket":
-            style += ` bg-gray-500/70 hover:bg-gray-600/60`
+            style += ` bg-gray-500/70 hover:bg-gray-600/60 rounded-custom-low`
             return style;
     }
 }
     
+
+export const getTabButtonStyle = (active) => {
+    let style = `border border-white  rounded-[20px] w-10 h-10
+                transition-all duration-300 ease-out bg-gray-400/60 
+                text-center`
+    style += active ? `border-black bg-white/90 text-black animate-pulse` : ``
+    return style;
+}

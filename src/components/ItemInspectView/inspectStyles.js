@@ -1,11 +1,14 @@
 
-export const containerStyle = `flex flex-col gap-2  w-full h-full text-white`;
+export const containerStyle = `text-white h-fit w-full`;
 
-export const topSection = ` h-3/10 flex flex-row justify-start border-b-1 border-white/20 rounded-custom`;
+export const infoSection = `w-full h-fit flex md:flex-row p-1
+                            border-custom-bggray border-b-1 rounded-b-custom-low `;
 
-export const bottomSection =  ` h-8/10 flex flex-col lg:flex-row`;
+export const detailSection = `md:w-1/2 p-5 flex flex-col justify-center gap-1 lg:p-6`;
 
-export const listSection = `flex flex-col items-center h-1/2 lg:h-full w-full lg:w-1/2 border-b-1 border-white/20 lg:border-0 rounded-custom`;
+export const bottomSection =  `w-full flex flex-col md:flex-row h-fit `;
+
+export const listSection = `flex flex-col w-full md:w-1/2 p-2 h-fit items-center`;
 
 export const getListStyle =  (list) => {
 
@@ -16,11 +19,11 @@ export const getListStyle =  (list) => {
     return style;
 }
 
-export const iconSpan = `flex flex-row justify-end items-center gap-6 mt-2 px-5 `;
+export const topButtonBar = `w-full flex h-fit justify-end gap-5 py-2 px-5 border-custom-bggray border-b-1 rounded-custom-low`;
 
 export const getIconStyle = (icon) => {
     
-    let style = `text-2xl lg:text-3xl transition-all duration-300 ease-out`;
+    let style = `text-2xl md:text-3xl hover:animate-pulse cursor-pointer`;
 
     style += icon === "del" ? ` hover:text-red-700` : ` hover:text-gray-400/30`
     style += icon === "fav" ? ` text-amber-400` : ` `; 
@@ -28,4 +31,3 @@ export const getIconStyle = (icon) => {
     return style;
 }
 
-export const imageStyle = `w-54 rounded-[50px] border-gray-900/80 border-2`

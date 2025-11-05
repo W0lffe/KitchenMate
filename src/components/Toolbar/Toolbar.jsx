@@ -1,6 +1,5 @@
 import { headingStyle, 
         iconStyle, 
-        inputStyle, 
         mobileToolbarStyle, 
         spanStyle, 
         toolbarStyle } from "./toolbarStyles";
@@ -11,13 +10,15 @@ import { faFolderPlus,
         faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { getSortOptions } from "./sortOptions";
 import toast from "react-hot-toast";
+import SearchBar from "./SearchBar";
+import { handleToast } from "../../util/toast";
 
 export default function Toolbar(){
 
     const {isMobile, setActiveRecipe, setActiveDish, 
             setModalState, filterList, sortList, 
             activeSection, setEntryStatus, activeDish, 
-            handleRequest, fullBasket} = useContext(KitchenContext)
+            fullBasket} = useContext(KitchenContext)
 
     const isCreatingDish = activeDish?.mode === "create";
     const currentOptions = getSortOptions(activeSection, isCreatingDish);
@@ -26,6 +27,8 @@ export default function Toolbar(){
     
     const sortValues = currentOptions.values;
     const style = isMobile ? mobileToolbarStyle : toolbarStyle;
+
+    const basket = fullBasket.current;
     
     const initCreatingMode = ()=> {
         if(activeSection === "recipes"){
@@ -44,54 +47,46 @@ export default function Toolbar(){
 
     const handleMobileClick = () => {
         initCreatingMode();
-        setModalState(activeSection, true)
+        setModalState({section: activeSection}, true)
     }
 
     const clickHandler = isMobile ? handleMobileClick : initCreatingMode;
 
     const handleBasketEdit = () => {
+        if(basket.length === 0){
+            handleToast({
+                error: "Can't edit empty basket!"
+            })
+            return;
+        }
+
         setEntryStatus({status: true, mode: "edit"});
         if(isMobile){
-            setModalState(activeSection, true)
+            setModalState({section: activeSection}, true)
         }
     }
 
     const handleClearBasket = async() => {
-        const basket = fullBasket.current;
 
         if(basket.length === 0){
-            toast.error("Basket is empty!");
+            handleToast({
+                error: "Basket is empty!"
+            })
             return;
         }
-
-        const response = await handleRequest({
-            data: [],
-            method: "PUT"
-        })
-        const {success, error} = response;
-
-        if(error){
-            toast.error(error);
-            return;
-        }
-
-        toast.success("Basket cleared!");
+        setModalState({section: activeSection, toDelete: basket}, true);
     }
    
     return(
         <header className={style}>
             <h3 className={headingStyle}>Search and Filter</h3>
             <span className={spanStyle}>
-                <input type="text" 
-                        name="name" 
-                        placeholder="Search..." 
-                        className={inputStyle} 
-                        onChange={(event) => filterList(event.target.value)}/>
+                <SearchBar filter={filterList} />
                 {activeSection === "basket" && 
                 <>
                     <button type="button"
-                        className="border p-1 rounded-custom bg-gray-500/70 shadow-md 
-                            shadow-black hover:bg-gray-600/70 hover:animate-pulse"
+                        className="border p-1 rounded-custom-low bg-gray-500/70 shadow-md 
+                            shadow-black hover:bg-custom-bggray hover:animate-pulse"
                             onClick={handleClearBasket}>Clear List</button>
                 </>}
             </span>

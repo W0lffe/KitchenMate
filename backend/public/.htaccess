@@ -1,0 +1,5 @@
+php_value upload_max_filesize 15M
+php_value post_max_size 25M
+php_value error_log /var/log/apache2/km/error.log
+
+

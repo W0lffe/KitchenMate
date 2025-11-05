@@ -1,5 +1,5 @@
 
-export const validateAll = (name, portions, time,
+export const validateRecipe = (name, portions, time,
     timeFormat, products, quantity, unit, steps) => {
 
     let errors = [];
@@ -28,16 +28,9 @@ export const validateAll = (name, portions, time,
         }
     }
 
-    if (!validateArray(products)) {
-        errors.push("Please enter name for products!")
-    }
-
-    if (!validateArray(quantity)) {
-        errors.push("Please enter quantity for products!")
-    }
-
-    if (!validateArray(unit)) {
-        errors.push("Please enter unit for products!")
+    const productErrors = validateProducts(products, quantity, unit);
+    if(productErrors.length > 0){
+        errors = [...errors, ...productErrors];
     }
 
     if(steps !== null){
@@ -45,7 +38,6 @@ export const validateAll = (name, portions, time,
             errors.push("Instruction steps can't be empty!")
         }
     }
-  
 
     return errors;
 }
@@ -95,4 +87,40 @@ const validateArray = (array) => {
     });
 
     return allInputsFound;
+}
+
+export const validateDish = (inputs) => {
+
+    const {name, course, components} = inputs;
+    let errors = [];
+
+    if(!validateName(name)){
+            errors.push("Dish name is invalid!");
+    }
+    if(course === "course"){
+            errors.push("Please select a course!");
+    }
+    if(components.length === 0){
+            errors.push("Please add components!");
+    }
+
+    return errors;
+}
+
+export const validateProducts = (products, quantity, unit) => {
+    let errors = [];
+    
+    if (!validateArray(products)) {
+        errors.push("Please enter name for products!")
+    }
+
+    if (!validateArray(quantity)) {
+        errors.push("Please enter quantity for products!")
+    }
+
+    if (!validateArray(unit)) {
+        errors.push("Please enter unit for products!")
+    }
+
+    return errors;
 }

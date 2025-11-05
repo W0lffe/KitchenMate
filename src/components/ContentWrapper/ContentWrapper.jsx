@@ -31,7 +31,7 @@ function renderContent(section, mode, activeDish, activeRecipe, editStatus){
         return(
             <>
                 {modes.includes(mode)  && <RecipeCreation />}
-                {isDetail && <ItemInspectView itemToInspect={{recipe: activeRecipe?.recipe || null, mode: section}}/>}
+                {isDetail && <ItemInspectView itemToInspect={{recipe: activeRecipe?.recipe || null}}/>}
             </>
         )
     }
@@ -40,7 +40,7 @@ function renderContent(section, mode, activeDish, activeRecipe, editStatus){
         return(
             <>
                 {modes.includes(mode) && <DishCreation />}
-                {isDetail && <ItemInspectView itemToInspect={{dish: activeDish?.dish || null, mode: section}}/> }
+                {isDetail && <ItemInspectView itemToInspect={{dish: activeDish?.dish || null}}/> }
             </>
         )
     }

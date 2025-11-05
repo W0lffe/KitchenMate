@@ -1,19 +1,20 @@
 import { sectionContainerStyle,
         mobileHeadingStyle,
         footerStyle,
-        getButtonStyle} from "./recipeStyles";
+        mobileHeaderStyle} from "./recipeStyles";
 import { useContext, 
         useActionState, 
         useState} from "react";
 import { KitchenContext } from "../../context/KitchenContext";
-import SubmitButton from "../Buttons/SubmitButton";
+import Button from "../Buttons/Button";
 import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
-import { getFormValues } from "../../util/util";
+import { getRecipeFormValues } from "../../util/util";
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection";
 import ItemListSection from "../ItemInspectView/ItemListSection";
 import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";
+import TabButtons from "../Buttons/TabButtons";
 
 const SECTIONS = {
     GENERAL: "General",
@@ -35,14 +36,16 @@ export default function RecipeCreation(){
         const currentState = isEditing ? {
             validInputs: {
                     name: recipeToModify.name,
-                    portions: recipeToModify.output.portions,
-                    output: recipeToModify.output.output,
-                    time: recipeToModify.prepTime.time,
-                    timeFormat: recipeToModify.prepTime.format,
+                    portions: recipeToModify.portions,
+                    output: recipeToModify.output,
+                    outputType: recipeToModify.outputType,
+                    time: recipeToModify.time,
+                    timeFormat: recipeToModify.timeFormat,
                     products: recipeToModify.ingredients.map(ingredient => ingredient.product),
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
                     steps: recipeToModify.instructions,
+                    category: recipeToModify.category
             },
             modifiedId: isEditing ? recipeToModify?.id : null,
             isFavorited: isEditing ? recipeToModify?.favorite : false,
@@ -67,9 +70,9 @@ export default function RecipeCreation(){
         const formData = new FormData(document.querySelector("form"));
 
         const { 
-            name, portions, output, time, timeFormat,
-            products, quantity, unit, steps 
-        } = getFormValues(formData);
+            name, portions, output, outputType, time, timeFormat,
+            products, quantity, unit, steps, category 
+        } = getRecipeFormValues(formData);
 
         setCurrentFormValues({
             ...currentFormValues,
@@ -77,12 +80,14 @@ export default function RecipeCreation(){
                 name: name === null ? currentFormValues.validInputs?.name : name,
                 portions: portions === null ? currentFormValues.validInputs?.portions : portions,
                 output: output === null ? currentFormValues.validInputs?.output : output,
+                outputType: output === "N/A" ? null : (outputType === null ? currentFormValues.validInputs?.outputType : outputType),
                 time: time === null ? currentFormValues.validInputs?.time : time,
                 timeFormat: timeFormat === null ? currentFormValues.validInputs?.timeFormat : timeFormat,
                 products: products.length > 0 ? products : (currentFormValues.validInputs?.products || []),
                 quantity: quantity.length > 0 ? quantity : (currentFormValues.validInputs?.quantity || []),
                 unit: unit.length > 0 ? unit : (currentFormValues.validInputs?.unit || []),
                 steps: steps.length > 0 ? steps : (currentFormValues.validInputs?.steps || []),
+                category: category === null ? currentFormValues.validInputs?.category : category
             }
         });
 
@@ -92,23 +97,17 @@ export default function RecipeCreation(){
     return(
        <div className="text-white">
         {isMobile && (
-            <span className="flex flex-row justify-end items-center px-2">
+            <span className={mobileHeaderStyle}>
                 <h2 className={mobileHeadingStyle}>{mobileHeading}</h2>
-                <SubmitButton use={"close"} func={() => setModalState(null, false)} />
+                <Button use={"close"} />
             </span>
         )}
         <form action={formAction}>
             {isMobile ? 
             (
                 <>
-                    <div className="flex gap-5 w-full justify-center h-15">
-                        {Object.values(SECTIONS).map((section, i) => (
-                            <button type="button" 
-                            onClick={() => {handleTabChange(section)}}
-                            className={getButtonStyle(openTab === section)}>{i+1}</button>
-                        ))}
-                    </div>
-                    <div className={sectionContainerStyle}>
+                    <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
+                    <div className={sectionContainerStyle + `${"flex-col"}`}>
                         {openTab === SECTIONS.GENERAL && 
                             <RecipeInfoSection state={currentFormValues}/>
                         }
@@ -138,9 +137,9 @@ export default function RecipeCreation(){
             )}
             <footer className={footerStyle}>
                {isMobile ? (
-                    openTab === SECTIONS.CONFIRMATION && <SubmitButton use={"recipe"} /> 
+                    openTab === SECTIONS.CONFIRMATION && <Button use={"recipe"} /> 
                 ) : (
-                    <SubmitButton use={"recipe"} />
+                    <Button use={"recipe"} />
                 )}
             </footer>
             </form>

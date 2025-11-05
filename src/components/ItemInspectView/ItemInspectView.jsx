@@ -1,169 +1,155 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, 
-        faPenToSquare, 
-        faStar,
-        faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, 
         useEffect, 
         useState } from "react";
 import { KitchenContext } from "../../context/KitchenContext"
 import { bottomSection, 
-        containerStyle, 
-        getIconStyle, 
-        iconSpan} from "./inspectStyles";
-import SubmitButton from "../Buttons/SubmitButton";
-import toast from "react-hot-toast";
-import { scaleRecipe } from "../../util/util";
+        containerStyle} from "./inspectStyles";
 import ItemInfoSection from "./ItemInfoSection";
 import ItemListSection from "./ItemListSection";
 import ItemInstructionSection from "./ItemInstructionSection";
+import { getRecipeInfo } from "../../util/util";
+import ButtonBar from "../Buttons/ButtonBar";
+import { handleToast } from "../../util/toast";
 
-const deriveState = (itemToDerive) => {
-    const {mode, dish, recipe} = itemToDerive;
-    const isRecipe = mode === "recipes";
-    const isDish = mode === "dishes";
-    const item = isRecipe ? recipe : dish;
-    const listOfItem = isRecipe ? recipe.ingredients : dish.components;
+const deriveViewState = (itemToInspect, fullRecipes) => {
+    const {dish, recipe} = itemToInspect;
+    const isRecipe = recipe !== undefined;
+    const isDish = dish !== undefined;
 
-    return {isDish, isRecipe, item, listOfItem}
+    const currentView = {
+        item: isRecipe ? recipe : dish,
+        list: isRecipe ? recipe.ingredients : getRecipeInfo(fullRecipes.current, dish.components),
+        isRecipe,
+        isDish,
+        isFavorite: isRecipe ? recipe.favorite : dish.favorite,
+        isScaled: isRecipe && false
+    }
+
+    return currentView;
 }
+
 
 export default function ItemInspectView({itemToInspect}){
 
-    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish}  = useContext(KitchenContext);
-    const [inspectableItem, setInspectableItem] = useState(itemToInspect);
-    const [inspectingState, setInspectableState] = useState(deriveState(inspectableItem))
-    
-    const [isFavorited, setIsFavorited] = useState(inspectingState.item.favorite);
+    const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
+    const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
+    const [isFavorite, setIsFavorite] = useState(viewState.isFavorite);
 
     useEffect(() => {
-        setInspectableState(deriveState(itemToInspect));
-        setInspectableItem(itemToInspect);
+        setViewState(deriveViewState(itemToInspect, fullRecipes))
     }, [itemToInspect])
 
-    const favorited = isFavorited ? "fav" : "";
+    //console.log("item to inspect, given parameter", itemToInspect)
+    //console.log("item list", viewState.list)
+    //console.log("inspectableItem, useState", viewState);
+    //console.log("isFavorite", isFavorite);
 
     const handleDelete = async() => {
-        const response = await handleRequest({
-            data: {id: inspectingState.item.id},
-            method: "DELETE"
-        })
-        const {error, success} = response;
-        if(error){
-            toast.error(error);
-            return;
-        }
-
-        toast.success(success);
-        if(isMobile){
-            setModalState(null, false)
-        }
-
-        setActiveDish(null);
-        setActiveRecipe(null);
+        setModalState({section: activeSection, toDelete: viewState.item.id}, true);
     }
 
     const handleModify = () => {
-        if(inspectingState.isRecipe){
+        if(viewState.isRecipe){
             setActiveRecipe({recipe: itemToInspect.recipe, mode: "edit"});
             return;
         }
-        if(inspectingState.isDish){
+        if(viewState.isDish){
             setActiveDish({dish: itemToInspect.dish, mode: "edit"});
             return;
         }
         if(isMobile){
-            setModalState(activeSection, true);
+            setModalState({section: activeSection}, true);
             return;
         }
     }
 
     const handleAddCart = async() => {
-        let products = inspectingState.item.ingredients
-        if(!inspectingState.isRecipe){
-            products = inspectingState.item.components.flatMap((component) => component.ingredients)
+        if(!viewState.isRecipe){
+            setModalState({
+                section: activeSection, 
+                ingredients: viewState.list.flatMap((component) => component.ingredients)
+            }, true)
+            return;
         }
+
+        const products = viewState.list;
 
         const response = await handleRequest({
             data: products,
             method: "POST"
         }, true)
-        const {error, success} = response;
+        const {error} = response;
 
-        if(error){
-            toast.error(error);
-            return;
-        }
+        handleToast({
+            error,
+            success: "Products added to basket successfully!",
+            isMobile,
+            setModalState
+        })
 
-        toast.success("Products added to basket successfully!");
-
-        if(isMobile){
-            setModalState(null, false)
-        }
     }
 
     const handleFavorite = async() => {
-        inspectingState.item.favorite = !inspectingState.item.favorite;
-        setIsFavorited(inspectingState.item.favorite);
 
-        const item = inspectingState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
+        const newFavoriteValue = !isFavorite;
+        setIsFavorite(newFavoriteValue);
+        setViewState({
+            ...viewState,
+            isFavorite: newFavoriteValue
+        })
+
+        const item = viewState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
 
         const response = await handleRequest({
             method: "PUT",
             data: {...item, 
-                    favorite: inspectingState.item.favorite
+                    favorite: newFavoriteValue
                 }
         })
 
         const {error} = response;
-        if(error){
-            toast.error(error)
-            return;
-        }
-        const object = inspectingState.isRecipe ? "Recipe" : "Dish";
-        toast.success(`${object} is ${inspectingState.item.favorite ? "favorited!" : "unfavorited!"}`);
+
+        const object = viewState.isRecipe ? "Recipe" : "Dish";
+        handleToast({
+            error,
+            success: `${object} is ${newFavoriteValue ? "favorited!" : "unfavorited!"}`,
+        })
+
     }
 
-    const handleScaling = (operation) => {
-        const scaledItem = scaleRecipe(operation, inspectableItem);
-        setInspectableItem(scaledItem);
-        setInspectableState(deriveState(scaledItem));
+    const handleScaling = (scaledIngredients) => {
+        setViewState({
+            ...viewState,
+            item: {
+                ...viewState.item,
+                ingredients: scaledIngredients,
+            },
+            list: scaledIngredients,
+            isScaled: true
+        });
     }
+
+    const resetScaling = () => {
+        setViewState(deriveViewState(itemToInspect, fullRecipes))
+    }
+
+    const scalingFunctions = {
+        setScaledState: handleScaling, 
+        reset: resetScaling, 
+        isScaled: viewState.isScaled
+    };
 
     return(
         <div className={containerStyle}>
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
-                        handleModify={handleModify} setModalState={setModalState}
-                        handleAddCart={handleAddCart} handleFavorite={handleFavorite}
-                        fav={favorited}/>
-            <ItemInfoSection isRecipe={inspectingState.isRecipe} item={inspectingState.item} scale={handleScaling} />
+                        handleModify={handleModify} handleAddCart={handleAddCart} 
+                        handleFavorite={handleFavorite}
+                        fav={isFavorite ? "fav" : ""} fetching={isFetchingData}/>
+            <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={scalingFunctions} />
             <div className={bottomSection}>
-                <ItemListSection isRecipe={inspectingState.isRecipe} list={inspectingState.listOfItem}/>
-
-                {inspectingState.isRecipe && <ItemInstructionSection instructions={inspectingState.item.instructions} />}
+                <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
+                {viewState.isRecipe && <ItemInstructionSection instructions={viewState.item.instructions} />}
             </div>
         </div>
     )
 }
-
-function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handleAddCart, setModalState, fav}){
-
-    return(
-        <span className={iconSpan}>
-                    <FontAwesomeIcon icon={faTrash} 
-                                    className={getIconStyle("del")}
-                                    onClick={handleDelete}/>
-                    <FontAwesomeIcon icon={faPenToSquare} 
-                                    className={getIconStyle()}
-                                    onClick={handleModify} />
-                    <FontAwesomeIcon icon={faStar} 
-                                    className={getIconStyle(fav)}
-                                    onClick={handleFavorite} />
-                    <FontAwesomeIcon icon={faCartPlus} 
-                                     className={getIconStyle()}
-                                     onClick={handleAddCart} />
-                    {isMobile && <SubmitButton use={"close"} func={setModalState}/>}
-                </span>
-    )
-}
-

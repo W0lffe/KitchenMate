@@ -12,11 +12,11 @@ export default function ItemListSection({isRecipe, list, state}){
 
     return(
         <section className={listSection}>
-            <label>{isRecipe ? "Ingredients" : "Components"}</label>
+            <label className="italic font-bold">{isRecipe ? "Ingredients" : "Components"}</label>
                 <ul className={getListStyle(style)}>
                 {gotList.length > 0 ? (gotList.map((listItem, i) => 
                     <li key={i} className="flex w-2/3 justify-between">
-                        <label className="w-30">{listItem.product || listItem.name }</label>
+                        <label className="w-30">{listItem.name || listItem.product}</label>
                         {isRecipe && (
                             <>
                                 <label>{listItem.quantity}</label>

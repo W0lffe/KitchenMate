@@ -3,7 +3,7 @@ import Toolbar from "../Toolbar/Toolbar"
 import { creationHeaderStyle, 
         creationSectionStyle, 
         headingStyle, 
-        listSectionStyle, 
+        sectionStyle, 
         wrapperStyle } from "./wrapperStyles"
 import { useContext } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
@@ -47,11 +47,11 @@ export default function ActiveSectionWrapper(){
 
      return (
             <div className={wrapperStyle}>
-                <section className={listSectionStyle}>
+                <section className={sectionStyle}>
                     <Toolbar />
                     <List />
                 </section>
-                <section className={creationSectionStyle}>
+                <section className={sectionStyle}>
                         <header className={creationHeaderStyle}>
                             {hasContent && <h2 className={headingStyle}>{heading}</h2>}
                         </header>

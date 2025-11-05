@@ -4,9 +4,10 @@ import { useContext,
         useEffect } from "react"
 import { HeaderStyle, 
         logoStyle, 
-        sloganStyle } from "./headerStyles";
+        sloganStyle,
+        homeHeader } from "./headerStyles";
 
-export default function Header(){
+export default function Header({children}){
 
     const {slogan, setSlogan} = useContext(KitchenContext);
 
@@ -14,10 +15,19 @@ export default function Header(){
         setSlogan();
     }, [])
 
+    if(children){
+         return(
+        <header className={homeHeader}>
+           <img src={logo} alt="KitchenMate" className={"object-contain"} />
+            {children}
+        </header>
+    )
+    }
+
     return(
         <header className={HeaderStyle}>
            <img src={logo} alt="KitchenMate" className={logoStyle} />
-            <h2 className={sloganStyle}>{slogan}</h2>
+            <label className={sloganStyle}>{slogan}</label>
         </header>
     )
 }

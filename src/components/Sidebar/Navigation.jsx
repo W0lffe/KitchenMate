@@ -2,28 +2,30 @@ import { KitchenContext } from "../../context/KitchenContext"
 import { useContext } from "react"
 import UserSection from "./UserSection";
 import NaviSection from "./NaviSection";
-import { topStyle } from "./navigationStyles";
+import { getWrapperStyle, topSection, getIconStyle } from "./navigationStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faForward, 
-        faBackward} from "@fortawesome/free-solid-svg-icons";
+import { faForward } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navigation(){
 
-    const {toggleNavigation, navigationIsOpen} = useContext(KitchenContext);
+    const {toggleNavigation, navigationIsOpen, user} = useContext(KitchenContext);
 
+    const userIsLogged = (user) && (user?.id !== null && user?.user !== null);
     const handleClick = () => {
         toggleNavigation();
     }
 
     return(
-        <>
-            <section className={topStyle}>
-                <FontAwesomeIcon icon={navigationIsOpen ? faBackward : faForward} 
-                                className={navigationIsOpen ? "text-gray-400 animate-pulse" : "text-gray-400"}
+        <div className={getWrapperStyle(navigationIsOpen)}>
+            <section className={topSection}>
+                <FontAwesomeIcon icon={faForward} 
+                                className={getIconStyle(navigationIsOpen)}
                                 onClick={handleClick}/>
             </section>
             <UserSection />
-            <NaviSection />
-        </>
+            {userIsLogged && 
+                <NaviSection />
+            }
+        </div>
     )
 }

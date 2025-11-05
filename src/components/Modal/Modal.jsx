@@ -3,27 +3,40 @@ import { useContext,
         useRef } from "react";
 import { createPortal } from "react-dom";
 import { KitchenContext } from "../../context/KitchenContext";
-import LoginSignupForm from "../LoginSignupForm/LoginSignupForm";
-import ContentWrapper from "../ContentWrapper/ContentWrapper";
+import ContentModal from "./ContentModal";
+import ConfirmModal from "./ConfirmModal";
 import { Toaster } from "react-hot-toast";
 
 export default function Modal(){
 
-    const {activeModal, modalIsOpen, editStatus} = useContext(KitchenContext)
+    const {activeModal, modalIsOpen, editStatus, setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes, isFetchingData} = useContext(KitchenContext)
+
+    const {section, toDelete, ingredients} = activeModal;
+    const useConfirm = (toDelete || ingredients) !== undefined;
     const modal = useRef()
+
+    const contextProps = {
+        setModalState,
+        handleRequest, 
+        setActiveDish, 
+        setActiveRecipe,
+        isMobile,
+        fullDishes,
+        isFetchingData
+    }
 
     useEffect(() => {
         modalIsOpen ? modal.current.showModal() : modal.current.close();
     }, [modalIsOpen])
 
-    const isLoginSignup = ["signup", "login"].includes(activeModal);
-    const showContent = ["recipes", "dishes"].includes(activeModal) || editStatus?.status;
-   
     return createPortal(
             <dialog ref={modal} className="backdrop:bg-gray-900/90">
-                {modalIsOpen ? <Toaster /> : null}
-                {isLoginSignup ? <LoginSignupForm /> : null}
-                {showContent ? <ContentWrapper /> : null}
+                {modalIsOpen && <Toaster />}
+                {!useConfirm ? (
+                    <ContentModal section={section} editStatus={editStatus}/>
+                ) : (
+                    <ConfirmModal props={activeModal} contextProps={contextProps}/>
+                )}
             </dialog>,
             document.getElementById("modal")
     )

@@ -15,7 +15,6 @@ export default function MainContainer(){
         if(isMobile){
             setIsMobile(isMobile)
         }
-        console.log("mobile: ", isMobile)
     }, [])
 
     return(

@@ -30,8 +30,10 @@ firebase.json
 *.sln
 *.sw?
 
-# Other
+# Backend
 backend/api.js
-backend/config.ini
+backend/backend/config/config.ini
+backend/backend/config/config_puv.ini
+backend/backend/data/*
 
 

@@ -1,20 +1,19 @@
 import { useContext, 
         useActionState } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
-import SubmitButton from "../Buttons/SubmitButton";
-import { userAPI } from "../../api/http";
+import Button from "../Buttons/Button";
+import { userAPI, login } from "../../api/http";
 import { containerStyle, 
         headerStyle, 
-        sectionStyle,
         headingStyle,
         formStyle,
         labelStyle,
         inputStyle} from "./loginStyles";
-import toast from "react-hot-toast";
+import { handleToast } from "../../util/toast";
 
 export default function LoginSignupForm(){
     const {activeModal, setModalState, setUser} = useContext(KitchenContext);
-    const isLogin = activeModal === "login";
+    const isLogin = activeModal.section === "login";
     const userHeading = isLogin ? "Username:" : "Username (1-16 characters):";
     const passHeading = isLogin ? "Password:" : "Password (10-16 characters):";
 
@@ -27,36 +26,36 @@ export default function LoginSignupForm(){
             passwd: pass
         }
 
-        const response = await userAPI({user, method: isLogin ? "login" : "new"});
-        const {error, success, id} = response;
-     
-        if(error){
-            toast.error(error);
-            return {
-                validInputs: { name }
-            }
-        }
+        const response = await userAPI({
+            method: "POST",
+            data: {user, operation: isLogin ? "login" : "new"},
+        });
 
-        toast.success(success);
-        setTimeout(() => {
-            setModalState(null);
-            if(isLogin){
-                setUser({name, id});
-            }
-        }, 1250);
+        const {error, success } = response;
+
+        handleToast({
+            error,
+            success,
+            setModalState,
+        })
+
+        if(isLogin && success){
+            const {user, error} = await login();
+            if(user) setUser(user);
+        }
 
         return {validInputs: { name }};
     }
 
-    const [formState, formAction] = useActionState(loginSignup , {validInputs: null})
+    const [formState, formAction] = useActionState(loginSignup , {validInputs: null});
 
     return(
         <div className={containerStyle}>
             <header className={headerStyle}>
-                <SubmitButton use={"close"} func={setModalState} />
-            </header>
-            <section className={sectionStyle}>
                 <h3 className={headingStyle}>{isLogin ? "LOGIN" : "SIGNUP"}</h3>
+                <Button use={"close"} />
+            </header>
+            <section>
                 <form action={formAction} className={formStyle}>
                     <label className={labelStyle}>{userHeading}</label>
                     <input type="text" 
@@ -71,7 +70,7 @@ export default function LoginSignupForm(){
                             required
                             placeholder="Enter password" 
                             className={inputStyle} />
-                    <SubmitButton use={"login"}/>
+                    <Button use={"login"}/>
                 </form>
             </section>
         </div>

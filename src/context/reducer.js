@@ -1,5 +1,5 @@
 export const utilityReducer = (state, action) => {
-    console.log("UTILITY_DEBUG:", action.type, action.payload)
+    //console.log("UTILITY_DEBUG:", action.type, action.payload)
     switch(action.type){
         case "SET_SLOGAN":
             return{
@@ -21,7 +21,7 @@ export const utilityReducer = (state, action) => {
         case "SET_MODAL_STATE":
             return {
                 ...state, 
-                activeModal: action.payload.section,
+                activeModal: action.payload.activeModal,
                 modalIsOpen: action.payload.modalState
             }
         case "SET_MOBILE":
@@ -34,7 +34,7 @@ export const utilityReducer = (state, action) => {
 }
 
 export const kitchenReducer = (state, action) => {
-    console.log("DEBUG: ", action.type, action.payload)
+    //console.log("DEBUG: ", action.type, action.payload)
     switch(action.type){
         case "SET_ACTIVE_RECIPE":
             return {

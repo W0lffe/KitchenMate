@@ -1,12 +1,12 @@
 import FormList from "../FormList/FormList"
-import SubmitButton from "../Buttons/SubmitButton";
-import Errors from "../Error/Errors"
+import Button from "../Buttons/Button";
 import { useContext, 
         useActionState } from "react"
 import { KitchenContext } from "../../context/KitchenContext";
 import { combineProductData } from "../../util/util";
-import { validateAll } from "../../util/validation";
-import toast from "react-hot-toast";
+import { validateProducts } from "../../util/validation";
+import { handleToast } from "../../util/toast";
+import handleErrorsToast from "../Error/Errors";
 
 const getFormValues = (formData) => {
     const products = formData.getAll("product");
@@ -45,12 +45,10 @@ export default function ManualBasketEntry(){
                 itemIds: availableBasket.map((product) => product.id)
             } : {validInputs: null};
 
-    console.log(initialState)
 
     const manualEntry = async(prevFormState, formData) => {
-        const {products, quantity, unit} = getFormValues(formData)
-        const errors = validateAll(null, null, null, null, 
-                                    products, quantity, unit, null);
+        const {products, quantity, unit} = getFormValues(formData);
+        const errors = validateProducts(products, quantity, unit);
         
         const combinedProducts = combineProductData(products, quantity, unit);
         
@@ -58,16 +56,12 @@ export default function ManualBasketEntry(){
                 products,
                 quantity,
                 unit
-        }
+        };
         
         if(errors.length > 0){
-            toast.error((t) => (
-                 <Errors errors={errors}/>
-            ), {duration: 5000});
-            return {
-                validInputs
-            }
-        }
+            handleErrorsToast(errors);
+            return { validInputs };
+        };
 
         const productData = !isEditing ? combinedProducts :
                                         mapProductData({
@@ -79,42 +73,35 @@ export default function ManualBasketEntry(){
         const response = await handleRequest({
                 data: productData,
                 method: isEditing ? "PUT" : "POST"
-        })
+        });
         const {error, success} = response;
-        
-        if(error){
-            toast.error(error);
-            return {validInputs}
-        }
 
         const successToast =  `Product${combinedProducts.length > 1 ? "s" : ""} added to basket successfully!`;
-        toast.success(isEditing ? success : successToast);
 
-        setTimeout(() => {
-            setEntryStatus(null);
-            if(isMobile){
-                setModalState(null);
-            }
-        }, 1250);
+        handleToast({
+            error,
+            success: isEditing ? success : successToast,
+            setEntryStatus,
+            setModalState,
+        })
+
         return {validInputs}
     }
 
     const [formState, formAction] = useActionState(manualEntry, initialState);
 
     return(
-        <div className="text-white w-full p-2">
-            {isMobile ? (
-                <section className="flex flex-col items-center mb-5 gap-2">
-                    <header className="flex w-full justify-end">
-                        <SubmitButton use={"close"} func={setModalState} />
-                    </header>
-                    <h3>{heading}</h3>
+        <div className={`text-white`}>
+            {isMobile && (
+                <section className="flex p-2">
+                    <h3 className="w-full text-center text-lg italic">{heading}</h3>
+                    <Button use={"close"} />
                 </section>
-            ) : null}
-            <form action={formAction} className="flex flex-col items-center gap-5">
+            )}
+            <form action={formAction} className={`flex flex-col`}>
                 <FormList use={use} state={formState}/>
-                <footer>
-                    <SubmitButton use={"basket"}/>
+                <footer className={`flex flex-row w-full items-center justify-center p-2`}>
+                    <Button use={"basket"}/>
                 </footer>
             </form>
         </div>

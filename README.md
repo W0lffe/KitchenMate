@@ -1,244 +1,83 @@
-# KitchenMate
+# 🧑‍🍳 KitchenMate
 
-## Goal
-To create a simple program to create and manage recipies, and create dishes out of those components. Also to be able to create a shopping list based on all the products and their quantities in those recipes/dishes.
+KitchenMate is a smart food service solution designed for home cooks and professionals who want to make life easier. It simplifies meal preparation through technology, offering convenient cooking support that saves time while delivering delicious results.
 
-## State of Project
+## 🚀 Features
+- ✏️ Full CRUD for meals and lists
+    - Recipes
+    - Dishes
+    - Basket
 
-Working version is live on Firebase. All initially planned features have been implemented and are currently being refined for improvements. The app has a stable architecture and consistent styling, functioning properly on both large screens and mobile devices (with further styling adjustments planned).
+- 🧾 Recipe details page with ingredients and cooking steps
 
-It includes basic login functionality and core CRUD operations for recipes, dishes, and basket items. State management is handled via React Context, with reducers, states, and refs for efficient control. The frontend communicates with the backend through a fully functional REST API, which has been tested via Postman and is currently running locally on my server for testing purposes.
+- 👥 Session-based user authentication
 
-### Planned Stages of Development
+- 🖼️ Image uploads for dishes
 
-#### Stage 1 **COMPLETED**
-    App Structure & Basic Components
+- 🏠 React Router-powered homepage and application
 
-- Front-End
-    - [x] Set up basic structure and styled view for the application
-    - [x] Functionality to create user
-- State Management
-    - [x] Set up Context 
-    - [x] Set up Utility Reducer and its actions
-- Initial API Integration
-    - [x] Creating a new user
-    - [x] Authenticating user
+- 📱 Responsive design – optimized for desktop and mobile users.
 
-#### Stage 2 **COMPLETED**
-    Recipe & Dish Management
+- 🚪 Protected data – only logged-in users can access their own data.
 
-- Front-End
-    - [x] Components and functionalities for
-       - [x] Create, Read, Update
-            - [x] Recipe 
-            - [x] Basket
-            - [x] Dish
-- State Management
-    - [x] Set up RecipeReducer
-    - [x] Set up BasketReducer
-    - [x] Set up DishReducer
-- API Integration
-    - [x] Implement CRUD
-        - [x] Fetch
-        - [x] Post
-        - [x] Modify
-        - [x] Delete
+## 🧠 Tech Stack
 
-#### Stage 3 **COMPLETED**
-    Backend Functionality
-- [x] GET
-    - [x] Basket
-    - [x] Recipes
-    - [x] Dishes
-    - [x] User Authentication
-- [x] POST
-    - [x] Basket
-    - [x] Recipes
-    - [x] Dishes
-    - [x] New User
-- [x] DELETE
-    - [x] Basket
-    - [x] Recipes
-    - [x] Dishes
-- [x] PUT
-    - [x] Basket
-    - [x] Recipes
-    - [x] Dishes
+- Frontend: ReactJS, React Router, TailwindCSS
+- Backend: PHP (due to restrictions on server)
+- Auth: Session-based login system built with PHP (no third-party auth provider)
+- Hosting: Firebase Hosting
 
-#### Stage 4 
-    Final Integration & Testing
-- Front-End
-    - [x] Connecting front-end to backend
-    - [ ] Optimizing styling 
-        - **POSTPONED**
-    - [x] Error Handling 
-    - [x] Polishing
-- Testing
-    - [ ] Testing on different devices
-        - **POSTPONED**
-    - [x] Bug fixes
-    - [ ] Testing of components 
-        - **POSTPONED**
-- Deployment
-    - [x] Deploying first version to Firebase
+## 🧩 Future Plans
+
+1. Refactoring & Improvements
+    - [ ] Reconstruct app from mostly conditional rendering to use React Router pages
+    - [ ] Testing (Jest / Vitest)
+2. Documentation
+    - [ ] JSDoc documentation
+3. Creation Improvements
+    - [ ] New categories for recipes
+    - [ ] \(Optional) Temperature inputs
+    - [ ] Time tracking per instruction step
+    - [ ] Rework product and instruction adding/removing in creation 
+    - [ ] Tags
+4. Inspection Improvements
+    - [ ] Show recipes from dish inspection
+5. Cooking Mode
+    - [ ] Cooking Mode view
+        - Opens up from recipe inspection
+        - Requires time tracking for instruction steps
+        - Includes timer, possibility to set steps done
+6. Artificial Intelligence
+    - [ ] Solution to ingredient/product unit mismatches when adding to basket
+    - [ ] Generate recipes based on wanted ingredients
+    - [ ] Nutrition estimates
+7. Backend & Database
+    - [ ] Convert current JSON data to MySQL/SQLite
+    - [ ] Python backend
+    - [ ] Data export to Excel format or PDF
+8. User Features
+    - [ ] Community shared recipes (public)
+    - [ ] User profile
+    - [ ] Profile-based user experience (home cook vs professional)
+9. Authentication & Security
+    - [ ] Role-based permissions (admin, user)
+    - [ ] Password reset and account recovery
+
+## 💡 Why I Built This
+
+KitchenMate started as thought of managing recipes, creating dishes/meals and generating a shopping basket based on those. The app is still in development and will grow in to a full-featured cooking companion
+
+#### What is already done?
+
+Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/StageFive/docs/README_old.md)
 
 
-#### Stage 5
-    Implementing and testing new visions for app
-- Front-End
-    - [ ] Sections for creation modals
-        - NOTE: Idea is to traverse through sections like Basic Info -> Ingredients -> Steps etc. 
-                Instead of showing all things at once.
-        - Work In Progress, tab system works for RecipeCreation. Next up DishCreation.
-    - [ ] Possibility to show whole recipe in dish creation instead of just recipe name
-    - [ ] Recipe scalability feature
-         - Work In Progress, currently only scales on the same output f.ex. portions -> portions, GN -> GN
-    - [ ] Public recipe bank, visible for every user
-    - [ ] Creating a homepage
-    - [ ] Dish creation image preview
-    - [x] Implement useReducer for local data updating
-    - [ ] Delete confirmation
-    - [ ] Checking product duplicates/units
-    - [x] Toasts!
-    - [ ] Real user authenticating, tokens
-    - [ ] Modular function for handleRequest with toasts, now its repeatitive in multiple components
+#### Known Issues
 
-# Backlog
-## Front-end
+1. On some browsers, the site may fail to load or behave unexpectedly due to issues with session authentication handling.  
+   - This can occur if cookies or session data are blocked, expired, or not set correctly.  
+   - Refreshing the page or clearing the browser’s cache and cookies sometimes resolves the issue.  
 
-### Components
 
-- [x] Header
 
-- [x] Login/Signup
-
-- [x] Modal
-
-- [x] Navigation
-    - [x] NaviSection
-    - [x] UserSection
-
-- [x] MainContainer
-
-- [x] List(wrapper for changing content between basketlist, recipelist, dishlist)
-    - [x] Recipes
-    - [x] Dishes
-    - [x] Basket
-    - [x] Toolbar (sorting and filtering)
-
-- [x] RecipeCreation
-    - [x] InfoSection
-    - [x] IngredientForm / InstructionsForm
-
-- [x] Product
-
-- [x] Instruction
-
-- [x] Recipe/Dish Card (wrapper)
-
-- [x] DishCreation
-
-### State Management
-
-#### Context
-
-- [x] Implement Context for the app
-
-#### Hooks
-
-- [x] Custom Hook: useIsMobile, to detect if user device is mobile
-
-#### UtilityReducer
-
-- [x] "SET_USER"
-
-- [x] "SET_MODAL_STATE"
-
-- [x] "SET_ACTIVE_SECTION"
-
-- [x] "SET_NAVIGATION_STATE"
-
-- [x] "SET_SLOGAN"
-
-- [x] "SET_MOBILE" 
-
-#### RecipeReducer actions
-
-- [x] "SET_RECIPES"
-
-- [x] "ADD_RECIPE"
-
-- [x] "DELETE_RECIPE"
-
-- [x] "SET_ACTIVE_RECIPE"
-
-- [x] "MODIFY_RECIPE"
-
-#### BasketReducer actions
-
-- [x] "SET_BASKET"
-
-- [x] "ADD_PRODUCTS"
-
-- [X] "DELETE_PRODUCT"
-
-- [x] "MODIFY_PRODUCT"
-
-#### DishReducer actions
-
-- [x] "SET_DISHES"
-
-- [x] "SET_ACTIVE_DISH"
-
-- [X] "ADD_DISH"
-
-- [x] "DELETE_DISH"
-
-- [x] "MODIFY_DISH"
-
-### API Integration
-
-- [x] fetchData
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
-- [x] postData
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
-- [x] modifyData
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
-- [x] deleteData
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
-
-- [x] authenticateUser
-- [x] createNewUser
-
-- [x] Connect front-end to backend
-
-## Backend
-
-### Functionality
-
-- [x] GET
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
-- [x] POST
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
-    - [x] userAPI (handles login and signup)
-- [x] DELETE
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
-- [x] PUT
-    - [x] basket
-    - [x] recipes
-    - [x] dishes
 

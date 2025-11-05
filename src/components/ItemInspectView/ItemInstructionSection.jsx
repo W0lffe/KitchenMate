@@ -4,7 +4,7 @@ export default function ItemInstructionSection({instructions}){
 
     return(
         <section className={listSection}>
-                        <label>Instructions</label>
+                        <label className="italic font-bold">Instructions</label>
                         <ul className={getListStyle()}>
                             {instructions.length > 0 ? (
                                 instructions.map((step, i) => 
