@@ -1,6 +1,6 @@
 # 🧑‍🍳 KitchenMate
 
-KitchenMate is a smart food service solution designed for home cooks and professionals who want to make life easier. It simplifies meal preparation through technology, offering convenient cooking support that saves time while delivering delicious results.
+[KitchenMate](https://kitchenmate-efe45.web.app/) is a smart food service solution designed for home cooks and professionals who want to make life easier. It simplifies meal preparation through technology, offering convenient cooking support that saves time while delivering delicious results.
 
 ## 🚀 Features
 - ✏️ Full CRUD for meals and lists
