@@ -4,15 +4,25 @@ import { useContext,
         useEffect } from "react"
 import { HeaderStyle, 
         logoStyle, 
-        sloganStyle } from "./headerStyles";
+        sloganStyle,
+        homeHeader } from "./headerStyles";
 
-export default function Header(){
+export default function Header({children}){
 
     const {slogan, setSlogan} = useContext(KitchenContext);
 
     useEffect(() => {
         setSlogan();
     }, [])
+
+    if(children){
+         return(
+        <header className={homeHeader}>
+           <img src={logo} alt="KitchenMate" className={"object-contain"} />
+            {children}
+        </header>
+    )
+    }
 
     return(
         <header className={HeaderStyle}>

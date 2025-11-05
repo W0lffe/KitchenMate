@@ -6,3 +6,5 @@ export const HeaderStyle = `flex flex-col w-full items-center justify-center
 export const logoStyle = `w-md size-15`;
 
 export const sloganStyle = `text-[16px] w-3/4 break-words md:text-xl mb-1 italic md:w-fit`;
+
+export const homeHeader = `w-full md:w-3/4 h-fit flex flex-col items-center justify-center snap-center`;

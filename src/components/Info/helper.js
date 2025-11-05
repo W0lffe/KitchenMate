@@ -18,7 +18,7 @@ const headers = ["KitchenMate", "Recipes", "Dishes", "Basket"];
 const briefs = [];
 
 briefs.push(`KitchenMate is a smart food service solution designed for home cooks and professionals who want to make life easier. 
-            It simplifies meal preparation through intelligent technology, offering convenient, high-quality cooking support that saves time while delivering delicious results.`);
+            It simplifies meal preparation through technology, offering convenient, high-quality cooking support that saves time while delivering delicious results.`);
 
 briefs.push(`Recipe hub feature displays all your creations in organized, categorized lists — making it easy to browse, manage, and find the right recipe whenever you need it.`);
 
@@ -38,10 +38,7 @@ export const setupInfo = () => {
         let header = null;
         let desktopImage = null;
 
-        if(i === 0){
-            header = headers[i];
-        }
-        else if(i === 1){
+        if(i === 1){
             header = headers[i]
             desktopImage = desktop[i-1];
         }
