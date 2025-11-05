@@ -30,7 +30,7 @@ export default function Photo({ img, disable }) {
         }
 
         if (typeof img === "string") {
-            preview = `${BASE_URL}/index.php?user=${user.id}&endpoint=image&image=${img}`;
+            preview = `${BASE_URL}/index.php?endpoint=image&image=${img}`;
         }
 
         //console.log(preview)

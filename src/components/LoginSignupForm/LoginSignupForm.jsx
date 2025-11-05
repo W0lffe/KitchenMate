@@ -2,7 +2,7 @@ import { useContext,
         useActionState } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import Button from "../Buttons/Button";
-import { userAPI } from "../../api/http";
+import { userAPI, login } from "../../api/http";
 import { containerStyle, 
         headerStyle, 
         headingStyle,
@@ -27,12 +27,11 @@ export default function LoginSignupForm(){
         }
 
         const response = await userAPI({
-            user: true,
             method: "POST",
             data: {user, operation: isLogin ? "login" : "new"},
         });
 
-        const {error, success, id} = response;
+        const {error, success } = response;
 
         handleToast({
             error,
@@ -41,7 +40,8 @@ export default function LoginSignupForm(){
         })
 
         if(isLogin && success){
-            setUser({name, id});
+            const {user, error} = await login();
+            if(user) setUser(user);
         }
 
         return {validInputs: { name }};

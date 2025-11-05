@@ -7,39 +7,33 @@ function parseRequest(){
     $contentType = $_SERVER["CONTENT_TYPE"] ?? "";
 
     if($method === "GET"){
-        $user = $_GET["user"] ?? null;
         $endpoint = $_GET["endpoint"] ?? null;
-        $resource = [
-            "user" => $user,
-            "endpoint" => $endpoint
-        ];
+        $resource = [ "endpoint" => $endpoint ];
         if($_GET["image"] !== null){
             $resource["image"] = $_GET["image"];
         }
     }
     else if(stripos($contentType, "application/json") !== false){
         $input = json_decode(file_get_contents("php://input"), true);
-        $user = $input["user"] ?? null;
         $endpoint = $input["endpoint"] ?? null;
         $resource = [
-                "user" => $user,
                 "endpoint" => $endpoint,
                 "input" => $input["data"]
         ];
+
     }
     else if(stripos($contentType, "multipart/form-data") !== false){
-        $user = $_POST["user"] ?? null;
         $endpoint = $_POST["endpoint"] ?? null;
         $isUpdate = isset($_POST["update"]) && $_POST["update"] === "true";
         $data = json_decode($_POST["data"], true) ?? null;
-            
+        /*    
         error_log("POST KEYS:" . implode(", ", array_keys($_POST)));
         error_log("POST DATA:\n" . print_r($_POST, true));
         error_log("FILE KEYS:" . implode(",", array_keys($_FILES)));
         error_log("FILE \n" . print_R($_FILES, true));
-        
+        */
         if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
-            $uploadDir = getEndpointPath($user, "uploads");
+            $uploadDir = getEndpointPath(authSession(), "uploads");
 
         // Create upload directory if missing
             if (!is_dir($uploadDir)) {
@@ -61,7 +55,6 @@ function parseRequest(){
         }
         
         $resource = [
-            "user" => $user,
             "endpoint" => $endpoint,
             "input" => $data,
             "isUpdate" => $isUpdate
@@ -69,7 +62,7 @@ function parseRequest(){
     };
         
     //echo json_encode(["resources in requesthandler" => $resource]);
-    if(!isset($resource["user"]) || !isset($resource["endpoint"])){
+    if(!isset($resource["endpoint"])){
         echo json_encode(["error" => "Critical error with fetch!"]);
         exit;
     };

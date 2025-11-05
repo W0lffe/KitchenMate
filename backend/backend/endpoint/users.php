@@ -9,7 +9,7 @@ function handleRequest($resource){
 
     if(isset($data) && isset($endpoint)){
 
-        $path = getEndpointPath($resource["user"], $resource["endpoint"]);
+        $path = getEndpointPath(null, $resource["endpoint"]);
 
         //echo json_encode(["got path" => $path]);
 
@@ -102,13 +102,24 @@ function authUser($resource){
 
     $userFile = $resource["userFile"];
     $user = $resource["user"];
-
-    $users = json_decode(file_get_contents($userFile), true);
     
+    session_set_cookie_params([
+        'lifetime' => 3600,
+        'path' => '/',
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'None'
+    ]);
+
+    session_start();
+    
+    $users = json_decode(file_get_contents($userFile), true);
+
     foreach($users as $existUser){
         if($existUser["user"] === $user["user"]){
             if(password_verify($user["passwd"], $existUser["passwd"])){
-                echo json_encode(["success" => "User authenticated!", "id" => $existUser["id"]]);
+                $_SESSION["auth_user"] = $existUser["id"];
+                echo json_encode(["success" => "User authenticated!"]);
                 exit;
             }
             else{

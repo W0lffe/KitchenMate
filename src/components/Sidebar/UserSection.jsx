@@ -13,11 +13,12 @@ import {
 import { naviButtonStyle } from "../Buttons/buttonStyles";
 import defaultUser from "../../assets/default_user.png"
 import { handleToast } from "../../util/toast";
+import { logout } from "../../api/http";
 
 export default function UserSection() {
 
         const { navigationIsOpen, user, setModalState, setUser, isOnline } = useContext(KitchenContext);
-        const userIsLogged = user.name !== undefined && user.id !== null;
+        const userIsLogged = (user !== null) && (user?.user !== null && user?.id !== null);
 
         const handleUserClick = (section) => {
                 if (isOnline) {
@@ -27,13 +28,18 @@ export default function UserSection() {
                 }
         };
 
-        const handleLogout = () => { setUser({ id: 0 }) };
+        const handleLogout = async () => { 
+                
+                const {success} = await logout();
+                setUser(null);
+                handleToast({success});
+        };
 
         return (
                 <section className={getSectionStyle(navigationIsOpen)}>
                         {userIsLogged ? (
                                 <>
-                                        <p>Welcome back, {user.name}!</p>
+                                        <p>Welcome back, {user.user}!</p>
                                         <img alt="IMAGE OF USER" src={user.img || defaultUser} className="size-30" />
                                         <button className={naviButtonStyle} onClick={handleLogout}>
                                                 Logout

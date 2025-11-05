@@ -2,8 +2,9 @@
 
 function handleRequest($resource){
 
+$user = authSession();
 $api = $resource["endpoint"];
-$paths = getEndpointPath($resource["user"], $api);
+$paths = getEndpointPath($user, $api);
 
 //echo json_encode(["Dishes paths" => $paths]);
 

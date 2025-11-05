@@ -2,8 +2,9 @@
 
 function handleRequest($resource){
 
+$user = authSession();
 $api = $resource["endpoint"];
-$paths = getEndpointPath($resource["user"], $api);
+$paths = getEndpointPath($user, $api);
 
 //echo json_encode(["Basket paths:" => $paths]);
 
@@ -36,7 +37,7 @@ if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
     }
 }
 else{
-    echo json_encode(["error" => "Directory or file does not exist!", "Requested:" => [$resource["user"], $api]]);
+    echo json_encode(["error" => "Directory or file does not exist!", "Requested:" => [$user, $api]]);
 }
 }
 ?>

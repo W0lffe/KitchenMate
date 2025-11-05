@@ -2,10 +2,8 @@
 
 function handleRequest($resource){
 
-    $endpoint = $resource["endpoint"];
-    $user = $resource["user"];
+    $user = authSession();
     $image = $resource["image"];
-
     $uploadDir = getEndpointPath($user, "uploads");
 
     $imagePath = $uploadDir . $image;

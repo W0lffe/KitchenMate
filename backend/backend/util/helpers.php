@@ -1,5 +1,29 @@
 <?php
 
+function authSession(){
+    if (!isset($_COOKIE["PHPSESSID"])) {
+        exit;
+    }
+
+    session_id($_COOKIE["PHPSESSID"]);
+    session_set_cookie_params([
+        'lifetime' => 3600,
+        'path' => '/',
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'None'
+    ]);
+
+    session_start();
+
+    if(!isset($_SESSION["auth_user"])){
+        echo json_encode(["error" => "Session not found."]);
+        exit;
+    }
+
+    return (string)$_SESSION["auth_user"];
+}
+
 function initDataDir(){
 
     //echo getcwd();

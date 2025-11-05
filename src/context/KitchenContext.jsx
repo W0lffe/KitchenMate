@@ -9,7 +9,8 @@ import { utilityReducer,
         kitchenReducer } from "./reducer.js";
 import { basketAPI, 
         dishesAPI, 
-        recipesAPI } from "../api/http.js"
+        recipesAPI, 
+        login } from "../api/http.js"
 import { filter, 
         sort } from "../util/filterSort.js";
 import { handleToast } from "../util/toast.js";
@@ -61,9 +62,7 @@ export default function KitchenContextProvider({children}){
         slogan: "",
         navigationIsOpen: true,
         activeSection: "",
-        user: {
-            id: 0
-        },
+        user: null,
         activeModal: {},
         modalIsOpen: false,
         isMobile: false,
@@ -95,16 +94,25 @@ export default function KitchenContextProvider({children}){
     };
 
     useEffect(() => {
-        if(utilState.user.id !== null){
-            initializeData();
-        }
+        const run = async () => {
 
-        if(kitchenState.activeRecipe){
-            setActiveRecipe(null)
+            if(!utilState.user){
+                const {user, error} = await login();
+                if(user) setUser(user);
+            }
+
+            if(utilState.user && utilState.user?.id !== null){
+                initializeData();
+            }
+
+            if(kitchenState.activeRecipe){
+                setActiveRecipe(null)
+            }
+            if(kitchenState.activeDish){
+                setActiveDish(null)
+            }
         }
-        if(kitchenState.activeDish){
-            setActiveDish(null)
-        }
+        run();
       
     }, [utilState.user])
 
@@ -119,7 +127,6 @@ export default function KitchenContextProvider({children}){
         const {data, method} = dataToHandle;
         const body = {
                 data,
-                user: utilState.user.id,
                 method
             }
 
@@ -162,9 +169,8 @@ export default function KitchenContextProvider({children}){
     }
 
     const initializeData = () => {
-
-        setAvailableList(recipesStateHandler)
-        setAvailableList(dishesStateHandler)
+        setAvailableList(recipesStateHandler);
+        setAvailableList(dishesStateHandler);
         setAvailableList(basketStateHandler);
     }
 
@@ -204,26 +210,18 @@ export default function KitchenContextProvider({children}){
     }
     const setActiveSection = (section) => {
 
-        if(!isOnline){
-            handleToast({
-                error: "Error with connection to server."
-            });
-            return;
-        }
-
         if(section === utilState.activeSection){
-            section = undefined;
+            section = null;
         }
 
         resetToUnfiltered();
 
         if(section !== null){
-           setActiveRecipe(null)
-           setActiveDish(null)
-           setEntryStatus(null)
+            setActiveRecipe(null)
+            setActiveDish(null)
+            setEntryStatus(null)
+            toggleNavigation();
         }
-
-        toggleNavigation();
 
         utilDispatch({
             type: "SET_ACTIVE_SECTION",
@@ -235,6 +233,7 @@ export default function KitchenContextProvider({children}){
             type: "SET_USER",
             payload: user
         })
+        setActiveSection(null);
     }
     const setModalState = (activeModal, modalState) => {
         utilDispatch({
@@ -250,7 +249,7 @@ export default function KitchenContextProvider({children}){
 
         const {type, api, ref} = params;
 
-        if(utilState.user === null){
+        if(!utilState.user){
             kitchenDispatch({
                 type,
                 payload: []
@@ -266,7 +265,6 @@ export default function KitchenContextProvider({children}){
 
         if(error){
             handleToast({error});
-            setIsOnline(false);
             setIsFetchingData(false);
             return;
         }

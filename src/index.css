@@ -10,7 +10,6 @@ html {
   background-size: cover;
   background-position: 20%;
   color: white;
-  overscroll-behavior: contain;
 }
 
 @theme {

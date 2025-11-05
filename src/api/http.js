@@ -1,4 +1,5 @@
 import { BASE_URL } from "../../backend/api";
+import {createRequestPayload} from "./helper";
 
 export const userAPI = async (data) => fetchAPI({...data, endpoint: "users"});
 export const basketAPI = async (data) => fetchAPI({ ...data, endpoint: "basket" });
@@ -9,10 +10,10 @@ const fetchAPI = async (params) => {
 
     const payload = createRequestPayload(params);
 
-    const { user, method = "GET", endpoint } = params;
+    const { method = "GET", endpoint } = params;
 
     const fetchUrl = method === "GET"
-        ? `${BASE_URL}/index.php?user=${encodeURIComponent(user)}&endpoint=${encodeURIComponent(endpoint)}`
+        ? `${BASE_URL}/index.php?endpoint=${encodeURIComponent(endpoint)}`
         : `${BASE_URL}/index.php`;
 
     try {
@@ -31,58 +32,25 @@ const fetchAPI = async (params) => {
 
 }
 
-const createRequestPayload = (params) => {
+export const login = async () => {
 
-    const { user, data, method = "GET", endpoint } = params;
-    
-    if(method === "GET"){
-        return {method, /* credentials: 'include' */ };
-    }
+    const response = await fetch(`${BASE_URL}/login.php`, {
+        method: "GET",
+        credentials: "include"
+    })
 
-    const hasImage = (data?.image instanceof File && data?.image.size > 0);
-
-    if(hasImage){
-        const formData = new FormData();
-        formData.append("image", data.image);
-        formData.append("user", user);
-        formData.append("endpoint", endpoint);
-
-        if(method === "PUT"){
-            formData.append("update", "true");
-        }
-
-        const dishData = {};
-        for (const key in data) {
-            if (key !== "image") {
-                if (key !== "image"){
-                    //console.log(data[key]);
-                    dishData[key] = data[key];
-                    //console.log(dishData);
-                }
-            }
-        }
-        
-        formData.append("data",JSON.stringify(dishData));
-
-        //console.log([...formData.values()]);
-
-        return {method: "POST", /* credentials: 'include', */ body: formData};
-    }
-    else{
-        const jsonPayload = {
-            method,
-            /* credentials: 'include', */
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                user,
-                endpoint,
-                data
-            })
-       };
-
-       return jsonPayload;
-    }
+    const resData = await response.json();
+    return resData;
 }
+
+export const logout = async () => {
+
+    const response = await fetch(`${BASE_URL}/logout.php`, {
+        credentials: "include"
+    })
+
+    const resData = await response.json();
+    return resData;
+}
+
 

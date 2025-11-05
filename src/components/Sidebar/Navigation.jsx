@@ -8,8 +8,9 @@ import { faForward } from "@fortawesome/free-solid-svg-icons";
 
 export default function Navigation(){
 
-    const {toggleNavigation, navigationIsOpen} = useContext(KitchenContext);
+    const {toggleNavigation, navigationIsOpen, user} = useContext(KitchenContext);
 
+    const userIsLogged = (user) && (user?.id !== null && user?.user !== null);
     const handleClick = () => {
         toggleNavigation();
     }
@@ -22,7 +23,9 @@ export default function Navigation(){
                                 onClick={handleClick}/>
             </section>
             <UserSection />
-            <NaviSection />
+            {userIsLogged && 
+                <NaviSection />
+            }
         </div>
     )
 }
