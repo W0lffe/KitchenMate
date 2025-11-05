@@ -69,7 +69,7 @@ KitchenMate started as thought of managing recipes, creating dishes/meals and ge
 
 #### What is already done?
 
-Check out the [old readme]()
+Check out the [old readme](https://github.com/W0lffe/KitchenMate/blob/StageFive/docs/README_old.md)
 
 
 #### Known Issues
