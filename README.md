@@ -22,10 +22,10 @@ KitchenMate is a smart food service solution designed for home cooks and profess
 
 ## 🧠 Tech Stack
 
-Frontend: ReactJS, React Router, TailwindCSS
-Backend: PHP (due to restrictions on server)
-Auth: Session-based login system built with PHP (no third-party auth provider)
-Hosting: Firebase Hosting
+- Frontend: ReactJS, React Router, TailwindCSS
+- Backend: PHP (due to restrictions on server)
+- Auth: Session-based login system built with PHP (no third-party auth provider)
+- Hosting: Firebase Hosting
 
 ## 🧩 Future Plans
 
