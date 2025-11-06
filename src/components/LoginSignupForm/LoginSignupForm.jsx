@@ -31,15 +31,17 @@ export default function LoginSignupForm(){
             data: {user, operation: isLogin ? "login" : "new"},
         });
 
-        const {error, success } = response;
+        const {error, success, token, tkn_err } = response;
 
         handleToast({
-            error,
+            error: tkn_err ? tkn_err : error,
             success,
             setModalState,
         })
 
-        if(isLogin && success){
+
+        if(isLogin && success && token){
+            localStorage.setItem("token", token);
             const {user, error} = await login();
             if(user) setUser(user);
         }

@@ -2,9 +2,9 @@
 
 function handleRequest($resource){
 
-    $user = authSession();
+    $tokenPayload = verifyToken();
     $image = $resource["image"];
-    $uploadDir = getEndpointPath($user, "uploads");
+    $uploadDir = getEndpointPath($$tokenPayload["userID"], "uploads");
 
     $imagePath = $uploadDir . $image;
 
