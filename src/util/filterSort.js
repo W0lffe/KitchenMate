@@ -1,4 +1,11 @@
-
+/**
+ * Function to filter a list based on a search key and dispatch the filtered list
+ * @param {Object} parameters includes fullList, value, dispatch, type
+ * @property {Array} fullList: complete list to filter from
+ * @property {string} value: search key to filter the list
+ * @property {Function} dispatch: dispatch function to update state
+ * @property {string} type: action type for dispatch
+ */
 export const filter = (parameters) => {
     console.log(parameters)
     
@@ -19,6 +26,14 @@ export const filter = (parameters) => {
     })
 }
 
+/**
+ * Function to sort a list based on a specified key and dispatch the sorted list
+ * @param {Object} parameters includes fullList, value, dispatch, type
+ * @property {Array} fullList: complete list to sort
+ * @property {string} value: key to sort the list by
+ * @property {Function} dispatch: dispatch function to update state
+ * @property {string} type: action type for dispatch
+ */
 export const sort = (parameters) => {
 
     console.log(parameters)

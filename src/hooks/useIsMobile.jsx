@@ -1,4 +1,9 @@
 import { useState } from "react";
+
+/**
+ * Custom hook to determine if used device is mobile based on window width
+ * @returns {boolean} true if mobile, false otherwise
+ */
 export function useIsMobile(){
     
     const breakpoint = 780;
