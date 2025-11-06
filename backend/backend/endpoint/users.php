@@ -103,23 +103,15 @@ function authUser($resource){
     $userFile = $resource["userFile"];
     $user = $resource["user"];
     
-    session_set_cookie_params([
-        'lifetime' => 3600,
-        'path' => '/',
-        'secure' => true,
-        'httponly' => true,
-        'samesite' => 'None'
-    ]);
-
-    session_start();
-    
     $users = json_decode(file_get_contents($userFile), true);
+    $userID = null;
 
     foreach($users as $existUser){
         if($existUser["user"] === $user["user"]){
             if(password_verify($user["passwd"], $existUser["passwd"])){
-                $_SESSION["auth_user"] = $existUser["id"];
-                echo json_encode(["success" => "User authenticated!"]);
+                $userID = $existUser["id"];
+                $token = createToken($userID);
+                echo json_encode(["success" => "User authenticated!", "token" => $token]);
                 exit;
             }
             else{

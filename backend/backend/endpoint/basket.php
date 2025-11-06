@@ -2,9 +2,9 @@
 
 function handleRequest($resource){
 
-$user = authSession();
+$tokenPayload = verifyToken();
 $api = $resource["endpoint"];
-$paths = getEndpointPath($user, $api);
+$paths = getEndpointPath($tokenPayload["userID"], $api);
 
 //echo json_encode(["Basket paths:" => $paths]);
 
