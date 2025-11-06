@@ -74,12 +74,14 @@ Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/StageFive
 
 #### Known Issues
 
-1. **PATCHED** On some browsers, the site may fail to load or behave unexpectedly due to issues with session authentication handling.  
-   - This can occur if cookies or session data are blocked, expired, or not set correctly.  
-   - Refreshing the page or clearing the browser’s cache and cookies sometimes resolves the issue.  
-   - I have tested the app on Chrome, Edge and Firefox with successful login.
-   - Will look into switching to token-based authentication in the future.
-   - **Fixed with token-based authentication.**
+1. On some browsers, the site may fail to load or behave unexpectedly due to issues with session authentication handling.  
+    - **NOTES:**
+        - This can occur if cookies or session data are blocked, expired, or not set correctly.  
+        - Refreshing the page or clearing the browser’s cache and cookies sometimes resolves the issue.  
+        - I have tested the app on Chrome, Edge and Firefox with successful login.
+        - Will look into switching to token-based authentication in the future.
+   - **STATUS:**
+        - **Fixed with token-based authentication.**
    
 
 
