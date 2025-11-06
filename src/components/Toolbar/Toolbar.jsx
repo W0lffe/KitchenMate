@@ -9,10 +9,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus, 
         faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { getSortOptions } from "./sortOptions";
-import toast from "react-hot-toast";
 import SearchBar from "./SearchBar";
 import { handleToast } from "../../util/toast";
 
+
+/**
+ * Toolbar section component for search, filter and sort options
+ * @returns Toolbar UI component to section wrapper
+ */
 export default function Toolbar(){
 
     const {isMobile, setActiveRecipe, setActiveDish, 
@@ -30,6 +34,10 @@ export default function Toolbar(){
 
     const basket = fullBasket.current;
     
+    /**
+     * Function to initialize creating mode for recipes, dishes or basket entries
+     * @returns 
+     */
     const initCreatingMode = ()=> {
         if(activeSection === "recipes"){
             setActiveRecipe({recipe: null, mode: "create"});
@@ -45,13 +53,23 @@ export default function Toolbar(){
         }   
     }
 
+    /**
+     * Function to handle click to initialize creating mode on mobile devices and open modal
+     */
     const handleMobileClick = () => {
         initCreatingMode();
         setModalState({section: activeSection}, true)
     }
 
+    /**
+     * Click handler to either open modal on mobile and init creating mode or init creating mode on desktop
+     */
     const clickHandler = isMobile ? handleMobileClick : initCreatingMode;
 
+    /**
+     * Function to handle basket edit, opening modal if on mobile
+     * @returns only if active section is basket and basket is empty
+     */
     const handleBasketEdit = () => {
         if(basket.length === 0){
             handleToast({
@@ -66,6 +84,10 @@ export default function Toolbar(){
         }
     }
 
+    /**
+     * Function to handle clearing basket, opening modal to confirm deletion
+     * @returns only if basket is empty
+     */
     const handleClearBasket = async() => {
 
         if(basket.length === 0){

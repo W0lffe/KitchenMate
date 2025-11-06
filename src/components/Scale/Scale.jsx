@@ -4,6 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { scaleRecipe } from "../../util/util";
 import { containerStyle, spanStyle } from "./scaleStyles";
 
+/**
+ * Function to get output options for scaling
+ * @param {string} recipeOutput given recipe output f.ex "n/a", "gn"
+ * @returns {Array} list of possible output options
+ */
 const getOutputOptions = (recipeOutput) => {
 
     if (recipeOutput.toLowerCase().includes("n/a")) {
@@ -14,6 +19,12 @@ const getOutputOptions = (recipeOutput) => {
     }
 }
 
+/**
+ * Component for handling scaling of recipe ingredients
+ * @param {Object} itemToScale item (recipe) to be scaled
+ * @param {Object} scaleFunctions functions to handle scaling state
+ * @returns Scaling UI component
+ */
 export default function Scale({ itemToScale, scaleFunctions }) {
     const [expandState, setExpandState] = useState(false);
     const [scaledTo, setScaledTo] = useState({
@@ -23,6 +34,10 @@ export default function Scale({ itemToScale, scaleFunctions }) {
 
     const {setScaledState, reset, isScaled} = scaleFunctions;
 
+    /**
+     * Handles change if output option is changed, resets scaling to match output
+     * @param {string} e selected output option 
+     */
     const handleChange = (e) => {
         isScaled && reset();
         e.toLowerCase().includes("portions") ? setScaledTo({...scaledTo, portions: itemToScale.portions}) : setScaledTo({...scaledTo, portions: 1});
@@ -41,6 +56,10 @@ export default function Scale({ itemToScale, scaleFunctions }) {
 
     },[isScaled, itemToScale])
 
+    /**
+     * Function to handle scaling operation
+     * @param {string} operation add or subtract
+     */
     const handleScale = (operation) => {
         const scaleParams = {
             ingredients: itemToScale.ingredients,

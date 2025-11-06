@@ -13,6 +13,11 @@ import IconButton from "../Buttons/IconButton";
 import { handleToast } from "../../util/toast";
 
 
+/**
+ * Component to display individual list item based on active section inside the simple/categorized list
+ * @param {Object} item item to display
+ * @returns UI for the list item
+ */
 export default function ListItem({item}){
 
     const {setActiveRecipe, setActiveDish, isMobile, setModalState, activeSection, activeDish, handleRequest} = useContext(KitchenContext)
@@ -27,11 +32,16 @@ export default function ListItem({item}){
 
     let iconToUse = (isCreatingDish || isEditingDish) ? faSquarePlus :
                         activeSection === "basket" ? faSquareCheck : faEye;
-
+    /**
+     * Function to handle deleting an item
+     */
     const handleDelete = async () => {
         setModalState({section: activeSection, toDelete: item.id}, true);
     }
-   
+    
+    /**
+     * Function to handle clicks on the list, setting active recipe/dish or toggling basket item obtained state
+     */
     const handleClick = async () => {
         if(activeSection === "recipes"){
             setActiveRecipe({recipe: item, mode: "detail"});
@@ -70,6 +80,11 @@ export default function ListItem({item}){
         }
     }
 
+    /**
+     * Function to determine if a recipe is selected as a component in dish creation/editing
+     * @param {string} recipeID ID of the recipe to check
+     * @returns {boolean} true if the recipe is selected, false otherwise
+     */
     const isComponentSelected = (recipeID) => {
         const componentSelected = ["create", "edit"].includes(mode) && activeDish?.dish?.components?.includes(recipeID);
         if(componentSelected){
@@ -95,7 +110,12 @@ export default function ListItem({item}){
         </li>
     )
 }
-
+/**
+ * Customised list item for recipe type
+ * @param {Object} item recipe item
+ * @param {boolean} isCreatingDish indicates if a dish is being created 
+ * @returns recipe list item
+ */
 function RecipeItem({item, isCreatingDish}){
     const {name, time, timeFormat} = item;
 
@@ -111,6 +131,11 @@ function RecipeItem({item, isCreatingDish}){
     )
 }
 
+/**
+ * Customised list item for basket type
+ * @param {Object} item basket item
+ * @returns basket list item
+ */
 function BasketItem({item}){
     const {product, quantity, unit} = item;
 
@@ -123,6 +148,11 @@ function BasketItem({item}){
     )
 }
 
+/**
+ * Customised list item for dish type
+ * @param {Object} item dish item
+ * @returns dish list item
+ */
 function DishItem({item}){
     const {name, components} = item;
 

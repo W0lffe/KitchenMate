@@ -8,11 +8,27 @@ import { faSquarePlus,
         faSquareMinus } from "@fortawesome/free-solid-svg-icons";
 import SearchBar from "../Toolbar/SearchBar";
 
+
+/**
+ * Component list used in DishCreation component.
+ * @param {boolean} isMobile whether the device is mobile or not
+ * @param {boolean} isRecipe whether the list is for selecting recipes or displaying components
+ * @param {Array} listToUse list of recipes/components to display
+ * @param {Array} isSelected list of selected recipe IDs
+ * @param {Function} handleUpdate function to handle updating selected components
+ * @param {Function} filter function to filter the list
+ * @returns list of components/recipes to use in DishCreation
+ */
 export default function ComponentList({isMobile, isRecipe, listToUse, isSelected, handleUpdate, filter}){
 
     const header = isRecipe ? "Add Recipes to Dish" : "Components";
     const fallback = isRecipe ? "Recipe list is empty." : "No components added yet";
 
+    /**
+     * Check if a component is selected
+     * @param {*} recipeID id value of current recipe
+     * @returns boolean
+     */
     const isComponentSelected = (recipeID) => {
         const componentSelected = isSelected.includes(recipeID);
         return componentSelected;

@@ -2,6 +2,12 @@ import { units } from "../../util/util"
 import { getInputStyle, 
         productStyle } from "./productStyles"
 
+/**
+ * Component for a single product input row.
+ * @param {Object} state current form state
+ * @param {number} index index of the product in the list
+ * @returns component UI for a single product input row
+ */
 export default function Product({state, index}){
 
     const validInputs = state.validInputs || {products: [], quantity: [], unit: []};

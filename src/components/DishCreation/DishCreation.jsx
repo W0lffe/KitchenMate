@@ -17,13 +17,19 @@ import useDishForm from "../../hooks/useDishForm"
 import createComponentUpdater from "./dishUtil"
 import ItemListSection from "../ItemInspectView/ItemListSection"
 
-
+/**
+ * Section names used by the DishCreation UI.
+ */
 const SECTIONS = {
     GENERAL: "General",
     COMPONENTS: "Components",
     CONFIRMATION: "Confirmation"
 }
 
+/**
+ * Dish creation and editing component.
+ * @returns dish creation/editing UI component
+ */
 export default function DishCreation(){
 
     const {isMobile, setModalState, activeDish, availableRecipes, fullRecipes, setActiveDish, handleRequest, filterList, user} = useContext(KitchenContext);
@@ -76,6 +82,10 @@ export default function DishCreation(){
         }
     }, [mode, dish])
 
+    /**
+     * Function to handle tab changes in mobile view
+     * @param {string} nextTab tab to switch to
+     */
     const handleTabChange = (nextTab) => {
         const formData = new FormData(document.querySelector("form"));
         const {name, course, image } = getDishFromValues(formData);

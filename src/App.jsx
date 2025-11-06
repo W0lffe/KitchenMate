@@ -3,6 +3,11 @@ import Home from "./pages/Home"
 import Application from "./pages/Application"
 import KitchenContextProvider from './context/KitchenContext'
 
+
+/**
+ * Main renderable component of the application
+ * @returns Routes wrapped to context provider
+ */
 export default function App() {
 
   return (

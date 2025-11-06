@@ -6,6 +6,12 @@ import { outputs } from "../../util/util"
 import { useState } from "react";
 import { categories } from "../../util/util";
 
+
+/**
+ * Used to display recipe information input fields
+ * @param {Object} state current form state
+ * @returns UI for recipe information section
+ */
 export default function RecipeInfoSection({state}){
 
     const validInputs = state.validInputs || {};

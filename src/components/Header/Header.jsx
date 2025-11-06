@@ -7,6 +7,12 @@ import { HeaderStyle,
         sloganStyle,
         homeHeader } from "./headerStyles";
 
+
+/**
+ * Header component for the application.
+ * @param {JSX} children Optional children to render within the header
+ * @returns Header component with preset elements or custom children
+ */
 export default function Header({children}){
 
     const {slogan, setSlogan} = useContext(KitchenContext);

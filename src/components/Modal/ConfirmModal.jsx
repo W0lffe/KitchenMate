@@ -13,6 +13,12 @@ import { handleToast } from "../../util/toast.js";
 import { useState } from "react";
 import { scaleRecipe } from "../../util/util.js";
 
+/**
+ * Confirmation modal for deletions and adding portions to basket.
+ * @param {Object} props properties for the modal to choose content
+ * @param {Object} contextProps context properties for handling requests and state updates
+ * @return UI for confirmation modal
+ */
 export default function ConfirmModal({ props, contextProps }) {
 
     const { section, toDelete, ingredients } = props;
@@ -55,6 +61,9 @@ export default function ConfirmModal({ props, contextProps }) {
         message = "How many portions?";
     }
 
+    /**
+     * Function to handle deletion confirmation, sending delete request and updating state
+     */
     const handleDelete = async () => {
         const dataToDelete = dependencies.length > 0 ? { id: toDelete, dependencies } : { id: toDelete };
 
@@ -75,6 +84,9 @@ export default function ConfirmModal({ props, contextProps }) {
         })
     }
 
+    /**
+     * Function to handle adding portions to basket, sending post request with scaled ingredients
+     */
     const handleAddCart = async () => {
         
         const products = scaleRecipe({
@@ -98,8 +110,14 @@ export default function ConfirmModal({ props, contextProps }) {
         })
     }
 
+    /**
+     * Determine onClick handler based on action type
+     */
     const onClick = isDelete ? handleDelete : handleAddCart;
 
+    /**
+     * Function to handle cancel action, closing or adjusting modal based on device and section
+     */
     const handleCancel = () => {
         const modalState = !isMobile ? false : (section === "basket" ? false : true);
 

@@ -9,14 +9,15 @@ import IconButton from "../Buttons/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faBan } from "@fortawesome/free-solid-svg-icons";
 import { BASE_URL } from "../../../backend/api";
-import { KitchenContext } from "../../context/KitchenContext";
-import { useContext } from "react";
 import { handleToast } from "../../util/toast";
 
+/**
+ * Photo component for displaying and uploading images.
+ * @param {string|File} img Image source, either a URL string or a File object
+ * @param {boolean} disable Flag to disable image upload
+ * @returns component displaying the image and upload option
+ */
 export default function Photo({ img, disable }) {
-
-    const { user } = useContext(KitchenContext);
-
     const [imagePreview, setImagePreview] = useState(null);
     const [isLoading, setIsLoading] = useState(null);
 

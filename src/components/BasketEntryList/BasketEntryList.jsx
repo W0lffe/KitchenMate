@@ -8,6 +8,11 @@ import { validateProducts } from "../../util/validation";
 import { handleToast } from "../../util/toast";
 import handleErrorsToast from "../Error/Errors";
 
+/**
+ * Used to extract form values from FormData object
+ * @param {Object} formData 
+ * @returns {Object} extracted form values
+ */
 const getFormValues = (formData) => {
     const products = formData.getAll("product");
     const quantity = formData.getAll("quantity");
@@ -16,6 +21,11 @@ const getFormValues = (formData) => {
     return {products, quantity, unit};
 }
 
+/**
+ * Used to map product data with obtained status and ids
+ * @param {*} productData 
+ * @returns {Object} mapped product data
+ */
 const mapProductData = (productData) => {
     const {products, index, id} = productData;
     return products.map((product, i) => ({
@@ -25,6 +35,10 @@ const mapProductData = (productData) => {
     }))
 }
 
+/**
+ * Used to create or edit manual basket entries
+ * @returns component handling manual basket entry form
+ */
 export default function ManualBasketEntry(){
 
     const {isMobile, setModalState, editStatus, fullBasket, handleRequest, setEntryStatus} = useContext(KitchenContext)
@@ -45,7 +59,12 @@ export default function ManualBasketEntry(){
                 itemIds: availableBasket.map((product) => product.id)
             } : {validInputs: null};
 
-
+    /**
+     * Form action to handle manual entry submission
+     * @param {*} prevFormState 
+     * @param {*} formData 
+     * @returns {Object} updated form state, either with errors or as null
+     */
     const manualEntry = async(prevFormState, formData) => {
         const {products, quantity, unit} = getFormValues(formData);
         const errors = validateProducts(products, quantity, unit);

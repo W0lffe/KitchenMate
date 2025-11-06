@@ -6,6 +6,18 @@ import {
     sectionStyle
 } from "./infoStyles";
 
+
+/**
+ * Used to display information sections, including images and text on homepage
+ * @param {Object} item includes heading, brief, mobile image, desktop image
+ * @param {boolean} reverse indicates whether to reverse the layout of image and text
+ * @param {boolean} isMobile indicates if the view is on a mobile device
+ * @param {boolean} isFirst indicates if this is the first info section
+ * @param {boolean} isLast indicates if this is the last info section
+ * @param {Object} ref reference to the container element for scrolling
+ * @param {Function} navigate function to navigate to different routes
+ * @returns info section component
+ */
 export default function Info({ item, reverse, isMobile, isFirst, isLast, ref, navigate }) {
 
     const backToStart = () => {

@@ -7,6 +7,10 @@ import ContentModal from "./ContentModal";
 import ConfirmModal from "./ConfirmModal";
 import { Toaster } from "react-hot-toast";
 
+/**
+ * Modal component for displaying content or confirmation dialogs
+ * @returns Modal UI component with portal to "modal" div
+ */
 export default function Modal(){
 
     const {activeModal, modalIsOpen, editStatus, setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes, isFetchingData} = useContext(KitchenContext)
@@ -15,6 +19,9 @@ export default function Modal(){
     const useConfirm = (toDelete || ingredients) !== undefined;
     const modal = useRef()
 
+    /**
+     * Props to pass to confirm modal component
+     */
     const contextProps = {
         setModalState,
         handleRequest, 

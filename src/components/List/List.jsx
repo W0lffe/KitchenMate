@@ -8,7 +8,12 @@ import {listContainerStyle} from "./listStyles";
 import CategorizedList from "./CategorizedList";
 import SimpleList from "./SimpleList";
 
-
+/**
+ * Function to categorize items into groups based on category (for recipes) or course (for dishes)
+ * @param {Array} itemlist List to categorize
+ * @param {boolean} isRecipe Indicates if the list is of recipes (true) or dishes (false)
+ * @returns {Array} Categorized list
+ */
 const categorize = (itemlist, isRecipe) => {
     
     if(!itemlist || itemlist.length === 0){
@@ -51,7 +56,10 @@ const categorize = (itemlist, isRecipe) => {
     }
 }
 
-
+/**
+ * Component to handle displaying lists of recipes, dishes, or basket items
+ * @returns UI for the list component
+ */
 export default function List() {
 
     const { activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish } = useContext(KitchenContext);

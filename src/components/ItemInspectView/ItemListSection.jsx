@@ -1,6 +1,13 @@
 import { combineProductData } from "../../util/util";
 import { listSection, getListStyle } from "./inspectStyles";    
 
+/**
+ * Component displaying the list of ingredients/components for the inspected item.
+ * @param {boolean} isRecipe indicates if the item is a recipe
+ * @param {Array} list list of ingredients/components to display
+ * @param {Object} state current form state containing valid inputs
+ * @returns component UI for item list section
+ */
 export default function ItemListSection({isRecipe, list, state}){
 
     const isPreview = state !== undefined;

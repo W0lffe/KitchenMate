@@ -16,6 +16,9 @@ import ItemListSection from "../ItemInspectView/ItemListSection";
 import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";
 import TabButtons from "../Buttons/TabButtons";
 
+/**
+ * Sections used in recipe creation form.
+ */
 const SECTIONS = {
     GENERAL: "General",
     INGREDIENTS: "Ingredients",
@@ -23,6 +26,10 @@ const SECTIONS = {
     CONFIRMATION: "Confirmation"
 }
 
+/**
+ * Component for recipe creation and editing form
+ * @returns UI for recipe creation/editing
+ */
 export default function RecipeCreation(){
     
     const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext);
@@ -66,6 +73,10 @@ export default function RecipeCreation(){
     const [formState, formAction] = useActionState(recipeForm , currentFormValues)
     const mobileHeading = !currentFormValues.isEditing ? "Recipe Creation" : "Recipe Editor";
 
+    /**
+     * Function to handle tab changes in mobile view
+     * @param {string} nextTab tab to switch to
+     */
     const handleTabChange = (nextTab) => {
         const formData = new FormData(document.querySelector("form"));
 

@@ -11,6 +11,12 @@ import { getRecipeInfo } from "../../util/util";
 import ButtonBar from "../Buttons/ButtonBar";
 import { handleToast } from "../../util/toast";
 
+/**
+ * Derives the view state for the ItemInspectView component.
+ * @param {Object} itemToInspect inspectable item (dish or recipe)
+ * @param {Object} fullRecipes Reference to full recipes list
+ * @returns  View state for the inspect view
+ */
 const deriveViewState = (itemToInspect, fullRecipes) => {
     const {dish, recipe} = itemToInspect;
     const isRecipe = recipe !== undefined;
@@ -29,6 +35,11 @@ const deriveViewState = (itemToInspect, fullRecipes) => {
 }
 
 
+/**
+ * Component for inspecting an item (dish or recipe).
+ * @param {Object} itemToInspect inspectable item (dish or recipe)
+ * @returns UI for inspecting an item
+ */
 export default function ItemInspectView({itemToInspect}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
@@ -44,10 +55,16 @@ export default function ItemInspectView({itemToInspect}){
     //console.log("inspectableItem, useState", viewState);
     //console.log("isFavorite", isFavorite);
 
+    /**
+     * Handles the deletion of the inspected item.
+     */
     const handleDelete = async() => {
         setModalState({section: activeSection, toDelete: viewState.item.id}, true);
     }
 
+    /**
+     * Handles the modification of the inspected item.
+     */
     const handleModify = () => {
         if(viewState.isRecipe){
             setActiveRecipe({recipe: itemToInspect.recipe, mode: "edit"});
@@ -63,6 +80,10 @@ export default function ItemInspectView({itemToInspect}){
         }
     }
 
+    /**
+     * Handles adding the inspected item products/ingredients to the cart.
+     * @returns only returns if operation fails
+     */
     const handleAddCart = async() => {
         if(!viewState.isRecipe){
             setModalState({
@@ -89,6 +110,9 @@ export default function ItemInspectView({itemToInspect}){
 
     }
 
+    /**
+     * Handles favoriting/unfavoriting the inspected item.
+     */
     const handleFavorite = async() => {
 
         const newFavoriteValue = !isFavorite;
@@ -117,6 +141,10 @@ export default function ItemInspectView({itemToInspect}){
 
     }
 
+    /**
+     * Handles scaling of the inspected item ingredients.
+     * @param {Object} scaledIngredients contains scaled ingredients list
+     */
     const handleScaling = (scaledIngredients) => {
         setViewState({
             ...viewState,
@@ -129,10 +157,16 @@ export default function ItemInspectView({itemToInspect}){
         });
     }
 
+    /**
+     * Resets the scaling of the inspected item ingredients.
+     */
     const resetScaling = () => {
         setViewState(deriveViewState(itemToInspect, fullRecipes))
     }
 
+    /**
+     * Scaling functions to pass as prop to ItemInfoSection component.
+     */
     const scalingFunctions = {
         setScaledState: handleScaling, 
         reset: resetScaling, 
