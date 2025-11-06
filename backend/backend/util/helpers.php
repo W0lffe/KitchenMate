@@ -1,27 +1,53 @@
 <?php
 
-function authSession(){
-    if (!isset($_COOKIE["PHPSESSID"])) {
+function createToken($userID){
+
+    $header = base64_encode(json_encode(["alg" => "HS256", "typ" => "JWT"]));
+    $payload = base64_encode(json_encode([
+        "userID" => $userID,
+        "exp" => time() + 3600
+    ]));
+
+    $config = parse_ini_file(__DIR__ . "/../config/config.ini", true); 
+    $secret = $config["secret"]["secret"];
+    $signature = hash_hmac('sha256', "$header.$payload", $secret, true);
+    $signatureEncoded = base64_encode($signature);
+
+    $token = "$header.$payload.$signatureEncoded";
+    return $token;
+}
+
+function verifyToken(){
+   
+    $config = parse_ini_file(__DIR__ . "/../config/config.ini", true);
+    $headers = getallheaders();
+
+    if (!isset($headers['Authorization'])) {
+        echo json_encode(["tkn_err" => "Invalid token!"]);
         exit;
     }
 
-    session_id($_COOKIE["PHPSESSID"]);
-    session_set_cookie_params([
-        'lifetime' => 3600,
-        'path' => '/',
-        'secure' => true,
-        'httponly' => true,
-        'samesite' => 'None'
-    ]);
-
-    session_start();
-
-    if(!isset($_SESSION["auth_user"])){
-        echo json_encode(["error" => "Session not found."]);
+    list($type, $token) = explode(" ", $headers['Authorization'], 2);
+    if ($type !== "Bearer" || !$token) {
+        echo json_encode(["tkn_er" => "Invalid token!"]);
         exit;
     }
 
-    return (string)$_SESSION["auth_user"];
+    list($header, $payload, $signature) = explode(".", $token);
+    $secret = $config["secret"]["secret"];
+    $validSignature = base64_encode(hash_hmac('sha256', "$header.$payload", $secret, true));
+    if ($signature !== $validSignature) {
+        echo json_encode(["tkn_er" => "Invalid token!"]);
+        exit;
+    }
+
+    $payloadData = json_decode(base64_decode($payload), true);
+    if ($payloadData["exp"] < time()) {
+        echo json_encode(["tkn_er" => "Token expired. Please log in again."]);
+        exit;
+    }
+
+    return $payloadData;
 }
 
 function initDataDir(){

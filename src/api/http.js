@@ -34,19 +34,10 @@ const fetchAPI = async (params) => {
 
 export const login = async () => {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(`${BASE_URL}/login.php`, {
         method: "GET",
-        credentials: "include"
-    })
-
-    const resData = await response.json();
-    return resData;
-}
-
-export const logout = async () => {
-
-    const response = await fetch(`${BASE_URL}/logout.php`, {
-        credentials: "include"
+        headers: { Authorization: `Bearer ${token}` }
     })
 
     const resData = await response.json();

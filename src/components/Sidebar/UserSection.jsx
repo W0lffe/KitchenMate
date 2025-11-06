@@ -13,7 +13,6 @@ import {
 import { naviButtonStyle } from "../Buttons/buttonStyles";
 import defaultUser from "../../assets/default_user.png"
 import { handleToast } from "../../util/toast";
-import { logout } from "../../api/http";
 
 export default function UserSection() {
 
@@ -30,9 +29,9 @@ export default function UserSection() {
 
         const handleLogout = async () => { 
                 
-                const {success} = await logout();
+                localStorage.removeItem("token");
                 setUser(null);
-                handleToast({success});
+                handleToast({success: "Logged out successfully."});
         };
 
         return (

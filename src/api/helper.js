@@ -2,8 +2,9 @@ export const createRequestPayload = (params) => {
 
     const { data, method = "GET", endpoint } = params;
     
+    const token = localStorage.getItem("token");
     if(method === "GET"){
-        return {method,  credentials: 'include'  };
+        return { method,  headers: { Authorization: `Bearer ${token}` } };
     }
 
     const hasImage = (data?.image instanceof File && data?.image.size > 0);
@@ -32,14 +33,14 @@ export const createRequestPayload = (params) => {
 
         //console.log([...formData.values()]);
 
-        return {method: "POST",  credentials: 'include',  body: formData};
+        return {method: "POST", headers: { Authorization: `Bearer ${token}` }, body: formData};
     }
     else{
         const jsonPayload = {
             method,
-            credentials: 'include', 
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
                 endpoint,
