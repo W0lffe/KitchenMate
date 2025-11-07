@@ -136,7 +136,7 @@ function authUser($resource){
             if(password_verify($user["passwd"], $existUser["passwd"])){
                 $userID = $existUser["id"];
                 $token = createToken($userID);
-                http_response_code(500);
+                http_response_code(200);
                 header("Content-Type: application/json");
                 echo json_encode(["success" => "User authenticated!", "token" => $token]);
                 exit;

@@ -63,6 +63,9 @@
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
     - [ ] Password reset and account recovery
+10. Error Handling
+    - [x] HTTP Response Codes 
+    - [ ] Front-end handling for response codes
 
 ## 💡 Why I Built This
 
