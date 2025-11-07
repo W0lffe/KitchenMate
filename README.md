@@ -33,7 +33,8 @@
     - [ ] Reconstruct app from mostly conditional rendering to use React Router pages
     - [ ] Testing (Jest / Vitest)
 2. Documentation
-    - [ ] JSDoc documentation
+    - [x] JSDoc documentation
+    - [x] PHPDoc documentation
 3. Creation Improvements
     - [ ] New categories for recipes
     - [ ] \(Optional) Temperature inputs
