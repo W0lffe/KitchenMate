@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faBan } from "@fortawesome/free-solid-svg-icons";
 import { BASE_URL } from "../../../backend/api";
 import { handleToast } from "../../util/toast";
+import { getImage } from "../../api/http";
 
 /**
  * Photo component for displaying and uploading images.
@@ -19,10 +20,10 @@ import { handleToast } from "../../util/toast";
  */
 export default function Photo({ img, disable }) {
     const [imagePreview, setImagePreview] = useState(null);
-    const [isLoading, setIsLoading] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const getImagePreview = (img) => {
-
+    const getImagePreview = async (img) => {
+        setIsLoading(true);
         //console.log(img)
 
         let preview = null;
@@ -31,13 +32,26 @@ export default function Photo({ img, disable }) {
         }
 
         if (typeof img === "string") {
-            preview = `${BASE_URL}/index.php?endpoint=image&image=${img}`;
+            const res = await getImage(img);
+            //console.log("res from getImage",res);
+            
+            if(res instanceof Blob){
+                preview = URL.createObjectURL(res);
+            }
+            else{
+                const {error} = res;
+                handleToast({
+                    error
+                })
+                setImagePreview(null);
+                setIsLoading(false);
+                return;
+            }
         }
 
         //console.log(preview)
 
         if (preview) {
-            setIsLoading(true);
 
             const image = new Image();
             image.src = preview;
@@ -51,7 +65,7 @@ export default function Photo({ img, disable }) {
 
             image.onerror = () => {
                 //console.log("error happened");
-                setImagePreview(false);
+                setImagePreview(null);
                 setIsLoading(false);
                 handleToast({
                     error: "Image could not be loaded."
@@ -60,8 +74,10 @@ export default function Photo({ img, disable }) {
 
             return;
         }
-        
-        setImagePreview(preview);
+        else{
+            setImagePreview(null);
+            setIsLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -76,23 +92,25 @@ export default function Photo({ img, disable }) {
         }
     }
 
+    if(isLoading){
+        <>
+            {isLoading && <label>Loading image...</label>}
+        </>
+    }
+
     return (
         <section className={imageSection}>
             <div className={getImageDivStyle(disable)}>
-                {isLoading ? (
-                    <label>Loading image...</label>
-                ) : (
-                    imagePreview ? (
-                        <label htmlFor="image-upload">
+                {imagePreview ? (
+                    <label htmlFor="image-upload">
                             <img src={imagePreview} className={imageStyle} name="image" />
-                        </label>
-                    ) : (
-                        <IconButton>
+                    </label>
+                ) : (
+                    <IconButton>
                             <label htmlFor="image-upload">
                                 <FontAwesomeIcon icon={imagePreview === false ? faBan : faCamera} className={inputStyle} />
                             </label>
-                        </IconButton>
-                    )
+                    </IconButton>
                 )}
 
                 <input type="file"

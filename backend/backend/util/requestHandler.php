@@ -33,7 +33,8 @@ function parseRequest(){
         error_log("FILE \n" . print_R($_FILES, true));
         */
         if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
-            $uploadDir = getEndpointPath(authSession(), "uploads");
+            $payloadData = verifyToken();
+            $uploadDir = getEndpointPath($payloadData["userID"], "uploads");
 
         // Create upload directory if missing
             if (!is_dir($uploadDir)) {

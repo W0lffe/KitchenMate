@@ -94,7 +94,8 @@ function deleteData($resource){
         //echo json_encode(["found index" => $index]);
 
         if(isset($data["dependencies"]) && !empty($data["dependencies"])){
-            $dishEndpoint = getEndpointPath(authSession(), "dishes");
+            $payloadData = verifyToken();
+            $dishEndpoint = getEndpointPath($payloadData["userID"], "dishes");
             //echo json_encode(["dishes path" => $dishEndpoint["endpointFile"]]);
 
             if (file_exists($dishEndpoint["endpointFile"])) {

@@ -52,10 +52,20 @@ export const KitchenContext = createContext({
 
 export default function KitchenContextProvider({children}){
 
+    
     const [isFetchingData, setIsFetchingData] = useState(false);
     const [isOnline, setIsOnline] = useState(true);
+    /**
+     * Reference to list of fetched recipes, used for sorting and filtering
+     */
     const fetchedRecipes = useRef()
+     /**
+     * Reference to list of fetched dishes, used for sorting and filtering
+     */
     const fetchedDishes = useRef()
+     /**
+     * Reference to list of fetched basket, used for sorting and filtering
+     */
     const fetchedBasket = useRef()
 
     const [utilState, utilDispatch] = useReducer(utilityReducer, {
@@ -77,6 +87,11 @@ export default function KitchenContextProvider({children}){
         editStatus: null,
     })
 
+    /**
+     * Defined state handler for basket
+     * @property type: "SET_BASKET"
+     * @property api:
+     */
     const basketStateHandler = {
             type: "SET_BASKET",
             api: basketAPI,

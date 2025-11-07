@@ -4,7 +4,7 @@ function handleRequest($resource){
 
     $tokenPayload = verifyToken();
     $image = $resource["image"];
-    $uploadDir = getEndpointPath($$tokenPayload["userID"], "uploads");
+    $uploadDir = getEndpointPath($tokenPayload["userID"], "uploads");
 
     $imagePath = $uploadDir . $image;
 
@@ -22,7 +22,8 @@ function handleRequest($resource){
         exit;
     } else {
         // If file doesn't exist, send a 404 error
-        echo json_decode(["error" => "Image not found."]);
+        echo json_encode(["error" => "Image not found."]);
+        exit;
     }
 }
 

@@ -23,7 +23,7 @@ export default function Button({use}){
         setActiveDish(null);
         setActiveRecipe(null);
         setEntryStatus(null);
-        setModalState(null, false)
+        setModalState({}, false)
     }
 
     if(use === "close"){
