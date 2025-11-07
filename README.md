@@ -29,7 +29,7 @@
 
 ## 🧩 Future Plans
 
-### Checkout my [Github Project](https://github.com/users/W0lffe/projects/3)!
+### Checkout my [Github Project](https://github.com/users/W0lffe/projects/3/views/6)!
 
 1. Refactoring & Improvements
     - [ ] Reconstruct app from mostly conditional rendering to use React Router pages
