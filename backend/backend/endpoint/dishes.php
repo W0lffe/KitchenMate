@@ -2,6 +2,7 @@
 
 function handleRequest($resource){
 
+//Verify user from token
 $tokenPayload = verifyToken();
 $api = $resource["endpoint"];
 $paths = getEndpointPath($tokenPayload["userID"], $api);
@@ -43,8 +44,10 @@ if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
     }
 }
 else{
-    echo json_encode(["error" => "Directory or file does not exist!", "Requested:" => [$resource["user"], $api]]);
+    http_response_code(404); //Not found
+    header("Content-Type: application/json");
+    echo json_encode(["error" => "Directory or file does not exist!", "Requested:" => [$tokenPayload["userID"] ,$api]]);
+    exit;
 }
-
 }
 ?>
