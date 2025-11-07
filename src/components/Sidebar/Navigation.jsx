@@ -6,6 +6,10 @@ import { getWrapperStyle, topSection, getIconStyle } from "./navigationStyles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForward } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * Navigation component for the sidebar
+ * @returns Navigation UI
+ */
 export default function Navigation(){
 
     const {toggleNavigation, navigationIsOpen, user} = useContext(KitchenContext);

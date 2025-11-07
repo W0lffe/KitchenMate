@@ -8,6 +8,12 @@ import {
 } from "./dishCreationStyles"
 import Photo from "../Image/Photo"
 
+
+/**
+ * Component for displaying and editing dish information in DishCreation.
+ * @param {Object} state - Current state of the dish form, either formState or currentFormValues, depends on context
+ * @returns Dish information section component
+ */
 export default function DishInfoSection({ state }) {
 
     const validInputs = state.validInputs || {}

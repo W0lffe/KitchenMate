@@ -1,3 +1,9 @@
+
+/**
+ * Creates fetch request payload based on method and data.
+ * @param {Object} params inlcuding data, method, endpoint
+ * @returns {Object} Fetch request payload
+ */
 export const createRequestPayload = (params) => {
 
     const { data, method = "GET", endpoint } = params;

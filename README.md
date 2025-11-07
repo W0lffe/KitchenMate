@@ -33,7 +33,8 @@
     - [ ] Reconstruct app from mostly conditional rendering to use React Router pages
     - [ ] Testing (Jest / Vitest)
 2. Documentation
-    - [ ] JSDoc documentation
+    - [x] JSDoc documentation
+    - [x] PHPDoc documentation
 3. Creation Improvements
     - [ ] New categories for recipes
     - [ ] \(Optional) Temperature inputs
@@ -62,6 +63,9 @@
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
     - [ ] Password reset and account recovery
+10. Error Handling
+    - [x] HTTP Response Codes 
+    - [ ] Front-end handling for response codes
 
 ## 💡 Why I Built This
 

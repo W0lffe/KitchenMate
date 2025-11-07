@@ -1,5 +1,10 @@
 <?php
 
+
+/**
+ * Function to match request GET
+ * @param Array $resource array of required resources (endpoint)
+ */
 function getData($resource){
 
     if(isset($resource["endpoint"])){
@@ -8,15 +13,23 @@ function getData($resource){
             $data = [];
         }
 
+        http_response_code(200); //OK
+        header("Content-Type: application/json");
         echo json_encode(["data" => $data]);
         exit;
     }
     else{
+        http_response_code(404); //Not found
+        header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be retrieved — invalid or missing file path."]);
         exit;
     }
 }
 
+/**
+ * Function to match request POST
+ * @param Array $resource array of required resources (endpoint, api, data)
+ */
 function postData($resource){
 
     $api = $resource["api"] ?? null;
@@ -61,22 +74,33 @@ function postData($resource){
         $response = getResponse($api);
         
         if(file_put_contents($endpoint ,json_encode($existingData, JSON_PRETTY_PRINT))){
+            http_response_code(200); //OK
+            header("Content-Type: application/json");
             echo json_encode(["success" => "$response saved successfully!"]);
             exit;
         }
         else{
+            http_response_code(500); //Server side error
+            header("Content-Type: application/json");
             echo json_encode(["error" => "$response could not be saved."]);
             exit;
         }
 
     }
     else{
+        http_response_code(400);
+        header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be saved - invalid resources.", "Requested" => $resource]);
         exit;
     }
     
 }
 
+
+/**
+ * Function to match request DELETE
+ * @param Array $resource array of required resources (endpoint, api, data)
+ */
 function deleteData($resource){
 
     $api = $resource["api"] ?? null;
@@ -94,7 +118,8 @@ function deleteData($resource){
         //echo json_encode(["found index" => $index]);
 
         if(isset($data["dependencies"]) && !empty($data["dependencies"])){
-            $dishEndpoint = getEndpointPath(authSession(), "dishes");
+            $payloadData = verifyToken();
+            $dishEndpoint = getEndpointPath($payloadData["userID"], "dishes");
             //echo json_encode(["dishes path" => $dishEndpoint["endpointFile"]]);
 
             if (file_exists($dishEndpoint["endpointFile"])) {
@@ -130,25 +155,37 @@ function deleteData($resource){
             //echo json_encode(["after splice " => $existingData]);
 
             if(file_put_contents($endpoint, json_encode($existingData, JSON_PRETTY_PRINT))){
+                http_response_code(200); //OK
+                header("Content-Type: application/json");
                 echo json_encode(["success" => "$response deleted successfully!"]);
                 exit;
             }
             else{
+                http_response_code(500); //Server side error
+                header("Content-Type: application/json");
                 echo json_encode(["error" => "$response could not be deleted."]);
                 exit;
             }
         }
         else{
+            http_response_code(404); //Not found
+            header("Content-Type: application/json");
             echo json_encode(["error" => "$response could not be deleted - $response not found."]);
             exit;
         }
     }
     else{
+        http_response_code(400); //Bad request
+        header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be deleted - invalid resources.", "Requested" => $resource]);
         exit;
     }
 }
 
+/**
+ * Function to match request PUT
+ * @param Array $resource array of required resources (endpoint, api, data, update)
+ */
 function updateData($resource){
 
     $api = $resource["api"] ?? null;
@@ -183,26 +220,36 @@ function updateData($resource){
                     //echo json_encode(["updated item" => $existingData[$index]]);
                 }
                 else{
+                    http_response_code(404); //Not found
+                    header("Content-Type: application/json");
                     echo json_encode(["error" => "$response can't be updated - $response not found."]);
                     exit;
                 }
             }
             else{
+                http_response_code(400); //Bad request
+                header("Content-Type: application/json");
                 echo json_encode(["error" => "$response can't be updated - data missing."]);
                 exit;
             }
         }
 
         if(file_put_contents($endpoint, json_encode($existingData, JSON_PRETTY_PRINT))){
+            http_response_code(200); //OK
+            header("Content-Type: application/json");
             echo json_encode(["success" => "$response updated successfully!"]);
             exit;
         }
         else{
+            http_response_code(500); //Server side error
+            header("Content-Type: application/json");
             echo json_encode(["error" => "$response could not be updated."]);
             exit;
         }
     }
     else{
+        http_response_code(400); //Bad request
+        header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be updated - invalid resources.", "Requested" => $resource]);
         exit;
     }

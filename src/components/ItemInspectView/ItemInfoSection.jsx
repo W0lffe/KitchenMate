@@ -2,6 +2,15 @@ import { detailSection, infoSection } from "./inspectStyles";
 import Scale from "../Scale/Scale";
 import Photo from "../Image/Photo";
 
+
+/**
+ * Component displaying information about the inspected item.
+ * @param {boolean} isRecipe indicates if the item is a recipe
+ * @param {Object} item item to display information for (dish or recipe)
+ * @param {Object} scaleFunctions functions for scaling ingredients (only for recipes)
+ * @param {Object} state current form state containing valid inputs 
+ * @returns component UI for item information section
+ */
 export default function ItemInfoSection({isRecipe, item, scaleFunctions, state}){
 
     const itemToUse = state !== undefined ? state.validInputs : item;

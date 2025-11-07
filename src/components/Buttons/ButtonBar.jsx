@@ -8,6 +8,17 @@ import { getIconStyle, topButtonBar } from "../ItemInspectView/inspectStyles";
 import IconButton from "./IconButton";
 import Button from "./Button";
 
+
+/**
+ * Component rendering a bar of buttons for item actions
+ * @param {boolean} isMobile indicates if the device used is mobile
+ * @param {function} handleDelete function to handle delete action
+ * @param {function} handleModify function to handle modify action
+ * @param {function} handleFavorite function to handle favorite action
+ * @param {function} handleAddCart function to handle add to cart action
+ * @param {string} fav indicates if the item is favorited
+ * @returns 
+ */
 export default function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handleAddCart, fav}){
 
     return(

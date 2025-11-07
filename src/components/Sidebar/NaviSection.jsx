@@ -10,10 +10,17 @@ import { KitchenContext } from "../../context/KitchenContext";
 import NaviButton from "../Buttons/NaviButton";
 
 
+/**
+ * UI component for navigation buttons section in sidebar
+ * @returns UI for navigation section
+ */
 export default function NaviSection(){
 
     const {navigationIsOpen, setActiveSection} = useContext(KitchenContext);
 
+    /**
+     * Navigation button values and icons
+     */
     const NAV_VALUES = [
         {
             value: "recipes",

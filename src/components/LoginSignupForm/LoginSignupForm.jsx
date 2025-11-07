@@ -11,12 +11,21 @@ import { containerStyle,
         inputStyle} from "./loginStyles";
 import { handleToast } from "../../util/toast";
 
+/**
+ * Used for both login and signup forms.
+ * @returns component UI for login/signup form
+ */
 export default function LoginSignupForm(){
     const {activeModal, setModalState, setUser} = useContext(KitchenContext);
     const isLogin = activeModal.section === "login";
     const userHeading = isLogin ? "Username:" : "Username (1-16 characters):";
     const passHeading = isLogin ? "Password:" : "Password (10-16 characters):";
 
+    /**
+     * Form action handler for login/signup.
+     * @param {FormData} formData contains user input data
+     * @returns valid inputs to update form state
+     */
     const loginSignup = async (prevFormState, formData) => {
         const name = formData.get("username")
         const pass = formData.get("passwd")

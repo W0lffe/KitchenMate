@@ -14,11 +14,19 @@ import { naviButtonStyle } from "../Buttons/buttonStyles";
 import defaultUser from "../../assets/default_user.png"
 import { handleToast } from "../../util/toast";
 
+/**
+ * User section of the sidebar navigation
+ * @returns UI for user section
+ */
 export default function UserSection() {
 
         const { navigationIsOpen, user, setModalState, setUser, isOnline } = useContext(KitchenContext);
         const userIsLogged = (user !== null) && (user?.user !== null && user?.id !== null);
 
+        /**
+         * Function handle clicks for login/signup, opening the respective modal if online
+         * @param {string} section respective section to open
+         */
         const handleUserClick = (section) => {
                 if (isOnline) {
                         setModalState({ section }, true);
@@ -27,6 +35,9 @@ export default function UserSection() {
                 }
         };
 
+        /**
+         * Function to handle user logout, removing token and resetting user state
+         */
         const handleLogout = async () => { 
                 
                 localStorage.removeItem("token");

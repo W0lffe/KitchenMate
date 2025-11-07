@@ -15,6 +15,9 @@ import { filter,
         sort } from "../util/filterSort.js";
 import { handleToast } from "../util/toast.js";
 
+/**
+ * KitchenContext to provide global state and functions
+ */
 export const KitchenContext = createContext({
     slogan: "",
     setSlogan: () => {},
@@ -50,12 +53,27 @@ export const KitchenContext = createContext({
     isOnline: true,
 })
 
+/**
+ * KitchenContextProvider component to provide context values to its children
+ * @param {JSX} children components consuming the context
+ * @returns {JSX} context provider component
+ */
 export default function KitchenContextProvider({children}){
 
+    
     const [isFetchingData, setIsFetchingData] = useState(false);
     const [isOnline, setIsOnline] = useState(true);
+    /**
+     * Reference to list of fetched recipes, used for sorting and filtering
+     */
     const fetchedRecipes = useRef()
+     /**
+     * Reference to list of fetched dishes, used for sorting and filtering
+     */
     const fetchedDishes = useRef()
+     /**
+     * Reference to list of fetched basket, used for sorting and filtering
+     */
     const fetchedBasket = useRef()
 
     const [utilState, utilDispatch] = useReducer(utilityReducer, {
@@ -77,16 +95,34 @@ export default function KitchenContextProvider({children}){
         editStatus: null,
     })
 
+    /**
+     * Handler object for basket state updates which holds reducer type, api function, and reference
+     * @property {string} type: "SET_BASKET"
+     * @property {function} api: basketAPI
+     * @property {Object} ref: fetchedBasket
+     */
     const basketStateHandler = {
             type: "SET_BASKET",
             api: basketAPI,
             ref: fetchedBasket
     };
+    /**
+     * Handler object for dish state updates which holds reducer type, api function, and reference
+     * @property {string} type: "SET_DISHES"
+     * @property {function} api: dishesAPI
+     * @property {Object} ref: fetchedDishes
+     */
     const dishesStateHandler = {
             type: "SET_DISHES",
             api: dishesAPI,
             ref: fetchedDishes
     };
+    /**
+     * Handler object for recipe state updates which holds reducer type, api function, and reference
+     * @property {string} type: "SET_RECIPES"
+     * @property {function} api: recipesAPI
+     * @property {Object} ref: fetchedRecipes
+     */
     const recipesStateHandler = {
             type: "SET_RECIPES",
             api: recipesAPI,
@@ -119,6 +155,12 @@ export default function KitchenContextProvider({children}){
       
     }, [utilState.user])
 
+    /**
+     * Request handler to make API calls and update state accordingly
+     * @param {Object} dataToHandle includes data and method
+     * @param {boolean} basketAdd flag to indicate if adding to basket
+     * @returns success/error response from server
+     */
     const handleRequest = async (dataToHandle, basketAdd) => {
 
         const isRecipe = utilState.activeSection === "recipes";
@@ -171,12 +213,18 @@ export default function KitchenContextProvider({children}){
         return response;
     }
 
+    /**
+     * Function to initialize data by fetching recipes, dishes, and basket
+     */
     const initializeData = () => {
         setAvailableList(recipesStateHandler);
         setAvailableList(dishesStateHandler);
         setAvailableList(basketStateHandler);
     }
 
+    /**
+     * Function to reset all lists to their unfiltered state by setting full fetched data from references
+     */
     const resetToUnfiltered = () => {
        kitchenDispatch({
         type: basketStateHandler.type,
@@ -193,24 +241,39 @@ export default function KitchenContextProvider({children}){
     }
 
     /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
+
+    /**
+     * Function to set isMobile state in context
+     * @param {boolean} isMobile indicates if device is mobile 
+     */
     const setIsMobile = (isMobile) => {
         utilDispatch({
             type: "SET_MOBILE",
             payload: isMobile
         })
     }
+    /**
+     * Function to set a random slogan in context
+     */
     const setSlogan = () => {
         utilDispatch({
             type: "SET_SLOGAN",
             payload: getRandomSlogan()
         })
     }
+    /**
+     * Function to toggle navigation open/close state in context
+     */
     const toggleNavigation = () => {
         utilDispatch({
             type: "SET_NAVIGATION_STATE",
             payload: !utilState.navigationIsOpen
         })
     }
+    /**
+     * Function to set active section in context, resets other states as needed
+     * @param {string} section section to set as active
+     */
     const setActiveSection = (section) => {
 
         if(section === utilState.activeSection){
@@ -231,6 +294,10 @@ export default function KitchenContextProvider({children}){
             payload: section
         })
     }
+    /**
+     * Function to set user in context
+     * @param {Object} user object containing user data, name and id
+     */
     const setUser = (user) => {
         utilDispatch({
             type: "SET_USER",
@@ -238,6 +305,11 @@ export default function KitchenContextProvider({children}){
         })
         setActiveSection(null);
     }
+    /**
+     * Sets modal state in context
+     * @param {Object} activeModal wich modal to set as active
+     * @param {boolean} modalState open or closed = true or false
+     */
     const setModalState = (activeModal, modalState) => {
         utilDispatch({
             type: "SET_MODAL_STATE",
@@ -248,6 +320,12 @@ export default function KitchenContextProvider({children}){
         })
     }
 
+    /**
+     * Function to fetch and set available list (recipes, dishes, basket) in context
+     * @param {Object} params includes type, api, ref
+     * @returns 1. If user is not logged in, sets empty list and returns 
+     * @returns 2. If error occurs during fetch, shows toast and returns
+     */
     const setAvailableList = async (params) => {
 
         const {type, api, ref} = params;
@@ -281,20 +359,31 @@ export default function KitchenContextProvider({children}){
 
         setIsFetchingData(false);
     }
-     
+    
+    /**
+     * Sets active recipe in context, used in recipe creation/editing
+     * @param {Object} recipe recipe object to set as active
+     */
     const setActiveRecipe = (recipe) => {
         kitchenDispatch({
             type: "SET_ACTIVE_RECIPE",
             payload: recipe
         })
     }
-   
+   /**
+    * Sets active dish in context, used in dish creation/editing
+    * @param {Object} dish dish object to set as active
+    */
     const setActiveDish = (dish) => {
         kitchenDispatch({
             type: "SET_ACTIVE_DISH",
             payload: dish
         })
     }
+    /**
+     * Sets entry status in context, used in manual basket entries
+     * @param {Object} status status: bool and mode: "add" or "edit"
+     */
     const setEntryStatus = (status) => {
         kitchenDispatch({
             type: "SET_ENTRY_STATUS",
@@ -302,7 +391,10 @@ export default function KitchenContextProvider({children}){
         })
     }
 
-
+    /**
+     * Function to filter the available list based on a search value
+     * @param {string} value search word/key
+     */
     const filterList = (value) => {
 
         //console.log("filtering", value)
@@ -345,6 +437,10 @@ export default function KitchenContextProvider({children}){
         }
     }
 
+    /**
+     * Function to sort the available list based on a specified key
+     * @param {string} value sorting key
+     */
     const sortList = (sortBy) => {
 
         if(kitchenState.activeDish?.mode === "create"){
@@ -385,6 +481,9 @@ export default function KitchenContextProvider({children}){
         }
     }
 
+    /**
+     * Context value object to be provided to consuming components
+     */
     const ctxValue = {
         slogan: utilState.slogan,
         setSlogan,

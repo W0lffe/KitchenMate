@@ -5,6 +5,10 @@ import { useIsMobile } from "../../hooks/useIsMobile"
 import ActiveSectionWrapper from "../ActiveSectionWrapper/ActiveSectionWrapper"
 import { containerStyle } from "./containerStyles"
 
+/**
+ * Main container for the application
+ * @returns Component for holding the content and active section wrapper
+ */
 export default function MainContainer(){
 
     const {activeSection, setIsMobile} = useContext(KitchenContext)

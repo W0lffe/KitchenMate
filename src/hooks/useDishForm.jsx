@@ -4,6 +4,15 @@ import { validateDish } from "../util/validation";
 import { deriveFormStateValues, getDishFromValues } from "../util/util";
 import { handleToast } from "../util/toast";
 
+/**
+ * Form handler hook for Dish Creation/Editing forms
+ * @param {boolean} isMobile indicates if device is mobile
+ * @param {Object} currentFormValues current form values state
+ * @param {Function} handleRequest function to handle API request
+ * @param {Function} setActiveDish function to set active dish state
+ * @param {Function} setModalState function to set modal state
+ * @returns valid inputs from form submission either null or with errors
+ */
 export default function useDishForm({ isMobile, currentFormValues, handleRequest, setActiveDish, setModalState }) {
     return useCallback(async (prevFormState, formData) => {
 

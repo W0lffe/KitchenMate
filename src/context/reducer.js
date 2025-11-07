@@ -1,3 +1,11 @@
+
+/**
+ * 
+ * Utility reducer to manage general application state
+ * @param {Object} state current state
+ * @param {Object} action with type and payload
+ * @returns new state
+ */
 export const utilityReducer = (state, action) => {
     //console.log("UTILITY_DEBUG:", action.type, action.payload)
     switch(action.type){
@@ -33,6 +41,13 @@ export const utilityReducer = (state, action) => {
     }
 }
 
+/**
+ * 
+ * Kitchen reducer to manage general application state
+ * @param {Object} state current state
+ * @param {Object} action with type and payload
+ * @returns new state
+ */
 export const kitchenReducer = (state, action) => {
     //console.log("DEBUG: ", action.type, action.payload)
     switch(action.type){

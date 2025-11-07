@@ -9,6 +9,10 @@ import { useContext } from "react"
 import { KitchenContext } from "../../context/KitchenContext"
 import ContentWrapper from "../ContentWrapper/ContentWrapper"
 
+/**
+ * Wrapper for active section lists and content views
+ * @returns component handling mounting of list and content
+ */
 export default function ActiveSectionWrapper(){
 
     const {activeSection, isMobile, activeRecipe, activeDish, editStatus} = useContext(KitchenContext);

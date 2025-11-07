@@ -6,6 +6,11 @@ import ItemInspectView from "../ItemInspectView/ItemInspectView";
 import BasketEntryList from "../BasketEntryList/BasketEntryList.jsx";
 import {getContainerStyle} from "./wrapperStyles.js"
 
+
+/**
+ * Used to render the main content area based on the active section and mode.
+ * @returns component rendering content
+ */
 export default function ContentWrapper(){
 
     const {activeSection, activeRecipe, activeDish, isMobile, editStatus} = useContext(KitchenContext)
@@ -22,6 +27,15 @@ export default function ContentWrapper(){
         )
 }
 
+/**
+ * Renders the content based on the active section and mode.
+ * @param {string} section active section
+ * @param {string} mode edit/create
+ * @param {Object} activeDish currently inspectable object for dishes
+ * @param {Object} activeRecipe currently inspectable object for recipes
+ * @param {Object} editStatus edit status for basket
+ * @returns content component to render in wrapper
+ */
 function renderContent(section, mode, activeDish, activeRecipe, editStatus){
     const modes = ["create", "edit"];
     const isDetail = mode === "detail";

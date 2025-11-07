@@ -8,6 +8,12 @@ import { lineStyle,
         sectionStyle, 
         listStyle } from "./formListStyles";
 
+
+/**
+ * FormList component for displaying a list of products or instructions.
+ * @param {string} use indicates whether to use the list of ingredients/products or instructions
+ * @returns component displaying the list
+ */
 export default function FormList({use, state}){
     
     const isEditing = use === "Edit";
