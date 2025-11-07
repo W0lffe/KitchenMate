@@ -85,6 +85,11 @@ export const login = async () => {
 
 }
 
+/**
+ * Function to fetch image from server
+ * @param {string} img image filename from dish object
+ * @returns {Blob|Object} image blob or error message as object
+ */
 export const getImage = async (img) => {
     const token = localStorage.getItem("token");
     try {
