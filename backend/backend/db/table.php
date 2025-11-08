@@ -1,6 +1,11 @@
 
 <?php 
 
+
+/**
+ * This function initiates tables IF THEY DONT EXIST to database
+ * @return bool true or false based on success or failure
+ */
 function createTables(){
 
     $config = parse_ini_file(__DIR__ . "/../config/config.ini", true);
