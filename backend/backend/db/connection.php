@@ -6,6 +6,10 @@
     $pass = $config["database"]["passwd"];
     $charset = "utf8mb4";
 
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass);
-    $pdo -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    try {
+        $pdo = new PDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch (PDOException $e) {
+        die("Database connection failed: " . $e->getMessage());
+    }
 ?>

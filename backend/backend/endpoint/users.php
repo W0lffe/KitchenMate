@@ -127,7 +127,7 @@ function authUser($resource){
 
     $userFile = $resource["userFile"];
     $user = $resource["user"];
-    
+    /*--------------------- DATABASE SELECT HERE ------------------------- */
     $users = json_decode(file_get_contents($userFile), true);
     $userID = null;
 
