@@ -30,5 +30,5 @@ foreach ($recipes as $recipe) {
 http_response_code(200);
 header("Content-Type: application/json");
 echo json_encode(["data" => $recipesArray]);
-
+exit;
 ?>

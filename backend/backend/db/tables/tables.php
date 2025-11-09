@@ -24,7 +24,7 @@ $tables = [
     "CREATE TABLE IF NOT EXISTS ingredients (
             ingredientID INT AUTO_INCREMENT PRIMARY KEY,
             recipeID INT NOT NULL,
-            name VARCHAR(50) NOT NULL,
+            product VARCHAR(50) NOT NULL,
             quantity DECIMAL(10,2) NOT NULL,
             unit VARCHAR(50) NOT NULL,
             FOREIGN KEY (recipeID) REFERENCES recipes(recipeID) ON DELETE CASCADE
