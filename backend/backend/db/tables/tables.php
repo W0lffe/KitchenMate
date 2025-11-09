@@ -54,17 +54,12 @@ $tables = [
             FOREIGN KEY (dishID) REFERENCES dishes(dishID) ON DELETE CASCADE
     )",
     "CREATE TABLE IF NOT EXISTS basket (
-            basketID INT AUTO_INCREMENT PRIMARY KEY,
-            userID INT NOT NULL,
-            FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE
-    )",
-    "CREATE TABLE IF NOT EXISTS items (
             itemID INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(50) NOT NULL,
+            product VARCHAR(50) NOT NULL,
             quantity DECIMAL(10,2) NOT NULL,
             unit VARCHAR(50) NOT NULL,
-            basketID INT NOT NULL,
-            FOREIGN KEY (basketID) REFERENCES basket(basketID) ON DELETE CASCADE
+            userID INT NOT NULL,
+            FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE
     )"
 ];
 
