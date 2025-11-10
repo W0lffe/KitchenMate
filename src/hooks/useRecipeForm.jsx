@@ -41,10 +41,11 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       ingredients,
       instructions: steps,
       favorite: currentFormValues.isFavorited,
-      id: currentFormValues.modifiedId,
-      date: getTimestamp(),
+      recipeID: currentFormValues.modifiedId,
       category
     };
+
+    console.log(newRecipe);
 
     const response = await handleRequest({
       data: newRecipe,

@@ -127,7 +127,7 @@ export default function ItemInspectView({itemToInspect}){
         const response = await handleRequest({
             method: "PUT",
             data: {...item, 
-                    favorite: newFavoriteValue
+                    favorite: newFavoriteValue ? 1 : 0
                 }
         })
 

@@ -2,7 +2,7 @@
 
 function getData($resource){
  
-    if(!isset($resource["endpoint"])){
+    if(!isset($resource["endpoint"]) && !isset($resource["id"])){
         http_response_code(400); //Bad Request
         header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be retrieved — missing information."]);

@@ -2,7 +2,7 @@
 
 function deleteData($resource){
 
-    if(!isset($resource["data"] && !isset($resource["endpoint"]))){
+    if(!isset($resource["data"]) && !isset($resource["endpoint"])){
         http_response_code(400); //Bad Request
         header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be deleted - missing information."]);
@@ -11,7 +11,6 @@ function deleteData($resource){
 
     try {
         $ep = $resource["endpoint"];
-        $data = $resource["data"];
         require __DIR__ . "/delete/$ep.php";
        
    } catch (PDOException $e) {

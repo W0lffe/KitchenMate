@@ -2,7 +2,7 @@
 
 function postData($resource){
 
-    if(!isset($resource["data"]) && !isset($resource["endpoint"])){
+    if(!isset($resource["data"]) && !isset($resource["endpoint"]) && !isset($resource["id"])){
         http_response_code(400); //Bad Request
         header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be saved - missing information."]);
@@ -11,13 +11,12 @@ function postData($resource){
 
     try {
         $ep = $resource["endpoint"];
-        $data = $resource["data"];
         require __DIR__ . "/post/$ep.php";
        
    } catch (PDOException $e) {
         http_response_code(500); //server error
         header("Content-Type: application/json");
-        echo json_encode(["error" => "Database error"]);
+        echo json_encode(["error" => "Database error: {$e->getMessage()}"]);
         exit;
    }
 }

@@ -15,8 +15,8 @@ function getUserData(){
         return $users;
 
     } catch (PDOException $e) {
-        error_log("Error fetching users: " . $e->getMessage()); 
-        return [];  
+        error_log("Error fetching users: " . $e->getMessage()); // Log error for debugging
+        return [];  // Return an empty array if an error occurs
     }
 }
 

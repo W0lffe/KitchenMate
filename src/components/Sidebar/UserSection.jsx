@@ -21,7 +21,7 @@ import { handleToast } from "../../util/toast";
 export default function UserSection() {
 
         const { navigationIsOpen, user, setModalState, setUser, isOnline } = useContext(KitchenContext);
-        const userIsLogged = (user !== null) && (user?.user !== null && user?.id !== null);
+        const userIsLogged = (user !== null) && (user?.name !== null && user?.id !== null);
 
         /**
          * Function handle clicks for login/signup, opening the respective modal if online
@@ -49,7 +49,7 @@ export default function UserSection() {
                 <section className={getSectionStyle(navigationIsOpen)}>
                         {userIsLogged ? (
                                 <>
-                                        <p>Welcome back, {user.user}!</p>
+                                        <p>Welcome back, {user.name}!</p>
                                         <img alt="IMAGE OF USER" src={user.img || defaultUser} className="size-30" />
                                         <button className={naviButtonStyle} onClick={handleLogout}>
                                                 Logout

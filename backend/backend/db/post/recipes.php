@@ -4,7 +4,7 @@
  * This file handles INSERT querys of recipes, and subquerys for ingredients and instructions
  */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
 
 $stmt = $pdo->prepare("
         INSERT INTO recipes 
@@ -13,20 +13,20 @@ $stmt = $pdo->prepare("
         (:name, :portions, :output, :outputType, :time, :timeFormat, :favorite, :category, :userID)
     ");
 
-$instructions = $data["instructions"];
-$ingredients = $data["ingredients"];
+$data = $resource["data"];
 
 $stmt->execute([
-    'name' => $data['name'],
-    'portions' => $data['portions'],
-    'output' => $data['output'],
-    'outputType' => $data['outputType'],
-    'time' => $data['time'],
-    'timeFormat' => $data['timeFormat'],
-    'favorite' => $data['favorite'],
-    'category' => $data['category'],
-    'userID' => $data['userID']
+    "name" => (string)$data["name"],
+    "portions" => (int)$data["portions"],
+    "output" => (string)$data["output"],
+    "outputType" => (string)$data["outputType"] ?? null,
+    "time" => (int)$data["time"],
+    "timeFormat" => (string)$data["timeFormat"],
+    "favorite" => (int)$data["favorite"],
+    "category" => (string)$data["category"],
+    'userID' => (int)$resource["id"]
 ]);
+
 
 $instructions = $data["instructions"];
 $ingredients = $data["ingredients"];
@@ -41,10 +41,10 @@ $stmt = $pdo->prepare("
 
 foreach ($ingredients as $ingredient) {
     $stmt->execute([
-        'recipeID' => $recipeID,
-        'product' => $ingredient["product"],
-        'quantity' => $ingredient["quantity"],
-        'unit' => $ingredient["unit"]
+        "recipeID" => (int)$recipeID,
+        "product" => (string)$ingredient['product'],
+        "quantity" => (float)$ingredient['quantity'],
+        "unit" => (string)$ingredient['unit']
     ]);
 }
 
@@ -57,9 +57,9 @@ $stmt = $pdo->prepare("
 
 foreach ($instructions as $index => $instruction) {
     $stmt->execute([
-        'recipeID' => $recipeID,
-        'instruction' => $instruction,
-        'step' => $index + 1
+        "recipeID" => (int)$recipeID,
+        "instruction" => (string)$instruction,
+        "step" => $index + 1
     ]);
 }
 

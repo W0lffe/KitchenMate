@@ -12,7 +12,7 @@ $tables = [
             name VARCHAR(50) NOT NULL,
             portions INT NOT NULL,
             output VARCHAR(20) NOT NULL,
-            outputType VARCHAR(20) NOT NULL,
+            outputType VARCHAR(20),
             time INT NOT NULL,
             timeFormat VARCHAR(30) NOT NULL,
             favorite BOOLEAN NOT NULL,

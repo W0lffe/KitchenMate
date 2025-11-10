@@ -2,20 +2,22 @@
 
 function handleRequest($resource){
 
+    require_once __DIR__ . "/../db/select.php";
+    require_once __DIR__ . "/../db/insert.php";
+    require_once __DIR__ . "/../db/delete.php";
+    require_once __DIR__ . "/../db/update.php";
+
 //Verify user from token
 $tokenPayload = verifyToken();
-$api = $resource["endpoint"];
-$paths = getEndpointPath($tokenPayload["userID"], $api);
 
-//echo json_encode(["Recipes paths" => $paths]);
+//echo json_encode(["Resources " => $resource]);
 
-if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
-    //echo json_encode(["success" => "Dir and file exist!"]);
+if(isset($resource["endpoint"])){
 
     $resource = [
-        "endpoint" => $paths["endpointFile"], 
-        "api" => $api, 
-        "data" => $resource["input"]
+        "endpoint" => $resource["endpoint"], 
+        "data" => $resource["input"] ?? null,
+        "id" =>  $tokenPayload["userID"]
     ];
     $method = $_SERVER["REQUEST_METHOD"];
 
@@ -40,7 +42,7 @@ if(is_dir($paths["userDir"]) && file_exists($paths["endpointFile"])){
 else{
     http_response_code(404); //Not found
     header("Content-Type: application/json");
-    echo json_encode(["error" => "Directory or file does not exist!", "Requested:" => [$tokenPayload["userID"] ,$api]]);
+    echo json_encode(["error" => "Invalid resources."]);
     exit;
 }
 }

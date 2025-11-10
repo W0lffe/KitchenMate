@@ -4,7 +4,9 @@
  * This file handles DELETE for recipes
  */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
+
+$data = $resource["data"];
 
 $stmt = $pdo->prepare("
     DELETE FROM recipes 
@@ -12,7 +14,7 @@ $stmt = $pdo->prepare("
 ");
 
 $stmt->execute([
-    "recipeID" => $recipeID
+    "recipeID" => (int)$data["id"]
 ]);
 
 http_response_code(200);
