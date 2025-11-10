@@ -19,7 +19,7 @@ $stmt->execute([
     "name" => (string)$data["name"],
     "portions" => (int)$data["portions"],
     "output" => (string)$data["output"],
-    "outputType" => (string)$data["outputType"] ?? null,
+    "outputType" => $data["outputType"] ?? null,
     "time" => (int)$data["time"],
     "timeFormat" => (string)$data["timeFormat"],
     "favorite" => (int)$data["favorite"],

@@ -12,7 +12,7 @@ $recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $recipesArray = [];
 
 foreach ($recipes as $recipe) {
-    $recipeID = $recipe["recipeID"];
+    $recipeID = $recipe["id"];
 
     $stmtIng = $pdo->prepare("SELECT * FROM ingredients WHERE recipeID = :id");
     $stmtIng->execute(['id' => (int)$recipeID]);

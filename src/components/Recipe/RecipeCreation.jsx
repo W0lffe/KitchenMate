@@ -54,7 +54,7 @@ export default function RecipeCreation(){
                     steps: recipeToModify.instructions.map(i => i.instruction),
                     category: recipeToModify.category
             },
-            modifiedId: isEditing ? recipeToModify?.recipeID : null,
+            modifiedId: isEditing ? recipeToModify?.id : null,
             isFavorited: isEditing ? recipeToModify?.favorite : false,
             isEditing
         } : { validInputs: null };

@@ -9,7 +9,7 @@ require __DIR__ . "/../connection.php";
 $pdo->beginTransaction();
 
 $data = $resource["data"];
-$recipeID = $data["recipeID"];
+$recipeID = $data["id"];
 
     $stmt = $pdo->prepare("
         UPDATE recipes
@@ -22,7 +22,7 @@ $recipeID = $data["recipeID"];
             timeFormat = :timeFormat,
             favorite = :favorite,
             category = :category
-        WHERE recipeID = :recipeID
+        WHERE id = :id
     ");
     $stmt->execute([
         "name" => (string)$data["name"],
@@ -33,11 +33,11 @@ $recipeID = $data["recipeID"];
         "timeFormat" => (string)$data["timeFormat"],
         "favorite" => (int)$data["favorite"],
         "category" => (string)$data["category"],
-        "recipeID" => (int)$recipeID
+        "id" => (int)$recipeID
     ]);
 
-    $pdo->prepare("DELETE FROM ingredients WHERE recipeID = :recipeID")
-        ->execute(["recipeID" => (int)$recipeID]);
+    $pdo->prepare("DELETE FROM ingredients WHERE recipeID = :id")
+        ->execute(["id" => (int)$recipeID]);
 
     $stmtIng = $pdo->prepare("
         INSERT INTO ingredients (recipeID, product, quantity, unit)
@@ -52,8 +52,8 @@ $recipeID = $data["recipeID"];
         ]);
     }
 
-    $pdo->prepare("DELETE FROM instructions WHERE recipeID = :recipeID")
-        ->execute(["recipeID" => $recipeID]);
+    $pdo->prepare("DELETE FROM instructions WHERE recipeID = :id")
+        ->execute(["id" => $recipeID]);
 
     $stmtInst = $pdo->prepare("
         INSERT INTO instructions (recipeID, instruction, step)

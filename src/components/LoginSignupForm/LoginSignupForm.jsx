@@ -35,6 +35,8 @@ export default function LoginSignupForm(){
             passwd: pass
         }
 
+        console.log(user);
+
         const response = await userAPI({
             method: "POST",
             data: {user, operation: isLogin ? "login" : "new"},

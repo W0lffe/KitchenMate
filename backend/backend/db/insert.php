@@ -2,7 +2,7 @@
 
 function postData($resource){
 
-    if(!isset($resource["data"]) && !isset($resource["endpoint"]) && !isset($resource["id"])){
+    if(!isset($resource["data"]) && !isset($resource["endpoint"])){
         http_response_code(400); //Bad Request
         header("Content-Type: application/json");
         echo json_encode(["error" => "Data can't be saved - missing information."]);

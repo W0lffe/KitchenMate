@@ -41,7 +41,7 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       ingredients,
       instructions: steps,
       favorite: currentFormValues.isFavorited,
-      recipeID: currentFormValues.modifiedId,
+      id: currentFormValues.modifiedId,
       category
     };
 
