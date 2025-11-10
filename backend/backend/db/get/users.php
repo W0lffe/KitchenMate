@@ -5,13 +5,18 @@
  */
 
 function getUserData(){
-    require_once __DIR__ . "/../connection.php";
-   
+    require __DIR__ . "/../connection.php";
+
     try {
-        $stmt = $pdo->query("SELECT * FROM users");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("SELECT * FROM users");
+        $stmt->execute();
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $users;
+
     } catch (PDOException $e) {
-        return [];
+        error_log("Error fetching users: " . $e->getMessage()); 
+        return [];  
     }
 }
 

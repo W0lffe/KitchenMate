@@ -1,6 +1,7 @@
 <?php 
 
 function handleRequest($resource){
+    require_once __DIR__ . "/../db/get/users.php";
 
     //echo json_encode(["success" => "got resources", "resources" => $resource]);
 
@@ -9,14 +10,9 @@ function handleRequest($resource){
 
     if(isset($data) && isset($endpoint)){
 
-        $path = getEndpointPath(null, $resource["endpoint"]);
-
-        //echo json_encode(["got path" => $path]);
-
         $resource = [
-            "userFile" => $path["userFile"],
-            "dataPath" => $path["dataPath"],
-            "user" => $data["user"]
+            "user" => $data["user"],
+            "endpoint" => $endpoint
         ];
 
         //echo json_encode(["new resource" => $resource]);
@@ -26,7 +22,7 @@ function handleRequest($resource){
                 createNewUser($resource);
                 break;
             case "login": 
-                authUser($resource);
+                authUser($data["user"]);
                 break;
         }
     
@@ -47,9 +43,9 @@ function handleRequest($resource){
  */
 function createNewUser($resource){
 
-    $userFile = $resource["userFile"];
+    require_once __DIR__ . "/../db/insert.php";
+
     $newUser = $resource["user"];
-    $dataPath = $resource["dataPath"];
 
     if(strlen($newUser["user"]) === 0 || strlen($newUser["user"]) > 16){
         http_response_code(400);
@@ -72,13 +68,13 @@ function createNewUser($resource){
         exit;
     }
 
-    $users = json_decode(file_get_contents($userFile), true);
+    $users = getUserData();
     if($users === null){
         $users = [];
     }
 
     foreach($users as $existUser){
-        if($existUser["user"] === $newUser["user"]){
+        if($existUser["name"] === $newUser["user"]){
             http_response_code(400);
             header("Content-Type: application/json");
             echo json_encode(["error" => "This username is taken."]);
@@ -86,36 +82,13 @@ function createNewUser($resource){
         };
     }; 
 
-    $idRange = range(1, 1000);
-    $availableIds = array_diff($idRange, array_column($users, "id"));
-    $newUser["id"] = $availableIds[array_rand($availableIds)];
-  
     $cryptedPasswd = password_hash($newUser["passwd"], PASSWORD_BCRYPT);
     $newUser["passwd"] = $cryptedPasswd;
 
-    array_push($users, $newUser);
+    unset($resource["user"]);
+    $resource["data"] = $newUser;
 
-    if(file_put_contents($userFile ,json_encode($users, JSON_PRETTY_PRINT))){
-
-        if(initEndpoints($newUser["id"], $dataPath)){
-            http_response_code(200);
-            header("Content-Type: application/json");
-            echo json_encode(["success" => "User created successfully!"]);
-            exit;
-        }
-        else{
-            http_response_code(500);
-            header("Content-Type: application/json");
-            echo json_encode(["error" => "User creation failed!"]);
-            exit;
-        }
-    }
-    else{
-        http_response_code(500);
-        header("Content-Type: application/json");
-        echo json_encode(["error" => "User creation failed!"]);
-        exit;
-    }
+    postData($resource);
 }
 
 
@@ -125,16 +98,15 @@ function createNewUser($resource){
  */
 function authUser($resource){
 
-    $userFile = $resource["userFile"];
-    $user = $resource["user"];
-    /*--------------------- DATABASE SELECT HERE ------------------------- */
-    $users = json_decode(file_get_contents($userFile), true);
-    $userID = null;
+    $users = getUserData();
+    if($users === null){
+        $users = [];
+    }
 
     foreach($users as $existUser){
-        if($existUser["user"] === $user["user"]){
-            if(password_verify($user["passwd"], $existUser["passwd"])){
-                $userID = $existUser["id"];
+        if($existUser["name"] === $resource["user"]){
+            if(password_verify($resource["passwd"], $existUser["passwd"])){
+                $userID = $existUser["userID"];
                 $token = createToken($userID);
                 http_response_code(200);
                 header("Content-Type: application/json");
