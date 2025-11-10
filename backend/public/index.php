@@ -11,6 +11,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 require_once __DIR__ . "/../backend/util/helpers.php";
 require_once __DIR__ . "/../backend/util/requestHandler.php";
 require_once __DIR__ . "/../backend/util/methods.php";
+require_once __DIR__ . "/../backend/util/token.php";
 
 if($_SERVER["REQUEST_METHOD"] === "OPTIONS"){
     http_response_code(200);
