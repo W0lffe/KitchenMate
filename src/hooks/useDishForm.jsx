@@ -50,7 +50,7 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
             name,
             course,
             image: hasNewImage ? image : currentImage,
-            favorite: currentFormValues?.isFavorite || false,
+            favorite: currentFormValues?.isFavorite,
             id: currentFormValues?.modifiedId || null,
             components
         };

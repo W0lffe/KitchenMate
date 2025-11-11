@@ -44,10 +44,10 @@ export default function ItemInspectView({itemToInspect}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
     const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
-    const [isFavorite, setIsFavorite] = useState(viewState.isFavorite);
+    const [isFavorite, setIsFavorite] = useState(itemToInspect.favorite === "1" ? true : false);
 
     useEffect(() => {
-        setViewState(deriveViewState(itemToInspect, fullRecipes))
+        setViewState(deriveViewState(itemToInspect, fullRecipes));
     }, [itemToInspect])
 
     //console.log("item to inspect, given parameter", itemToInspect)
