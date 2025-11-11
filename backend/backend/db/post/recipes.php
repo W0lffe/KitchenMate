@@ -22,7 +22,7 @@ $stmt->execute([
     "outputType" => $data["outputType"] ?? null,
     "time" => (int)$data["time"],
     "timeFormat" => (string)$data["timeFormat"],
-    "favorite" => (int)$data["favorite"],
+    "favorite" => 0,
     "category" => (string)$data["category"],
     'userID' => (int)$resource["id"]
 ]);

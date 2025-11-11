@@ -37,13 +37,13 @@ $tables = [
             FOREIGN KEY (recipeID) REFERENCES recipes(id) ON DELETE CASCADE
     )",
      "CREATE TABLE IF NOT EXISTS dishes (
-            dishID INT AUTO_INCREMENT PRIMARY KEY,
+            id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(150) NOT NULL,
             course VARCHAR(100),
             date DATETIME DEFAULT CURRENT_TIMESTAMP,
             userID INT NOT NULL,
             favorite BOOLEAN NOT NULL,
-            image VARCHAR(350) NOT NULL,
+            image VARCHAR(350),
             FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE
     )",
     "CREATE TABLE IF NOT EXISTS components (
@@ -51,7 +51,7 @@ $tables = [
             componentID INT NOT NULL,
             dishID INT NOT NULL,
             FOREIGN KEY (componentID) REFERENCES recipes(id) ON DELETE CASCADE,
-            FOREIGN KEY (dishID) REFERENCES dishes(dishID) ON DELETE CASCADE
+            FOREIGN KEY (dishID) REFERENCES dishes(id) ON DELETE CASCADE
     )",
     "CREATE TABLE IF NOT EXISTS basket (
             itemID INT AUTO_INCREMENT PRIMARY KEY,

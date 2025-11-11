@@ -10,16 +10,16 @@ $data = $resource["data"];
 
 $stmt = $pdo->prepare("
     DELETE FROM recipes 
-    WHERE recipeID = :recipeID
+    WHERE id = :id
 ");
 
 $stmt->execute([
-    "recipeID" => (int)$data["id"]
+    "id" => (int)$data["id"]
 ]);
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Recipe deleted"]);
+echo json_encode(["success" => "Recipe deleted successfully!"]);
 exit;
 
 ?>

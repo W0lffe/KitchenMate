@@ -2,17 +2,17 @@
 
 function handleRequest($resource){
 
-    require_once __DIR__ . "/../db/select.php";
-    require_once __DIR__ . "/../db/insert.php";
-    require_once __DIR__ . "/../db/delete.php";
-    require_once __DIR__ . "/../db/update.php";
+require_once __DIR__ . "/../db/select.php";
+require_once __DIR__ . "/../db/insert.php";
+require_once __DIR__ . "/../db/delete.php";
+require_once __DIR__ . "/../db/update.php";
 
 //Verify user from token
 $tokenPayload = verifyToken();
 
 //echo json_encode(["Resources " => $resource]);
 
-if(isset($resource["endpoint"])){
+if(isset($resource["endpoint"]) && isset($tokenPayload["userID"])){
 
     $resource = [
         "endpoint" => $resource["endpoint"], 

@@ -14,11 +14,11 @@ $recipesArray = [];
 foreach ($recipes as $recipe) {
     $recipeID = $recipe["id"];
 
-    $stmtIng = $pdo->prepare("SELECT * FROM ingredients WHERE recipeID = :id");
+    $stmtIng = $pdo->prepare("SELECT product, quantity, unit FROM ingredients WHERE recipeID = :id");
     $stmtIng->execute(['id' => (int)$recipeID]);
     $ingredients = $stmtIng->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmtInst = $pdo->prepare("SELECT * FROM instructions WHERE recipeID = :id");
+    $stmtInst = $pdo->prepare("SELECT instruction FROM instructions WHERE recipeID = :id");
     $stmtInst->execute(['id' => (int)$recipeID]);
     $instructions = $stmtInst->fetchAll(PDO::FETCH_ASSOC);
 
