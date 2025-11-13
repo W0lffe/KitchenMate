@@ -79,6 +79,4 @@ function verifyToken(){
     //Return payload of token
     return $payloadData;
 }
-
-
 ?>

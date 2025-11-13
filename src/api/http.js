@@ -73,12 +73,13 @@ export const login = async () => {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` }
         })
+          console.log("response",response);
         if (response.ok) {
             const resData = await response.json();
             return resData;
         }
 
-        return null;
+        return {};
     } catch (error) {
         return { error: "Error occured while fetching user data!" };
     }
@@ -100,20 +101,18 @@ export const getImage = async (img) => {
 
         console.log("response",response);
         if (!response.ok) {
-            //console.log(await response.json());
-            //console.log(response.status);
             throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.error}`);
         }
 
         const blob = await response.blob();
-        //console.log("blob type",blob.type);
+        console.log("blob type",blob.type);
         if(blob.type.includes("image")){
-            //console.log("blob",blob);
+            console.log("blob",blob);
             return blob;
         }
         else{
             const {error} = await response.json();
-            //console.log("error fetching image",error);
+            console.log("error fetching image",error);
             return {error};
         }
        

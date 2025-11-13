@@ -14,7 +14,7 @@ export default function ItemInstructionSection({instructions}){
                         <ul className={getListStyle()}>
                             {instructions.length > 0 ? (
                                 instructions.map((step, i) => 
-                                <li key={i}>{`${i+1}. ${step.instruction}`}</li>)
+                                <li key={i}>{`${i+1}. ${step}`}</li>)
                             ) : (
                                 <h3 className="italic">No instructions added</h3>
                             )}

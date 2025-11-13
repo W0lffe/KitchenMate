@@ -16,7 +16,7 @@ function updateData($resource){
    } catch (PDOException $e) {
         http_response_code(500); //server error
         header("Content-Type: application/json");
-        echo json_encode(["error" => "Database error"]);
+        echo json_encode(["error" => "Database error " . $e->getMessage()]);
         exit;
    }
 }

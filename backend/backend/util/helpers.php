@@ -53,6 +53,7 @@ function getEndpointPath($user, $endpoint) {
     $dataPath = $config["paths"]["data_point"];
     $userFile = $config["files"]["user_file"];
     $userDir = "$dataPath/$user";
+    $image = $config["image"]["save"];
     
     if($endpoint === "users"){
         return [

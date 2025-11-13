@@ -21,9 +21,15 @@ foreach ($recipes as $recipe) {
     $stmtInst = $pdo->prepare("SELECT instruction FROM instructions WHERE recipeID = :id");
     $stmtInst->execute(['id' => (int)$recipeID]);
     $instructions = $stmtInst->fetchAll(PDO::FETCH_ASSOC);
+    $instructionArray = [];
+
+    foreach($instructions as $ins){
+        array_push($instructionArray, $ins["instruction"]);
+    }
+
 
     $recipe['ingredients'] = $ingredients;
-    $recipe['instructions'] = $instructions;
+    $recipe['instructions'] = $instructionArray;
     $recipesArray[] = $recipe;
 }
 

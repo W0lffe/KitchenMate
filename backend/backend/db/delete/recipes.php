@@ -7,19 +7,32 @@
 require __DIR__ . "/../connection.php";
 
 $data = $resource["data"];
+$message = "Recipe";
+if(isset($resource["data"]["dependencies"])){
+    $dependencies = $resource["data"]["dependencies"];
+    $stmtDep = $pdo->prepare("
+        DELETE FROM dishes
+        WHERE id = :id
+    ");
+    foreach ($dependencies as $dep) {
+        $stmtDep->execute(["id" => (int)$dep]);
+    }
 
-$stmt = $pdo->prepare("
+    $message = $message . " and dependencies";
+}
+
+$stmtDelRec = $pdo->prepare("
     DELETE FROM recipes 
     WHERE id = :id
 ");
 
-$stmt->execute([
+$stmtDelRec->execute([
     "id" => (int)$data["id"]
 ]);
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Recipe deleted successfully!"]);
+echo json_encode(["success" => "$message deleted successfully!"]);
 exit;
 
 ?>

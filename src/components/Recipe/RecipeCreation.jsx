@@ -51,7 +51,7 @@ export default function RecipeCreation(){
                     products: recipeToModify.ingredients.map(ingredient => ingredient.product),
                     quantity: recipeToModify.ingredients.map(ingredient => ingredient.quantity),
                     unit: recipeToModify.ingredients.map(ingredient => ingredient.unit),
-                    steps: recipeToModify.instructions.map(i => i.instruction),
+                    steps: recipeToModify.instructions,
                     category: recipeToModify.category
             },
             modifiedId: isEditing ? recipeToModify?.id : null,
@@ -59,7 +59,6 @@ export default function RecipeCreation(){
             isEditing
         } : { validInputs: null };
 
-        console.log(currentState.validInputs)
         return currentState;
     });
 

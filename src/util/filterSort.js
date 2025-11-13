@@ -68,8 +68,8 @@ export const sort = (parameters) => {
                 valB = b.quantity ? b.quantity : b.components.length;
                 return valB - valA;
             case "check":
-                valA = a.obtained ? 1 : 0;
-                valB = b.obtained ? 1 : 0;
+                valA = a.obtained === "1" ? 1 : 0;
+                valB = b.obtained ===  "1" ? 1 : 0;
                 return valB - valA;
             case "course": 
                 valA = a.course;
