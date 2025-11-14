@@ -20,6 +20,7 @@ function createTables(){
         return true;
     }
     catch(PDOException $e){
+        echo json_encode($e->getMessage());
         return false;
     }
 }

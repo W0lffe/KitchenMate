@@ -55,7 +55,7 @@
     - [ ] Generate recipes based on wanted ingredients
     - [ ] Nutrition estimates
 7. Backend & Database
-    - [ ] Convert current JSON data to MySQL/SQLite
+    - [x] Convert current JSON data to MariaDB
     - [ ] Python backend
     - [ ] Data export to Excel format or PDF
 8. User Features

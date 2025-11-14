@@ -138,6 +138,7 @@ export const getReducerType = (method, section, basketAdd) => {
  */
 export const scaleRecipe = (scaleParams) => {
 
+
     const {ingredients, operation, scaledTo, scaleTo} = scaleParams;
     const originalPortions = scaledTo;
     const originalIngredients = ingredients;
@@ -205,7 +206,6 @@ export const getRecipeFormValues = (formData) => {
 export const getRecipeInfo = (list, id) => {
 
     if(list.length === 0 || id.length === 0) return [];
-
     let recipes = []
     id.forEach(id => {
         let recipe = list.find(item => item.id === id);
@@ -232,7 +232,12 @@ export const getRecipeInfo = (list, id) => {
  * @returns {Array} list of dish IDs that depend on the recipe
  */
 export const findRecipeDependencies = (recipeID, dishes) => {
+    console.log(dishes)
     const dependencies = [];
+
+    if(dishes.length === 0){
+        return dependencies;
+    }
 
     dishes.forEach(dish => {
         const dishComponents = dish.components;

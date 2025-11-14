@@ -334,7 +334,7 @@ export default function KitchenContextProvider({children}){
             kitchenDispatch({
                 type,
                 payload: []
-        })
+            })
             return;
         }
 
@@ -346,16 +346,14 @@ export default function KitchenContextProvider({children}){
 
         if(error){
             handleToast({error});
-            setIsFetchingData(false);
-            return;
         }
 
         kitchenDispatch({
                 type,
-                payload: data
+                payload: !error ? data : []
         })
 
-        ref.current = data;
+        ref.current = !error ? data : [];
 
         setIsFetchingData(false);
     }

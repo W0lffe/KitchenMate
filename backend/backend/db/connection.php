@@ -10,6 +10,7 @@
         $pdo = new PDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $e) {
+        echo json_encode(["TEST" => "PDO FAIL"]);
         die("Database connection failed: " . $e->getMessage());
     }
 ?>

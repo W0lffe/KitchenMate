@@ -2,7 +2,8 @@
 header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
-require __DIR__ . "/../backend/util/token.php";
+require_once __DIR__ . "/../backend/util/token.php";
+require_once __DIR__ . "/../backend/db/get/users.php";
 
 if($_SERVER["REQUEST_METHOD"] === "OPTIONS"){
     http_response_code(200);
@@ -12,9 +13,9 @@ if($_SERVER["REQUEST_METHOD"] === "OPTIONS"){
 
 // Verify token
 $payloadData = verifyToken();
-//Parse user file from config file
-$config = parse_ini_file(__DIR__ . "/../backend/config/config.ini", true);
-$users = json_decode(file_get_contents($config["files"]["user_file"]), true);
+
+//Get user data
+$users = getUserData();
 
 //Init user as null
 $user = null;
@@ -22,7 +23,7 @@ $user = null;
 /*--------------------- DATABASE SELECT HERE ------------------------- */
 //Loop through users to find user on token data
 foreach ($users as $u) {
-    if ($u['id'] == $payloadData['userID']) {
+    if ($u['userID'] == $payloadData['userID']) {
         $user = $u;
         break;
     }
