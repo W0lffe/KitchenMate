@@ -29,16 +29,16 @@ export default function Photo({ img, disable }) {
         let preview = null;
         if (img instanceof File) {
             preview = URL.createObjectURL(img);
-            console.log("blobi",preview)
+            //console.log("blobi",preview)
         }
 
         if (typeof img === "string") {
             const res = await getImage(img);
-            console.log("res from getImage",res);
+            //console.log("res from getImage",res);
             
             if(res instanceof Blob){
                 preview = URL.createObjectURL(res);
-                console.log("preview after receiving", preview)
+                //console.log("preview after receiving", preview)
             }
             else{
                 const {error} = res;
@@ -51,21 +51,21 @@ export default function Photo({ img, disable }) {
             }
         }
 
-        console.log("preview", preview)
+        //console.log("preview", preview)
 
         if (preview) {
 
             const image = new Image();
-            console.log("image",image);
+            //console.log("image",image);
 
             image.onload = () => {
-                console.log("load success");
+                //console.log("load success");
                 setImagePreview(preview);
                 setIsLoading(false);
             }
 
             image.onerror = () => {
-                console.log("error happened");
+               // console.log("error happened");
                 setImagePreview(null);
                 setIsLoading(false);
                 handleToast({

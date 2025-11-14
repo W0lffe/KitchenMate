@@ -7,7 +7,7 @@
  * @returns new state
  */
 export const utilityReducer = (state, action) => {
-    console.log("UTILITY_DEBUG:", action.type, action.payload)
+    //console.log("UTILITY_DEBUG:", action.type, action.payload)
     switch(action.type){
         case "SET_SLOGAN":
             return{
@@ -49,7 +49,7 @@ export const utilityReducer = (state, action) => {
  * @returns new state
  */
 export const kitchenReducer = (state, action) => {
-    console.log("DEBUG: ", action.type, action.payload)
+    //console.log("DEBUG: ", action.type, action.payload)
     switch(action.type){
         case "SET_ACTIVE_RECIPE":
             return {

@@ -47,7 +47,6 @@ const fetchAPI = async (params) => {
 
     try {
         const response = await fetch(fetchUrl, payload);
-
         if (!response.ok) {
             throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.error}`);
         }
@@ -73,7 +72,6 @@ export const login = async () => {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` }
         })
-          console.log("response",response);
         if (response.ok) {
             const resData = await response.json();
             return resData;
@@ -99,20 +97,20 @@ export const getImage = async (img) => {
             headers: { Authorization: `Bearer ${token}` }
         })
 
-        console.log("response",response);
+        //console.log("response",response);
         if (!response.ok) {
             throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.error}`);
         }
 
         const blob = await response.blob();
-        console.log("blob type",blob.type);
+        //console.log("blob type",blob.type);
         if(blob.type.includes("image")){
-            console.log("blob",blob);
+            //console.log("blob",blob);
             return blob;
         }
         else{
             const {error} = await response.json();
-            console.log("error fetching image",error);
+            //console.log("error fetching image",error);
             return {error};
         }
        

@@ -7,7 +7,7 @@
  * @property {string} type: action type for dispatch
  */
 export const filter = (parameters) => {
-    console.log(parameters)
+    //console.log(parameters)
     
     const list = parameters.fullList;
     const key = parameters.value;
@@ -36,7 +36,7 @@ export const filter = (parameters) => {
  */
 export const sort = (parameters) => {
 
-    console.log(parameters)
+    //console.log(parameters)
     const list = parameters.fullList;
     const key = parameters.value;
     const dispatch = parameters.dispatch;

@@ -5,24 +5,16 @@ function handleRequest($resource){
     $tokenPayload = verifyToken();
 
     $image = basename($resource["image"]);
-    $uploadDir = getEndpointPath($tokenPayload["userID"], "uploads");
-    $imagePath = $uploadDir . $image;
+    $file = getUpload($tokenPayload["userID"], $image, false);
 
-
-/*
-    echo json_encode(["image" => $image, "uploadDir" => $uploadDir, "imagePath" => $imagePath, "token" => $tokenPayload]);
-    echo json_encode(file_exists($imagePath));
-
-    exit;
-*/
-    if (file_exists($imagePath)) {
+    if (file_exists($file)) {
         
         //http_response_code(200); //OK
-        header('Content-Type: ' . mime_content_type($imagePath));
-        header('Content-Length: ' . filesize($imagePath));
-        
+        header('Content-Type: ' . mime_content_type($file));
+        header('Content-Length: ' . filesize($file));
+        ob_end_clean();
         //"Send" image to client
-        readfile($imagePath);
+        readfile($file);
         flush();
         exit;
     } else {
