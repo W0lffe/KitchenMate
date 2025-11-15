@@ -77,7 +77,7 @@ function parseRequest(){
     if(!isset($resource["endpoint"])){
         http_response_code(400); //Bad request
         header('Content-Type: application/json');
-        echo json_encode(["error" => "Critical error with fetch!"]);
+        echo json_encode(["error" => "Invalid resources - invalid payload!"]);
         exit;
     };
 

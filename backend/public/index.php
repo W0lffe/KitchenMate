@@ -1,7 +1,7 @@
 <?php 
 
 //https://kitchenmate-efe45.web.app
-header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
@@ -23,8 +23,6 @@ if($_SERVER["REQUEST_METHOD"] === "OPTIONS"){
  */
 if(!createTables()){
     http_response_code(500); //Server side error
-    header('Content-Type: application/json');
-    echo json_encode(["error" => "Critical error initiating database!"]);
     exit;
 } 
 
@@ -47,7 +45,7 @@ if(file_exists($endpointFile)){
 else{
     http_response_code(400); // Bad request
     header('Content-Type: application/json');
-    echo json_encode(["error" => "Error with endpoint: {$resource["endpoint"]}"]);
+    echo json_encode(["error" => "Error reaching endpoint: {$resource["endpoint"]}"]);
     exit;
 }
 

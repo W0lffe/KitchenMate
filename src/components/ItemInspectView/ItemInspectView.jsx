@@ -99,11 +99,11 @@ export default function ItemInspectView({itemToInspect}){
             data: products,
             method: "POST"
         }, true)
-        const {error} = response;
+        const {success, error} = response;
 
         handleToast({
             error,
-            success: "Products added to basket successfully!",
+            success,
             isMobile,
             setModalState
         })

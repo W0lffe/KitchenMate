@@ -77,7 +77,7 @@ export default function ListItem({item}){
 
             handleToast({
                 error,
-                success: `Product is marked as ${newObtained ? "obtained!" : "not obtained!"}`
+                success: `Product is ${newObtained ? "now" : "no longer"} marked as obtained.`
             })
         }
     }

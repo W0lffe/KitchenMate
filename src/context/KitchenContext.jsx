@@ -133,9 +133,9 @@ export default function KitchenContextProvider({children}){
         const run = async () => {
 
             if(!utilState.user){
-                const {user, error, tkn_error} = await login();
+                const {user, error} = await login();
                 handleToast({
-                    error: tkn_error ? tkn_error : error
+                    error,
                 })
                 if(user) setUser(user);
             }

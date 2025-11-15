@@ -30,7 +30,7 @@ function handleRequest($resource){
     else{
         http_response_code(400); //Bad request
         header("Content-Type: application/json");
-        echo json_encode(["error" => "Invalid resources"]);
+        echo json_encode(["error" => "Invalid resources - invalid payload!"]);
         exit;
     }
 
@@ -108,20 +108,20 @@ function authUser($resource){
             if(password_verify($resource["passwd"], $existUser["passwd"])){
                 $userID = $existUser["userID"];
                 $token = createToken($userID);
-                http_response_code(200);
+                http_response_code(200); //OK
                 header("Content-Type: application/json");
-                echo json_encode(["success" => "User authenticated!", "token" => $token]);
+                echo json_encode(["success" => "Authenticated!", "token" => $token]);
                 exit;
             }
             else{
-                http_response_code(401);
+                http_response_code(401); //Unauthorized
                 header("Content-Type: application/json");
                 echo json_encode(["error" => "Username or password is incorrect."]);
                 exit;
             }
         }
     }
-    http_response_code(401);
+    http_response_code(401); //Unauthorized
     header("Content-Type: application/json");
     echo json_encode(["error" => "Username or password is incorrect."]);
     exit;

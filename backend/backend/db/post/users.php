@@ -24,13 +24,13 @@ try {
 
     http_response_code(200);
     header("Content-Type: application/json");
-    echo json_encode(["success" => "User created succesfully"]);
+    echo json_encode(["success" => "User created succesfully!"]);
     exit;
     
 } catch (PDOException $e) {
     http_response_code(500);
     header("Content-Type: application/json");
-    echo json_encode(["error" => "Database error"]);
+    echo json_encode(["error" => "Error with database: ${$e->getMessage()}"]);
     exit;
 }
 

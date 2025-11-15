@@ -6,6 +6,12 @@ require __DIR__ . "/../connection.php";
 
 $data = $resource["data"];
 
+$resMsg = "Product";
+
+if(count($data) > 1){
+    $resMsg = "Products";
+}
+
 $stmtSelect = $pdo->prepare("
     SELECT * FROM basket
     WHERE userID = :id
@@ -17,6 +23,8 @@ $stmtInsert = $pdo->prepare("
     VALUES 
     (:product, :quantity, :unit, :obtained, :userID)
 "); 
+
+
 
 $stmtSelect->execute(["id" => $resource["id"]]);
 $existingProducts = $stmtSelect->fetchAll(PDO::FETCH_ASSOC);
@@ -78,7 +86,7 @@ else {
 }
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Products added successfully!"]);
+echo json_encode(["success" => "$resMsg added to basket successfully!"]);
 exit;
 
 ?>

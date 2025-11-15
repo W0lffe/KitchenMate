@@ -59,7 +59,6 @@ export default function ManualBasketEntry(){
                 itemIds: availableBasket.map((product) => product.id)
             } : {validInputs: null};
 
-    console.log(initialState)
 
     /**
      * Form action to handle manual entry submission
@@ -97,11 +96,9 @@ export default function ManualBasketEntry(){
         });
         const {error, success} = response;
 
-        const successToast =  `Product${combinedProducts.length > 1 ? "s" : ""} added to basket successfully!`;
-
         handleToast({
             error,
-            success: isEditing ? success : successToast,
+            success,
             setEntryStatus,
             setModalState,
         })

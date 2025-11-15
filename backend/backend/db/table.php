@@ -20,7 +20,7 @@ function createTables(){
         return true;
     }
     catch(PDOException $e){
-        echo json_encode($e->getMessage());
+        echo json_encode(["error" => "Database initialization failed: ${$e->getMessage()}"]);
         return false;
     }
 }
