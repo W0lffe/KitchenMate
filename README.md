@@ -57,6 +57,7 @@
     - [ ] Nutrition estimates
 7. Backend & Database
     - [x] [Convert current JSON data to MariaDB](https://github.com/W0lffe/KitchenMate/pull/37)
+    - [x] [Verify connectivity between front-end and backend](https://github.com/W0lffe/KitchenMate/pull/43)
     - [ ] Python backend
     - [ ] Data export to Excel format or PDF
 8. User Features
