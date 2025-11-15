@@ -20,7 +20,7 @@ import { handleToast } from "../../util/toast";
  */
 export default function UserSection() {
 
-        const { navigationIsOpen, user, setModalState, setUser, isOnline } = useContext(KitchenContext);
+        const { navigationIsOpen, user, setModalState, setUser} = useContext(KitchenContext);
         const userIsLogged = (user !== null) && (user?.name !== null && user?.id !== null);
 
         /**
@@ -28,11 +28,7 @@ export default function UserSection() {
          * @param {string} section respective section to open
          */
         const handleUserClick = (section) => {
-                if (isOnline) {
-                        setModalState({ section }, true);
-                } else {
-                        handleToast({ error: "Error with connection to server." });
-                }
+                setModalState({ section }, true);
         };
 
         /**
