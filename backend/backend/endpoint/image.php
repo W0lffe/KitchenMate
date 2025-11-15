@@ -5,6 +5,14 @@ function handleRequest($resource){
     $tokenPayload = verifyToken();
 
     $image = basename($resource["image"]);
+
+    if(!isset($image)){
+        ttp_response_code(400); //Bad request
+        header("Content-Type: application/json");
+        echo json_encode(["error" => "Invalid resources - invalid payload."]);
+        exit;
+    }
+
     $file = getUpload($tokenPayload["userID"], $image, false);
 
     if (file_exists($file)) {

@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: https://kitchenmate-efe45.web.app");
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Content-Type: application/json");
 require_once __DIR__ . "/../backend/util/token.php";

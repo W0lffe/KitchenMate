@@ -65,7 +65,7 @@ foreach ($instructions as $index => $instruction) {
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Recipe saved successfully!"]);
+echo json_encode(["success" => "Recipe created successfully!"]);
 exit;
 
 ?>

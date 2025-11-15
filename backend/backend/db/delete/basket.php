@@ -32,7 +32,7 @@ else{
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "$message deleted succesfully!"]);
+echo json_encode(["success" => "$message deleted from basket succesfully!"]);
 exit;
 
 ?>

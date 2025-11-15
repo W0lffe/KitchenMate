@@ -40,9 +40,9 @@ if(isset($resource["endpoint"]) && isset($tokenPayload["userID"])){
     }
 }
 else{
-    http_response_code(404); //Not found
+    http_response_code(400); //Bad request
     header("Content-Type: application/json");
-    echo json_encode(["error" => "Invalid resources."]);
+    echo json_encode(["error" => "Invalid resources - invalid payload!"]);
     exit;
 }
 }

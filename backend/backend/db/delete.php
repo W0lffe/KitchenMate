@@ -5,7 +5,7 @@ function deleteData($resource){
     if(!isset($resource["data"]) && !isset($resource["endpoint"])){
         http_response_code(400); //Bad Request
         header("Content-Type: application/json");
-        echo json_encode(["error" => "Data can't be deleted - missing information."]);
+        echo json_encode(["error" => "Data can't be deleted - invalid payload!"]);
         exit;
     }
 
@@ -16,7 +16,7 @@ function deleteData($resource){
    } catch (PDOException $e) {
         http_response_code(500); //server error
         header("Content-Type: application/json");
-        echo json_encode(["error" => "Database error"]);
+        echo json_encode(["error" => "Error with database: ${$e->getMessage()}"]);
         exit;
    }
 }

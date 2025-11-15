@@ -18,7 +18,7 @@ if(isset($resource["data"]["dependencies"])){
         $stmtDep->execute(["id" => (int)$dep]);
     }
 
-    $message = $message . " and dependencies";
+    $message = "Selected items";
 }
 
 $stmtDelRec = $pdo->prepare("

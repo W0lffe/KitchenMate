@@ -33,7 +33,7 @@ export const recipesAPI = async (data) => fetchAPI({ ...data, endpoint: "recipes
 /**
  * Used to make fetch requests to the server
  * @param {Object} params includes data, method, endpoint
- * @returns response from server as json
+ * @returns response from server as object
  */
 const fetchAPI = async (params) => {
 
@@ -47,21 +47,18 @@ const fetchAPI = async (params) => {
 
     try {
         const response = await fetch(fetchUrl, payload);
+        //console.log(response)
 
-        let data;
-        try {
-            data = await response.json();
-        } catch{
-            data = null;
-        }
-        if (response.ok) {
-            return data;
+        const data = await response.json();
+
+        if(!response.ok){
+            throw new Error(data.error);
         }
 
-        return [];
+        return data;
 
     } catch (error) {
-        return { error: "Error occured while fetching data!" };
+        return { error: error.message};
     }
 
 }
@@ -73,19 +70,27 @@ const fetchAPI = async (params) => {
 export const login = async () => {
 
     const token = localStorage.getItem("token");
+
+    if(!token){
+        return null;
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/login.php`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` }
         })
-        if (response.ok) {
-            const resData = await response.json();
-            return resData;
+      
+        const data = await response.json();
+        if(!response.ok){
+            throw new Error(data.error);
         }
 
-        return {};
+        return data;
+
     } catch (error) {
-        return { error: "Error occured while fetching user data!" };
+        //console.log(error)
+        return { error: error.message };
     }
 
 }
@@ -105,7 +110,8 @@ export const getImage = async (img) => {
 
         //console.log("response",response);
         if (!response.ok) {
-            throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.error}`);
+            const {error} =  await response.json();
+            throw new Error(error);
         }
 
         const blob = await response.blob();
@@ -122,7 +128,7 @@ export const getImage = async (img) => {
        
 
     } catch (error) {
-        return { error: "Error occured while fetching image!" };
+        return { error: error.message };
     }
 }
 

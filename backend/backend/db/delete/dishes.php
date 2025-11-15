@@ -17,7 +17,7 @@ $stmt->execute([
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Dish deleted"]);
+echo json_encode(["success" => "Dish deleted successfully!"]);
 exit;
 
 ?>
