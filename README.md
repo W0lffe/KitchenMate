@@ -56,11 +56,7 @@
     - [ ] Generate recipes based on wanted ingredients
     - [ ] Nutrition estimates
 7. Backend & Database
-<<<<<<< HEAD
-    - [x] Convert current JSON data to MariaDB
-=======
     - [x] [Convert current JSON data to MariaDB](https://github.com/W0lffe/KitchenMate/pull/37)
->>>>>>> 580af728f9e413fe657be21e8be5cf5f768228ad
     - [ ] Python backend
     - [ ] Data export to Excel format or PDF
 8. User Features
@@ -72,7 +68,7 @@
     - [ ] Password reset and account recovery
 10. Error Handling
     - [x] HTTP Response Codes 
-    - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/tree/33-front-end-response-handling)
+    - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/pull/42)
 
 ## 💡 Why I Built This
 
