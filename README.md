@@ -24,7 +24,8 @@
 
 - Frontend: ReactJS, React Router, TailwindCSS
 - Backend: PHP (due to restrictions on server)
-- Auth: Session-based login system built with PHP (no third-party auth provider)
+- Database: MariaDB (due to restrictions on server)
+- Auth: Token-based (JWT) login system built with PHP (no frameworks, or third party providers)
 - Hosting: Firebase Hosting
 
 ## 🧩 Future Plans
@@ -55,7 +56,7 @@
     - [ ] Generate recipes based on wanted ingredients
     - [ ] Nutrition estimates
 7. Backend & Database
-    - [ ] Convert current JSON data to MySQL/SQLite
+    - [x] Convert current JSON data to MariaDB
     - [ ] Python backend
     - [ ] Data export to Excel format or PDF
 8. User Features
