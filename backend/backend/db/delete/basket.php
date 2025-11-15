@@ -4,22 +4,35 @@
  * This file handles DELETE for basket
  */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
 
+$clearBasket = (is_array($resource["data"]) && count($resource["data"]) === 0);
+$message = "Product";
 
-//ADD CHECK IF DELETING SINGULAR ITEM OR WHOLE ARRAY
-$stmt = $pdo->prepare("
-    DELETE FROM basket 
-    WHERE itemID = :itemID
-");
+if($clearBasket){
+    $stmt = $pdo->prepare("
+        DELETE FROM basket
+        WHERE userID = :id
+    ");
 
-$stmt->execute([
-    "itemID" => $itemID
-]);
+    $stmt->execute([
+        "id" => $resource["id"]
+    ]);
+    $message = "Products";
+}
+else{
+    $stmt = $pdo->prepare("
+        DELETE FROM basket 
+        WHERE id = :id
+    ");
+    $stmt->execute([
+        "id" => (int)$resource["data"]["id"]
+    ]);
+}
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Product deleted"]);
+echo json_encode(["success" => "$message deleted succesfully!"]);
 exit;
 
 ?>

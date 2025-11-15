@@ -4,27 +4,50 @@
  * File handles UPDATE for basket
  */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
+
 
 $pdo->beginTransaction();
 
-$stmt = $pdo->prepare("
+$data = $resource["data"];
+
+$stmtSelect = $pdo->prepare("
+    SELECT * FROM basket
+    WHERE id = :id
+");
+
+$stmtUpdate = $pdo->prepare("
     UPDATE basket
     SET 
         product = :product,
         quantity = :quantity,
         unit = :unit,
-    WHERE itemID = :itemID
+        obtained = :obtained
+    WHERE id = :id
 ");
 
 
 foreach ($data as $item) {
-    $stmt -> execute([
-        'itemID' => $item["id"],
-        'product' => $item["product"],
-        'quantity' => $item["quantity"],
-        'unit' => $item["unit"],
-]   );
+
+    $stmtSelect->execute(["id" => $item["id"]]);
+    $currentRow = $stmtSelect->fetch(PDO::FETCH_ASSOC);
+
+    if($currentRow && 
+        (
+        $currentRow['product'] !== $item["product"] ||
+        $currentRow['quantity'] !== $item["quantity"] ||
+        $currentRow['unit'] !== $item["unit"] ||
+        $currentRow['obtained'] !== $item["obtained"]
+        )
+    ){
+        $stmtUpdate -> execute([
+            'id' => $item["id"],
+            'product' => $item["product"],
+            'quantity' => $item["quantity"],
+            'unit' => $item["unit"],
+            'obtained' => $item['obtained']
+        ]);
+    }
 }
 
 $pdo->commit();

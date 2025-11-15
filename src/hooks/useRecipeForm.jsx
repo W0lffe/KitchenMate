@@ -42,9 +42,10 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       instructions: steps,
       favorite: currentFormValues.isFavorited,
       id: currentFormValues.modifiedId,
-      date: getTimestamp(),
       category
     };
+
+    console.log(newRecipe);
 
     const response = await handleRequest({
       data: newRecipe,

@@ -2,27 +2,83 @@
 
 /**This file is to handle INSERT for basket */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
 
-$stmt = $pdo->prepare("
-        INSERT INTO basket 
-        (product, quantity, unit, userID)
-        VALUES 
-        (:product, :quantity, :unit, :userID)
+$data = $resource["data"];
+
+$stmtSelect = $pdo->prepare("
+    SELECT * FROM basket
+    WHERE userID = :id
+");
+
+$stmtInsert = $pdo->prepare("
+    INSERT INTO basket 
+    (product, quantity, unit, obtained, userID)
+    VALUES 
+    (:product, :quantity, :unit, :obtained, :userID)
+"); 
+
+$stmtSelect->execute(["id" => $resource["id"]]);
+$existingProducts = $stmtSelect->fetchAll(PDO::FETCH_ASSOC);
+
+if(count($existingProducts) === 0){
+
+    foreach ($data as $product) {
+        $stmtInsert->execute([
+            'product' => $product["product"],
+            'quantity' => $product["quantity"],
+            'unit'=> $product["unit"],
+            'obtained' => 0,
+            'userID' => $resource["id"]
+        ]);
+    }
+
+}
+else {
+
+    $stmtSelect = $pdo->prepare("
+        SELECT * FROM basket
+        WHERE userID = :id
     ");
 
-foreach($data as $product){
-    $stmt->execute([
-        'product' => $product["product"],
-        'quantity' => $product["quantity"],
-        'unit'=> $product["unit"],
-        'userID' => $userID
-    ]);
-}
+    $stmtUpdate = $pdo->prepare("
+        UPDATE basket
+        SET 
+            quantity = :quantity
+        WHERE id = :id
+    ");
 
+    foreach ($data as $product) {
+        $productFound = false;
+
+        foreach ($existingProducts as $existingProduct) {
+            if ($existingProduct["product"] === $product["product"] && $existingProduct["unit"] === $product["unit"]) {
+                $newQuantity = $existingProduct["quantity"] + $product["quantity"];
+
+                $stmtUpdate->execute([
+                    'quantity' => $newQuantity,
+                    'id' => $existingProduct["id"]
+                ]);
+
+                $productFound = true;
+                break; 
+            }
+        }
+
+        if (!$productFound) {
+            $stmtInsert->execute([
+                'product' => $product["product"],
+                'quantity' => $product["quantity"],
+                'unit' => $product["unit"],
+                'obtained' => 0,  
+                'userID' => $resource["id"]
+            ]);
+        }
+    }
+}
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Products saved successfully!"]);
+echo json_encode(["success" => "Products added successfully!"]);
 exit;
 
 ?>

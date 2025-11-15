@@ -4,7 +4,9 @@
  * This file handles INSERT for dishes
 */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
+
+$data = $resource["data"];
 
 $stmt = $pdo->prepare("
         INSERT INTO dishes 
@@ -14,11 +16,11 @@ $stmt = $pdo->prepare("
     ");
 
 $stmt->execute([
-   'name' => $data["name"],
-   'course' => $data["course"],
-   'userID' => $data["userID"],
-   'favorite' => $data["favorite"],
-   "image" => $data["image"]
+    'name' => (string)$data["name"],
+    'course' => (string)$data["course"],
+    'favorite' => 0,
+    "image" => $data["image"] ?? null,
+    'userID' => (int)$resource["id"]
 ]);
 
 $components = $data["components"];
@@ -34,8 +36,8 @@ $stmt = $pdo->prepare("
 
 foreach($components as $component){
     $stmt->execute([
-        "componentID"=>$component,
-        "dishID" => $dishID
+        "componentID"=> (int)$component,
+        "dishID" => (int)$dishID
     ]);
 }
 

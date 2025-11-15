@@ -83,7 +83,7 @@ export const login = async () => {
             return resData;
         }
 
-        return null;
+        return {};
     } catch (error) {
         return { error: "Error occured while fetching user data!" };
     }
@@ -103,10 +103,8 @@ export const getImage = async (img) => {
             headers: { Authorization: `Bearer ${token}` }
         })
 
-        console.log("response",response);
+        //console.log("response",response);
         if (!response.ok) {
-            //console.log(await response.json());
-            //console.log(response.status);
             throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.error}`);
         }
 

@@ -4,7 +4,9 @@
  * This file handles UPDATE querys of dishes,
  */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
+
+$data = $resource["data"];
 
 $pdo->beginTransaction();
 
@@ -13,19 +15,17 @@ $stmt = $pdo->prepare("
     SET 
         name = :name,
         course = :course,
-        date = :date,
         favorite = :favorite,
         image = :image
-    WHERE dishID = :dishID
+    WHERE id = :id
 ");
 
 $stmt->execute([
-    'name' => $data["name"],
-    'course' => $data["course"],
-    'date' => $data["date"],
-    'favorite' => $data["favorite"],
-    'image' => $data["image"],
-    'dishID' => $data["id"]
+    'name' => (string)$data["name"],
+    'course' => (string)$data["course"],
+    'favorite' => (int)$data["favorite"],
+    'image' => $data["image"] ?? null,
+    'id' => $data["id"]
 ]);
 
 $components = $data["components"];

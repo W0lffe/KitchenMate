@@ -4,20 +4,35 @@
  * This file handles DELETE for recipes
  */
 
-require_once __DIR__ . "/../connection.php";
+require __DIR__ . "/../connection.php";
 
-$stmt = $pdo->prepare("
+$data = $resource["data"];
+$message = "Recipe";
+if(isset($resource["data"]["dependencies"])){
+    $dependencies = $resource["data"]["dependencies"];
+    $stmtDep = $pdo->prepare("
+        DELETE FROM dishes
+        WHERE id = :id
+    ");
+    foreach ($dependencies as $dep) {
+        $stmtDep->execute(["id" => (int)$dep]);
+    }
+
+    $message = $message . " and dependencies";
+}
+
+$stmtDelRec = $pdo->prepare("
     DELETE FROM recipes 
-    WHERE recipeID = :recipeID
+    WHERE id = :id
 ");
 
-$stmt->execute([
-    "recipeID" => $recipeID
+$stmtDelRec->execute([
+    "id" => (int)$data["id"]
 ]);
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["success" => "Recipe deleted"]);
+echo json_encode(["success" => "$message deleted successfully!"]);
 exit;
 
 ?>
