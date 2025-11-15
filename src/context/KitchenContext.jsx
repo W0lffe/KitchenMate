@@ -133,9 +133,9 @@ export default function KitchenContextProvider({children}){
         const run = async () => {
 
             if(!utilState.user){
-                const {user, error, tkn_error} = await login();
+                const {user, error} = await login();
                 handleToast({
-                    error: tkn_error ? tkn_error : error
+                    error,
                 })
                 if(user) setUser(user);
             }
@@ -334,7 +334,7 @@ export default function KitchenContextProvider({children}){
             kitchenDispatch({
                 type,
                 payload: []
-        })
+            })
             return;
         }
 
@@ -346,16 +346,14 @@ export default function KitchenContextProvider({children}){
 
         if(error){
             handleToast({error});
-            setIsFetchingData(false);
-            return;
         }
 
         kitchenDispatch({
                 type,
-                payload: data
+                payload: !error ? data : []
         })
 
-        ref.current = data;
+        ref.current = !error ? data : [];
 
         setIsFetchingData(false);
     }

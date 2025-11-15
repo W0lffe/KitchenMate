@@ -56,7 +56,11 @@
     - [ ] Generate recipes based on wanted ingredients
     - [ ] Nutrition estimates
 7. Backend & Database
+<<<<<<< HEAD
     - [x] Convert current JSON data to MariaDB
+=======
+    - [x] [Convert current JSON data to MariaDB](https://github.com/W0lffe/KitchenMate/pull/37)
+>>>>>>> 580af728f9e413fe657be21e8be5cf5f768228ad
     - [ ] Python backend
     - [ ] Data export to Excel format or PDF
 8. User Features
@@ -68,7 +72,7 @@
     - [ ] Password reset and account recovery
 10. Error Handling
     - [x] HTTP Response Codes 
-    - [ ] Front-end handling for response codes
+    - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/tree/33-front-end-response-handling)
 
 ## 💡 Why I Built This
 
@@ -89,6 +93,9 @@ Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/StageFive
         - Will look into switching to token-based authentication in the future.
    - **STATUS:**
         - **Fixed with token-based authentication.**
+2. Favorite icon lights up after switching inspectable item, even though the new item is not favorited.
+    - **NOTES:**
+        - This is likely caused by a state or rendering logic issue, where the favorite status from the previous item persists instead of updating based on the newly selected item.
    
 
 

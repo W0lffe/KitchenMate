@@ -55,7 +55,7 @@ export default function RecipeCreation(){
                     category: recipeToModify.category
             },
             modifiedId: isEditing ? recipeToModify?.id : null,
-            isFavorited: isEditing ? recipeToModify?.favorite : false,
+            isFavorited: isEditing && recipeToModify?.favorite,
             isEditing
         } : { validInputs: null };
 

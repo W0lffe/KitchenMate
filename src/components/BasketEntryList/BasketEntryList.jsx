@@ -31,7 +31,7 @@ const mapProductData = (productData) => {
     return products.map((product, i) => ({
         ...product,
         id: id[i],
-        ...(index.includes(i) && {obtained: true})
+        ...(index.includes(i) ? {obtained: 1} : {obtained: 0})
     }))
 }
 
@@ -54,10 +54,11 @@ export default function ManualBasketEntry(){
                     quantity: availableBasket.map((product) => product.quantity),
                     unit: availableBasket.map((product) => product.unit),
                 },
-                obtainedIndexes: availableBasket.map((product, index) => product.obtained ? index : null)
+                obtainedIndexes: availableBasket.map((product, index) => product.obtained === "1" ? index : null)
                                                     .filter(index => index !== null),
                 itemIds: availableBasket.map((product) => product.id)
             } : {validInputs: null};
+
 
     /**
      * Form action to handle manual entry submission
@@ -95,11 +96,9 @@ export default function ManualBasketEntry(){
         });
         const {error, success} = response;
 
-        const successToast =  `Product${combinedProducts.length > 1 ? "s" : ""} added to basket successfully!`;
-
         handleToast({
             error,
-            success: isEditing ? success : successToast,
+            success,
             setEntryStatus,
             setModalState,
         })

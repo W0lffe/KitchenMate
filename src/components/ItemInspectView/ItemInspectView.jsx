@@ -44,10 +44,10 @@ export default function ItemInspectView({itemToInspect}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
     const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
-    const [isFavorite, setIsFavorite] = useState(viewState.isFavorite);
+    const [isFavorite, setIsFavorite] = useState(itemToInspect.favorite === "1" ? true : false);
 
     useEffect(() => {
-        setViewState(deriveViewState(itemToInspect, fullRecipes))
+        setViewState(deriveViewState(itemToInspect, fullRecipes));
     }, [itemToInspect])
 
     //console.log("item to inspect, given parameter", itemToInspect)
@@ -99,11 +99,11 @@ export default function ItemInspectView({itemToInspect}){
             data: products,
             method: "POST"
         }, true)
-        const {error} = response;
+        const {success, error} = response;
 
         handleToast({
             error,
-            success: "Products added to basket successfully!",
+            success,
             isMobile,
             setModalState
         })
@@ -127,7 +127,7 @@ export default function ItemInspectView({itemToInspect}){
         const response = await handleRequest({
             method: "PUT",
             data: {...item, 
-                    favorite: newFavoriteValue
+                    favorite: newFavoriteValue ? 1 : 0
                 }
         })
 

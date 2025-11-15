@@ -43,15 +43,15 @@ function verifyToken(){
     if (!isset($headers['Authorization'])) {
         http_response_code(400); //Bad request
         header("Content-Type: application/json");
-        echo json_encode(["tkn_err" => "Invalid token!"]);
+        echo json_encode(["error" => "Invalid payload - missing headers!"]);
         exit;
     }
 
     list($type, $token) = explode(" ", $headers['Authorization'], 2);
-    if ($type !== "Bearer" || !$token) {
+    if ($type !== "Bearer" && !$token) {
         http_response_code(400); //Bad request
         header("Content-Type: application/json");
-        echo json_encode(["tkn_er" => "Invalid token!"]);
+        echo json_encode(["error" => "Invalid payload - missing token!"]);
         exit;
     }
 
@@ -79,6 +79,4 @@ function verifyToken(){
     //Return payload of token
     return $payloadData;
 }
-
-
 ?>

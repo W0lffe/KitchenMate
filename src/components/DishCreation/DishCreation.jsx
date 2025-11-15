@@ -51,8 +51,8 @@ export default function DishCreation(){
                 image: dish.image, user,
                 components: dish.components,
             },
-            isFavorite: isEditing ? dish.favorite : null,
-            modifiedId: isEditing ? dish?.id : null,
+            isFavorite: isEditing && dish.favorite,
+            modifiedId: isEditing && dish?.id,
             isEditing
        } : {validInputs: null};
 

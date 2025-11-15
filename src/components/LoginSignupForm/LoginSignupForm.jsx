@@ -35,15 +35,17 @@ export default function LoginSignupForm(){
             passwd: pass
         }
 
+        //console.log(user);
+
         const response = await userAPI({
             method: "POST",
             data: {user, operation: isLogin ? "login" : "new"},
         });
 
-        const {error, success, token, tkn_err } = response;
+        const {error, success, token} = response;
 
         handleToast({
-            error: tkn_err ? tkn_err : error,
+            error,
             success,
             setModalState,
         })
@@ -51,7 +53,7 @@ export default function LoginSignupForm(){
 
         if(isLogin && success && token){
             localStorage.setItem("token", token);
-            const {user, error} = await login();
+            const {user} = await login();
             if(user) setUser(user);
         }
 

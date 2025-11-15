@@ -69,14 +69,14 @@ export default function ConfirmModal({ props, contextProps }) {
 
         const response = await handleRequest({
             data: clearBasket ? [] : dataToDelete,
-            method: clearBasket ? "PUT" : "DELETE"
+            method: "DELETE"
         })
 
         const { error, success } = response;
 
         handleToast({
             error,
-            success: clearBasket ? "Basket cleared!" : success,
+            success,
             setModalState,
             setActiveDish,
             setActiveRecipe,

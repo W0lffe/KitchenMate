@@ -38,7 +38,7 @@ function parseRequest(){
         //If formData has files
         if (isset($_FILES["image"]) && $_FILES["image"]["error"] === UPLOAD_ERR_OK) {
             $payloadData = verifyToken(); //Verify user with token
-            $uploadDir = getEndpointPath($payloadData["userID"], "uploads"); //Get endpoint to save image to
+            $uploadDir = getUpload($payloadData["userID"], null, true);
 
         //Create upload directory if missing
             if (!is_dir($uploadDir)) {
@@ -54,7 +54,7 @@ function parseRequest(){
             $extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION); //gets extension of image
             $randomName = hash('sha256', $_FILES["image"]["name"] . microtime(true) . random_bytes(8)); //Create hash of image name
             $filename = $randomName . '.' . $extension; //Rename file
-            $targetPath = $uploadDir . $filename; //Target to save image
+            $targetPath = $uploadDir . "/" . $filename; //Target to save image
         
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
                 $data["image"] = $filename;
@@ -77,7 +77,7 @@ function parseRequest(){
     if(!isset($resource["endpoint"])){
         http_response_code(400); //Bad request
         header('Content-Type: application/json');
-        echo json_encode(["error" => "Critical error with fetch!"]);
+        echo json_encode(["error" => "Invalid resources - invalid payload!"]);
         exit;
     };
 
