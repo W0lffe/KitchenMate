@@ -48,12 +48,17 @@ const fetchAPI = async (params) => {
     try {
         const response = await fetch(fetchUrl, payload);
 
-        if (!response.ok) {
-            throw new Error(`Error occured, method: ${method}, endpoint: ${endpoint}, status: ${response.error}`);
+        let data;
+        try {
+            data = await response.json();
+        } catch{
+            data = null;
+        }
+        if (response.ok) {
+            return data;
         }
 
-        const resData = await response.json();
-        return resData;
+        return [];
 
     } catch (error) {
         return { error: "Error occured while fetching data!" };
