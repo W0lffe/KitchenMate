@@ -51,6 +51,7 @@ export const KitchenContext = createContext({
     fullBasket: [],
     fullRecipes: [],
     fullDishes: [],
+    updateActives: () => {}
 })
 
 /**
@@ -217,6 +218,7 @@ export default function KitchenContextProvider({children}){
             if(data.dependencies !== undefined){
                 setAvailableList(dishesStateHandler);
             }
+            updateActives();
         }
 
         return response;
@@ -249,7 +251,6 @@ export default function KitchenContextProvider({children}){
        })
     }
 
-    /******************START OF UTILITY REDUCER RELATED FUNCTIONS******************************************* */
 
     /**
      * Function to set isMobile state in context
@@ -365,6 +366,31 @@ export default function KitchenContextProvider({children}){
         ref.current = !error ? data : [];
 
         setIsFetchingData(false);
+    }
+
+
+    const updateActives = () => {
+        
+        if(kitchenState.activeDish){
+            const id = kitchenState.activeDish.dish.id;
+            kitchenDispatch({
+                type: "SET_ACTIVE_DISH",
+                payload: {
+                    dish: fetchedDishes.current.find(dish=> dish.id === id),
+                    mode: "detail"
+                }
+            })
+        }
+        else if(kitchenState.activeRecipe){
+            const id = kitchenState.activeRecipe.recipe.id;
+            kitchenDispatch({
+                type: "SET_ACTIVE_RECIPE",
+                payload: {
+                    recipe: fetchedRecipes.current.find(recipe => recipe.id === id),
+                    mode: "detail"
+                }
+            })
+        }
     }
     
     /**

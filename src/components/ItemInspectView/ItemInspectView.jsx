@@ -27,7 +27,6 @@ const deriveViewState = (itemToInspect, fullRecipes) => {
         list: isRecipe ? recipe.ingredients : getRecipeInfo(fullRecipes.current, dish.components),
         isRecipe,
         isDish,
-        isFavorite: isRecipe ? recipe.favorite : dish.favorite,
         isScaled: isRecipe && false
     }
 
@@ -44,9 +43,16 @@ export default function ItemInspectView({itemToInspect}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
     const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
-    const [isFavorite, setIsFavorite] = useState(itemToInspect.favorite === "1" ? true : false);
+    const [isFavorite, setIsFavorite] = useState(itemToInspect.recipe?.favorite ?? itemToInspect.dish?.favorite ?? 0);
 
     useEffect(() => {
+        const newID = itemToInspect.recipe?.id ?? itemToInspect.dish?.id;
+        const currentID = viewState.item.id;
+
+        if(newID !== currentID){
+            setIsFavorite(itemToInspect.recipe?.favorite ?? itemToInspect.dish?.favorite ?? 0);
+        }
+
         setViewState(deriveViewState(itemToInspect, fullRecipes));
     }, [itemToInspect])
 
@@ -115,23 +121,19 @@ export default function ItemInspectView({itemToInspect}){
      */
     const handleFavorite = async() => {
 
-        const newFavoriteValue = !isFavorite;
-        setIsFavorite(newFavoriteValue);
-        setViewState({
-            ...viewState,
-            isFavorite: newFavoriteValue
-        })
-
+        const newFavoriteValue = Number(isFavorite) === 1 ? 0 : 1;
         const item = viewState.isRecipe ? itemToInspect.recipe : itemToInspect.dish;
 
         const response = await handleRequest({
             method: "PUT",
             data: {...item, 
-                    favorite: newFavoriteValue ? 1 : 0
+                    favorite: newFavoriteValue
                 }
         })
 
         const {error} = response;
+
+        setIsFavorite(newFavoriteValue);
 
         const object = viewState.isRecipe ? "Recipe" : "Dish";
         handleToast({
@@ -178,7 +180,7 @@ export default function ItemInspectView({itemToInspect}){
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
                         handleModify={handleModify} handleAddCart={handleAddCart} 
                         handleFavorite={handleFavorite}
-                        fav={isFavorite ? "fav" : ""} fetching={isFetchingData}/>
+                        fav={Number(isFavorite) === 1 ? "fav" : ""} fetching={isFetchingData}/>
             <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={scalingFunctions} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
