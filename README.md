@@ -68,7 +68,7 @@
     - [ ] Password reset and account recovery
 10. Error Handling
     - [x] HTTP Response Codes 
-    - [ ] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/tree/33-front-end-response-handling)
+    - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/tree/33-front-end-response-handling)
 
 ## 💡 Why I Built This
 
