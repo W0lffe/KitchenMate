@@ -62,10 +62,9 @@ export default function ListItem({item}){
             }
         }
         else if(activeSection === "basket"){
-            const newObtained = item.obtained === "1" ? 0 : 1;
+            const newObtained = Number(item.obtained) === 1 ? 0 : 1;
             const updatedItem = {...item, obtained: newObtained};
-            console.log(updatedItem)
-
+       
             const response = await handleRequest({
                 data: [{
                     ...updatedItem, 
@@ -96,13 +95,13 @@ export default function ListItem({item}){
     }
 
     return(
-        <li className={getListItemStyle(isMobile, item.obtained === "1" ? true : false, isComponentSelected(item.id))}>
+        <li className={getListItemStyle(isMobile, Number(item.obtained) === 1 ? true : false, isComponentSelected(item.id))}>
             {activeSection === "recipes" || (activeSection === "dishes" && (isCreatingDish || isEditingDish)) ? <RecipeItem item={item} isCreatingDish={isCreatingDish || isEditingDish}/> : null}
             {activeSection === "basket" && <BasketItem item={item}/>}
             {(activeSection === "dishes" && (!isCreatingDish && !isEditingDish)) && <DishItem item={item} />}
             <IconButton func={handleClick}>
                  <FontAwesomeIcon icon={iconToUse} 
-                                className={` p-3 min-w-10 ${item.obtained === "1" ? "text-green-600" : " text-[17px]"}`}/>
+                                className={` p-3 min-w-10 ${Number(item.obtained) === 1 ? "text-green-600" : " text-[17px]"}`}/>
             </IconButton>
             {activeSection === "basket" && 
                 <IconButton func={handleDelete}>

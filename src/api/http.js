@@ -132,3 +132,20 @@ export const getImage = async (img) => {
     }
 }
 
+export const healthCheck = async() => {
+
+    try {
+        const response = await fetch(`${BASE_URL}/status.php`);
+
+        if(!response.ok){
+            throw new Error("");
+        }
+
+        const resData = await response.json();
+
+        return resData;
+    } catch (error) {
+        return {error: "Oops! Something went wrong connecting to the server."};
+    }
+}
+
