@@ -10,7 +10,8 @@ import { utilityReducer,
 import { basketAPI, 
         dishesAPI, 
         recipesAPI, 
-        login } from "../api/http.js"
+        login, 
+        healthCheck} from "../api/http.js"
 import { filter, 
         sort } from "../util/filterSort.js";
 import { handleToast } from "../util/toast.js";
@@ -50,7 +51,6 @@ export const KitchenContext = createContext({
     fullBasket: [],
     fullRecipes: [],
     fullDishes: [],
-    isOnline: true,
 })
 
 /**
@@ -62,7 +62,6 @@ export default function KitchenContextProvider({children}){
 
     
     const [isFetchingData, setIsFetchingData] = useState(false);
-    const [isOnline, setIsOnline] = useState(true);
     /**
      * Reference to list of fetched recipes, used for sorting and filtering
      */
@@ -132,24 +131,34 @@ export default function KitchenContextProvider({children}){
     useEffect(() => {
         const run = async () => {
 
-            if(!utilState.user){
-                const {user, error} = await login();
+            const {status, error} = await healthCheck();
+            
+            if(status){
+                if(!utilState.user){
+                    const {user, error} = await login();
+                    handleToast({
+                        error,
+                    })
+                    if(user) setUser(user);
+                }
+
+                if(utilState.user && utilState.user?.id !== null){
+                    initializeData();
+                }
+
+                if(kitchenState.activeRecipe){
+                    setActiveRecipe(null)
+                }
+                if(kitchenState.activeDish){
+                    setActiveDish(null)
+                }
+            }
+            else{
                 handleToast({
-                    error,
+                    error
                 })
-                if(user) setUser(user);
             }
-
-            if(utilState.user && utilState.user?.id !== null){
-                initializeData();
-            }
-
-            if(kitchenState.activeRecipe){
-                setActiveRecipe(null)
-            }
-            if(kitchenState.activeDish){
-                setActiveDish(null)
-            }
+           
         }
         run();
       
@@ -512,8 +521,6 @@ export default function KitchenContextProvider({children}){
         fullBasket: fetchedBasket,
         fullRecipes: fetchedRecipes,
         fullDishes: fetchedDishes,
-        isOnline
-
     }
 
     return(
