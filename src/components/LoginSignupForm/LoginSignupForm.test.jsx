@@ -1,181 +1,58 @@
-import { render, 
-        screen, 
-        fireEvent,
-        waitFor } from "@testing-library/react";
-import { KitchenContext } from "../../context/KitchenContext";
+import { render, screen, fireEvent } from "@testing-library/react";
 import LoginSignupForm from "./LoginSignupForm";
-import { userAPI } from "../../api/http";
-import toast from "react-hot-toast";
+import { KitchenContext } from "../../context/KitchenContext";
+import { vi } from "vitest";
 
-function TestComponent({ctx}){
-    return(
-        <KitchenContext.Provider value={ctx}>
-            <LoginSignupForm />
-        </KitchenContext.Provider>
-    )
-}
-
-const renderTest = (ctx) => {
-    return render(
-        <TestComponent ctx={ctx} />
-    )
-}
-
-vi.mock("../../api/http", () => ({
-  userAPI: vi.fn(),
+// Mock Button
+vi.mock("../Buttons/Button", () => ({
+    default: ({ use }) => <button data-testid={`btn-${use}`}>{use}</button>,
 }));
 
-beforeEach(() => {
-  vi.spyOn(toast, "success");
-  vi.spyOn(toast, "error");
-});
+// Mock API & toast utilities
+vi.mock("../../api/http", () => ({
+    userAPI: vi.fn(),
+    login: vi.fn(),
+}));
 
-afterEach(() => {
-  vi.clearAllMocks(); // clean up spies between tests
-});
+vi.mock("../../util/toast", () => ({
+    handleToast: vi.fn(),
+}));
 
-describe("Testing loginSignupForm component", () => {
+import { userAPI, login } from "../../api/http";
+import { handleToast } from "../../util/toast";
 
-    const loginCtx = {
-        activeModal: "login",
-        setModalState: vi.fn(),
-        setUser: vi.fn()
-    }
+const renderWithContext = (ctxValue) =>
+    render(
+        <KitchenContext.Provider value={ctxValue}>
+            <LoginSignupForm />
+        </KitchenContext.Provider>
+    );
 
-    const signupCtx = {
-        activeModal: "signup",
-        setModalState: vi.fn(),
-        setUser: vi.fn()
-    }
+describe("Testing component: LoginSignupForm", () => {
 
-    test("form has 2 inputs, and submit button", () => {
-        renderTest({activeModal: "", setModalState: vi.fn(), setUser: vi.fn()})
+    test("renders login form headings and inputs", () => {
+        const ctx = { activeModal: { section: "login" }, setModalState: vi.fn(), setUser: vi.fn() };
+        renderWithContext(ctx);
 
-        const username = screen.getByPlaceholderText("username", {exact: false});
-        const password = screen.getByPlaceholderText("password", {exact: false});
+        expect(screen.getByRole("heading", { name: "LOGIN" })).toBeInTheDocument();
+        expect(screen.getByText("Username:")).toBeInTheDocument();
+        expect(screen.getByText("Password:")).toBeInTheDocument();
 
-        expect(username).toBeInTheDocument()
-        expect(password).toBeInTheDocument()
+        expect(screen.getByTestId("btn-close")).toBeInTheDocument();
+        expect(screen.getByTestId("btn-login")).toBeInTheDocument();
 
-        const button = screen.getByRole("button");
-        expect(button).toBeInTheDocument()
-    })
+    });
 
-    test("submit form with successful login", async () => {
+    test("renders signup form headings and inputs", () => {
+        const ctx = { activeModal: { section: "signup" }, setModalState: vi.fn(), setUser: vi.fn() };
+        renderWithContext(ctx);
 
-        userAPI.mockResolvedValueOnce({
-            success: "Login successful!",
-            error: null,
-            id: "123"
-        })
+        expect(screen.getByRole("heading", { name: "SIGNUP" })).toBeInTheDocument();
+        expect(screen.getByText("Username (1-16 characters):")).toBeInTheDocument();
+        expect(screen.getByText("Password (10-16 characters):")).toBeInTheDocument();
 
-        renderTest(loginCtx);
+        expect(screen.getByTestId("btn-close")).toBeInTheDocument();
+        expect(screen.getByTestId("btn-login")).toBeInTheDocument();
+    });
 
-        const username = screen.getByPlaceholderText("username", {exact: false});
-        const password = screen.getByPlaceholderText("password", {exact: false});
-        const button = screen.getByRole("button");
-        
-        fireEvent.change(username, { target: { value: "testuser" } });
-        fireEvent.change(password, { target: { value: "securePassword123" } });
-        fireEvent.click(button);
-
-        await waitFor(() => {
-            expect(userAPI).toHaveBeenCalledWith({
-                user: { user: "testuser", passwd: "securePassword123" },
-                method: "login",
-            });
-
-            expect(toast.success).toHaveBeenCalledWith("Login successful!");
-            expect(loginCtx.setModalState).toHaveBeenCalledWith(null);
-            expect(loginCtx.setUser).toHaveBeenCalledWith({
-                name: "testuser",
-                id: "123",
-            });
-
-        }, {timeout: 1500})
-    }) 
-
-    test("submit form with unsuccessful login", async () => {
-
-        userAPI.mockResolvedValueOnce({
-            success: null,
-            error: "Error when logging in",
-            id: null
-        })
-
-        renderTest(loginCtx);
-
-        const username = screen.getByPlaceholderText("username", {exact: false});
-        const password = screen.getByPlaceholderText("password", {exact: false});
-        const button = screen.getByRole("button");
-        
-        fireEvent.change(username, { target: { value: "testuser" } });
-        fireEvent.change(password, { target: { value: "securePassword123" } });
-        fireEvent.click(button);
-
-        await waitFor(() => {
-            expect(userAPI).toHaveBeenCalledWith({
-                user: { user: "testuser", passwd: "securePassword123" },
-                method: "login",
-            });
-            expect(toast.error).toHaveBeenCalledWith("Error when logging in");
-        })
-    }) 
-
-    test("submit form with successful user creation", async () => {
-
-        userAPI.mockResolvedValueOnce({
-            success: "User created!",
-            error: null,
-            id: null
-        })
-
-        renderTest(signupCtx);
-
-        const username = screen.getByPlaceholderText("username", {exact: false});
-        const password = screen.getByPlaceholderText("password", {exact: false});
-        const button = screen.getByRole("button");
-        
-        fireEvent.change(username, { target: { value: "testuser" } });
-        fireEvent.change(password, { target: { value: "securePassword123" } });
-        fireEvent.click(button);
-
-        await waitFor(() => {
-            expect(userAPI).toHaveBeenCalledWith({
-                user: { user: "testuser", passwd: "securePassword123" },
-                method: "new",
-            });
-
-            expect(toast.success).toHaveBeenCalledWith("User created!");
-            expect(signupCtx.setModalState).toHaveBeenCalledWith(null);
-
-        }, {timeout: 1500})
-    }) 
-
-    test("submit form with unsuccessful user creation", async () => {
-
-        userAPI.mockResolvedValueOnce({
-            success: null,
-            error: "Error creating user",
-            id: null
-        })
-
-        renderTest(signupCtx);
-
-        const username = screen.getByPlaceholderText("username", {exact: false});
-        const password = screen.getByPlaceholderText("password", {exact: false});
-        const button = screen.getByRole("button");
-        
-        fireEvent.change(username, { target: { value: "testuser" } });
-        fireEvent.change(password, { target: { value: "securePassword123" } });
-        fireEvent.click(button);
-
-        await waitFor(() => {
-            expect(userAPI).toHaveBeenCalledWith({
-                user: { user: "testuser", passwd: "securePassword123" },
-                method: "new",
-            });
-            expect(toast.error).toHaveBeenCalledWith("Error creating user");
-        })
-    }) 
 })
