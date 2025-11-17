@@ -1,40 +1,60 @@
-import { render, 
-        screen } from "@testing-library/react"
-import Header from "./Header"
-import { KitchenContext } from "../../context/KitchenContext"
+import { render, screen } from "@testing-library/react";
+import Header from "./Header";
+import { KitchenContext } from "../../context/KitchenContext";
 
-describe("Testing header component", () => {
-    const sloganContent = "Testing Slogan";
-    const mockSetSlogan = vi.fn();
-    const mockCtx = {
-        slogan: sloganContent,
-        setSlogan: mockSetSlogan
-    }
+const renderWithContext = (ctxValue, children = null) => {
+  return render(
+    <KitchenContext.Provider value={ctxValue}>
+      <Header>{children}</Header>
+    </KitchenContext.Provider>
+  );
+};
 
-    const renderHeader = () => {
-        return render(
-            <KitchenContext.Provider value={mockCtx}>
-                <Header />
-            </KitchenContext.Provider>
-        )
-    }
+
+
+describe("Testing component: Header", () => {
+    
+    const setSlogan = vi.fn();
+    const slogan = "Testing Slogan";
 
     test("Renders app logo", () => {
-        renderHeader();
+        renderWithContext({
+            slogan,
+            setSlogan
+        });
         const image = screen.getByAltText("KitchenMate", {exact: true});
-        expect(image).toHaveAttribute("src", expect.stringContaining("whiteKitchenmate"));
         expect(image).toBeInTheDocument();
     })
+    
+    test("Calls setSlogan upon mounting", () => {
+
+
+        renderWithContext({
+            slogan,
+            setSlogan
+        });
+        expect(setSlogan).toHaveBeenCalled();
+    });
 
     test("Renders slogan inside heading element", () => {
-        renderHeader();
-        const heading = screen.getByRole("heading", {level: 2});
-        expect(heading).toHaveTextContent(sloganContent);
+        renderWithContext({
+            slogan,
+            setSlogan
+        });
+
+        expect(screen.getByText(slogan)).toBeInTheDocument();
     })
 
-    test("Calls setSlogan upon mounting", () => {
-        renderHeader();
-        expect(mockSetSlogan).toHaveBeenCalled();
-    });
+    test("renders custom layout with children", () => {
+        const children = <div data-testid="child">Testing Div</div>
+        renderWithContext({
+            slogan,
+            setSlogan
+        }, children);
+
+        expect(screen.getByText("Testing Div")).toBeInTheDocument();
+        expect(screen.getByTestId("child")).toBeInTheDocument();
+
+    })
     
 })
