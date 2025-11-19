@@ -56,8 +56,8 @@ export const sort = (parameters) => {
                 valB = b.name ? b.name : b.product;
                 return valA.localeCompare(valB)
             case "fav":
-                valA = a.favorite;
-                valB = b.favorite;
+                valA = Number(a.favorite) === 1 ? 1 : 0;
+                valB = Number(b.favorite) ===  1 ? 1 : 0;
                 return valB - valA;
             case "date":
                 valA = a.date;
@@ -68,8 +68,8 @@ export const sort = (parameters) => {
                 valB = b.quantity ? b.quantity : b.components.length;
                 return valB - valA;
             case "check":
-                valA = a.obtained === "1" ? 1 : 0;
-                valB = b.obtained ===  "1" ? 1 : 0;
+                valA = Number(a.obtained) === 1 ? 1 : 0;
+                valB = Number(b.obtained) ===  1 ? 1 : 0;
                 return valB - valA;
             case "course": 
                 valA = a.course;

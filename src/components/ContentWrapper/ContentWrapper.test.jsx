@@ -3,89 +3,94 @@ import ContentWrapper from "./ContentWrapper";
 import { KitchenContext } from "../../context/KitchenContext";
 
 vi.mock("../Recipe/RecipeCreation", () => ({
-  default: () => <div>Recipe Creation</div>,
+  default: () => <div data-testid="r-creation">Recipe Creation</div>,
 }));
 
 vi.mock("../DishCreation/DishCreation.jsx", () => ({
-  default: () => <div>Dish Creation</div>,
+  default: () => <div data-testid="d-creation">Dish Creation</div>,
 }));
 
 vi.mock("../BasketEntryList/BasketEntryList.jsx", () => ({
-  default: () => <div>Basket Entries</div>,
+  default: () => <div data-testid="basket">Basket Entries</div>,
 }));
 
 vi.mock("../ItemInspectView/ItemInspectView", () => ({
-  default: ({ itemToInspect }) => ( <div>Inspecting: {itemToInspect?.mode}</div> )
+  default: () => (<div data-testid="item-inspect"></div>)
 }));
 
 
-describe("ContentWrapper", () => {
-  
-    const renderWithContext = (contextValue) => {
-        return render(
-        <KitchenContext.Provider value={contextValue}>
-            <ContentWrapper />
-        </KitchenContext.Provider>
-        );
-    };
+describe("Testing component: ContentWrapper", () => {
 
-    test("renders RecipeCreation when activeSection is 'recipes' and mode is 'create'", () => {
-        renderWithContext({
-            activeSection: "recipes",
-            activeRecipe: { mode: "create", recipe: null },
-            activeDish: null,
-            isMobile: false,
-            editStatus: null,
-        });
+  const renderWithContext = (contextValue) => {
+    return render(
+      <KitchenContext.Provider value={contextValue}>
+        <ContentWrapper />
+      </KitchenContext.Provider>
+    );
+  };
 
-        expect(screen.getByText("Recipe Creation")).toBeInTheDocument();
+  test("renders RecipeCreation when activeSection is 'recipes' and mode is 'create'", () => {
+    renderWithContext({
+      activeSection: "recipes",
+      activeRecipe: { mode: "create", recipe: null },
+      activeDish: null,
+      isMobile: false,
+      editStatus: null,
     });
 
-    test("renders DishCreation when activeSection is 'dishes' and mode is 'create'", () => {
-        renderWithContext({
-            activeSection: "dishes",
-            activeRecipe: null,
-            activeDish: { mode: "create", dish: null },
-            isMobile: false,
-            editStatus: null,
-        });
+    expect(screen.getByTestId("r-creation")).toBeInTheDocument();
+    expect(screen.getByText("Recipe Creation")).toBeInTheDocument();
+  });
 
-        expect(screen.getByText("Dish Creation")).toBeInTheDocument();
+  test("renders DishCreation when activeSection is 'dishes' and mode is 'create'", () => {
+    renderWithContext({
+      activeSection: "dishes",
+      activeRecipe: null,
+      activeDish: { mode: "create", dish: null },
+      isMobile: false,
+      editStatus: null,
     });
 
-    test("renders RecipeCreation when activeSection is 'recipes' and mode is 'edit'", () => {
-        renderWithContext({
-            activeSection: "recipes",
-            activeRecipe: { mode: "edit", recipe: {} },
-            activeDish: null,
-            isMobile: false,
-            editStatus: null,
-        });
+    expect(screen.getByTestId("d-creation")).toBeInTheDocument();
+    expect(screen.getByText("Dish Creation")).toBeInTheDocument();
+  });
 
-        expect(screen.getByText("Recipe Creation")).toBeInTheDocument();
+  test("renders RecipeCreation when activeSection is 'recipes' and mode is 'edit'", () => {
+    renderWithContext({
+      activeSection: "recipes",
+      activeRecipe: { mode: "edit", recipe: {} },
+      activeDish: null,
+      isMobile: false,
+      editStatus: null,
     });
 
-    test("renders DishCreation when activeSection is 'dishes' and mode is 'edit'", () => {
-        renderWithContext({
-            activeSection: "dishes",
-            activeRecipe: null,
-            activeDish: { mode: "edit", dish: {} },
-            isMobile: false,
-            editStatus: null,
-        });
+    expect(screen.getByTestId("r-creation")).toBeInTheDocument();
+    expect(screen.getByText("Recipe Creation")).toBeInTheDocument();
+  });
 
-        expect(screen.getByText("Dish Creation")).toBeInTheDocument();
+  test("renders DishCreation when activeSection is 'dishes' and mode is 'edit'", () => {
+    renderWithContext({
+      activeSection: "dishes",
+      activeRecipe: null,
+      activeDish: { mode: "edit", dish: {} },
+      isMobile: false,
+      editStatus: null,
     });
 
-    test("renders BasketEntryList when activeSection is 'basket' and editStatus.status is true", () => {
-        renderWithContext({
-            activeSection: "basket",
-            activeRecipe: null,
-            activeDish: null,
-            isMobile: false,
-            editStatus: { status: true },
-        });
+    expect(screen.getByTestId("d-creation")).toBeInTheDocument();
+    expect(screen.getByText("Dish Creation")).toBeInTheDocument();
+  });
 
+  test("renders BasketEntryList when activeSection is 'basket' and editStatus.status is true", () => {
+    renderWithContext({
+      activeSection: "basket",
+      activeRecipe: null,
+      activeDish: null,
+      isMobile: false,
+      editStatus: { status: true },
+    });
+
+    expect(screen.getByTestId("basket")).toBeInTheDocument();
     expect(screen.getByText("Basket Entries")).toBeInTheDocument();
   });
 
@@ -101,7 +106,7 @@ describe("ContentWrapper", () => {
       editStatus: null,
     });
 
-    expect(screen.getByText("Inspecting: recipes")).toBeInTheDocument();
+    expect(screen.getByTestId("item-inspect")).toBeInTheDocument();
   });
 
   test("renders ItemInspectView for dish detail mode", () => {
@@ -110,13 +115,13 @@ describe("ContentWrapper", () => {
       activeRecipe: null,
       activeDish: {
         mode: "detail",
-        dish: { name: "Carbonara"}
+        dish: { name: "Carbonara" }
       },
       isMobile: false,
       editStatus: null,
     });
 
-    expect(screen.getByText("Inspecting: dishes")).toBeInTheDocument();
+    expect(screen.getByTestId("item-inspect")).toBeInTheDocument();
   });
 
 })

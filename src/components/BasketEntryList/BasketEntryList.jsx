@@ -13,7 +13,7 @@ import handleErrorsToast from "../Error/Errors";
  * @param {Object} formData 
  * @returns {Object} extracted form values
  */
-const getFormValues = (formData) => {
+export const getFormValues = (formData) => {
     const products = formData.getAll("product");
     const quantity = formData.getAll("quantity");
     const unit = formData.getAll("unit");
@@ -26,7 +26,7 @@ const getFormValues = (formData) => {
  * @param {*} productData 
  * @returns {Object} mapped product data
  */
-const mapProductData = (productData) => {
+export const mapProductData = (productData) => {
     const {products, index, id} = productData;
     return products.map((product, i) => ({
         ...product,
@@ -54,7 +54,7 @@ export default function ManualBasketEntry(){
                     quantity: availableBasket.map((product) => product.quantity),
                     unit: availableBasket.map((product) => product.unit),
                 },
-                obtainedIndexes: availableBasket.map((product, index) => product.obtained === "1" ? index : null)
+                obtainedIndexes: availableBasket.map((product, index) => Number(product.obtained) === 1 ? index : null)
                                                     .filter(index => index !== null),
                 itemIds: availableBasket.map((product) => product.id)
             } : {validInputs: null};
