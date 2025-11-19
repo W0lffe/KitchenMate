@@ -34,7 +34,9 @@
 
 1. Refactoring & Improvements
     - [ ] Reconstruct app from mostly conditional rendering to use React Router pages
-    - [ ] Testing (Jest / Vitest)
+    - [ ] Testing
+        - **Work In Progress** -> Got plenty of unit tests done so far, but more will come!
+        - **[Testing - Part 1](https://github.com/W0lffe/KitchenMate/pull/49)**
 2. Documentation
     - [x] JSDoc documentation
     - [x] PHPDoc documentation
