@@ -1,123 +1,109 @@
-import { render, 
-        screen } from "@testing-library/react"
+import {
+    render,
+    screen
+} from "@testing-library/react"
 import Modal from "./Modal"
 import { KitchenContext } from "../../context/KitchenContext"
 
 beforeEach(() => {
-        const modal = document.createElement("div");
-        modal.setAttribute("id", "modal");
-        document.body.appendChild(modal);
+    const modal = document.createElement("div");
+    modal.setAttribute("id", "modal");
+    document.body.appendChild(modal);
 
-        HTMLDialogElement.prototype.showModal = vi.fn(function (){
-            this.setAttribute("open", "");
-        });
-        HTMLDialogElement.prototype.close = vi.fn(function () {
-            this.removeAttribute("open"); 
-        })
+    HTMLDialogElement.prototype.showModal = vi.fn(function () {
+        this.setAttribute("open", "");
+    });
+    HTMLDialogElement.prototype.close = vi.fn(function () {
+        this.removeAttribute("open");
     })
+})
 
-    afterEach(() => {
-        document.getElementById("modal").remove();
-        vi.clearAllMocks();
-    })
+afterEach(() => {
+    document.getElementById("modal").remove();
+    vi.clearAllMocks();
+})
 
-    const renderModal = (ctx) => {
-        return render(
-            <KitchenContext.Provider value={ctx}>
-                <Modal />
-            </KitchenContext.Provider>
-        )
-    }
+vi.mock("./ContentModal", () => ({
+    default: ({ section, editStatus }) => (
+        <div data-testid="content-modal">{section}-{editStatus?.mode}</div>
+    )
+}));
 
-describe("Modal component testing for dialog", () => {
+vi.mock("./ConfirmModal", () => ({
+    default: ({ props, contextProps }) => (
+        <div data-testid="confirm-modal">
+            Confirm-{props.section}-{contextProps.isMobile ? "mobile" : "desktop"}
+        </div>
+    )
+}));
+
+vi.mock("react-hot-toast", () => ({
+    Toaster: () => <div data-testid="toaster" />
+}));
+
+const renderWithContext = (contextValue) =>
+    render(
+        <KitchenContext.Provider value={contextValue}>
+            <Modal />
+        </KitchenContext.Provider>
+    );
+
+
+describe("Testing component: Modal", () => {
 
     test("renders dialog, when modal is not open", () => {
-        renderModal({activeModal: "", modalIsOpen: false, editStatus: null});
-        const dialog = screen.getByRole("dialog", {hidden: true});
+        renderWithContext({ activeModal: "", modalIsOpen: false, editStatus: null });
+        const dialog = screen.getByRole("dialog", { hidden: true });
         expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
         expect(dialog).toBeInTheDocument();
     })
 
     test("renders dialog, when modal is open", () => {
-        renderModal({activeModal: "", modalIsOpen: true, editStatus: null});
+        renderWithContext({ activeModal: "", modalIsOpen: true, editStatus: null });
         const dialog = screen.getByRole("dialog");
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled()
         expect(dialog).toBeInTheDocument();
     })
 
-    test("renders LoginSignupForm when activeModal is login", () => {
-        renderModal({activeModal: "login", modalIsOpen: true, editStatus: null});
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled()
-        const header = screen.getByRole("heading", {level: 3});
-        expect(header).toHaveTextContent("LOGIN");
-        expect(header).toBeInTheDocument();
-    })
-
-    test("renders LoginSignupForm when activeModal is signup", () => {
-        renderModal({activeModal: "signup", modalIsOpen: true, editStatus: null});
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled()
-        const header = screen.getByRole("heading", {level: 3});
-        expect(header).toHaveTextContent("SIGNUP");
-        expect(header).toBeInTheDocument();
-    })
-
-    test("renders ContentWrapper when activeModal is recipes", () => {
-
-        const recipesCtx = {
-            activeModal: "recipes", 
-            modalIsOpen: true, 
+    test("renders ContentModal when useConfirm is false", () => {
+        const context = {
+            activeModal: { section: "recipes" },
+            modalIsOpen: true,
             editStatus: null,
-            activeSection: "recipes",
-            activeRecipe: {mode: "create"},
-            activeDish: null,
-            isMobile: true
-        }
+            setModalState: vi.fn(),
+            setActiveDish: vi.fn(),
+            setActiveRecipe: vi.fn(),
+            handleRequest: vi.fn(),
+            isMobile: false,
+            fullDishes: [],
+            isFetchingData: false,
+        };
 
-        renderModal(recipesCtx);
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled()
-        const header = screen.getByRole("heading", {level: 2});
-        expect(header).toHaveTextContent("Recipe Creation");
-        expect(header).toBeInTheDocument();
-    })
+        renderWithContext(context);
 
-    test("renders ContentWrapper when activeModal is dishes", () => {
-        const dishesCtx = {
-            activeModal: "dishes", 
-            modalIsOpen: true, 
+        expect(screen.getByTestId("content-modal")).toBeInTheDocument();
+        expect(screen.queryByTestId("confirm-modal")).not.toBeInTheDocument();
+    });
+
+    test("renders ConfirmModal when useConfirm is true", () => {
+        const context = {
+            activeModal: { section: "dishes", toDelete: 1, },
+            modalIsOpen: true,
             editStatus: null,
-            activeSection: "dishes",
-            activeRecipe: null,
-            activeDish: {mode: "create"},
-            isMobile: true,
-            availableRecipes: []
-        }
+            setModalState: vi.fn(),
+            setActiveDish: vi.fn(),
+            setActiveRecipe: vi.fn(),
+            handleRequest: vi.fn(),
+            isMobile: false,
+            fullDishes: [],
+            isFetchingData: false,
+        };
 
-        renderModal(dishesCtx);
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled()
-        const header = screen.getByRole("heading", {level: 2});
-        expect(header).toHaveTextContent("Dish Creation");
-        expect(header).toBeInTheDocument();
-    })
+        renderWithContext(context);
 
-    test("renders ContentWrapper when activeModal is basket", () => {
-        const basketCtx = {
-            activeModal: "basket", 
-            modalIsOpen: true, 
-            editStatus: {status: true, mode: "edit"},
-            activeSection: "basket",
-            activeRecipe: null,
-            activeDish: null,
-            isMobile: true,
-            fullBasket: {current: []}
-        }
-
-        renderModal(basketCtx);
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled()
-        const header = screen.getByRole("heading", {level: 3});
-        expect(header).toHaveTextContent("Edit Basket");
-        expect(header).toBeInTheDocument();
-    })
-
+        expect(screen.getByTestId("confirm-modal")).toBeInTheDocument();
+        expect(screen.queryByTestId("content-modal")).not.toBeInTheDocument();
+    });
 
 })
 
