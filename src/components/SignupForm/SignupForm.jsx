@@ -10,6 +10,7 @@ import {
 import useUserForm from "../../hooks/useUserForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
+import PrefPanel from "../PrefPanel/PrefPanel";
 
 /**
  * Used for both signup form.
@@ -45,7 +46,7 @@ export default function SignupForm() {
                         <FontAwesomeIcon icon={faCircleQuestion} />
                     </label>
                     <CredInput isPass={true} />
-                    {/*ADD USER PREFERENCES HERE*/}
+                    <PrefPanel />
                     <Button use={"login"} />
                 </form>
             </section>
