@@ -11,6 +11,7 @@ import useUserForm from "../../hooks/useUserForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import PrefPanel from "../PrefPanel/PrefPanel";
+import Photo from "../Image/Photo";
 
 /**
  * Used for both signup form.
@@ -36,6 +37,7 @@ export default function SignupForm() {
             </header>
             <section>
                 <form action={formAction} className={formStyle}>
+                    <Photo />
                     <label className={labelStyle}>
                         Username 
                         <FontAwesomeIcon icon={faCircleQuestion} />
