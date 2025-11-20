@@ -1,4 +1,4 @@
-import LoginSignupForm from "../LoginSignupForm/LoginSignupForm";
+import LoginForm from "../LoginForm/LoginForm";
 import ContentWrapper from "../ContentWrapper/ContentWrapper";
 
 /**
@@ -9,12 +9,12 @@ import ContentWrapper from "../ContentWrapper/ContentWrapper";
  */
 export default function ContentModal({section, editStatus}){
 
-    const isLoginSignup = ["signup", "login"].includes(section);
+    const isLogin = section === "login";
     const showContent = ["recipes", "dishes"].includes(section) || editStatus?.status;
 
     return(
         <>
-            {isLoginSignup ? <LoginSignupForm /> : null}
+            {isLogin ? <LoginForm /> : null}
             {showContent ? <ContentWrapper /> : null}
         </>
     )
