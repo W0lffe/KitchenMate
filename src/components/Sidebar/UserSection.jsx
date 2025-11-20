@@ -13,6 +13,7 @@ import {
 import { naviButtonStyle } from "../Buttons/buttonStyles";
 import defaultUser from "../../assets/default_user.png"
 import { handleToast } from "../../util/toast";
+import { useNavigate } from "react-router-dom";
 
 /**
  * User section of the sidebar navigation
@@ -22,7 +23,7 @@ export default function UserSection() {
 
         const { navigationIsOpen, user, setModalState, setUser} = useContext(KitchenContext);
         const userIsLogged = (user !== null) && (user?.name !== null && user?.id !== null);
-
+        const navigate = useNavigate();
         /**
          * Function handle clicks for login/signup, opening the respective modal if online
          * @param {string} section respective section to open
@@ -61,7 +62,7 @@ export default function UserSection() {
                                         </button>
                                 </>
                         )}
-                        {!userIsLogged && <p className={signupStyle} onClick={() => alert("CHANGE MEEE")}>Not an user yet? Click here to begin.</p>}
+                        {!userIsLogged && <p className={signupStyle} onClick={() => navigate("/signup")}>Not an user yet? Click here to begin.</p>}
                 </section>
         )
 }

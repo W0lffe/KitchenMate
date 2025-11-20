@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import Home from "./pages/Home"
 import Application from "./pages/Application"
+import Register from "./pages/Register"
 import KitchenContextProvider from './context/KitchenContext'
 
 
@@ -15,6 +16,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/app" element={<Application />} />
+        <Route path="/signup" element={<Register />}/>
       </Routes>
     </KitchenContextProvider>
   )

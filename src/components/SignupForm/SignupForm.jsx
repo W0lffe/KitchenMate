@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import PrefPanel from "../PrefPanel/PrefPanel";
 import Photo from "../Image/Photo";
+import CredInput from "../CredInput/CredInput";
 
 /**
  * Used for both signup form.
