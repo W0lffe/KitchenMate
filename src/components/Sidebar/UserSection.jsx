@@ -61,7 +61,7 @@ export default function UserSection() {
                                         </button>
                                 </>
                         )}
-                        {!userIsLogged && <p className={signupStyle} onClick={() => handleUserClick("signup")}>Not an user yet? Click here to begin.</p>}
+                        {!userIsLogged && <p className={signupStyle} onClick={() => alert("CHANGE MEEE")}>Not an user yet? Click here to begin.</p>}
                 </section>
         )
 }

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import LoginSignupForm from "./LoginSignupForm";
+import Signup from "./LoginSignupForm";
 import { KitchenContext } from "../../context/KitchenContext";
 import { vi } from "vitest";
 
@@ -24,7 +24,7 @@ import { handleToast } from "../../util/toast";
 const renderWithContext = (ctxValue) =>
     render(
         <KitchenContext.Provider value={ctxValue}>
-            <LoginSignupForm />
+            <Signup />
         </KitchenContext.Provider>
     );
 
