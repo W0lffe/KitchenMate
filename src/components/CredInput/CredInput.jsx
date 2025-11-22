@@ -1,3 +1,4 @@
+import { inputStyle } from "../LoginForm/loginStyles";
 export default function CredInput({isPass, state}) {
 
     const defValue = !isPass ? state.validInputs?.name : undefined;
@@ -7,7 +8,7 @@ export default function CredInput({isPass, state}) {
             name={isPass ? "passwd" : "username"}
             required
             placeholder={isPass ? "Enter password" : "Enter username"}
-            className={""}
+            className={inputStyle}
             defaultValue={defValue} />
     )
 }
