@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { userAPI, login } from "../api/http";
 import { handleToast } from "../util/toast";
+import { getUserFormValues } from "../util/util";
 
 /**
  * Custom hook for login and signup actions
@@ -11,15 +12,10 @@ import { handleToast } from "../util/toast";
  */
 export default function useUserForm({ isLogin, setModalState, setUser }) {
     return useCallback(async (prevFormState, formData) => {
-        const name = formData.get("username")
-        const pass = formData.get("passwd")
 
-        const user = {
-            user: name,
-            passwd: pass
-        }
-
-        //console.log(user);
+        const userPayload = getUserFormValues(isLogin, formData);
+    
+        console.log(userPayload);
 
         const response = await userAPI({
             method: "POST",

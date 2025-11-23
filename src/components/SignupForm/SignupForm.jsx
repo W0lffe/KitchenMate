@@ -34,7 +34,7 @@ export default function SignupForm() {
     return (
         <div className={"w-[calc(100%-10px)] md:max-w-86 p-5 bg-white/90 h-fit flex flex-col justify-center items-center border rounded-custom-med "}>
             <header className={headerStyle}>
-                <h3 className={headingStyle}>Register</h3>
+                <h3 className={headingStyle}>Sign Up</h3>
             </header>
             <section>
                 <form action={formAction} className={formStyle}>

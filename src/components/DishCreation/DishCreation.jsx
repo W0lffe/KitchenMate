@@ -10,7 +10,7 @@ import { footerStyle,
         labelStyle } from "./dishCreationStyles"
 import TabButtons from "../Buttons/TabButtons"
 import { getRecipeInfo, 
-        getDishFromValues } from "../../util/util"
+        getDishFormValues } from "../../util/util"
 import ComponentList from "./ComponentList"
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection"
 import useDishForm from "../../hooks/useDishForm"
@@ -88,7 +88,7 @@ export default function DishCreation(){
      */
     const handleTabChange = (nextTab) => {
         const formData = new FormData(document.querySelector("form"));
-        const {name, course, image } = getDishFromValues(formData);
+        const {name, course, image } = getDishFormValues(formData);
 
         setCurrentFormValues({
             ...currentFormValues,
