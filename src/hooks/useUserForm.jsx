@@ -13,17 +13,33 @@ import { getUserFormValues } from "../util/util";
 export default function useUserForm({ isLogin, setModalState, setUser }) {
     return useCallback(async (prevFormState, formData) => {
 
-        const userPayload = getUserFormValues(isLogin, formData);
-    
-        console.log(userPayload);
+        const {user, passwd, image, cookType, unitType} = getUserFormValues(formData);
+        
+        let userPayload = {
+            user,
+            passwd
+        }
+
+        console.log(image)
+        if(!isLogin){
+            userPayload = {
+                ...userPayload,
+                image: image.size > 0 ? image : null,
+                cookType,
+                unitType
+            }
+        }
+
+        //console.log(userPayload);
 
         const response = await userAPI({
             method: "POST",
-            data: { user, operation: isLogin ? "login" : "new" },
+            data: { userPayload, operation: isLogin ? "login" : "new" },
         });
 
         const { error, success, token } = response;
 
+        console.log(success)
         handleToast({
             error,
             success,

@@ -4,8 +4,10 @@ $tables = [
     "CREATE TABLE IF NOT EXISTS users (
             userID INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(50) NOT NULL,
-            email VARCHAR(80) NOT NULL,
-            passwd VARCHAR(350) NOT NULL
+            passwd VARCHAR(350) NOT NULL,
+            image VARCHAR(350),
+            cookType VARCHAR(20) NOT NULL,
+            unitType VARCHAR(20) NOT NULL
     )",
     "CREATE TABLE IF NOT EXISTS recipes (
             id INT AUTO_INCREMENT PRIMARY KEY,

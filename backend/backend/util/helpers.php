@@ -24,5 +24,34 @@ function getUpload($user, $image, $initializing) {
     return $filePath;    
 }
 
+/**
+ * Function handles saving and renaming of image file incoming from client
+ * @param string $uploadDir path to upload directory
+ */
+function handleIncomingImage($uploadDir){
+
+    //Create upload directory if missing
+    if (!is_dir($uploadDir)) {
+        if (!mkdir($uploadDir, 0770, true)) {
+            http_response_code(500); //Server side error
+            header('Content-Type: application/json');
+            echo json_encode(["error" => "Failed to post image - missing directory."]);
+            exit;
+        }
+    }
+
+    $extension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION); //gets extension of image
+    $randomName = hash('sha256', $_FILES["image"]["name"] . microtime(true) . random_bytes(8)); //Create hash of image name
+    $filename = $randomName . '.' . $extension; //Rename file
+    $targetPath = $uploadDir . "/" . $filename; //Target to save image
+        
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetPath)) {
+        return $filename;
+    } 
+    else {
+        error_log("Failed to move uploaded file from {$_FILES['image']['tmp_name']} to $targetPath");
+    }
+}
+
 
 ?>

@@ -294,19 +294,14 @@ export const deriveFormStateValues = (state, isRecipe) => {
     }
 };
 
-export const getUserFormValues = (isLogin, formData) => {
+export const getUserFormValues = (formData) => {
 
-    if(isLogin){
-        return {user: formData.get("username"), passwd: formData.get("passwd")}
-    }
-    else{
-        return {
-            user: formData.get("username"),
-            passwd: formData.get("passwd"),
-            image: formData.get("image"),
-            cookType: formData.get("cookType"),
-            unitType: formData.get("unitType")
-        }
+    return {
+        user: formData.get("username"), 
+        passwd: formData.get("passwd"),
+        image: formData.get("image"),
+        cookType: formData.get("cookType"),
+        unitType: formData.get("unitType")
     }
 }
 

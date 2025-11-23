@@ -147,9 +147,9 @@ export default function DishCreation(){
             )}
             <footer className={footerStyle}>
                 {isMobile ? (
-                    openTab === SECTIONS.CONFIRMATION && <Button use={"dish"} />
+                    openTab === SECTIONS.CONFIRMATION && <Button use={"recipe"} />
                 ) : (
-                    <Button use="dish"/>
+                    <Button use={"dish"}/>
                 )}
             </footer>
             </form>

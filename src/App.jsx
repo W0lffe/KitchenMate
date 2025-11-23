@@ -3,6 +3,7 @@ import Home from "./pages/Home"
 import Application from "./pages/Application"
 import Register from "./pages/Register"
 import KitchenContextProvider from './context/KitchenContext'
+import { Toaster } from "react-hot-toast"
 
 
 /**
@@ -13,6 +14,7 @@ export default function App() {
 
   return (
     <KitchenContextProvider>
+      <Toaster position='top-center'/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/app" element={<Application />} />
