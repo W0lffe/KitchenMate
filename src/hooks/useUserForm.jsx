@@ -39,7 +39,6 @@ export default function useUserForm({ isLogin, setModalState, setUser }) {
 
         const { error, success, token } = response;
 
-        console.log(success)
         handleToast({
             error,
             success,
@@ -53,7 +52,7 @@ export default function useUserForm({ isLogin, setModalState, setUser }) {
             if (loginRes?.user) setUser(loginRes.user);
         }
 
-        return isLogin ? { validInputs: { name } } : { validInputs: { name }, success };
+        return isLogin ? { validInputs: { name } } : { success };
         
     }, [isLogin, setModalState, setUser])
 }
