@@ -46,7 +46,7 @@ export default function UserSection() {
                 <section className={getSectionStyle(navigationIsOpen)}>
                         {userIsLogged ? (
                                 <>
-                                        <p>Welcome back, {user.name}!</p>
+                                        <p>Logged in as {user.name}</p>
                                         <img alt="IMAGE OF USER" src={user.img || defaultUser} className="size-30" />
                                         <button className={naviButtonStyle} onClick={handleLogout}>
                                                 Logout

@@ -1,18 +1,17 @@
 import { useActionState } from "react";
 import Button from "../Buttons/Button";
 import {
-    containerStyle,
     headerStyle,
     headingStyle,
     formStyle,
     labelStyle,
 } from "../LoginForm/loginStyles";
+import { buttonStyle, containerStyle, fieldStyle, welcomeStyle } from "./signupFormStyles";
 import useUserForm from "../../hooks/useUserForm";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import PrefPanel from "../PrefPanel/PrefPanel";
 import Photo from "../Image/Photo";
 import CredInput from "../CredInput/CredInput";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Used for both signup form.
@@ -29,15 +28,24 @@ export default function SignupForm() {
         isLogin: false,
     })
 
+    const navigate = useNavigate();
+
     const [formState, formAction] = useActionState(signup, { validInputs: null });
 
     return (
         formState.success ? (
-            <div className="text-white">
-                WORK IN PROGRESS
+            <div className={containerStyle + " gap-5 text-lg"}>
+                <h2 className={welcomeStyle}>Welcome, chef!</h2>
+                <p>Thank you for signing up! Your account is all set. Time to start cooking up something great!</p>
+                <p>Below is your account recovery code. Please keep it in a safe place in case you ever need to reset your password.</p>
+                <fieldset className={fieldStyle}>
+                    <legend className="p-2 font-semibold">Recovery Code</legend>
+                        <label className="font-semibold text-xl p-2">{formState.success.code}</label>
+                </fieldset>
+                <button onClick={() => navigate("/app")} className={buttonStyle}>Begin Your KitchenMate Journey</button>
             </div>
         ) : (
-            <div className={"w-[calc(100%-10px)] md:max-w-86 p-5 bg-white/90 h-fit flex flex-col justify-center items-center border rounded-custom-med "}>
+            <div className={containerStyle}>
                 <header className={headerStyle}>
                     <h3 className={headingStyle}>Sign Up</h3>
                 </header>
