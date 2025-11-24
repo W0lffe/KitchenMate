@@ -11,7 +11,7 @@ function handleRequest($resource){
     if(isset($data) && isset($endpoint)){
 
         $resource = [
-            "user" => $data["user"],
+            "user" => $data["userPayload"],
             "endpoint" => $endpoint
         ];
 
@@ -22,7 +22,7 @@ function handleRequest($resource){
                 createNewUser($resource);
                 break;
             case "login": 
-                authUser($data["user"]);
+                authUser($data["userPayload"]);
                 break;
         }
     

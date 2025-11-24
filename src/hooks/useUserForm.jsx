@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { userAPI, login } from "../api/http";
 import { handleToast } from "../util/toast";
+import { getUserFormValues } from "../util/util";
 
 /**
  * Custom hook for login and signup actions
@@ -11,26 +12,38 @@ import { handleToast } from "../util/toast";
  */
 export default function useUserForm({ isLogin, setModalState, setUser }) {
     return useCallback(async (prevFormState, formData) => {
-        const name = formData.get("username")
-        const pass = formData.get("passwd")
 
-        const user = {
-            user: name,
-            passwd: pass
+        const {user, passwd, image, cookType, unitType} = getUserFormValues(formData);
+        
+        let userPayload = {
+            user,
+            passwd
         }
 
-        //console.log(user);
+        console.log(image)
+        if(!isLogin){
+            userPayload = {
+                ...userPayload,
+                image: image.size > 0 ? image : null,
+                cookType,
+                unitType
+            }
+        }
+
+        //console.log(userPayload);
 
         const response = await userAPI({
             method: "POST",
-            data: { user, operation: isLogin ? "login" : "new" },
+            data: { userPayload, operation: isLogin ? "login" : "new" },
         });
 
         const { error, success, token } = response;
 
+        console.log(error, success)
+
         handleToast({
             error,
-            success,
+            success: isLogin ? success : success?.msg,
             setModalState,
         })
 
@@ -41,7 +54,7 @@ export default function useUserForm({ isLogin, setModalState, setUser }) {
             if (loginRes?.user) setUser(loginRes.user);
         }
 
-        return { validInputs: { name } };
+        return isLogin ? { validInputs: { user } } : { success };
         
     }, [isLogin, setModalState, setUser])
 }

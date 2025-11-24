@@ -45,7 +45,7 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       category
     };
 
-    console.log(newRecipe);
+    //console.log(newRecipe);
 
     const response = await handleRequest({
       data: newRecipe,

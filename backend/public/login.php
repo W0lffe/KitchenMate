@@ -37,6 +37,7 @@ if (!$user) {
 }
 
 unset($user['passwd']); //Delete password property from user object
+unset($user["rec"]);
 http_response_code(200); //OK
 header("Content-Type: application/json");
 echo json_encode(["user" => $user]); //Return user data to client

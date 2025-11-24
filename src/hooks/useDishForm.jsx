@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import handleErrorsToast from "../components/Error/Errors"
 import { validateDish } from "../util/validation";
-import { deriveFormStateValues, getDishFromValues } from "../util/util";
+import { deriveFormStateValues, getDishFormValues } from "../util/util";
 import { handleToast } from "../util/toast";
 
 /**
@@ -17,7 +17,7 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
     return useCallback(async (prevFormState, formData) => {
 
         const formValues = !isMobile ?
-            getDishFromValues(formData, currentFormValues) : deriveFormStateValues(currentFormValues);
+            getDishFormValues(formData, currentFormValues) : deriveFormStateValues(currentFormValues);
 
         const { name, course, image, components } = formValues;
 

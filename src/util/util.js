@@ -256,7 +256,7 @@ export const findRecipeDependencies = (recipeID, dishes) => {
  * @param {Object} state current form state, formData
  * @returns {Object} dish form values
  */
-export const getDishFromValues = (formData, state) => {
+export const getDishFormValues = (formData, state) => {
     const name = formData.get("name");
     const course = formData.get("course");
     const image = formData.get("image");
@@ -293,4 +293,15 @@ export const deriveFormStateValues = (state, isRecipe) => {
         return { name, course, image, components };
     }
 };
+
+export const getUserFormValues = (formData) => {
+
+    return {
+        user: formData.get("username"), 
+        passwd: formData.get("passwd"),
+        image: formData.get("image"),
+        cookType: formData.get("cookType"),
+        unitType: formData.get("unitType")
+    }
+}
 

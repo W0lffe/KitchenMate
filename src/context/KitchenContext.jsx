@@ -371,7 +371,7 @@ export default function KitchenContextProvider({children}){
 
     const updateActives = () => {
         
-        if(kitchenState.activeDish){
+        if(kitchenState.activeDish?.mode === "detail"){
             const id = kitchenState.activeDish.dish.id;
             kitchenDispatch({
                 type: "SET_ACTIVE_DISH",
@@ -381,7 +381,7 @@ export default function KitchenContextProvider({children}){
                 }
             })
         }
-        else if(kitchenState.activeRecipe){
+        else if(kitchenState.activeRecipe?.mode === "detail"){
             const id = kitchenState.activeRecipe.recipe.id;
             kitchenDispatch({
                 type: "SET_ACTIVE_RECIPE",

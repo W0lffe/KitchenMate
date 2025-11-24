@@ -13,29 +13,32 @@ export const createRequestPayload = (params) => {
         return { method,  headers: { Authorization: `Bearer ${token}` } };
     }
 
-    const hasImage = (data?.image instanceof File && data?.image.size > 0);
+    const hasImage = (data?.image instanceof File && data?.image.size > 0) || 
+                    (data?.userPayload?.image instanceof File && data?.userPayload?.image.size > 0);
 
     if(hasImage){
         const formData = new FormData();
-        formData.append("image", data.image);
+        if(endpoint === "users"){
+            formData.append("image", data.userPayload.image)
+        }
+        else{
+            formData.append("image", data.image)
+        }
+        
         formData.append("endpoint", endpoint);
 
         if(method === "PUT"){
             formData.append("update", "true");
         }
 
-        const dishData = {};
+        const newData = {};
         for (const key in data) {
             if (key !== "image") {
-                if (key !== "image"){
-                    //console.log(data[key]);
-                    dishData[key] = data[key];
-                    //console.log(dishData);
-                }
+                newData[key] = data[key];
             }
         }
         
-        formData.append("data",JSON.stringify(dishData));
+        formData.append("data",JSON.stringify(newData));
 
         //console.log([...formData.values()]);
 

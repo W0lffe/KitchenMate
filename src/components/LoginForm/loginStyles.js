@@ -8,9 +8,9 @@ export const headerStyle = `flex w-full justify-end text-xl`;
 
 export const headingStyle = `w-full justify-start px-2 font-bold`;
 
-export const formStyle = `flex flex-col h-fit gap-5`;
+export const formStyle = `flex flex-col h-fit gap-2`;
 
-export const labelStyle = `text-xl italic font-semibold`;
+export const labelStyle = `text-xl italic font-semibold flex`;
 
 export const inputStyle = `border-2 border-black bg-gray-300/40 p-2 rounded-custom-med 
                             hover:bg-gray-500/40 focus:bg-gray-500/40`;
