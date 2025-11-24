@@ -13,7 +13,7 @@ import { Toaster } from "react-hot-toast";
  */
 export default function Modal(){
 
-    const {activeModal, modalIsOpen, editStatus, setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes, isFetchingData} = useContext(KitchenContext)
+    const {activeModal, modalIsOpen, editStatus, setActiveDish, setActiveRecipe, handleRequest, isMobile, setModalState, fullDishes, isFetchingData, user} = useContext(KitchenContext)
 
     const {section, toDelete, ingredients} = activeModal;
     const useConfirm = (toDelete || ingredients) !== undefined;
@@ -29,7 +29,8 @@ export default function Modal(){
         setActiveRecipe,
         isMobile,
         fullDishes,
-        isFetchingData
+        isFetchingData,
+        user
     }
 
     useEffect(() => {

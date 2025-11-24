@@ -20,7 +20,6 @@ export default function useUserForm({ isLogin, setModalState, setUser }) {
             passwd
         }
 
-        console.log(image)
         if(!isLogin){
             userPayload = {
                 ...userPayload,
@@ -39,13 +38,21 @@ export default function useUserForm({ isLogin, setModalState, setUser }) {
 
         const { error, success, token } = response;
 
-        console.log(error, success)
-
         handleToast({
             error,
             success: isLogin ? success : success?.msg,
             setModalState,
         })
+
+        if(error){
+            return {
+                validInputs: {
+                    user,
+                    image,
+                    cookType,
+                    unitType
+                }}
+        }
 
 
         if (isLogin && success && token) {

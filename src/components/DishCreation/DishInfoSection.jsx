@@ -14,7 +14,7 @@ import Photo from "../Image/Photo"
  * @param {Object} state - Current state of the dish form, either formState or currentFormValues, depends on context
  * @returns Dish information section component
  */
-export default function DishInfoSection({ state }) {
+export default function DishInfoSection({ state, isProf }) {
 
     const validInputs = state.validInputs || {}
 
@@ -26,7 +26,7 @@ export default function DishInfoSection({ state }) {
                 <label className={labelStyle}>Name:</label>
                 <input type="text"
                     name="name"
-                    placeholder="Dish Name"
+                    placeholder={`${isProf ? "Dish" : "Meal"} name`}
                     className={inputStyle}
                     defaultValue={validInputs.name} />
             </span>

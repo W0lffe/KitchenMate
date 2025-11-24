@@ -8,7 +8,7 @@ import { listSection, getListStyle } from "./inspectStyles";
  * @param {Object} state current form state containing valid inputs
  * @returns component UI for item list section
  */
-export default function ItemListSection({isRecipe, list, state}){
+export default function ItemListSection({isRecipe, list, state, isProf}){
 
     const isPreview = state !== undefined;
 
@@ -19,7 +19,7 @@ export default function ItemListSection({isRecipe, list, state}){
 
     return(
         <section className={listSection}>
-            <label className="italic font-bold">{isRecipe ? "Ingredients" : "Components"}</label>
+            <label className="italic font-bold">{isRecipe ? "Ingredients" : `${isProf ? "Components" : "Recipes"}`}</label>
                 <ul className={getListStyle(style)}>
                 {gotList.length > 0 ? (gotList.map((listItem, i) => 
                     <li key={i} className="flex w-2/3 justify-between">

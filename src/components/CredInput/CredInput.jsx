@@ -1,7 +1,8 @@
 import { inputStyle } from "../LoginForm/loginStyles";
 export default function CredInput({isPass, state}) {
 
-    const defValue = !isPass ? state.validInputs?.name : undefined;
+
+    const defValue = !isPass ? state.validInputs?.user : undefined;
 
     return (
         <input type={isPass ? "password" : "text"}

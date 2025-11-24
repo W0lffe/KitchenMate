@@ -52,13 +52,13 @@ export default function SignupForm() {
                 <section>
                     <form action={formAction} className={formStyle}>
                         <section className="flex justify-center w-full h-fit m-1">
-                            <Photo />
+                            <Photo img={formState.validInputs?.image}/>
                         </section>
                         <label className={labelStyle + " gap-5"}>Username (1-16 characters)</label>
                         <CredInput isPass={false} state={formState} />
                         <label className={labelStyle + " gap-5"}>Password (10-16 characters)</label>
                         <CredInput isPass={true} />
-                        <PrefPanel />
+                        <PrefPanel state={formState}/>
                         <footer className="flex w-full justify-center">
                             <Button use={"login"} />
                         </footer>
