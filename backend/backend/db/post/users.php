@@ -23,12 +23,24 @@ try {
         "unitType" => $data["unitType"]
     ]);
 
+    $userID = $pdo -> lastInsertId();
+    $plainRecCode = generateRecoveryCode();
+    $hashedCode = password_hash($plainRecCode, PASSWORD_BCRYPT);
+
+    $pdo->beginTransaction();
+
+    $pdo->prepare("
+        UPDATE users
+        SET rec = :rec
+        WHERE userID = :id 
+    ")->execute([
+        "rec" => $hashedCode,
+        "id" => $userID
+    ]);
+
     if(isset($_FILES["image"])){
-        $userID = $pdo -> lastInsertId();
         $uploadDir = getUpload($userID, null, true);
         $image = handleIncomingImage($uploadDir);
-
-        $pdo->beginTransaction();
 
         $pdo->prepare("
             UPDATE users
@@ -38,13 +50,13 @@ try {
             "image" => $image,
             "id" => $userID
         ]);
-
-        $pdo->commit();
     }
 
+    $pdo->commit();
+   
     http_response_code(200);
     header("Content-Type: application/json");
-    echo json_encode(["success" => "User created succesfully!"]);
+    echo json_encode(["success" => ["msg" => "User created successfully!", "code" => $plainRecCode]]);
     exit;
     
 } catch (PDOException $e) {
