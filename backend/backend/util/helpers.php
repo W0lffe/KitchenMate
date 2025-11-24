@@ -53,5 +53,32 @@ function handleIncomingImage($uploadDir){
     }
 }
 
+function generateRecoveryCode(){
+    $len = 11;
+    $characters = implode("", array_merge(
+        range('A', 'Z'),
+        range('a', 'z'),
+        range('0', '9')
+    ));
+
+    $code = "";
+
+    //echo json_encode($characters);
+
+    for($i = 0; $i < $len; $i++){
+        if($i === 5){
+            $code .= "-";
+        }
+        else{
+            $index = random_int(1, strlen($characters) - 1);
+            $code .= $characters[$index];
+        }
+    }
+
+    //echo json_encode($code);
+
+    return $code;
+}
+
 
 ?>
