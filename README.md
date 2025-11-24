@@ -69,6 +69,7 @@
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
     - [ ] Password reset and account recovery
+    - [x] Recovery Code Generation
 10. Error Handling
     - [x] HTTP Response Codes 
     - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/pull/42)
@@ -95,7 +96,8 @@ Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/StageFive
 2. Favorite icon lights up after switching inspectable item, even though the new item is not favorited.
     - **NOTES:**
         - This is likely caused by a state or rendering logic issue, where the favorite status from the previous item persists instead of updating based on the newly selected item.
-   
+    - **STATUS:**
+        - **Fixed, it was logical mistake where current item did not update after fetching latest info from database.**
 
 
 
