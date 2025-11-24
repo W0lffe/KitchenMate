@@ -64,8 +64,10 @@
     - [ ] Data export to Excel format or PDF
 8. User Features
     - [ ] Community shared recipes (public)
-    - [ ] User profile
-    - [ ] Profile-based user experience (home cook vs professional)
+    - [x] User profile
+    - [ ] Profile-based user experience (cook type, unit type)
+        - **Work in Progress** currently shows different units and labels based on what is chosen in sign up
+
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
     - [ ] Password reset and account recovery
