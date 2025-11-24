@@ -19,10 +19,10 @@ import SearchBar from "../Toolbar/SearchBar";
  * @param {Function} filter function to filter the list
  * @returns list of components/recipes to use in DishCreation
  */
-export default function ComponentList({isMobile, isRecipe, listToUse, isSelected, handleUpdate, filter}){
+export default function ComponentList({isMobile, isRecipe, listToUse, isSelected, handleUpdate, filter, isProf}){
 
-    const header = isRecipe ? "Add Recipes to Dish" : "Components";
-    const fallback = isRecipe ? "Recipe list is empty." : "No components added yet";
+    const header = isRecipe ? `Add Recipes to ${isProf ? "Dish" : "Meal"}` : `${isProf ? "Components" : "Recipes"}`;
+    const fallback = isRecipe ? "Recipe list is empty." : `No ${isProf ? "components" : "recipes"} added yet`;
 
     /**
      * Check if a component is selected

@@ -10,9 +10,18 @@ const slogans = [
 /**
  * Units for ingredients
  */
-export const units = [ 
-    "kg", "l", "g", "dl", "pcs"
-]
+export const units = {
+    "metric": [ "kg", "g", "mg", "L", "dL", "mL", "tbsp", "tsp"],
+    "imperial": [ "oz", "lb", "gal", "qt", "pt", "cup", "tbsp", "tsp"]
+} 
+
+/**
+ * Labels for navigation
+ */
+export const nav_labels = {
+    "home": ["Recipes", "Meals", "Basket"],
+    "professional": ["Recipes", "Dishes", "Basket"]
+}
 
 /**
  * Output types for recipes

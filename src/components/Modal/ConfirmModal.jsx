@@ -32,7 +32,8 @@ export default function ConfirmModal({ props, contextProps }) {
         isMobile,
         setModalState,
         fullDishes,
-        isFetchingData } = contextProps;
+        isFetchingData,
+        user } = contextProps;
 
     let message = "";
     const dependencies = [];
@@ -48,11 +49,11 @@ export default function ConfirmModal({ props, contextProps }) {
 
             const foundDependencies = findRecipeDependencies(toDelete, fullDishes.current);
             if (foundDependencies.length > 0) {
-                message = "Deleting this recipe will also delete the following dishes:";
+                message = `Deleting this recipe will also delete the following ${user.cookType === "professional" ? "dishes" : "meals"}:`;
                 dependencies.push(...foundDependencies);
             }
         } else if (section.toLowerCase().includes("dishes")) {
-            message = "Delete dish?";
+            message =` Delete ${user.cookType === "professional" ? "dish?" : "meal?"}`;
         } else {
             message = "Delete product?";
         }

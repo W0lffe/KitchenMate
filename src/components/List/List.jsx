@@ -62,9 +62,10 @@ const categorize = (itemlist, isRecipe) => {
  */
 export default function List() {
 
-    const { activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish } = useContext(KitchenContext);
+    const { activeSection, availableRecipes, availableBasket, availableDishes, isFetchingData, activeDish, user } = useContext(KitchenContext);
     const [list, setList] = useState([]);
     const [useLabel, setUseLabel] = useState(null);
+    const isProf = user.cookType === "professional";
 
     useEffect(() => {
 
@@ -102,6 +103,7 @@ export default function List() {
         )
     }
 
+    const fallback = `List is empty! Start by creating a ${(!isProf && activeSection === "dishes") && "meals" || activeSection}.`
     const isCategorized = list.length > 0 && list[0].group !== undefined && list[0].items !== undefined;
 
     return (
@@ -115,7 +117,7 @@ export default function List() {
                     <SimpleList list={list} useLabel={useLabel}/>
                 )
             ) : (
-                <p>List is empty! Start by creating a {activeSection}.</p>
+                <p>{fallback}</p>
             )}
         </div >
     )

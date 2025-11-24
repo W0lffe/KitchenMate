@@ -36,9 +36,10 @@ export default function DishCreation(){
     const [openTab, setOpenTab] = useState(SECTIONS.GENERAL);
 
     const {mode, dish} = activeDish;
+    const isProf = user.cookType === "professional";
     const isCreatingDish = activeDish?.mode === "create";
     const isEditing = activeDish?.mode === "edit";
-    const mobileHeading =  isCreatingDish ? "Dish Creation" : "Dish Editor";
+    const mobileHeading =  isCreatingDish ? `${isProf ? "Dish" : "Meal"} Creation` : `${isProf ? "Dish" : "Meal"} Editor`;
 
     const {updateComponents} = createComponentUpdater({dish, mode, setActiveDish});
     const [componentRecipes, setComponentRecipes] = useState([]);
@@ -126,30 +127,31 @@ export default function DishCreation(){
             {isMobile ? (
                 <>
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
-                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues}/>}
+                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues} isProf={isProf}/>}
                     {openTab === SECTIONS.COMPONENTS && <ComponentList isMobile={isMobile} isRecipe={true} 
                                                                             listToUse={availableRecipes} 
                                                                             isSelected={currentFormValues?.validInputs?.components || []} 
                                                                             handleUpdate={updateComponents} 
-                                                                            filter={filterList}/> }
+                                                                            filter={filterList}
+                                                                            isProf={isProf}/> }
                     {openTab === SECTIONS.CONFIRMATION && 
                         <>
                             <ItemInfoSection state={currentFormValues}/>
-                            <ItemListSection list={componentRecipes} />
+                            <ItemListSection list={componentRecipes} isProf={isProf} />
                         </>
                     }
                 </>
             ) : (
                 <>
-                    <DishInfoSection state={formState}/>
-                    <ComponentList listToUse={componentRecipes} />
+                    <DishInfoSection state={formState} isProf={isProf}/>
+                    <ComponentList listToUse={componentRecipes} isProf={isProf}/>
                 </>
             )}
             <footer className={footerStyle}>
                 {isMobile ? (
                     openTab === SECTIONS.CONFIRMATION && <Button use={"recipe"} />
                 ) : (
-                    <Button use={"dish"}/>
+                    <Button use={"recipe"}/>
                 )}
             </footer>
             </form>

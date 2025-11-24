@@ -15,7 +15,10 @@ import ContentWrapper from "../ContentWrapper/ContentWrapper"
  */
 export default function ActiveSectionWrapper(){
 
-    const {activeSection, isMobile, activeRecipe, activeDish, editStatus} = useContext(KitchenContext);
+    const {activeSection, isMobile, activeRecipe, activeDish, editStatus, user} = useContext(KitchenContext);
+
+    const isProf = user.cookType === "professional";
+    const string = isProf ? "Dish" : "Meal";
 
     if(isMobile){
         return <>
@@ -31,9 +34,9 @@ export default function ActiveSectionWrapper(){
             edit: "Recipe Editor",
         },
         dishes: {
-            create: "Dish Creation",
-            detail: "Dish Details",
-            edit: "Dish Editor",  
+            create: `${string} Creation`,
+            detail: `${string} Detail`,
+            edit: `${string} Editor`,  
         },
         basket: {
             add: "Add Items to Basket",
