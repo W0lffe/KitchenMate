@@ -1,11 +1,8 @@
 pipeline {
-    agent {
-        docker { 
-            image 'node:20-alpine'
-            args '-u root:root'
-        }
+    agent any  
+    tools {
+        nodejs 'node-20' 
     }
-
     stages {
         stage('Checkout') {
             when { branch 'master' }
@@ -15,15 +12,22 @@ pipeline {
         stage('Install') {
              steps { sh 'npm ci' } 
         }
-      /*   stage('Test') { 
-            steps { sh 'npm test -- --watchAll=false' } 
-        } */
+        stage('Test') { 
+            steps { 
+                sh 'npm run test -- --reporter junit --outputFile test-results/results.xml' 
+            } 
+            post {
+                always {
+                    junit "test-results/**/*.xml"
+                }
+            }
+        } 
         stage('Build') { 
             steps { sh 'npm run build' } 
         }
-      /*   stage('Archive') { 
-            steps { archiveArtifacts artifacts: 'build/**', fingerprint: true } 
-        } */ 
+        /* stage('Archive') { 
+            steps { archiveArtifacts artifacts: 'dist/**', fingerprint: true } 
+        }  */
     }
 
     post {
@@ -32,3 +36,4 @@ pipeline {
         always { cleanWs() }
     }
 }
+
