@@ -10,7 +10,7 @@ import Button from "../Buttons/Button";
 import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
-import { getRecipeFormValues } from "../../util/util";
+import { getRecipeFormValues } from "../../util/formHelpers.js";
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection";
 import ItemListSection from "../ItemInspectView/ItemListSection";
 import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";

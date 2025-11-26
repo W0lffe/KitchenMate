@@ -9,8 +9,8 @@ import { footerStyle,
         headerSpanStyle, 
         labelStyle } from "./dishCreationStyles"
 import TabButtons from "../Buttons/TabButtons"
-import { getRecipeInfo, 
-        getDishFormValues } from "../../util/util"
+import { getRecipeInfo } from "../../util/util"
+import { getDishFormValues } from "../../util/formHelpers"
 import ComponentList from "./ComponentList"
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection"
 import useDishForm from "../../hooks/useDishForm"

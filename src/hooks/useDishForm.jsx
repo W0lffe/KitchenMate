@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import handleErrorsToast from "../components/Error/Errors"
 import { validateDish } from "../util/validation";
-import { deriveFormStateValues, getDishFormValues } from "../util/util";
+import { deriveFormStateValues, getDishFormValues } from "../util/formHelpers.js";
 import { handleToast } from "../util/toast";
 
 /**

@@ -4,9 +4,8 @@ import {
     labelStyle,
     getInputStyle
 } from "./recipeStyles"
-import { outputs } from "../../util/util"
+import { OUTPUTS, CATEGORIES } from "../../util/constants"
 import { useState } from "react";
-import { categories } from "../../util/util";
 
 
 /**
@@ -18,7 +17,7 @@ export default function RecipeInfoSection({ state, user }) {
 
     const validInputs = state.validInputs || {};
     const [selectedOutput, setSelectedOutput] = useState(() => {
-        const output = validInputs?.output ? validInputs?.output : Object.keys(outputs)[0];
+        const output = validInputs?.output ? validInputs?.output : Object.keys(OUTPUTS)[0];
         return output;
     });
 
@@ -42,13 +41,13 @@ export default function RecipeInfoSection({ state, user }) {
                         defaultValue={validInputs.output}
                         onChange={e => setSelectedOutput(e.target.value)}
                     >
-                        {Object.keys(outputs).map((output, i) => <option key={i} value={output}>{output}</option>)}
+                        {Object.keys(OUTPUTS).map((output, i) => <option key={i} value={output}>{output}</option>)}
                     </select>
-                    {outputs[selectedOutput].length > 0 &&
+                    {OUTPUTS[selectedOutput].length > 0 &&
                         <select name="outputType"
                             className={getInputStyle(false)}
                             defaultValue={validInputs.outputType} >
-                            {outputs[selectedOutput].map((type, i) => <option key={i}>{type}</option>)}
+                            {OUTPUTS[selectedOutput].map((type, i) => <option key={i}>{type}</option>)}
                         </select>
                     }
                 </span>
@@ -87,7 +86,7 @@ export default function RecipeInfoSection({ state, user }) {
                     className={getInputStyle(false)}
                     defaultValue={validInputs.category} >
                     <option>Uncategorized</option>
-                    {categories[user.cookType].map((category, i) => <option key={i}>{category}</option>)}
+                    {CATEGORIES[user.cookType].map((category, i) => <option key={i}>{category}</option>)}
                 </select>
             </span>
         </div>

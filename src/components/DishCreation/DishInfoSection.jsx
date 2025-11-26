@@ -1,4 +1,4 @@
-import { courses } from "../../util/util"
+import { COURSES } from "../../util/constants.js"
 import {
     labelStyle,
     spanStyle,
@@ -37,7 +37,7 @@ export default function DishInfoSection({ state, cookType }) {
                     className={inputStyle}
                     defaultValue={validInputs.course}>
                     <option value="course">Select</option>
-                    {courses[cookType].map((course) =>
+                    {COURSES[cookType].map((course) =>
                         <option value={course} key={course}>{course}</option>)}
                 </select>
             </span>
