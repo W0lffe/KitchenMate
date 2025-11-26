@@ -25,8 +25,8 @@ pipeline {
         } 
         stage('Build') { 
             steps { sh 'npm run build' } 
-       /*  }
-         stage('Archive') { 
+        }
+        /* stage('Archive') { 
             steps { archiveArtifacts artifacts: 'dist/**', fingerprint: true } 
         }  */
     }
@@ -37,4 +37,4 @@ pipeline {
         always { cleanWs() }
     }
 }
-}
+
