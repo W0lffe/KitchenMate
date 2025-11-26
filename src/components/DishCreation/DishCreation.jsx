@@ -127,7 +127,7 @@ export default function DishCreation(){
             {isMobile ? (
                 <>
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
-                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues} isProf={isProf}/>}
+                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues} cookType={user.cookType}/>}
                     {openTab === SECTIONS.COMPONENTS && <ComponentList isMobile={isMobile} isRecipe={true} 
                                                                             listToUse={availableRecipes} 
                                                                             isSelected={currentFormValues?.validInputs?.components || []} 
@@ -143,7 +143,7 @@ export default function DishCreation(){
                 </>
             ) : (
                 <>
-                    <DishInfoSection state={formState} isProf={isProf}/>
+                    <DishInfoSection state={formState} cookType={user.cookType}/>
                     <ComponentList listToUse={componentRecipes} isProf={isProf}/>
                 </>
             )}

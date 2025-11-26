@@ -14,9 +14,10 @@ import Photo from "../Image/Photo"
  * @param {Object} state - Current state of the dish form, either formState or currentFormValues, depends on context
  * @returns Dish information section component
  */
-export default function DishInfoSection({ state, isProf }) {
+export default function DishInfoSection({ state, cookType }) {
 
     const validInputs = state.validInputs || {}
+    const isProf = cookType === "professional";
 
     return (
         <div className={infoContainer}>
@@ -36,7 +37,7 @@ export default function DishInfoSection({ state, isProf }) {
                     className={inputStyle}
                     defaultValue={validInputs.course}>
                     <option value="course">Select</option>
-                    {courses.map((course) =>
+                    {courses[cookType].map((course) =>
                         <option value={course} key={course}>{course}</option>)}
                 </select>
             </span>

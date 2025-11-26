@@ -11,8 +11,8 @@ const slogans = [
  * Units for ingredients
  */
 export const units = {
-    "metric": [ "kg", "g", "mg", "L", "dL", "mL", "tbsp", "tsp"],
-    "imperial": [ "oz", "lb", "gal", "qt", "pt", "cup", "tbsp", "tsp"]
+    "metric": [ "kg", "g", "mg", "L", "dL", "mL", "tbsp", "tsp", "pcs"],
+    "imperial": [ "oz", "lb", "gal", "qt", "pt", "cup", "tbsp", "tsp", "pcs"]
 } 
 
 /**
@@ -36,9 +36,10 @@ export const outputs = {
 /**
  * Courses for dishes
  */
-export const courses = [
-    "Starter", "Main", "Dessert", "Amuse-bouche", "Snack", "Lunch", "Dinner", "Breakfast"
-]
+export const courses = {
+    "home": ["Breakfast", "Lunch", "Dinner", "Snack", "Dessert"],
+    "professional": ["Amuse-bouche", "Appetizer", "Starter", "Main", "Sides", "Dessert", "Snack"]
+}
 
 /**
  * Labels for different lists
@@ -53,11 +54,12 @@ const LIST_LABELS = {
 /**
  * Categories for recipes
  */
-export const categories = [
-    "Uncategorized","Proteins", "Starches & Grains", "Vegetables & Produce",
-    "Sauces & Dressings", "Condiments & Seasonings", "Garnishes", "Bases & Stocks", 
-    "Sweets & Desserts", "Pastry & Bread"
-]
+export const categories = {
+    "home": ["Breakfast", "Lunch", "Dinner", "Dessert", "Vegetarian", "Baking", "Soup", "Snacks"],
+    "professional": ["Stocks & Broths", "Sauce Bases", "Condiments", "Sauces", "Cold Sauces", "Marinades", 
+                    "Meat", "Fish", "Vegetarian (protein)", "Vegetables", "Doughs", "Soups",
+                    "Creams & Custards", "Baked Desserts", "Bread", "Garnish", "WiP", "Other" ]
+}
 
 /**
  * Get the labels for a specific list
@@ -191,7 +193,7 @@ export const scaleRecipe = (scaleParams) => {
 export const getRecipeFormValues = (formData) => {
     const name = formData.get("name")
     const portions = formData.get("portions")
-    const output = formData.get("output")
+    const output = formData.get("output") ? formData.get("output") : "N/A";
     const outputType = formData.get("outputType")
     const time = formData.get("time")
     const timeFormat = formData.get("timeFormat")
@@ -200,7 +202,6 @@ export const getRecipeFormValues = (formData) => {
     const unit = formData.getAll("unit");
     const steps = formData.getAll("step");
     const category = formData.get("category");
-
 
     return{ name, portions, output, outputType, time, timeFormat, 
             products, quantity, unit, steps, category };
