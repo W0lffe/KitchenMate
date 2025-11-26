@@ -74,7 +74,8 @@
     - [x] HTTP Response Codes 
     - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/pull/42)
 11. Tech
-    - [ ] Jenkins CI/CD Pipeline
+    - [x] Jenkins CI/CD Pipeline
+        - Running a simple pipeline for testing and building for master branch, deployment is coming!
     - [ ] Docker for Python backend
 
 ## 💡 Why I Built This
