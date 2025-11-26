@@ -8,7 +8,7 @@ import { getSectionStyle,
 import { useContext } from "react";
 import { KitchenContext } from "../../context/KitchenContext";
 import NaviButton from "../Buttons/NaviButton";
-import { nav_labels } from "../../util/util";
+import { NAV_LABELS } from "../../util/constants";
 
 
 /**
@@ -18,7 +18,7 @@ import { nav_labels } from "../../util/util";
 export default function NaviSection(){
 
     const {navigationIsOpen, setActiveSection, user} = useContext(KitchenContext);
-    const labelsToUse = nav_labels[user.cookType];
+    const labelsToUse = NAV_LABELS[user.cookType];
     /**
      * Navigation button values and icons
      */

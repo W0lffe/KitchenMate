@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { validateRecipe } from "../util/validation";
-import { getRecipeFormValues, deriveFormStateValues } from "../util/util";
-import { combineProductData, getTimestamp } from "../util/util";
+import { getRecipeFormValues, deriveFormStateValues } from "../util/formHelpers.js";
+import { combineProductData } from "../util/util";
 import handleErrorsToast from "../components/Error/Errors";
 import { handleToast } from "../util/toast";
 
@@ -44,6 +44,8 @@ export function useRecipeForm({ isMobile, currentFormValues, handleRequest, setA
       id: currentFormValues.modifiedId,
       category
     };
+
+    console.log(newRecipe)
 
     //console.log(newRecipe);
 

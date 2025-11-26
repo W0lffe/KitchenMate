@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { units } from "../../util/util"
+import { UNITS } from "../../util/constants"
 import { getInputStyle, 
         productStyle } from "./productStyles"
 import { KitchenContext } from "../../context/KitchenContext";
@@ -29,7 +29,7 @@ export default function Product({state, index}){
                     className={getInputStyle("unit")} 
                     defaultValue={validInputs.unit[index]}>
                 <option>Unit</option>
-                {units[user.unitType].map((unit) => <option key={unit}>{unit}</option>)}
+                {UNITS[user.unitType].map((unit) => <option key={unit}>{unit}</option>)}
             </select>
         </div>
     )

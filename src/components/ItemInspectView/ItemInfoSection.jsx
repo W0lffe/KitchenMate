@@ -19,7 +19,7 @@ export default function ItemInfoSection({isRecipe, item, scaleFunctions, state})
     //console.log("item to use", item)
 
     let outputString = ""
-    if(itemToUse.outputType !== null){
+    if(itemToUse.outputType){
         outputString += `${itemToUse.outputType}, `;
     }
     outputString += itemToUse.portions > 0 ? `approx. ${itemToUse.portions} portions` : "";

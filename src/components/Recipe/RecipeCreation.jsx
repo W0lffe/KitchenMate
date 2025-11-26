@@ -10,7 +10,7 @@ import Button from "../Buttons/Button";
 import RecipeInfoSection from "./RecipeInfoSection";
 import FormList from "../FormList/FormList";
 import { useRecipeForm } from "../../hooks/useRecipeForm";
-import { getRecipeFormValues } from "../../util/util";
+import { getRecipeFormValues } from "../../util/formHelpers.js";
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection";
 import ItemListSection from "../ItemInspectView/ItemListSection";
 import ItemInstructionSection from "../ItemInspectView/ItemInstructionSection";
@@ -32,7 +32,7 @@ const SECTIONS = {
  */
 export default function RecipeCreation(){
     
-    const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe} = useContext(KitchenContext);
+    const {isMobile, handleRequest, setModalState, activeRecipe, setActiveRecipe, user} = useContext(KitchenContext);
     const [openTab, setOpenTab] = useState(isMobile ? SECTIONS.GENERAL : null);
 
     const [currentFormValues, setCurrentFormValues] = useState(()=> {
@@ -120,7 +120,7 @@ export default function RecipeCreation(){
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
                     <div className={sectionContainerStyle + `${"flex-col"}`}>
                         {openTab === SECTIONS.GENERAL && 
-                            <RecipeInfoSection state={currentFormValues}/>
+                            <RecipeInfoSection state={currentFormValues} user={user}/>
                         }
                         {openTab === SECTIONS.INGREDIENTS && 
                             <FormList use={SECTIONS.INGREDIENTS} state={currentFormValues}/>
@@ -139,7 +139,7 @@ export default function RecipeCreation(){
                 </>
             ) : (
                 <>
-                    <RecipeInfoSection state={formState}/>
+                    <RecipeInfoSection state={formState} user={user}/>
                     <div className={sectionContainerStyle}>
                         <FormList use={SECTIONS.INGREDIENTS} state={formState}/>
                         <FormList use={SECTIONS.INSTRUCTIONS} state={formState}/>

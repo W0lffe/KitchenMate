@@ -1,63 +1,4 @@
-/**
- * Slogans for the header section
- */
-const slogans = [
-    "Plan, organize, and cook smarter — all in one place.",
-    "Simplify Your Cooking with KitchenMate.",
-    "From idea to plate — manage recipes, ingredients, and dishes effortlessly."
-];
-
-/**
- * Units for ingredients
- */
-export const units = {
-    "metric": [ "kg", "g", "mg", "L", "dL", "mL", "tbsp", "tsp"],
-    "imperial": [ "oz", "lb", "gal", "qt", "pt", "cup", "tbsp", "tsp"]
-} 
-
-/**
- * Labels for navigation
- */
-export const nav_labels = {
-    "home": ["Recipes", "Meals", "Basket"],
-    "professional": ["Recipes", "Dishes", "Basket"]
-}
-
-/**
- * Output types for recipes
- */
-export const outputs = {
-  "N/A": [],
-  "GN": ["GN 1/6-10", "GN 1/6-15", "GN 1/3-10", "GN 1/3-15", "GN 1/2-10", "GN 1/2-15", "GN 1/1-10", "GN 1/1-15", "GN 1/1-6.5"],
-  "Piping": ["6L Piping"],
-  "Box": ["0.5L Box", "1L Box", "2L Box", "3L Box"]
-};
-
-/**
- * Courses for dishes
- */
-export const courses = [
-    "Starter", "Main", "Dessert", "Amuse-bouche", "Snack", "Lunch", "Dinner", "Breakfast"
-]
-
-/**
- * Labels for different lists
- */
-const LIST_LABELS = {
-    1: ["Name", "Prep Time", "View"],
-    2: ["Name", "Components", "View"],
-    3: ["Product", "Quantity", "Unit", "Collected", "Cut"],
-    4: ["Name", "Add"],
-};
-
-/**
- * Categories for recipes
- */
-export const categories = [
-    "Uncategorized","Proteins", "Starches & Grains", "Vegetables & Produce",
-    "Sauces & Dressings", "Condiments & Seasonings", "Garnishes", "Bases & Stocks", 
-    "Sweets & Desserts", "Pastry & Bread"
-]
+import { LIST_LABELS, SLOGANS }from "./constants.js";
 
 /**
  * Get the labels for a specific list
@@ -74,7 +15,7 @@ export const getListLabels = (activeList)=> {
  * @returns a slogan
  */
 export const getRandomSlogan = () => {
-    return slogans[Math.floor(Math.random() * slogans.length)];
+    return SLOGANS[Math.floor(Math.random() * SLOGANS.length)];
 }
 /**
  * Function to combine product, quantity, and unit arrays into a single array of objects
@@ -97,17 +38,6 @@ export const combineProductData = (products, quantities, units) => {
     }
 
     return combinedProducts;
-}
-
-/**
- * Function to get the current timestamp in "YYYY-M-D" format
- * @returns {string} formatted date
- */
-export const getTimestamp = () => {
-
-    const date = new Date();
-    const formattedDate = date.getFullYear() + "-" + parseInt(date.getMonth() + 1) + "-" + date.getDate();    
-    return formattedDate;
 }
 
 /**
@@ -184,29 +114,6 @@ export const scaleRecipe = (scaleParams) => {
 }
 
 /**
- * Function to extract recipe form values from FormData
- * @param {FormData} formData 
- * @returns {Object} recipe form values
- */
-export const getRecipeFormValues = (formData) => {
-    const name = formData.get("name")
-    const portions = formData.get("portions")
-    const output = formData.get("output")
-    const outputType = formData.get("outputType")
-    const time = formData.get("time")
-    const timeFormat = formData.get("timeFormat")
-    const products = formData.getAll("product");
-    const quantity = formData.getAll("quantity");
-    const unit = formData.getAll("unit");
-    const steps = formData.getAll("step");
-    const category = formData.get("category");
-
-
-    return{ name, portions, output, outputType, time, timeFormat, 
-            products, quantity, unit, steps, category };
-}
-
-/**
  * Function to get recipe information with ID numbers from a list
  * @param {Array} list list of all recipes
  * @param {Array} id list of ID's in dish components
@@ -259,58 +166,4 @@ export const findRecipeDependencies = (recipeID, dishes) => {
     return dependencies;
 }
 
-/**
- * To get dish form values from FormData
- * @param {FormData} formData 
- * @param {Object} state current form state, formData
- * @returns {Object} dish form values
- */
-export const getDishFormValues = (formData, state) => {
-    const name = formData.get("name");
-    const course = formData.get("course");
-    const image = formData.get("image");
-    const components = state?.validInputs?.components || [];
-    return { name, course, image, components };
-}
-
-/**
- * Function to derive form state values based on whether it's a recipe or dish
- * @param {Object} state current form state, from useState
- * @param {boolean} isRecipe flag indicating if the form is for a recipe
- * @returns {Object} derived form state values
- */
-export const deriveFormStateValues = (state, isRecipe) => {
-    if(isRecipe){
-        const name = state.validInputs?.name || "";
-        const portions = state.validInputs?.portions || 0;
-        const output = state.validInputs?.output || "N/A";
-        const outputType = state.validInputs?.outputType || null;
-        const time = state.validInputs?.time || 0;
-        const timeFormat = state.validInputs?.timeFormat || null;
-        const products = state.validInputs?.products || [];
-        const quantity = state.validInputs?.quantity || [];
-        const unit = state.validInputs?.unit || [];
-        const steps = state.validInputs?.steps || [];
-        const category = state.validInputs?.category || "Uncategorized";
-        return { name, portions, output, outputType, time, timeFormat, products, quantity, unit, steps, category };
-    }
-    else{
-        const name = state.validInputs?.name || "";
-        const course = state.validInputs?.course || "";
-        const image = state.validInputs?.image || null;
-        const components = state.validInputs?.components || [];
-        return { name, course, image, components };
-    }
-};
-
-export const getUserFormValues = (formData) => {
-
-    return {
-        user: formData.get("username"), 
-        passwd: formData.get("passwd"),
-        image: formData.get("image"),
-        cookType: formData.get("cookType"),
-        unitType: formData.get("unitType")
-    }
-}
 

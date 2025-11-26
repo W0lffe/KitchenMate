@@ -9,8 +9,8 @@ import { footerStyle,
         headerSpanStyle, 
         labelStyle } from "./dishCreationStyles"
 import TabButtons from "../Buttons/TabButtons"
-import { getRecipeInfo, 
-        getDishFormValues } from "../../util/util"
+import { getRecipeInfo } from "../../util/util"
+import { getDishFormValues } from "../../util/formHelpers"
 import ComponentList from "./ComponentList"
 import ItemInfoSection from "../ItemInspectView/ItemInfoSection"
 import useDishForm from "../../hooks/useDishForm"
@@ -127,7 +127,7 @@ export default function DishCreation(){
             {isMobile ? (
                 <>
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
-                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues} isProf={isProf}/>}
+                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues} cookType={user.cookType}/>}
                     {openTab === SECTIONS.COMPONENTS && <ComponentList isMobile={isMobile} isRecipe={true} 
                                                                             listToUse={availableRecipes} 
                                                                             isSelected={currentFormValues?.validInputs?.components || []} 
@@ -143,7 +143,7 @@ export default function DishCreation(){
                 </>
             ) : (
                 <>
-                    <DishInfoSection state={formState} isProf={isProf}/>
+                    <DishInfoSection state={formState} cookType={user.cookType}/>
                     <ComponentList listToUse={componentRecipes} isProf={isProf}/>
                 </>
             )}

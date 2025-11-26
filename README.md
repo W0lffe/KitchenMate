@@ -65,8 +65,7 @@
 8. User Features
     - [ ] Community shared recipes (public)
     - [x] [User profile](https://github.com/W0lffe/KitchenMate/issues/28)
-    - [ ] Profile-based user experience (cook type, unit type)
-        - **Work in Progress** currently shows different units and labels based on what is chosen in sign up
+    - [x] [Profile-based user experience (cook type, unit types, categories, courses)]()
 
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
