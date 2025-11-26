@@ -60,13 +60,12 @@
 7. Backend & Database
     - [x] [Convert current JSON data to MariaDB](https://github.com/W0lffe/KitchenMate/pull/37)
     - [x] [Verify connectivity between front-end and backend](https://github.com/W0lffe/KitchenMate/pull/43)
-    - [ ] Python backend
+    - [ ] Python backend (See Tech)
     - [ ] Data export to Excel format or PDF
 8. User Features
     - [ ] Community shared recipes (public)
     - [x] [User profile](https://github.com/W0lffe/KitchenMate/issues/28)
     - [x] [Profile-based user experience (cook type, unit types, categories, courses)](https://github.com/W0lffe/KitchenMate/pull/56)
-
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
     - [ ] Password reset and account recovery
@@ -74,6 +73,9 @@
 10. Error Handling
     - [x] HTTP Response Codes 
     - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/pull/42)
+11. Tech
+    - [ ] Jenkins CI/CD Pipeline
+    - [ ] Docker for Python backend
 
 ## 💡 Why I Built This
 
