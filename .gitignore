@@ -31,7 +31,6 @@ firebase.json
 *.sw?
 
 # Backend
-backend/api.js
 backend/backend/config/config.ini
 backend/backend/config/config_puv.ini
 backend/backend/data/*
