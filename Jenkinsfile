@@ -1,7 +1,7 @@
 pipeline {
-    agent any  // run on Jenkins container
+    agent any  
     tools {
-        nodejs 'node-20'  // must match your Global Tool Config
+        nodejs 'node-20' 
     }
     stages {
         stage('Checkout') {
@@ -12,15 +12,23 @@ pipeline {
         stage('Install') {
              steps { sh 'npm ci' } 
         }
-      /*   stage('Test') { 
-            steps { sh 'npm test -- --watchAll=false' } 
-        } */
+        stage('Test') { 
+            steps { 
+                sh 'npm run test -- --reporter junit --outputFile test-results/results.xml' 
+            } 
+            post {
+                always {
+                    // Tell Jenkins to parse the test results
+                    junit "test-results/**/*.xml"
+                }
+            }
+        } 
         stage('Build') { 
             steps { sh 'npm run build' } 
-        }
-      /*   stage('Archive') { 
-            steps { archiveArtifacts artifacts: 'build/**', fingerprint: true } 
-        } */ 
+       /*  }
+         stage('Archive') { 
+            steps { archiveArtifacts artifacts: 'dist/**', fingerprint: true } 
+        }  */
     }
 
     post {
@@ -28,4 +36,5 @@ pipeline {
         failure { echo 'Build failed!' }
         always { cleanWs() }
     }
+}
 }
