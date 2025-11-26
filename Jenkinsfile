@@ -5,7 +5,7 @@ pipeline {
     }
     stages {
         stage('Checkout') {
-            when { branch '57-jenkins-cicd' }
+            when { branch 'master' }
             steps { checkout scm }
         }
 
@@ -18,7 +18,6 @@ pipeline {
             } 
             post {
                 always {
-                    // Tell Jenkins to parse the test results
                     junit "test-results/**/*.xml"
                 }
             }
