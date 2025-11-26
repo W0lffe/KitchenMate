@@ -4,9 +4,9 @@ import dishesImg from "../../assets/dishes.jpg";
 import recipesImg from "../../assets/recipes.jpg";
 import creationImg from "../../assets/recipeCreation.jpg";
 import dishCardImg from "../../assets/dishCard.jpg";
-import pcBasketImg from "../../assets/basketPC.jpg"
-import pcCreation from "../../assets/creationPC.jpg"
-import dishesPC from "../../assets/dishesPC.jpg"
+import pcBasketImg from "../../assets/basketPC.jpg";
+import pcCreation from "../../assets/creationPC.jpg";
+import dishesPC from "../../assets/dishesPC.jpg";
 
 
 const mobile = [appImg, recipesImg, creationImg, dishesImg, dishCardImg, basketImg];
