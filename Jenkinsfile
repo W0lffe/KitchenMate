@@ -40,12 +40,12 @@ pipeline {
                 success { echo 'Artifact created' }
             }
         } 
-        stage('Deploy') {
+       /*  stage('Deploy') {
             when { branch 'master' }
             steps {
                 //deploying script 
             }
-        }
+        } */
     }
 
     post {
