@@ -6,12 +6,12 @@ import {
     formStyle,
     labelStyle,
 } from "../LoginForm/loginStyles";
-import { buttonStyle, containerStyle, fieldStyle, welcomeStyle } from "./signupFormStyles";
+import { buttonStyle, containerStyle, welcomeStyle } from "./signupFormStyles";
 import useUserForm from "../../hooks/useUserForm";
 import PrefPanel from "../PrefPanel/PrefPanel";
 import Photo from "../Image/Photo";
 import CredInput from "../CredInput/CredInput";
-import { useNavigate } from "react-router-dom";
+import RecCode from "../RecCode/RecCode";
 
 /**
  * Used for both signup form.
@@ -28,7 +28,7 @@ export default function SignupForm() {
         isLogin: false,
     })
 
-    const navigate = useNavigate();
+    
 
     const [formState, formAction] = useActionState(signup, { validInputs: null });
 
@@ -37,12 +37,7 @@ export default function SignupForm() {
             <div className={containerStyle + " gap-5 text-lg"}>
                 <h2 className={welcomeStyle}>Welcome, chef!</h2>
                 <p>Thank you for signing up! Your account is all set. Time to start cooking up something great!</p>
-                <p>Below is your account recovery code. Please keep it in a safe place in case you ever need to reset your password.</p>
-                <fieldset className={fieldStyle}>
-                    <legend className="p-2 font-semibold">Recovery Code</legend>
-                        <label className="font-semibold text-xl p-2">{formState.success.code}</label>
-                </fieldset>
-                <button onClick={() => navigate("/app")} className={buttonStyle}>Begin Your KitchenMate Journey</button>
+                <RecCode code={formState.success.code} buttonMsg={"Begin Your KitchenMate Journey"} />
             </div>
         ) : (
             <div className={containerStyle}>

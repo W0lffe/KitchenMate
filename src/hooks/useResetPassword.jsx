@@ -19,7 +19,7 @@ export default function useResetPassword({handleRequest}){
             data: { userPayload, operation: isReset ? "reset" : "validate"}
         });
 
-        console.log(response)
+        //console.log(response)
         const {success, error, id, code} = response;
 
         if(error){
