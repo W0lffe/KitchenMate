@@ -1,4 +1,4 @@
-import { use, useCallback } from "react";
+import { useCallback } from "react";
 import { userAPI } from "../api/http";
 import { handleToast } from "../util/toast";
 

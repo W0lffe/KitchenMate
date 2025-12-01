@@ -80,5 +80,21 @@ function generateRecoveryCode(){
     return $code;
 }
 
+function validatePasswd($pass){
+
+    if(strlen($pass) === 0){
+        http_response_code(400);
+        header("Content-Type: application/json");
+        echo json_encode(["error" => "Please enter a password."]);
+        exit;
+    }
+
+    if(strlen($pass) < 10){
+        http_response_code(400);
+        header("Content-Type: application/json");
+        echo json_encode(["error" => "Password is too short."]);
+        exit;
+    }
+}
 
 ?>
