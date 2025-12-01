@@ -8,10 +8,12 @@ import { useContext, useActionState } from "react";
 import useUserForm from "../../hooks/useUserForm";
 import Button from "../Buttons/Button";
 import CredInput from "../CredInput/CredInput";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm(){
 
     const {setModalState, setUser} = useContext(KitchenContext);
+    const navigate = useNavigate();
 
     const login = useUserForm({
         isLogin: true,
@@ -33,6 +35,7 @@ export default function LoginForm(){
                         <CredInput isPass={false} state={formState}/>
                         <label className={labelStyle}>Password</label>
                         <CredInput isPass={true} />
+                        <label className="italic font-semibold transition-all hover:text-lg" onClick={() => navigate("/reset-password")}>Forgot your password?</label>
                         <Button use={"login"}/>
                     </form>
                 </section>

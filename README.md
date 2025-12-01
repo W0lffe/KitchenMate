@@ -27,6 +27,7 @@
 - Database: MariaDB (due to restrictions on server)
 - Auth: Token-based (JWT) login system built with PHP (no frameworks, or third party providers)
 - Hosting: Firebase Hosting
+- CI/CD: Jenkins
 
 ## 🧩 Future Plans
 
@@ -69,13 +70,14 @@
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
     - [ ] Password reset and account recovery
+        - **Work In Progress**
     - [x] Recovery Code Generation
 10. Error Handling
     - [x] HTTP Response Codes 
     - [x] [Front-end handling for response codes](https://github.com/W0lffe/KitchenMate/pull/42)
 11. Tech
     - [x] Jenkins CI/CD Pipeline
-        - Running a simple pipeline for testing and building for master branch, deployment is coming!
+        - Running a multibranch pipeline for testing and building feature branches, and running full pipeline on master branch
     - [ ] Docker for Python backend
 
 ## 💡 Why I Built This
