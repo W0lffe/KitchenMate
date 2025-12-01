@@ -4,7 +4,7 @@ import Application from "./pages/Application"
 import Register from "./pages/Register"
 import KitchenContextProvider from './context/KitchenContext'
 import { Toaster } from "react-hot-toast"
-
+import ResetPassword from "./pages/ResetPassword"
 
 /**
  * Main renderable component of the application
@@ -19,6 +19,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/app" element={<Application />} />
         <Route path="/signup" element={<Register />}/>
+        <Route path="/reset-password" element={<ResetPassword />}/>
       </Routes>
     </KitchenContextProvider>
   )
