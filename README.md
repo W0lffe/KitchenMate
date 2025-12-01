@@ -69,6 +69,7 @@
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
     - [ ] Password reset and account recovery
+        - **Work In Progress**
     - [x] Recovery Code Generation
 10. Error Handling
     - [x] HTTP Response Codes 
