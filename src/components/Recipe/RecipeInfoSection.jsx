@@ -85,8 +85,8 @@ export default function RecipeInfoSection({ state, user }) {
                 <select name="category"
                     className={getInputStyle(false)}
                     defaultValue={validInputs.category} >
-                    <option>Uncategorized</option>
-                    {CATEGORIES[user.cookType].map((category, i) => <option key={i}>{category}</option>)}
+                    <option value="Uncategorized">Uncategorized</option>
+                    {CATEGORIES[user.cookType].map((category, i) => <option key={i} value={category}>{category}</option>)}
                 </select>
             </span>
         </div>

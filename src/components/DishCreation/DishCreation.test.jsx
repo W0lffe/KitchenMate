@@ -1,7 +1,8 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { KitchenContext } from "../../context/KitchenContext";
 import DishCreation from "./DishCreation";
-import { getDishFromValues, getRecipeInfo } from "../../util/util";
+import { getDishFormValues } from "../../util/formHelpers";
+import { getRecipeInfo } from "../../util/util";
 import useDishForm from "../../hooks/useDishForm";
 
 vi.mock("../../hooks/useDishForm", () => ({
@@ -10,7 +11,10 @@ vi.mock("../../hooks/useDishForm", () => ({
 
 vi.mock("../../util/util", () => ({
     getRecipeInfo: vi.fn(),
-    getDishFromValues: vi.fn()
+}));
+
+vi.mock("../../util/formHelpers", () => ({
+    getDishFormValues: vi.fn()
 }));
 
 vi.mock("./dishUtil", () => ({
@@ -57,7 +61,7 @@ const defaultCtx = {
     setActiveDish: vi.fn(),
     handleRequest: vi.fn(),
     filterList: vi.fn(),
-    user: { id: "1" },
+    user: { id: "1", cookType: "professional" },
 };
 
 const renderWithContext = (ctx) => {
@@ -98,7 +102,7 @@ describe("Testing component: DishCreation", () => {
     test("renders tab change correctly", () => {
         renderWithContext(defaultCtx);
 
-        getDishFromValues.mockReturnValue({
+        getDishFormValues.mockReturnValue({
             name: "Test Dish",
             course: "Main",
             image: new File(["dummy"], "test.png", { type: "image/png" })
@@ -107,7 +111,7 @@ describe("Testing component: DishCreation", () => {
         expect(screen.getByTestId("tab-confirmation")).toBeInTheDocument();
         fireEvent.click(screen.getByTestId("tab-confirmation"));
 
-        expect(getDishFromValues).toHaveBeenCalled();
+        expect(getDishFormValues).toHaveBeenCalled();
 
         expect(screen.getByTestId("item-info")).toBeInTheDocument();
         expect(screen.getByTestId("item-list")).toBeInTheDocument();

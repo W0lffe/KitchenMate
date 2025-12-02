@@ -36,7 +36,8 @@ describe("Testing component: ConfirmModal", () => {
         isMobile: false,
         setModalState,
         fullDishes: { current: [] },
-        isFetchingData: false
+        isFetchingData: false,
+        user: { cookType: "professional"}
     };
 
     test("renders delete message for recipes", () => {
@@ -55,6 +56,11 @@ describe("Testing component: ConfirmModal", () => {
         expect(screen.getByText("Cancel")).toBeInTheDocument();
         const confirmButton = screen.getByRole("button", { name: "Confirm" });
         expect(confirmButton).toBeInTheDocument();
+    });
+
+    test("renders delete message for meals", () => {
+        confirmModal({ section: "dishes", toDelete: 1 }, {...ctxProps, user: {cookType: "home"}});
+        expect(screen.getByText("Delete meal?")).toBeInTheDocument();
     });
 
     test("renders input field, and is possible to change value", () => {
@@ -82,6 +88,14 @@ describe("Testing component: ConfirmModal", () => {
         const confirmButton = screen.getByRole("button", { name: "Confirm" });
         expect(confirmButton).toBeDisabled();
     });
+
+    test("displays correct message if adding to basket", () => {
+        confirmModal({ ingredients: ["test"]}, ctxProps);
+        expect(screen.getByText("Add", {exact: false})).toBeInTheDocument();
+        expect(screen.getByText("portions to basket", {exact: false})).toBeInTheDocument();
+
+    });
+
 
 
 })

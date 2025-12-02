@@ -58,9 +58,6 @@ export default function ConfirmModal({ props, contextProps }) {
             message = "Delete product?";
         }
     }
-    if (ingredients) {
-        message = "How many portions?";
-    }
 
     /**
      * Function to handle deletion confirmation, sending delete request and updating state

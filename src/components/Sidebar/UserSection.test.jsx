@@ -13,6 +13,13 @@ vi.mock("../../util/toast", () => ({
     handleToast: vi.fn()
 }));
 
+const mockNavigate = vi.fn();
+
+vi.mock("react-router-dom", () => ({
+    ...vi.importActual("react-router-dom"),
+    useNavigate: () => mockNavigate
+}));
+
 const defaultCtx = {
     navigationIsOpen: true,
     user: null,
@@ -51,20 +58,20 @@ describe("Testing component: UserSection", () => {
         expect(defaultCtx.setModalState).toHaveBeenCalledWith({ section: "login" }, true);
     });
 
-    test("clicking signup calls setModalState", () => {
+    test("clicking signup calls navigate with 'signup'", () => {
         renderUserSection(defaultCtx)
 
         const signup = screen.getByText("Not an user yet? Click here to begin.");
         fireEvent.click(signup);
 
-        expect(defaultCtx.setModalState).toHaveBeenCalledWith({ section: "signup" }, true);
+        expect(mockNavigate).toHaveBeenCalledWith("/signup");
     });
 
     test("renders logged-in user UI", () => {
         const user = { id: "1", name: "Tester", img: null };
         renderUserSection({...defaultCtx, user})
 
-        expect(screen.getByText("Welcome back, Tester!")).toBeInTheDocument();
+        expect(screen.getByText("Logged in as Tester")).toBeInTheDocument();
         expect(screen.getByRole("button", {name: "Logout"})).toBeInTheDocument();
         expect(screen.getByTestId("fa-icon-right-from-bracket")).toBeInTheDocument
     });

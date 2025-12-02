@@ -36,7 +36,7 @@ describe("Testing component: ComponentList", () => {
 
     test("renders recipes for mobile correctly", () => {
 
-        renderList(defaultProps);
+        renderList({...defaultProps, isProf: true});
 
         expect(screen.getByText("Add Recipes to Dish")).toBeInTheDocument();
 
@@ -50,13 +50,28 @@ describe("Testing component: ComponentList", () => {
         expect(defaultProps.handleUpdate).toHaveBeenCalledWith("1");
     });
 
+    test("renders correct heading for non professionals", () => {
+        renderList({...defaultProps, isProf: false});
+        expect(screen.getByText("Add Recipes to Meal")).toBeInTheDocument();
+    })
+
     test("renders fallback when list is empty", () => {
         renderList({ ...defaultProps, listToUse: [] })
         expect(screen.getByText("Recipe list is empty.")).toBeInTheDocument();
     });
 
+    test("renders fallback for non recipes and to professionals when list is empty", () => {
+        renderList({ ...defaultProps, listToUse: [], isRecipe: false, isProf: true })
+        expect(screen.getByText("No components added yet")).toBeInTheDocument();
+    });
+
+     test("renders fallback for non recipes and to non professionals when list is empty", () => {
+        renderList({ ...defaultProps, listToUse: [], isRecipe: false, isProf: false })
+        expect(screen.getByText("No recipes added yet")).toBeInTheDocument();
+    });
+
     test("renders desktop version correctly", () => {
-        renderList({ ...defaultProps, isMobile: false})
+        renderList({ ...defaultProps, isMobile: false, isProf: true})
 
         expect(screen.getByText("Add Recipes to Dish")).toBeInTheDocument();
 
@@ -65,6 +80,8 @@ describe("Testing component: ComponentList", () => {
 
         expect(screen.queryByText("Recipe list is empty.")).not.toBeInTheDocument();
     });
+
+
 
     
 

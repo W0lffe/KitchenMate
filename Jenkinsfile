@@ -5,12 +5,14 @@ pipeline {
     }
     stages {
         stage('Checkout') {
-            when { branch 'master' }
             steps { checkout scm }
+            post {
+                success { echo 'Checkout succeeded!' }
+                failure { echo 'Checkout failed!' }
+            }
         }
-
-        stage('Install') {
-             steps { sh 'npm ci' } 
+        stage('Install Dependencies') {
+            steps { sh 'npm ci' } 
         }
         stage('Test') { 
             steps { 
@@ -20,19 +22,40 @@ pipeline {
                 always {
                     junit "test-results/**/*.xml"
                 }
+                success { echo 'Tests passed!' }
+                failure { echo 'Tests failed!' }
             }
         } 
         stage('Build') { 
             steps { sh 'npm run build' } 
+            post {
+                success { echo 'Build succeeded!' }
+                failure { echo 'Build failed!' }
+            }
         }
-        /* stage('Archive') { 
+        stage('Archive') { 
+            when { branch 'master'}
             steps { archiveArtifacts artifacts: 'dist/**', fingerprint: true } 
-        }  */
+            post {
+                success { echo 'Artifact created' }
+            }
+        } 
+       stage('Deploy') {
+            when { branch 'master' }
+            steps {
+                sh 'npm install -g firebase-tools'
+                withCredentials([string(credentialsId: 'FIREBASE_TOKEN', variable: 'FIREBASE_TOKEN')]) {
+                    sh 'firebase deploy --token "$FIREBASE_TOKEN" --project kitchenmate-efe45'
+                }
+            }
+            post{
+                success { echo 'Deployment completed!'}
+                failure { echo 'Deployment failed!'}
+            }
+        } 
     }
 
     post {
-        success { echo 'Build succeeded!' }
-        failure { echo 'Build failed!' }
         always { cleanWs() }
     }
 }

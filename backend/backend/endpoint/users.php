@@ -15,6 +15,7 @@ function handleRequest($resource){
             "endpoint" => $endpoint
         ];
 
+        
         //echo json_encode(["new resource" => $resource]);
         
         switch($data["operation"]){
@@ -23,6 +24,12 @@ function handleRequest($resource){
                 break;
             case "login": 
                 authUser($data["userPayload"]);
+                break;
+            case "validate":
+                validateUser($data["userPayload"]);
+                break;
+            case "reset":
+                resetPasswd($data["userPayload"]);
                 break;
         }
     
@@ -54,19 +61,7 @@ function createNewUser($resource){
         exit;
     }
     
-    if(strlen($newUser["passwd"]) === 0){
-        http_response_code(400);
-        header("Content-Type: application/json");
-        echo json_encode(["error" => "Please enter a password."]);
-        exit;
-    }
-
-    if(strlen($newUser["passwd"]) < 10){
-        http_response_code(400);
-        header("Content-Type: application/json");
-        echo json_encode(["error" => "Password is too short."]);
-        exit;
-    }
+    validatePasswd($newUser["passwd"]);
 
     $users = getUserData();
     if($users === null){
@@ -125,6 +120,76 @@ function authUser($resource){
     header("Content-Type: application/json");
     echo json_encode(["error" => "Username or password is incorrect."]);
     exit;
+
+}
+
+function validateUser($resource){
+
+    $users = getUserData();
+    if($users === null){
+        $users = [];
+    }
+
+    foreach($users as $existUser){
+        if($existUser["name"] === $resource["user"]){
+            if(password_verify($resource["recCode"], $existUser["rec"])){
+                http_response_code(200);
+                header("Content-Type: application/json");
+                echo json_encode(["success" => "Verification successful.", "id" => $existUser["userID"]]);
+                exit;
+            }
+            else{
+                http_response_code(400); //bad request
+                header("Content-Type: application/json");
+                echo json_encode(["error" => "Invalid username or recovery code."]);
+                exit;
+            }
+        }
+    }
+
+    http_response_code(400); //bad request
+    header("Content-Type: application/json");
+    echo json_encode(["error" => "Invalid username or recovery code."]);
+    exit;
+
+}
+
+function resetPasswd($resource){
+
+    validatePasswd($resource["newPass"]);
+
+    try {
+        require __DIR__ . "/../db/connection.php";
+        $plainRecCode = generateRecoveryCode();
+        $hashedCode = password_hash($plainRecCode, PASSWORD_BCRYPT);
+
+        $pdo->beginTransaction();
+
+        $pdo->prepare("
+            UPDATE users
+            SET 
+                rec = :rec,
+                passwd = :passwd
+            WHERE 
+                userID = :id
+        ")->execute([
+            "rec" => $hashedCode,
+            "passwd" => password_hash($resource["newPass"], PASSWORD_BCRYPT),
+            "id" => $resource["id"]
+        ]);
+        $pdo->commit();
+
+        http_response_code(200);
+        header("Content-Type: application/json");
+        echo json_encode(["code" => $plainRecCode]);
+        exit;
+       
+   } catch (PDOException $e) {
+        http_response_code(500); //server error
+        header("Content-Type: application/json");
+        echo json_encode(["error" => "Error with database: ${$e->getMessage()}"]);
+        exit;
+   }
 
 }
 

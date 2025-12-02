@@ -26,7 +26,8 @@ describe("Testing component: ActiveSectionWrapper", () => {
 
         renderWithContext({
             isMobile: true,
-            activeSection: "recipes"
+            activeSection: "recipes",
+            user: {cookType: "professional"}
         });
 
         expect(screen.getByTestId("list")).toBeInTheDocument();
@@ -38,7 +39,8 @@ describe("Testing component: ActiveSectionWrapper", () => {
 
         renderWithContext({
             isMobile: false,
-            activeSection: "recipes"
+            activeSection: "recipes",
+            user: {cookType: "professional"}
         });
 
         expect(screen.getByTestId("list")).toBeInTheDocument();
@@ -49,7 +51,8 @@ describe("Testing component: ActiveSectionWrapper", () => {
         renderWithContext({
             isMobile: false,
             activeSection: "recipes",
-            activeRecipe: { mode: "create" }
+            activeRecipe: { mode: "create" },
+            user: {cookType: "professional"}
         })
 
         expect(screen.getByRole("heading", { name: "Recipe Creation" })).toBeInTheDocument()
@@ -59,7 +62,8 @@ describe("Testing component: ActiveSectionWrapper", () => {
         renderWithContext({
             isMobile: false,
             activeSection: "dishes",
-            activeDish: { mode: "detail" }
+            activeDish: { mode: "detail" },
+            user: {cookType: "professional"}
         })
 
         expect(screen.getByRole("heading", { name: "Dish Details" })).toBeInTheDocument()
@@ -69,7 +73,8 @@ describe("Testing component: ActiveSectionWrapper", () => {
         renderWithContext({
             isMobile: false,
             activeSection: "basket",
-            editStatus: { mode: "edit" }
+            editStatus: { mode: "edit" },
+            user: {cookType: "professional"}
         })
 
         expect(screen.getByRole("heading", { name: "Edit Basket" })).toBeInTheDocument()
@@ -83,7 +88,8 @@ describe("Testing component: ActiveSectionWrapper", () => {
             renderWithContext({
                 isMobile: false,
                 activeSection: "dishes",
-                activeDish: { mode }
+                activeDish: { mode },
+                user: {cookType: "professional"}
             })
             expect(screen.getByTestId("content-wrapper")).toBeInTheDocument()
 
@@ -96,7 +102,8 @@ describe("Testing component: ActiveSectionWrapper", () => {
         renderWithContext({
             isMobile: false,
             activeSection: "dishes",
-            activeDish: { mode: undefined }
+            activeDish: { mode: undefined },
+            user: {cookType: "professional"}
         })
         expect(screen.queryByTestId("content-wrapper")).not.toBeInTheDocument()
 

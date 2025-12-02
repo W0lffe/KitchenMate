@@ -1,22 +1,22 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import RecipeInfoSection from "./RecipeInfoSection";
-import { outputs, categories } from "../../util/util";
+import { OUTPUTS, CATEGORIES } from "../../util/constants";
 
 const defaultState = {
     validInputs: {
         name: "Test Recipe",
-        output: Object.keys(outputs)[0],
-        outputType: outputs[Object.keys(outputs)[0]][0],
+        output: Object.keys(OUTPUTS)[0],
+        outputType: OUTPUTS[Object.keys(OUTPUTS)[0]][0],
         portions: 2,
         time: 30,
         timeFormat: "minute(s)",
-        category: categories[0],
+        category: CATEGORIES[Object.keys(CATEGORIES)[1]][0],
     }
 };
 
 const renderSection = (state = defaultState) => {
     render(
-        <RecipeInfoSection state={state} />
+        <RecipeInfoSection state={state} user={{ cookType: "professional" }} />
     )
 };
 
@@ -51,11 +51,11 @@ describe("Testing component: RecipeInfoSection", () => {
         renderSection();
 
         let comboBoxes = screen.getAllByRole("combobox");
-        fireEvent.change(comboBoxes[0], { target: { value: Object.keys(outputs)[1] } });
+        fireEvent.change(comboBoxes[0], { target: { value: Object.keys(OUTPUTS)[1] } });
 
         comboBoxes = screen.getAllByRole("combobox");
 
-        expect(comboBoxes[1].value).toBe(outputs[Object.keys(outputs)[1]][0]);
+        expect(comboBoxes[1].value).toBe(OUTPUTS[Object.keys(OUTPUTS)[1]][0]);
     });
 
 

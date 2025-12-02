@@ -1,6 +1,21 @@
-import { getAllByRole, getByRole, render, 
-        screen } from "@testing-library/react"
+import {render, screen } from "@testing-library/react"
 import Product from "./Product"
+import KitchenContextProvider, { KitchenContext } from "../../context/KitchenContext"
+
+const mockUser = {
+            user: "Test",
+            id: 0,
+            cookType: "home",
+            unitType: "metric"
+}
+
+function MockContextProvider({children}){
+    return(
+        <KitchenContext.Provider value={{user: mockUser}}>
+            {children}
+        </KitchenContext.Provider>
+    )
+}
 
 describe("Testing product component", () => {
 
@@ -14,7 +29,11 @@ describe("Testing product component", () => {
             }
         }
 
-        render(<Product state={state} index={0}/>)
+        render(
+            <MockContextProvider >
+                <Product state={state} index={0}/>
+            </MockContextProvider>
+        )
 
         const placeholders = ["Product", "Quantity"]
         placeholders.forEach(text => {
@@ -37,10 +56,10 @@ describe("Testing product component", () => {
         }
 
         render(
-            <>
+            <MockContextProvider>
                 <Product state={state} index={0} />
                 <Product state={state} index={1} />
-            </>
+            </MockContextProvider>
         );
 
         const textInputs = screen.getAllByRole("textbox");

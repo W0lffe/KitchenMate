@@ -15,16 +15,17 @@ const defaultState = {
     } 
 }
 
-const renderSection = (state = defaultState) => {
+const renderSection = (state = defaultState, cook) => {
     return render(
-        <DishInfoSection state={state}/>
+        <DishInfoSection state={state} cookType={cook}/>
     )
 }
 
 describe("Testing component: DishInfoSection", () => {
 
     test("renders elements with given default values", () =>  {
-        renderSection();
+        const cook = "professional";
+        renderSection(defaultState, cook);
 
         const input = screen.getByRole("textbox");
         expect(input).toBeInTheDocument();
