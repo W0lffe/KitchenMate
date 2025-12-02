@@ -30,6 +30,7 @@ pipeline {
             steps { 
                 withCredentials([string(credentialsId: 'BACKEND_URL', variable: 'BACKEND_URL')]) {
                     withEnv(["REACT_APP_API_URL=$BACKEND_URL"]) {
+                        echo '$BACKEND_URL'
                         sh 'npm run build'
                     }
                 } 
