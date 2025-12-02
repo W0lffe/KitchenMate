@@ -40,12 +40,19 @@ pipeline {
                 success { echo 'Artifact created' }
             }
         } 
-       /*  stage('Deploy') {
+       stage('Deploy') {
             when { branch 'master' }
             steps {
-                //deploying script 
+                sh 'npm install -g firebase-tools'
+                withCredentials([string(credentialsId: 'FIREBASE_TOKEN', variable: 'FIREBASE_TOKEN')]) {
+                    sh 'firebase deploy --token "$FIREBASE_TOKEN" --project kitchenmate-efe45'
+                }
             }
-        } */
+            post{
+                success { echo 'Deployment completed!'}
+                failure { echo 'Deployment failed!'}
+            }
+        } 
     }
 
     post {
