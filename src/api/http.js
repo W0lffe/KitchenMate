@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../backend/apis";
+import { BASE_URL } from "../../backend/api";
 import { createRequestPayload } from "./helper";
 
 /**
