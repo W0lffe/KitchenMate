@@ -14,8 +14,6 @@ dist-ssr
 KitchenMate.docx
 
 # Firebase
-.firebaserc
-firebase.json
 .firebase/
 
 
