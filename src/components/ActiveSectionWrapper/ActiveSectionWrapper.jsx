@@ -35,7 +35,7 @@ export default function ActiveSectionWrapper(){
         },
         dishes: {
             create: `${string} Creation`,
-            detail: `${string} Detail`,
+            detail: `${string} Details`,
             edit: `${string} Editor`,  
         },
         basket: {

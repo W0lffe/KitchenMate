@@ -16,7 +16,10 @@ vi.mock("../Buttons/NaviButton", () => ({
     )
 }));
 
-const defaultCtx = { navigationIsOpen: true, setActiveSection: vi.fn() };
+const defaultCtx = { 
+    navigationIsOpen: true, 
+    setActiveSection: vi.fn(),
+    user: {cookType: "professional"} };
 
 const renderWithContext = (ctx) => {
     return render(
