@@ -1,2 +1,2 @@
 
-export const BASE_URL = "https://www.cc.puv.fi/~e2301740/KitchenMate/public"; //backend server url here
+export const BASE_URL = process.env.REACT_APP_API_URL; //backend server url here
