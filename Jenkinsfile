@@ -28,11 +28,9 @@ pipeline {
         } 
         stage('Build') { 
             steps { 
-                withCredentials([string(credentialsId: 'BACKEND_URL', variable: 'BACKEND_URL')]) {
-                    withEnv(["REACT_APP_API_URL=${BACKEND_URL}"]) {
-                        sh 'echo $REACT_APP_API_URL'
+                withCredentials([string(credentialsId: 'BACKEND_URL', variable: 'REACT_APP_API_URL')]) {
+                        echo "Backend URL: $REACT_APP_API_URL"
                         sh 'npm run build'
-                    }
                 } 
             } 
             post {
