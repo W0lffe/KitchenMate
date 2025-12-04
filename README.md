@@ -38,6 +38,7 @@
     - [ ] Testing
         - **Work In Progress** -> Got plenty of unit tests done so far, but more will come!
         - **[Testing - Part 1](https://github.com/W0lffe/KitchenMate/pull/49)**
+        - **[Testing - Part 2](https://github.com/W0lffe/KitchenMate/pull/65)**
 2. Documentation
     - [x] JSDoc documentation
     - [x] PHPDoc documentation
