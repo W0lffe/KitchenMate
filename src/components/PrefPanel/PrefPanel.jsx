@@ -2,8 +2,6 @@ import PrefField from "./PrefField"
 
 export default function PrefPanel({state}) {
 
-    const fieldState = state?.validInputs || {cookType: {}, unitType: {}}
-
     const fields = [
         {
             q: "Which one are you?",

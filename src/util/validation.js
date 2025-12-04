@@ -62,7 +62,7 @@ export const validateRecipe = (name, portions, time,
  * @param {string} timeFormat property of recipe
  * @returns true if format has been selected, false if format is still default
  */
-const validateTimeFormat = (timeFormat) => {
+export const validateTimeFormat = (timeFormat) => {
 
     if(timeFormat === "Unit"){
         return false;
@@ -90,7 +90,7 @@ export const validateName = (name) => {
  * @param {Number} userInput properties of recipe, portion count and prepping time
  * @returns true or false
  */
-const validateNumber = (userInput) => {
+export const validateNumber = (userInput) => {
 
     const value = Number(userInput);
 
@@ -106,7 +106,7 @@ const validateNumber = (userInput) => {
  * @param {Array} array of items, such as products, quantities, units and instructions
  * @returns true or false
  */
-const validateArray = (array) => {
+export const validateArray = (array) => {
 
     if(array.length === 0){
         return false;

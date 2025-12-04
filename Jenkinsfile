@@ -40,7 +40,7 @@ pipeline {
                 success { echo 'Artifact created' }
             }
         } 
-       stage('Deploy') {
+    /*    stage('Deploy') {
             when { branch 'master' }
             steps {
                 sh 'npm install -g firebase-tools'
@@ -52,7 +52,7 @@ pipeline {
                 success { echo 'Deployment completed!'}
                 failure { echo 'Deployment failed!'}
             }
-        } 
+        }  */
     }
 
     post {
