@@ -74,7 +74,7 @@ export const sort = (parameters) => {
             case "course": 
                 valA = a.course;
                 valB = b.course;
-                return valB.localeCompare(valA)
+                return valA.localeCompare(valB)
         }
     })
 

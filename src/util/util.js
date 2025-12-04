@@ -148,7 +148,7 @@ export const getRecipeInfo = (list, id) => {
  * @returns {Array} list of dish IDs that depend on the recipe
  */
 export const findRecipeDependencies = (recipeID, dishes) => {
-    console.log(dishes)
+    //console.log(dishes)
     const dependencies = [];
 
     if(dishes.length === 0){

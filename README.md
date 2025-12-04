@@ -69,8 +69,7 @@
     - [x] [Profile-based user experience (cook type, unit types, categories, courses)](https://github.com/W0lffe/KitchenMate/pull/56)
 9. Authentication & Security
     - [ ] Role-based permissions (admin, user)
-    - [ ] Password reset and account recovery
-        - **Work In Progress**
+    - [x] [Password reset and account recovery](https://github.com/W0lffe/KitchenMate/pull/64)
     - [x] Recovery Code Generation
 10. Error Handling
     - [x] HTTP Response Codes 
