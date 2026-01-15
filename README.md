@@ -27,7 +27,7 @@
 - Database: MariaDB (due to restrictions on server)
 - Auth: Token-based (JWT) login system built with PHP (no frameworks, or third party providers)
 - Hosting: Firebase Hosting
-- CI/CD: Jenkins
+- CI/CD: Jenkins Multibranch Pipeline
 
 ## 🧩 Future Plans
 
