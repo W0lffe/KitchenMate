@@ -84,13 +84,13 @@ try {
 
          foreach($data["instructions"] as $i => $ins){
             $values[] = "(:recipeID, :instruction$i, :step$i)";
-            $parameters["instruction$i"] = $ins["instruction"];
+            $parameters["instruction$i"] = $ins;
             $parameters["step$i"] = $i + 1;
         }
 
         $sql = "
             INSERT INTO instructions (recipeID, instruction, step)
-            VALUES" . implode(", ", $values);
+            VALUES " . implode(", ", $values);
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute($parameters);
@@ -109,7 +109,7 @@ try {
 
     http_response_code(500);
     header("Content-Type: application/json");
-    echo json_encode(["error" => "Failed to update recipe"]);
+    echo json_encode(["error" => "Failed to update recipe", "debug" => $th->getMessage()]);
 } finally {
     unset($pdo);
 }

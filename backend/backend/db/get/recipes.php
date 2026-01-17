@@ -27,7 +27,7 @@ $sql = "
         ins.step
     FROM recipes r
     LEFT JOIN ingredients i ON i.recipeID = r.id
-    LEFT JOIN instructions ins ON i.recipeID = r.id
+    LEFT JOIN instructions ins ON ins.recipeID = r.id
     WHERE r.userID = :userID
     ORDER BY r.id
 ";
@@ -40,8 +40,10 @@ $recipes = [];
 foreach ($results as $row) {
     $rid = $row['recipeID'];
 
-    if (!isset($recipes[$rid])) {
-        $recipes[$rid] = [
+    if (!isset($recipeIndex[$rid])) {
+        $recipeIndex[$rid] = count($recipes);
+
+        $recipes[] = [
             'id' => $row['recipeID'],
             'name' => $row['recipeName'],
             'portions' => $row['portions'],
@@ -57,8 +59,10 @@ foreach ($results as $row) {
         ];
     }
 
+    $idx = $recipeIndex[$rid];
+
     if ($row['product'] !== null) {
-        $recipes[$rid]['ingredients'][] = [
+        $recipes[$idx]['ingredients'][] = [
             'product' => $row['product'],
             'quantity' => (float)$row['quantity'],
             'unit' => $row['unit']
@@ -66,12 +70,12 @@ foreach ($results as $row) {
     }
 
     if ($row['instruction'] !== null) {
-        $recipes[$rid]['instructions'][] = $row['instruction'];
+        $recipes[$idx]['instructions'][] = $row['instruction'];
     }
 }
 
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["data" => $recipesArray]);
+echo json_encode(["data" => $recipes]);
 exit;
 ?>
