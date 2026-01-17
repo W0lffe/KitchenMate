@@ -6,31 +6,68 @@
  */
 require __DIR__ . "/../connection.php";
 
-$stmt = $pdo->prepare("SELECT * FROM recipes WHERE userID = :id");
-$stmt->execute(['id' => (int)$resource["id"]]);
-$recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$recipesArray = [];
+$userID = (int)$resource["id"];
 
-foreach ($recipes as $recipe) {
-    $recipeID = $recipe["id"];
+$sql = "
+    SELECT
+        r.id AS recipeID,
+        r.name AS recipeName,
+        r.portions,
+        r.output,
+        r.outputType,
+        r.time,
+        r.timeFormat,
+        r.favorite,
+        r.date,
+        r.category,
+        i.product,
+        i.quantity,
+        i.unit,
+        ins.instruction,
+        ins.step
+    FROM recipes r
+    LEFT JOIN ingredients i ON i.recipeID = r.id
+    LEFT JOIN instructions ins ON i.recipeID = r.id
+    WHERE r.userID = :userID
+    ORDER BY r.id
+";
 
-    $stmtIng = $pdo->prepare("SELECT product, quantity, unit FROM ingredients WHERE recipeID = :id");
-    $stmtIng->execute(['id' => (int)$recipeID]);
-    $ingredients = $stmtIng->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($sql);
+$stmt->execute(["userID" => $userID]);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$recipes = [];
 
-    $stmtInst = $pdo->prepare("SELECT instruction FROM instructions WHERE recipeID = :id");
-    $stmtInst->execute(['id' => (int)$recipeID]);
-    $instructions = $stmtInst->fetchAll(PDO::FETCH_ASSOC);
-    $instructionArray = [];
+foreach ($results as $row) {
+    $rid = $row['recipeID'];
 
-    foreach($instructions as $ins){
-        array_push($instructionArray, $ins["instruction"]);
+    if (!isset($recipes[$rid])) {
+        $recipes[$rid] = [
+            'id' => $row['recipeID'],
+            'name' => $row['recipeName'],
+            'portions' => $row['portions'],
+            'output' => $row['output'],
+            'outputType' => $row['outputType'],
+            'time' => $row['time'],
+            'timeFormat' => $row['timeFormat'],
+            'favorite' => (bool)$row['favorite'],
+            'date' => $row['date'],
+            'category' => $row['category'],
+            'ingredients' => [],
+            'instructions' => []
+        ];
     }
 
+    if ($row['product'] !== null) {
+        $recipes[$rid]['ingredients'][] = [
+            'product' => $row['product'],
+            'quantity' => (float)$row['quantity'],
+            'unit' => $row['unit']
+        ];
+    }
 
-    $recipe['ingredients'] = $ingredients;
-    $recipe['instructions'] = $instructionArray;
-    $recipesArray[] = $recipe;
+    if ($row['instruction'] !== null) {
+        $recipes[$rid]['instructions'][] = $row['instruction'];
+    }
 }
 
 http_response_code(200);

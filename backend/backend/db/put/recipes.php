@@ -6,11 +6,13 @@
 
 require __DIR__ . "/../connection.php";
 
-$pdo->beginTransaction();
-
 $data = $resource["data"];
 $recipeID = $data["id"];
 
+try {
+    $pdo->beginTransaction();
+
+    // UPDATE RECIPE
     $stmt = $pdo->prepare("
         UPDATE recipes
         SET 
@@ -36,42 +38,80 @@ $recipeID = $data["id"];
         "id" => (int)$recipeID
     ]);
 
-    $pdo->prepare("DELETE FROM ingredients WHERE recipeID = :id")
-        ->execute(["id" => (int)$recipeID]);
-
-    $stmtIng = $pdo->prepare("
-        INSERT INTO ingredients (recipeID, product, quantity, unit)
-        VALUES (:recipeID, :product, :quantity, :unit)
-    ");
-    foreach ($data['ingredients'] as $ing) {
-        $stmtIng->execute([
-            "recipeID" => (int)$recipeID,
-            "product" => (string)$ing['product'],
-            "quantity" => (float)$ing['quantity'],
-            "unit" => (string)$ing['unit']
-        ]);
+    if ($stmt->rowCount() === 0) {
+        throw new RuntimeException('Recipe not found');
     }
 
-    $pdo->prepare("DELETE FROM instructions WHERE recipeID = :id")
-        ->execute(["id" => $recipeID]);
+    unset($stmt);
 
-    $stmtInst = $pdo->prepare("
-        INSERT INTO instructions (recipeID, instruction, step)
-        VALUES (:recipeID, :instruction, :step)
-    ");
-    foreach ($data['instructions'] as $index => $inst) {
-        $stmtInst->execute([
-            "recipeID" => (int)$recipeID,
-            "instruction" => (string)$inst,
-            "step" => $index + 1
-        ]);
+    //REPLACE INGREDIENTS
+
+    $stmt = $pdo->prepare("DELETE FROM ingredients WHERE recipeID = :id");
+    $stmt->execute(["id" => (int)$recipeID]);
+    unset($stmt);
+
+    if(!empty($data["ingredients"])){
+
+        $values = [];
+        $parameters = ["recipeID" => $recipeID];
+
+        foreach($data["ingredients"] as $i => $ing){
+            $values[] = "(:recipeID, :product$i, :quantity$i, :unit$i)";
+            $parameters["product$i"] = $ing["product"];
+            $parameters["quantity$i"] = $ing["quantity"];
+            $parameters["unit$i"] = $ing["unit"];
+        }
+
+        $sql = "
+            INSERT INTO ingredients (recipeID, product, quantity, unit)
+            VALUES " . implode(", ", $values);
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($parameters);
+        unset($stmt);
+    }
+
+    //REPLACE INSTRUCTIONS
+
+    $stmt =  $pdo->prepare("DELETE FROM instructions WHERE recipeID = :id");
+    $stmt->execute(["id" => $recipeID]);
+    unset($stmt);
+
+    if(!empty($data["instructions"])){
+
+        $values = [];
+        $parameters = ["recipeID" => $recipeID];
+
+         foreach($data["instructions"] as $i => $ins){
+            $values[] = "(:recipeID, :instruction$i, :step$i)";
+            $parameters["instruction$i"] = $ins["instruction"];
+            $parameters["step$i"] = $i + 1;
+        }
+
+        $sql = "
+            INSERT INTO instructions (recipeID, instruction, step)
+            VALUES" . implode(", ", $values);
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($parameters);
+        unset($stmt);
     }
 
     $pdo->commit();
-
     http_response_code(200);
     header("Content-Type: application/json");
     echo json_encode(["success" => "Recipe updated successfully!"]);
-    exit;
+
+} catch (Throwable $th) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
+    http_response_code(500);
+    header("Content-Type: application/json");
+    echo json_encode(["error" => "Failed to update recipe"]);
+} finally {
+    unset($pdo);
+}
 
 ?>
