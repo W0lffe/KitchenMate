@@ -104,6 +104,11 @@ Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/StageFive
         - This is likely caused by a state or rendering logic issue, where the favorite status from the previous item persists instead of updating based on the newly selected item.
     - **STATUS:**
         - **Fixed, it was logical mistake where current item did not update after fetching latest info from database.**
+3. When creating a recipe on mobile mode, the output type is not saving correctly when changing tabs
+    - **NOTES:**
+        - Have to take a look into the logic in the component -> opening a bug ticket
+    - **STATUS:**
+        - Ticket is open
 
 
 

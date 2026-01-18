@@ -11,6 +11,7 @@ $stmt = $pdo->prepare("SELECT * FROM basket WHERE userID = :id");
 $stmt->execute(['id' => $resource["id"]]);
 $basket = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+unset($stmt);
 http_response_code(200);
 header("Content-Type: application/json");
 echo json_encode(["data" => $basket]);

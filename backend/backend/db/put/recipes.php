@@ -10,6 +10,16 @@ $data = $resource["data"];
 $recipeID = $data["id"];
 
 try {
+
+    //Validate recipe existence first
+    $stmt = $pdo->prepare("SELECT 1 FROM recipes WHERE id = :id");
+    $stmt->execute(["id" => $recipeID]);
+
+    if (!$stmt->fetchColumn()) {
+        throw new RuntimeException('Recipe not found');
+    }
+    unset($stmt);
+
     $pdo->beginTransaction();
 
     // UPDATE RECIPE
@@ -37,11 +47,6 @@ try {
         "category" => (string)$data["category"],
         "id" => (int)$recipeID
     ]);
-
-    if ($stmt->rowCount() === 0) {
-        throw new RuntimeException('Recipe not found');
-    }
-
     unset($stmt);
 
     //REPLACE INGREDIENTS

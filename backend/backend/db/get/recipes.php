@@ -20,9 +20,11 @@ $sql = "
         r.favorite,
         r.date,
         r.category,
+        i.ingredientID,
         i.product,
         i.quantity,
         i.unit,
+        ins.instructionID,
         ins.instruction,
         ins.step
     FROM recipes r
@@ -35,16 +37,20 @@ $sql = "
 $stmt = $pdo->prepare($sql);
 $stmt->execute(["userID" => $userID]);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 $recipes = [];
+$rIndex = []; 
+$ingIds = [];
+$insIds = [];
 
 foreach ($results as $row) {
     $rid = $row['recipeID'];
 
-    if (!isset($recipeIndex[$rid])) {
-        $recipeIndex[$rid] = count($recipes);
+    if (!isset($rIndex[$rid])) {
+        $rIndex[$rid] = count($recipes);
 
         $recipes[] = [
-            'id' => $row['recipeID'],
+            'id' => $rid,
             'name' => $row['recipeName'],
             'portions' => $row['portions'],
             'output' => $row['output'],
@@ -59,9 +65,11 @@ foreach ($results as $row) {
         ];
     }
 
-    $idx = $recipeIndex[$rid];
+    $idx = $rIndex[$rid];
 
-    if ($row['product'] !== null) {
+    if ($row['ingredientID'] !== null && !isset($ingIds[$rid][$row['ingredientID']])) {
+        $ingIds[$rid][$row['ingredientID']] = true;
+
         $recipes[$idx]['ingredients'][] = [
             'product' => $row['product'],
             'quantity' => (float)$row['quantity'],
@@ -69,11 +77,14 @@ foreach ($results as $row) {
         ];
     }
 
-    if ($row['instruction'] !== null) {
+    if ($row['instructionID'] !== null && !isset($insIds[$rid][$row['instructionID']])) {
+        $insIds[$rid][$row['instructionID']] = true;
+
         $recipes[$idx]['instructions'][] = $row['instruction'];
     }
 }
 
+unset($stmt);
 http_response_code(200);
 header("Content-Type: application/json");
 echo json_encode(["data" => $recipes]);
