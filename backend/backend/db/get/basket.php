@@ -5,10 +5,10 @@
  */
 require __DIR__ . "/../connection.php";
 
-
+$userID = $resource["id"];
 
 $stmt = $pdo->prepare("SELECT * FROM basket WHERE userID = :id");
-$stmt->execute(['id' => $resource["id"]]);
+$stmt->execute(['id' => $userID]);
 $basket = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 unset($stmt);
