@@ -6,41 +6,29 @@
 
 require __DIR__ . "/../connection.php";
 
-
-$pdo->beginTransaction();
-
 $data = $resource["data"];
 
-$stmtSelect = $pdo->prepare("
-    SELECT * FROM basket
-    WHERE id = :id
-");
+try {
+    $pdo->beginTransaction();
 
-$stmtUpdate = $pdo->prepare("
-    UPDATE basket
-    SET 
-        product = :product,
-        quantity = :quantity,
-        unit = :unit,
-        obtained = :obtained
-    WHERE id = :id
-");
-
-
-foreach ($data as $item) {
-
-    $stmtSelect->execute(["id" => $item["id"]]);
-    $currentRow = $stmtSelect->fetch(PDO::FETCH_ASSOC);
-
-    if($currentRow && 
-        (
-        $currentRow['product'] !== $item["product"] ||
-        $currentRow['quantity'] !== $item["quantity"] ||
-        $currentRow['unit'] !== $item["unit"] ||
-        $currentRow['obtained'] !== $item["obtained"]
+    $stmt = $pdo->prepare("
+        UPDATE basket
+        SET 
+            product = :product,
+            quantity = :quantity,
+            unit = :unit,
+            obtained = :obtained
+        WHERE id = :id
+        AND (
+            product <> :product
+            OR quantity <> :quantity
+            OR unit <> :unit
+            OR obtained <> :obtained
         )
-    ){
-        $stmtUpdate -> execute([
+    ");
+
+    foreach($data as $item){
+        $stmt->execute([
             'id' => $item["id"],
             'product' => $item["product"],
             'quantity' => $item["quantity"],
@@ -48,13 +36,20 @@ foreach ($data as $item) {
             'obtained' => $item['obtained']
         ]);
     }
+
+    $pdo->commit();
+    http_response_code(200);
+    header("Content-Type: application/json");
+    echo json_encode(["success" => "Basket updated successfully!"]);
+} catch (\Throwable $th) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
+    http_response_code(500);
+    header("Content-Type: application/json");
+    echo json_encode(["error" => "Failed to update basket", "debug" => $th->getMessage()]);
+} finally {
+    unset($pdo);
 }
-
-$pdo->commit();
-
-http_response_code(200);
-header("Content-Type: application/json");
-echo json_encode(["success" => "Basket updated successfully!"]);
-exit;
-
 ?>

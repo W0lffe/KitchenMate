@@ -6,33 +6,54 @@
 
 require __DIR__ . "/../connection.php";
 
-$clearBasket = (is_array($resource["data"]) && count($resource["data"]) === 0);
-$message = "Product";
+$data = $resource["data"];
+$userID = $resource["id"] ?? null;
 
-if($clearBasket){
-    $stmt = $pdo->prepare("
-        DELETE FROM basket
-        WHERE userID = :id
-    ");
+try {
+    $clearBasket = (is_array($data) && count($data) === 0);
+    $message = "Product";
 
-    $stmt->execute([
-        "id" => $resource["id"]
-    ]);
-    $message = "Products";
+    $pdo->beginTransaction();
+
+    if($clearBasket){
+        $stmt = $pdo->prepare("
+            DELETE FROM basket
+            WHERE userID = :id
+        ");
+
+        $stmt->execute([
+            "id" => $userID
+        ]);
+        $message = "Products";
+    }
+    else{
+        $stmt = $pdo->prepare("
+            DELETE FROM basket 
+            WHERE id = :id
+                AND
+                    userID = :userID
+        ");
+        $stmt->execute([
+            "id" => (int)$data["id"],
+            "userID" => (int)$userID
+        ]);
+    }
+
+    $pdo->commit();
+    http_response_code(200);
+    header("Content-Type: application/json");
+    echo json_encode(["success" => "$message deleted from basket successfully!"]);
+} catch (\Throwable $th) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
+    http_response_code(500);
+    header("Content-Type: application/json");
+    echo json_encode(["error" => "Failed to delete from basket!", "debug" => $th->getMessage()]);
+} finally {
+    unset($pdo);
 }
-else{
-    $stmt = $pdo->prepare("
-        DELETE FROM basket 
-        WHERE id = :id
-    ");
-    $stmt->execute([
-        "id" => (int)$resource["data"]["id"]
-    ]);
-}
 
-http_response_code(200);
-header("Content-Type: application/json");
-echo json_encode(["success" => "$message deleted from basket succesfully!"]);
-exit;
 
 ?>

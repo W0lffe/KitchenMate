@@ -7,7 +7,7 @@
  * @returns new state
  */
 export const utilityReducer = (state, action) => {
-    //console.log("UTILITY_DEBUG:", action.type, action.payload)
+    console.log("UTILITY_DEBUG:", action.type, action.payload)
     switch(action.type){
         case "SET_SLOGAN":
             return{
@@ -102,7 +102,7 @@ export const kitchenReducer = (state, action) => {
                 ...state, availableBasket: [...state.availableBasket, ...action.payload]
             }
         case "UPDATE_BASKET_ITEM":
-            if(Array.isArray(action.payload)){
+            if(Array.isArray(action.payload) && action.payload.length > 1){
                 return{
                    ...state, availableBasket: action.payload
                 }
