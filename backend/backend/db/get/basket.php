@@ -5,12 +5,13 @@
  */
 require __DIR__ . "/../connection.php";
 
-
+$userID = $resource["id"];
 
 $stmt = $pdo->prepare("SELECT * FROM basket WHERE userID = :id");
-$stmt->execute(['id' => $resource["id"]]);
+$stmt->execute(['id' => $userID]);
 $basket = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+unset($stmt);
 http_response_code(200);
 header("Content-Type: application/json");
 echo json_encode(["data" => $basket]);

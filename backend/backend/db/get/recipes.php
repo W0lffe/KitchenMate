@@ -6,35 +6,87 @@
  */
 require __DIR__ . "/../connection.php";
 
-$stmt = $pdo->prepare("SELECT * FROM recipes WHERE userID = :id");
-$stmt->execute(['id' => (int)$resource["id"]]);
-$recipes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$recipesArray = [];
+$userID = (int)$resource["id"];
 
-foreach ($recipes as $recipe) {
-    $recipeID = $recipe["id"];
+$sql = "
+    SELECT
+        r.id AS recipeID,
+        r.name AS recipeName,
+        r.portions,
+        r.output,
+        r.outputType,
+        r.time,
+        r.timeFormat,
+        r.favorite,
+        r.date,
+        r.category,
+        i.ingredientID,
+        i.product,
+        i.quantity,
+        i.unit,
+        ins.instructionID,
+        ins.instruction,
+        ins.step
+    FROM recipes r
+    LEFT JOIN ingredients i ON i.recipeID = r.id
+    LEFT JOIN instructions ins ON ins.recipeID = r.id
+    WHERE r.userID = :userID
+    ORDER BY r.id
+";
 
-    $stmtIng = $pdo->prepare("SELECT product, quantity, unit FROM ingredients WHERE recipeID = :id");
-    $stmtIng->execute(['id' => (int)$recipeID]);
-    $ingredients = $stmtIng->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($sql);
+$stmt->execute(["userID" => $userID]);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmtInst = $pdo->prepare("SELECT instruction FROM instructions WHERE recipeID = :id");
-    $stmtInst->execute(['id' => (int)$recipeID]);
-    $instructions = $stmtInst->fetchAll(PDO::FETCH_ASSOC);
-    $instructionArray = [];
+$recipes = [];
+$rIndex = []; 
+$ingIds = [];
+$insIds = [];
 
-    foreach($instructions as $ins){
-        array_push($instructionArray, $ins["instruction"]);
+foreach ($results as $row) {
+    $rid = $row['recipeID'];
+
+    if (!isset($rIndex[$rid])) {
+        $rIndex[$rid] = count($recipes);
+
+        $recipes[] = [
+            'id' => $rid,
+            'name' => $row['recipeName'],
+            'portions' => $row['portions'],
+            'output' => $row['output'],
+            'outputType' => $row['outputType'],
+            'time' => $row['time'],
+            'timeFormat' => $row['timeFormat'],
+            'favorite' => (bool)$row['favorite'],
+            'date' => $row['date'],
+            'category' => $row['category'],
+            'ingredients' => [],
+            'instructions' => []
+        ];
     }
 
+    $idx = $rIndex[$rid];
 
-    $recipe['ingredients'] = $ingredients;
-    $recipe['instructions'] = $instructionArray;
-    $recipesArray[] = $recipe;
+    if ($row['ingredientID'] !== null && !isset($ingIds[$rid][$row['ingredientID']])) {
+        $ingIds[$rid][$row['ingredientID']] = true;
+
+        $recipes[$idx]['ingredients'][] = [
+            'product' => $row['product'],
+            'quantity' => (float)$row['quantity'],
+            'unit' => $row['unit']
+        ];
+    }
+
+    if ($row['instructionID'] !== null && !isset($insIds[$rid][$row['instructionID']])) {
+        $insIds[$rid][$row['instructionID']] = true;
+
+        $recipes[$idx]['instructions'][] = $row['instruction'];
+    }
 }
 
+unset($stmt);
 http_response_code(200);
 header("Content-Type: application/json");
-echo json_encode(["data" => $recipesArray]);
+echo json_encode(["data" => $recipes]);
 exit;
 ?>
