@@ -63,7 +63,8 @@ $tables = [
             unit VARCHAR(50) NOT NULL,
             obtained BOOLEAN not null,
             userID INT NOT NULL,
-            FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE
+            FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE,
+            UNIQUE KEY uniqueProduct (userID, product, unit)
     )"
 ];
 
