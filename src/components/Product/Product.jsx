@@ -3,6 +3,8 @@ import { UNITS } from "../../util/constants"
 import { getInputStyle, 
         productStyle } from "./productStyles"
 import { KitchenContext } from "../../context/KitchenContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component for a single product input row.
@@ -10,9 +12,9 @@ import { KitchenContext } from "../../context/KitchenContext";
  * @param {number} index index of the product in the list
  * @returns component UI for a single product input row
  */
-export default function Product({state, index}){
+export default function Product({children, product}){
 
-    const validInputs = state.validInputs || {products: [], quantity: [], unit: []};
+    const validInputs = product || {product: "", quantity: 0, unit: ""};
     const {user} = useContext(KitchenContext);
     
     return(
@@ -20,17 +22,18 @@ export default function Product({state, index}){
             <input type="text" name="product" 
                             placeholder="Product" 
                             className={getInputStyle("product")} 
-                            defaultValue={validInputs.products[index]}/>
+                            defaultValue={validInputs.product}/>
             <input type="number" name="quantity" 
                             placeholder="Quantity" 
                             className={getInputStyle("quantity")} 
-                            defaultValue={validInputs.quantity[index]}/>
+                            defaultValue={validInputs.quantity}/>
             <select name="unit" 
                     className={getInputStyle("unit")} 
-                    defaultValue={validInputs.unit[index]}>
+                    defaultValue={validInputs.unit}>
                 <option>Unit</option>
                 {UNITS[user.unitType].map((unit) => <option key={unit}>{unit}</option>)}
             </select>
+            {children}
         </div>
     )
 }
