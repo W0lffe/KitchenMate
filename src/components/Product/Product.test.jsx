@@ -21,17 +21,15 @@ describe("Testing product component", () => {
 
     test("renders Product with placeholders", ()  => {
 
-        const state = {
-            validInputs: {
-                products: [],
-                quantity: [],
-                unit: []
-            }
+        const emptyProduct = {
+            product: "",
+            unit: "",
+            quantity: null
         }
 
         render(
             <MockContextProvider >
-                <Product state={state} index={0}/>
+                <Product product={emptyProduct}/>
             </MockContextProvider>
         )
 
@@ -45,20 +43,18 @@ describe("Testing product component", () => {
         expect(select).toBeInTheDocument();
     })
 
-    test("renders Product with defaultValues", () => {
+    test("renders given product properly", () => {
         
-        const state = {
-            validInputs: {
-                products: ["Testing", "Test"],
-                quantity: [500, 600],
-                unit: ["g", "kg"]
-            }
-        }
+        const products = [
+            {product: "Testing", quantity: 500, unit: "g"},
+            {product: "Test", quantity: 600, unit: "kg"}
+        ]
 
         render(
             <MockContextProvider>
-                <Product state={state} index={0} />
-                <Product state={state} index={1} />
+               {products.map((prod) => (
+                <Product product={prod} />
+               ))}
             </MockContextProvider>
         );
 
@@ -73,6 +69,5 @@ describe("Testing product component", () => {
         expect(textInputs[1]).toHaveValue("Test");
         expect(numberInputs[1]).toHaveValue(600);
         expect(selects[1]).toHaveValue("kg");
-        
     })
 })

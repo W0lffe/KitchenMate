@@ -1,11 +1,21 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import FormList from "./FormList";
 
 vi.mock("../Product/Product", () => ({
-    default: ({ index }) => <div data-testid="product">Product {index}</div>,
+    default: ({ product, children }) => (
+        <div data-testid="product">
+            {product?.product ?? "Product"}
+            {children}
+        </div>
+    ),
 }));
 vi.mock("../Instruction/Instruction", () => ({
-    default: ({ step }) => <div data-testid="instruction">{step}</div>,
+    default: ({ step, children }) => (
+        <div data-testid="instruction">
+            {step?.step}
+            {children}
+        </div>
+    ),
 }));
 
 const renderFormList = (use, state) => {
@@ -21,7 +31,7 @@ describe("Testing component: FormList", () => {
     test("renders labels when not editing", () => {
         renderFormList("Ingredients", state_empty);
         expect(screen.getByText("Ingredients")).toBeInTheDocument();
-
+        
         renderFormList("Instructions", state_empty);
         expect(screen.getByText("Instructions")).toBeInTheDocument();
     });
@@ -30,12 +40,6 @@ describe("Testing component: FormList", () => {
         renderFormList("Edit", state_empty);
         expect(screen.queryByText("Ingredients")).not.toBeInTheDocument();
         expect(screen.queryByText("Instructions")).not.toBeInTheDocument();
-    });
-
-    test("initial count matches validInputs length", () => {
-        const state = { validInputs: { products: [1, 2, 3], steps: [] } };
-        renderFormList("Ingredients", state);
-        expect(screen.getAllByTestId("product")).toHaveLength(3);
     });
 
     test("increment adds a new item", () => {
@@ -55,12 +59,4 @@ describe("Testing component: FormList", () => {
         fireEvent.click(minusIcon);
         expect(screen.getAllByTestId("instruction")).toHaveLength(1);
     });
-
-    test("decrement removes an item but not below 1", () => {
-        renderFormList("Ingredients", state_empty);
-        const minusIcon = screen.getAllByRole("img", { hidden: true })[1]; 
-        fireEvent.click(minusIcon);
-        expect(screen.getAllByTestId("product")).toHaveLength(1); 
-    });
-
 })

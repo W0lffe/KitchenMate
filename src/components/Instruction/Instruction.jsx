@@ -4,8 +4,7 @@ import { input } from "./instructionStyles";
 /**
  * Component for rendering a single instruction step input.
  * @param {string} stepNum Placeholder text for the instruction step.
- * @param {Object} step Current form state containing valid inputs.
- * @param {number} index Index of the instruction step.
+ * @param {Object} step Current instruction to display.
  * @returns 
  */
 export default function Instruction({stepNum, step, children}){

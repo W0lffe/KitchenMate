@@ -8,8 +8,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Component for a single product input row.
- * @param {Object} state current form state
- * @param {number} index index of the product in the list
+ * @param {Object} product current product to display
  * @returns component UI for a single product input row
  */
 export default function Product({children, product}){
