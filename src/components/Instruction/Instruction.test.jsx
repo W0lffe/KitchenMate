@@ -6,7 +6,7 @@ describe("Testing instruction component", () => {
 
     test("renders input element", () => {
 
-        render(<Instruction step={"test 1"} state={{}} index={0}/>)
+        render(<Instruction stepNum={"1."} step={{}}/>)
         const inputElement = screen.getByRole("textbox");
         expect(inputElement).toBeInTheDocument();
     })
@@ -15,29 +15,31 @@ describe("Testing instruction component", () => {
 
         const placeholderText = "This is placeholder.";
 
-        render(<Instruction step={placeholderText} state={{}} index={0}/>)
+        render(<Instruction stepNum={placeholderText} step={{}}/>)
         const inputElement = screen.getByPlaceholderText(placeholderText);
         expect(inputElement).toBeInTheDocument();
     })
 
-    test("renders defaultValue based on state and index", () => {
+    test("renders the given instruction properly", () => {
 
-        const state = {
-            validInputs: {
-                steps: [
-                    "Testing 1", 
-                    "Testing 2",
-                    "Testing 3"
-                ]
-            }
-        }
+        const steps = [
+            {step: "Testing 1"},
+            {step: "Testing 2"},
+            {step: "Testing 3"}
+        ]
+        
+        render(
+            <>
+            {steps.map((step, i) => (
+                <Instruction stepNum={i} step={step}/>
+            ))}
+            </>
+        )
 
-        const length = state.validInputs.steps.length;
-
-        for (let index = 0; index < length; index++) {
-            render(<Instruction step={"step"} state={state} index={index}/>)
-            const inputElement = screen.getByDisplayValue(state.validInputs.steps[index]);
+        steps.forEach((step) => {
+            const inputElement = screen.getByDisplayValue(step.step);
             expect(inputElement).toBeInTheDocument();
-        }
+        })
+
     })
 });

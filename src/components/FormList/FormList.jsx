@@ -1,12 +1,16 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Product from "../Product/Product"
 import Instruction from "../Instruction/Instruction"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus, 
-        faSquareMinus } from "@fortawesome/free-solid-svg-icons";
-import { lineStyle, 
-        sectionStyle, 
-        listStyle } from "./formListStyles";
+import { faTrash, faSquareMinus, faSquarePlus } from "@fortawesome/free-solid-svg-icons";
+import {
+    lineStyle,
+    sectionStyle,
+    listStyle,
+    addLabelStyle,
+    delButtonStyle
+} from "./formListStyles";
+import { combineProductData } from "../../util/util";
 
 
 /**
@@ -14,42 +18,77 @@ import { lineStyle,
  * @param {string} use indicates whether to use the list of ingredients/products or instructions
  * @returns component displaying the list
  */
-export default function FormList({use, state}){
-    
+export default function FormList({ use, state }) {
+
     const isEditing = use === "Edit";
     const isProduct = ["Edit", "Ingredients", "Items"].includes(use);
+    const validInputs = state.validInputs || { products: [], steps: [] };
+    const idCounter = useRef(0);
 
-    const validInputs = state.validInputs || {products: [], steps: []};
-   
-    const initialCount = isProduct ? validInputs.products?.length || 1 
-                                    : validInputs.steps?.length || 1;
-  
-    const [count, setCount] = useState(initialCount)
+    const emptyItem = () => isProduct ? {
+        product: "",
+        quantity: null,
+        unit: "",
+        id: idCounter.current++
+    } : {
+        id: idCounter.current++,
+        step: ""
+    };
 
-    const increment = () => {
-        setCount(prev => prev +1)
+    const formatList = () => {
+        if ((isProduct && validInputs.products.length === 0) ||
+            (!isProduct && validInputs.steps.length === 0)) {
+            return [emptyItem()];
+        }
+        else {
+            return isProduct
+                ? combineProductData(validInputs.products, validInputs.quantity, validInputs.unit)
+                    .map(item => ({ ...item, id: idCounter.current++ }))
+                : validInputs.steps.map(step => ({ id: idCounter.current++, step }));
+        }
     }
 
-    const decrement = () => {
-        setCount(prev => Math.max(1, prev -1))
+    const [list, setList] = useState(() => formatList());
+
+    useEffect(() => {
+        setList(formatList());
+    }, [state])
+
+    const addItem = () => {
+        setList(prev => [...prev, emptyItem()]);
     }
 
-    return(
+    const removeItem = (id) => {
+        setList(
+            prev => prev.filter((item) => item.id !== id)
+        );
+    }
+
+    return (
         <section className={sectionStyle}>
-            {!isEditing ? 
-            <>
-                <span className={lineStyle}>
-                    <label>{use}</label>
-                    <FontAwesomeIcon icon={faSquarePlus} onClick={increment} />
-                    <FontAwesomeIcon icon={faSquareMinus} onClick={decrement}/>
-                </span>
-            </> : null}
+            {(!isEditing && use !== "Items") ?
+                <>
+                    <span className={lineStyle}>
+                        <label>{use}</label>
+                    </span>
+                </> : null}
             <ul className={listStyle}>
-                {([...Array(count)].map((_, i) =>
-                    isProduct ? 
-                            <Product key={i} state={state} index={i}/> 
-                            : 
-                            <Instruction key={i} step={`Step ${i+1}`} state={state} index={i}/>))}
+                {(list.map((listItem, i) =>
+                    isProduct ?
+                        <Product key={listItem.id} product={listItem}>
+                            {(list.length > 1 && !isEditing) && <FontAwesomeIcon icon={faTrash} className={delButtonStyle} onClick={() => removeItem(listItem.id)} />}
+                        </Product>
+                        :
+                        <Instruction key={listItem.id} stepNum={`Step ${i + 1}`} step={listItem}>
+                            {(list.length > 1 && !isEditing) && <FontAwesomeIcon icon={faTrash} className={delButtonStyle} onClick={() => removeItem(listItem.id)} />}
+                        </Instruction>
+                ))}
+                {!isEditing && 
+                    <label className={addLabelStyle} onClick={addItem}>
+                        Add {isProduct ? "Ingredient" : "Instruction"}
+                        <FontAwesomeIcon icon={faSquarePlus} className="p-0.5 text-xl" />
+                    </label>
+                }
             </ul>
         </section>
     )

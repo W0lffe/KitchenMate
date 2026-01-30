@@ -3,21 +3,21 @@ import { input } from "./instructionStyles";
 
 /**
  * Component for rendering a single instruction step input.
- * @param {string} step Placeholder text for the instruction step.
- * @param {Object} state Current form state containing valid inputs.
- * @param {number} index Index of the instruction step.
+ * @param {string} stepNum Placeholder text for the instruction step.
+ * @param {Object} step Current instruction to display.
  * @returns 
  */
-export default function Instruction({step, state, index}){
+export default function Instruction({stepNum, step, children}){
 
-    const validInputs = state.validInputs || {steps: []};
+    const validInputs = step || {step: ""};
 
     return(
-        <div className="w-9/10 pb-2">
+        <div className="w-full px-1 flex flex-row gap-1">
             <input type="text" name="step" 
-                        placeholder={step} 
+                        placeholder={stepNum} 
                         className={input} 
-                        defaultValue={validInputs.steps[index]}/>
+                        defaultValue={validInputs.step}/>
+            {children}
         </div>
     )
 }

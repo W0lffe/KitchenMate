@@ -1,5 +1,5 @@
 
-export const productStyle = `flex flex-row w-full justify-between px-2`;
+export const productStyle = `flex flex-row w-full justify-between px-1`;
 
 export const getInputStyle = (input) =>{
     let style = `border p-1 border-white rounded-custom-low 

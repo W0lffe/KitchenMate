@@ -114,6 +114,11 @@ Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/StageFive
         - Have to take a look into the logic in the component -> opening a bug ticket
     - **STATUS:**
         - Ticket is open
+5. Hitting reset when scaling recipe, displays wrong output type
+    - **NOTES:**
+        - More than likely logic mistake
+    - **STATUS:**
+        - Ticket is open
 
 
 
