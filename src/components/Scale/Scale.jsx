@@ -30,7 +30,7 @@ export default function Scale({ itemToScale, scaleFunctions }) {
     const [scaledTo, setScaledTo] = useState({
         portions: itemToScale.portions,
     })
-    const selectRef = useRef(null);
+    const [output, setOutput] = useState("portions");
 
     const {setScaledState, reset, isScaled} = scaleFunctions;
 
@@ -38,20 +38,17 @@ export default function Scale({ itemToScale, scaleFunctions }) {
      * Handles change if output option is changed, resets scaling to match output
      * @param {string} e selected output option 
      */
-    const handleChange = (e) => {
+    const handleChange = (value) => {
         isScaled && reset();
-        e.toLowerCase().includes("portions") ? setScaledTo({...scaledTo, portions: itemToScale.portions}) : setScaledTo({...scaledTo, portions: 1});
+
+        setOutput(value);
+        value.toLowerCase().includes("portions") ? setScaledTo({ portions: itemToScale.portions }) : setScaledTo({ portions: 1 });
     }
 
     useEffect(() => {
-        if(!isScaled && itemToScale){
-            setScaledTo({portions: itemToScale.portions})
-            return;
-        }
-
-        if(!isScaled){
-            const refValue = selectRef.current.value;
-            refValue.toLowerCase().includes("portions") ? setScaledTo({portions: itemToScale.portions}) : setScaledTo({portions: 1});
+       if (!isScaled && itemToScale) {
+            setScaledTo({ portions: itemToScale.portions });
+            setOutput("portions");
         }
 
     },[isScaled, itemToScale])
@@ -81,7 +78,8 @@ export default function Scale({ itemToScale, scaleFunctions }) {
                     className="py-1"
                     onClick={() => handleScale("-")} />
                 <h3>{scaledTo.portions}</h3>
-                <select name="output" ref={selectRef}
+                <select name="output"
+                        value={output}
                         onChange={(event) => handleChange(event.target.value)} 
                         className="focus:text-black">
                     {

@@ -111,14 +111,14 @@ Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/StageFive
         - I have updated database querys to be more efficient by reducing the number of queries -> Still testing if this fixed the issue
 4. When creating a recipe on mobile mode, the output type is not saving correctly when changing tabs
     - **NOTES:**
-        - Have to take a look into the logic in the component -> opening a bug ticket
+        - Have to take a look into the logic in the component
     - **STATUS:**
-        - Ticket is open
+        - **Fixed, it was a simple logic mistake.**
 5. Hitting reset when scaling recipe, displays wrong output type
     - **NOTES:**
         - More than likely logic mistake
     - **STATUS:**
-        - Ticket is open
+        - **Fixed, switched from useRef to useState to have controlled state.**
 
 
 
