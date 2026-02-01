@@ -177,7 +177,7 @@ export default function KitchenContextProvider({children}){
         const isDish = utilState.activeSection === "dishes";
         const isBasket = utilState.activeSection === "basket";
 
-        console.log("dataTohandle",dataToHandle)
+        //console.log("dataTohandle",dataToHandle)
 
         const {data, method} = dataToHandle;
         const body = {
@@ -190,7 +190,7 @@ export default function KitchenContextProvider({children}){
                 type: getReducerType(method, utilState.activeSection, basketAdd),
                 payload: data
         }
-        console.log("handleri", reducerHandler)
+        //console.log("handleri", reducerHandler)
         let apiHandler = null;
         
         if(basketAdd){

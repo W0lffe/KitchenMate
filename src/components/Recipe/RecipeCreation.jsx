@@ -85,6 +85,8 @@ export default function RecipeCreation(){
             products, quantity, unit, steps, category 
         } = getRecipeFormValues(formData);
 
+        console.log(output)
+
         setCurrentFormValues({
             ...currentFormValues,
             validInputs: {
