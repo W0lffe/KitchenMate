@@ -4,12 +4,12 @@
  * @returns {Object} recipe form values
  */
 export const getRecipeFormValues = (formData) => {
-    const name = formData.get("name")
-    const portions = formData.get("portions")
-    const output = formData.get("output") ? formData.get("output") : "N/A";
-    const outputType = formData.get("outputType")
-    const time = formData.get("time")
-    const timeFormat = formData.get("timeFormat")
+    const name = formData.get("name");
+    const portions = formData.get("portions");
+    const output = formData.get("output");
+    const outputType = formData.get("outputType");
+    const time = formData.get("time");
+    const timeFormat = formData.get("timeFormat");
     const products = formData.getAll("product");
     const quantity = formData.getAll("quantity");
     const unit = formData.getAll("unit");

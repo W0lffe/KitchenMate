@@ -7,7 +7,7 @@
  * @returns new state
  */
 export const utilityReducer = (state, action) => {
-    console.log("UTILITY_DEBUG:", action.type, action.payload)
+    //console.log("UTILITY_DEBUG:", action.type, action.payload)
     switch(action.type){
         case "SET_SLOGAN":
             return{
