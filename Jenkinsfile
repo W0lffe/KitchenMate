@@ -27,14 +27,15 @@ pipeline {
             }
         } 
         stage('Build') {
-            environment {
-                APP_URL = credentials('BACKEND_URL')
-            }
             steps {
-                sh '''
-                    echo "Backend URL: $APP_URL"
-                    npm run build
-                '''
+                withCredentials([string(credentialsId: 'BACKEND_URL', variable: 'VITE_APP_URL')]) {
+                    sh '''
+                        export VITE_APP_URL="$VITE_APP_URL"
+                        echo "Injected URL: $VITE_APP_URL"
+                        env | grep VITE
+                        npm run build
+                    '''
+                }
             }
         }
         stage('Archive') { 
