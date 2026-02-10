@@ -1,4 +1,4 @@
-import { BASE_URL } from "../../backend/api";
+import { API_URL } from "../../backend/api";
 import { createRequestPayload } from "./helper";
 
 /**
@@ -42,8 +42,8 @@ const fetchAPI = async (params) => {
     const { method = "GET", endpoint } = params;
 
     const fetchUrl = method === "GET"
-        ? `${BASE_URL}/index.php?endpoint=${encodeURIComponent(endpoint)}`
-        : `${BASE_URL}/index.php`;
+        ? `${API_URL}/index.php?endpoint=${encodeURIComponent(endpoint)}`
+        : `${API_URL}/index.php`;
 
     try {
         const response = await fetch(fetchUrl, payload);
@@ -76,7 +76,7 @@ export const login = async () => {
     }
 
     try {
-        const response = await fetch(`${BASE_URL}/login.php`, {
+        const response = await fetch(`${API_URL}/login.php`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -103,7 +103,7 @@ export const login = async () => {
 export const getImage = async (img) => {
     const token = localStorage.getItem("token");
     try {
-        const response = await fetch(`${BASE_URL}/index.php?endpoint=image&image=${img}`, {
+        const response = await fetch(`${API_URL}/index.php?endpoint=image&image=${img}`, {
             method: "GET",
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -135,7 +135,7 @@ export const getImage = async (img) => {
 export const healthCheck = async() => {
 
     try {
-        const response = await fetch(`${BASE_URL}/status.php`);
+        const response = await fetch(`${API_URL}/status.php`);
 
         if(!response.ok){
             throw new Error("");

@@ -8,7 +8,7 @@ import {
 import IconButton from "../Buttons/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faBan } from "@fortawesome/free-solid-svg-icons";
-import { BASE_URL } from "../../../backend/api";
+import { API_URL } from "../../../backend/api";
 import { handleToast } from "../../util/toast";
 import { getImage } from "../../api/http";
 
