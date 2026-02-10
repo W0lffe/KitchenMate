@@ -39,14 +39,14 @@ pipeline {
             }
         }
         stage('Archive') { 
-            when { branch 'master'}
+           // when { branch 'master'}
             steps { archiveArtifacts artifacts: 'dist/**', fingerprint: true } 
             post {
                 success { echo 'Artifact created' }
             }
         } 
         stage('Deploy') {
-            when { branch 'master' }
+            //when { branch 'master' }
             steps {
                 sh 'npm install -g firebase-tools'
                 withCredentials([string(credentialsId: 'FIREBASE_TOKEN', variable: 'FIREBASE_TOKEN')]) {
