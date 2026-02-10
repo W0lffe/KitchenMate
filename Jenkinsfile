@@ -28,12 +28,11 @@ pipeline {
         } 
         stage('Build') {
             environment {
-                REACT_APP_API_URL = credentials('BACKEND_URL')
+                APP_URL = credentials('BACKEND_URL')
             }
             steps {
                 sh '''
-                    echo "Backend URL: $REACT_APP_API_URL"
-                    printenv | grep REACT
+                    echo "Backend URL: $APP_URL"
                     npm run build
                 '''
             }
