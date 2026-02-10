@@ -26,16 +26,14 @@ pipeline {
                 failure { echo 'Tests failed!' }
             }
         } 
-        stage('Build') { 
-            steps { 
-                withCredentials([string(credentialsId: 'BACKEND_URL', variable: 'REACT_APP_API_URL')]) {
-                        echo "Backend URL: $REACT_APP_API_URL"
-                        sh 'npm run build'
-                } 
-            } 
-            post {
-                success { echo 'Build succeeded!' }
-                failure { echo 'Build failed!' }
+        stage('Build') {
+            steps {
+                withCredentials([string(credentialsId: 'BACKEND_URL', variable: 'VITE_APP_URL')]) {
+                    sh '''
+                        export VITE_APP_URL="$VITE_APP_URL"
+                        npm run build
+                    '''
+                }
             }
         }
         stage('Archive') { 
@@ -45,7 +43,7 @@ pipeline {
                 success { echo 'Artifact created' }
             }
         } 
-    /*    stage('Deploy') {
+        stage('Deploy') {
             when { branch 'master' }
             steps {
                 sh 'npm install -g firebase-tools'
@@ -57,7 +55,7 @@ pipeline {
                 success { echo 'Deployment completed!'}
                 failure { echo 'Deployment failed!'}
             }
-        }  */
+        }  
     }
 
     post {

@@ -1,2 +1,1 @@
-
-export const BASE_URL = process.env.REACT_APP_API_URL; //backend server url here
+export const API_URL = import.meta.env.VITE_APP_URL; //backend server url here
