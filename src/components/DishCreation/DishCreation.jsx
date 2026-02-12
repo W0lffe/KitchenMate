@@ -89,19 +89,29 @@ export default function DishCreation(){
      */
     const handleTabChange = (nextTab) => {
         const formData = new FormData(document.querySelector("form"));
-        const {name, course, image } = getDishFormValues(formData);
+        const {name, course } = getDishFormValues(formData);
 
         setCurrentFormValues({
             ...currentFormValues,
             validInputs: {
                 name: name === null ? currentFormValues.validInputs?.name : name,
                 course: course === null ? currentFormValues.validInputs?.course : course,
+                image: currentFormValues.validInputs?.image ? currentFormValues.validInputs?.image : null,
                 components: currentFormValues.validInputs?.components || [],
-                image: (image === null || image.size === 0) ? currentFormValues.validInputs?.image : image
             }
         });
 
         setOpenTab(nextTab);
+    }
+
+    const handleImageSelect = (image) => {
+        setCurrentFormValues(prev => ({
+        ...prev,
+            validInputs: {
+                ...prev.validInputs,
+                image
+            }
+        }))
     }
 
     const dishForm = useDishForm({
@@ -127,7 +137,8 @@ export default function DishCreation(){
             {isMobile ? (
                 <>
                     <TabButtons sections={SECTIONS} openTab={openTab} func={handleTabChange} />
-                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues} cookType={user.cookType}/>}
+                    {openTab === SECTIONS.GENERAL && <DishInfoSection state={currentFormValues} cookType={user.cookType} 
+                                                                        handleImageSelect={handleImageSelect}/>}
                     {openTab === SECTIONS.COMPONENTS && <ComponentList isMobile={isMobile} isRecipe={true} 
                                                                             listToUse={availableRecipes} 
                                                                             isSelected={currentFormValues?.validInputs?.components || []} 
@@ -143,7 +154,7 @@ export default function DishCreation(){
                 </>
             ) : (
                 <>
-                    <DishInfoSection state={formState} cookType={user.cookType}/>
+                    <DishInfoSection state={formState} cookType={user.cookType} handleImageSelect={handleImageSelect}/>
                     <ComponentList listToUse={componentRecipes} isProf={isProf}/>
                 </>
             )}

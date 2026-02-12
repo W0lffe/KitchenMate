@@ -14,14 +14,14 @@ import Photo from "../Image/Photo"
  * @param {Object} state - Current state of the dish form, either formState or currentFormValues, depends on context
  * @returns Dish information section component
  */
-export default function DishInfoSection({ state, cookType }) {
+export default function DishInfoSection({ state, cookType, handleImageSelect }) {
 
     const validInputs = state.validInputs || {}
     const isProf = cookType === "professional";
 
     return (
         <div className={infoContainer}>
-            <Photo img={validInputs?.image} />
+            <Photo img={validInputs?.image} onImgChange={handleImageSelect} />
             <section className={detailSection}>
             <span className={spanStyle}>
                 <label className={labelStyle}>Name:</label>

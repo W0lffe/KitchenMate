@@ -15,10 +15,10 @@ describe("Testing formhelper functions", () => {
             formData.set("name", "Test Dish");
             formData.set("course", "Main");
             const file = new File(["dummy content"], "image.png", { type: "image/png" });
-            formData.set("image", file);
             const state = {
                 validInputs: {
-                    components: ["Component1", "Component2"]
+                    components: ["Component1", "Component2"],
+                    image: file
                 }
             };
 
@@ -43,7 +43,6 @@ describe("Testing formhelper functions", () => {
             expect(result).toEqual({
                 name: "Dish",
                 course: "Dessert",
-                image: null,
                 components: []
             });
         });

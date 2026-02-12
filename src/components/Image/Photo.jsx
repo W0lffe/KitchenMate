@@ -8,7 +8,6 @@ import {
 import IconButton from "../Buttons/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faBan } from "@fortawesome/free-solid-svg-icons";
-import { API_URL } from "../../../backend/api";
 import { handleToast } from "../../util/toast";
 import { getImage } from "../../api/http";
 
@@ -18,7 +17,7 @@ import { getImage } from "../../api/http";
  * @param {boolean} disable Flag to disable image upload
  * @returns component displaying the image and upload option
  */
-export default function Photo({ img, disable }) {
+export default function Photo({ img, disable, onImgChange }) {
     const [imagePreview, setImagePreview] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -45,7 +44,7 @@ export default function Photo({ img, disable }) {
                 handleToast({
                     error
                 })
-                setImagePreview(null);
+                setImagePreview(false);
                 setIsLoading(false);
                 return;
             }
@@ -65,7 +64,7 @@ export default function Photo({ img, disable }) {
             }
 
             image.onerror = () => {
-               // console.log("error happened");
+                //console.log("error happened");
                 setImagePreview(null);
                 setIsLoading(false);
                 handleToast({
@@ -90,14 +89,17 @@ export default function Photo({ img, disable }) {
 
         const img = e.target.files[0];
         if (img) {
+            onImgChange(img);
             getImagePreview(img);
         }
     }
 
     if(isLoading){
-        <>
-            {isLoading && <label>Loading image...</label>}
-        </>
+        return <label>Loading image...</label>
+    }
+
+    if(!imagePreview && disable){
+        return;
     }
 
     return (
