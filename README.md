@@ -78,7 +78,7 @@
 11. Tech
     - [x] Jenkins CI/CD Pipeline
         - Running a multibranch pipeline for testing and building feature branches, and running full pipeline on master branch
-    - [ ] Docker for Python backend
+    - ~~[ ] Docker for Python backend~~
 
 ## 💡 Why I Built This
 

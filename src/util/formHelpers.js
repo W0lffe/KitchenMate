@@ -29,7 +29,7 @@ export const getRecipeFormValues = (formData) => {
 export const getDishFormValues = (formData, state) => {
     const name = formData.get("name");
     const course = formData.get("course");
-    const image = formData.get("image");
+    const image = state?.validInputs?.image;
     const components = state?.validInputs?.components || [];
     return { name, course, image, components };
 }

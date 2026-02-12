@@ -21,8 +21,6 @@ export default function useDishForm({ isMobile, currentFormValues, handleRequest
 
         const { name, course, image, components } = formValues;
 
-        //console.log("form",formValues);
-
         const errors = validateDish({
             name,
             course,

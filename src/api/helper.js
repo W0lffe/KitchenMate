@@ -16,6 +16,7 @@ export const createRequestPayload = (params) => {
     const hasImage = (data?.image instanceof File && data?.image.size > 0) || 
                     (data?.userPayload?.image instanceof File && data?.userPayload?.image.size > 0);
 
+
     if(hasImage){
         const formData = new FormData();
         if(endpoint === "users"){
