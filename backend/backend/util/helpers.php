@@ -97,4 +97,27 @@ function validatePasswd($pass){
     }
 }
 
+function createCurlOptions($prompt, $apiKey){
+
+    $options = [
+        CURLOPT_URL => "https://api.openai.com/v1/chat/completions",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer " . $apiKey,
+            "Content-Type: application/json"
+        ],
+        CURLOPT_POSTFIELDS => json_encode([
+            "model" => "gpt-3.5-turbo",
+            "messages" => [
+                ["role" => "user", "content" => $prompt]
+            ],
+            "temperature" => 0,
+            "max_tokens" => 50
+        ])
+    ];
+
+    return $options;
+}
+
 ?>
