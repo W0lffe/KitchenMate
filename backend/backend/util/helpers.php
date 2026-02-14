@@ -108,16 +108,53 @@ function createCurlOptions($prompt, $apiKey){
             "Content-Type: application/json"
         ],
         CURLOPT_POSTFIELDS => json_encode([
-            "model" => "gpt-3.5-turbo",
+            "model" => "gpt-4o-mini",
             "messages" => [
                 ["role" => "user", "content" => $prompt]
             ],
             "temperature" => 0,
-            "max_tokens" => 50
         ])
     ];
 
     return $options;
+}
+
+function normalizeBasketItems($existingProducts, $newProducts){
+
+    foreach ($newProducts as $newProd) {
+        $productFound = false;
+
+        foreach ($existingProducts as &$exProd) {
+            if($exProd["product"] === $newProd["product"]){
+
+                if($exProd["unit"] === $newProd["unit"]){
+                    $exProd["quantity"] += $newProd["quantity"];
+                    $productFound = true;
+                    break;
+                }
+                else{
+                    $prodToConvert = [
+                        "product" => $exProd["product"],
+                        "from" => $newProd["unit"],
+                        "quantity" => $newProd["quantity"],
+                        "to" => $exProd["unit"]
+                    ];
+
+                    $convertedResult = ai_request($prodToConvert);
+                    if(isset($convertedResult["result"])){
+                        $exProd["quantity"] += $convertedResult["result"];
+                        $productFound = true;
+                        break;
+                    }
+                }
+            }
+        }
+        unset($exProd);
+        if(!$productFound){
+            $existingProducts[] = $newProd;
+        }
+    }
+    return $existingProducts;
 }
 
 ?>
