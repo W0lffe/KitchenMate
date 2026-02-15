@@ -97,4 +97,66 @@ function validatePasswd($pass){
     }
 }
 
+
+/**UNUSED FUNCTION CURRENTLY */
+function createCurlOptions($prompt, $apiKey){
+
+    $options = [
+        CURLOPT_URL => "https://api.openai.com/v1/chat/completions",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => [
+            "Authorization: Bearer " . $apiKey,
+            "Content-Type: application/json"
+        ],
+        CURLOPT_POSTFIELDS => json_encode([
+            "model" => "gpt-4o-mini",
+            "messages" => [
+                ["role" => "user", "content" => $prompt]
+            ],
+            "temperature" => 0,
+        ])
+    ];
+
+    return $options;
+}
+/**UNUSED FUNCTION CURRENTLY */
+function normalizeBasketItems($existingProducts, $newProducts){
+
+    foreach ($newProducts as $newProd) {
+        $productFound = false;
+
+        foreach ($existingProducts as &$exProd) {
+            if($exProd["product"] === $newProd["product"]){
+
+                if($exProd["unit"] === $newProd["unit"]){
+                    $exProd["quantity"] += $newProd["quantity"];
+                    $productFound = true;
+                    break;
+                }
+                else{
+                    $prodToConvert = [
+                        "product" => $exProd["product"],
+                        "from" => $newProd["unit"],
+                        "quantity" => $newProd["quantity"],
+                        "to" => $exProd["unit"]
+                    ];
+
+                    $convertedResult = ai_request($prodToConvert);
+                    if(isset($convertedResult["result"])){
+                        $exProd["quantity"] += $convertedResult["result"];
+                        $productFound = true;
+                        break;
+                    }
+                }
+            }
+        }
+        unset($exProd);
+        if(!$productFound){
+            $existingProducts[] = $newProd;
+        }
+    }
+    return $existingProducts;
+}
+
 ?>
