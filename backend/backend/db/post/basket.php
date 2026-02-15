@@ -7,20 +7,6 @@ require __DIR__ . "/../connection.php";
 $data = $resource["data"];
 $userID = $resource["id"];
 
-$stmt = $pdo->prepare("
-    SELECT * FROM basket
-    WHERE userID = :userID"
-);
-
-$stmt->execute(["userID" => $userID]);
-$basket = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-if(count($basket) > 0 ){
-
-    $normalizedItems = normalizeBasketItems($basket, $data);
-}
-
-
 try {
 
     $message = "Product";

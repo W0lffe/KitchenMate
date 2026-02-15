@@ -97,6 +97,8 @@ function validatePasswd($pass){
     }
 }
 
+
+/**UNUSED FUNCTION CURRENTLY */
 function createCurlOptions($prompt, $apiKey){
 
     $options = [
@@ -118,7 +120,7 @@ function createCurlOptions($prompt, $apiKey){
 
     return $options;
 }
-
+/**UNUSED FUNCTION CURRENTLY */
 function normalizeBasketItems($existingProducts, $newProducts){
 
     foreach ($newProducts as $newProd) {

@@ -1,7 +1,7 @@
 <?php
+/*
 
 require_once __DIR__ . "/../util/helpers.php";
-
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
     $input = json_decode(file_get_contents("php://input"), true);
@@ -11,8 +11,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     ai_request($input);
 }
 
-
-
+*/
+/**FUNCTION IS NOT CURRENTLY USED FOR ANYTHING*/
 function ai_request($convertableData){
 
     $data = $convertableData;
