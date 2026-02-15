@@ -56,7 +56,9 @@
         - Requires time tracking for instruction steps
         - Includes timer, possibility to set steps done
 6. Artificial Intelligence
-    - [ ] Solution to ingredient/product unit mismatches when adding to basket
+    - [x] [~~Solution to ingredient/product unit mismatches when adding to basket~~](https://github.com/W0lffe/KitchenMate/pull/76)
+        - NOTE: After some testing, AI did not give reliable results for this issue. So, this matter needs to be re-thought. 
+                However, I managed to create a handler that communicates with AI.
     - [ ] Generate recipes based on wanted ingredients
     - [ ] Nutrition estimates
 7. Backend & Database
