@@ -123,42 +123,32 @@ function createCurlOptions($prompt, $apiKey){
 /**UNUSED FUNCTION CURRENTLY */
 function normalizeBasketItems($existingProducts, $newProducts){
 
-    foreach ($newProducts as $newProd) {
-        $productFound = false;
+    foreach ($newProducts as &$newProd) {
+        foreach ($existingProducts as $exProd) {
+            if(strtolower($exProd["product"]) === strtolower($newProd["product"])){
 
-        foreach ($existingProducts as &$exProd) {
-            if($exProd["product"] === $newProd["product"]){
-
-                if($exProd["unit"] === $newProd["unit"]){
-                    $exProd["quantity"] += $newProd["quantity"];
-                    $productFound = true;
-                    break;
-                }
-                else{
+                if($exProd["unit"] !== $newProd["unit"]){
                     $prodToConvert = [
                         "from" => $newProd["unit"],
                         "quantity" => $newProd["quantity"],
                         "to" => $exProd["unit"]
                     ];
 
-                    $convertedResult = convertUnit($prodToConvert);
-                    if(isset($convertedResult["result"])){
-                        $exProd["quantity"] += $convertedResult["result"];
-                        $productFound = true;
-                        break;
+                    $result = convertUnit($prodToConvert);
+                    if(isset($result)){
+                        $newProd["quantity"] = $result;
+                        $newProd["unit"] = $prodToConvert["to"];
                     }
+                  
+                    break;
                 }
             }
         }
-        unset($exProd);
-        if(!$productFound){
-            $existingProducts[] = $newProd;
-        }
     }
-    return $existingProducts;
+    return $newProducts;
 }
 
-function convertUnit(array $prod)
+function convertUnit($prod)
 {
     $from = strtolower($prod["from"]);
     $to = strtolower($prod["to"]);
@@ -224,7 +214,7 @@ function convertUnit(array $prod)
     }
 
     if (!$detectedSystem) {
-        throw new Exception("Units belong to different systems or are unsupported.");
+        return null;
     }
 
     // 2️⃣ Detect type (weight, volume, count)
@@ -238,7 +228,7 @@ function convertUnit(array $prod)
     }
 
     if (!$selectedType) {
-        throw new Exception("Incompatible unit types.");
+        return null;;
     }
 
     $units = $conversions[$detectedSystem][$selectedType];
