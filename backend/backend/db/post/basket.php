@@ -7,12 +7,21 @@ require __DIR__ . "/../connection.php";
 $data = $resource["data"];
 $userID = $resource["id"];
 
+$stmt = $pdo->prepare("
+    SELECT * FROM basket
+    WHERE userID = :id"
+);
+
+$stmt->execute(["id" => $userID]);
+$existingBasket = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+if(!empty($existingBasket)){
+    $data = normalizeBasketItems($existingBasket, $data);
+}
+
 try {
 
-    $message = "Product";
-    if(count($data) > 1){
-        $message = "Products";
-    }
+    $message = count($data) > 1 ? "Products" : "Product";
 
     $pdo->beginTransaction();
 

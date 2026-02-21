@@ -43,7 +43,7 @@
     - [x] JSDoc documentation
     - [x] PHPDoc documentation
 3. Creation Improvements
-    - [ ] New categories for recipes
+    - [x] New categories for recipes
     - [ ] \(Optional) Temperature inputs
     - [ ] Time tracking per instruction step
     - [ ] Rework product and instruction adding/removing in creation 
@@ -57,14 +57,14 @@
         - Includes timer, possibility to set steps done
 6. Artificial Intelligence
     - [x] [~~Solution to ingredient/product unit mismatches when adding to basket~~](https://github.com/W0lffe/KitchenMate/pull/76)
-        - NOTE: After some testing, AI did not give reliable results for this issue. So, this matter needs to be re-thought. 
+        - NOTE: After some testing, AI did not give reliable results for this issue. So, this matter needs to be [re-thought](). 
                 However, I managed to create a handler that communicates with AI.
     - [ ] Generate recipes based on wanted ingredients
     - [ ] Nutrition estimates
 7. Backend & Database
     - [x] [Convert current JSON data to MariaDB](https://github.com/W0lffe/KitchenMate/pull/37)
     - [x] [Verify connectivity between front-end and backend](https://github.com/W0lffe/KitchenMate/pull/43)
-    - [ ] Python backend (See Tech)
+    - ~~[ ] Python backend (See Tech)~~
     - [ ] Data export to Excel format or PDF
 8. User Features
     - [ ] Community shared recipes (public)

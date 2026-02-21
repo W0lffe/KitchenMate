@@ -120,43 +120,117 @@ function createCurlOptions($prompt, $apiKey){
 
     return $options;
 }
-/**UNUSED FUNCTION CURRENTLY */
 function normalizeBasketItems($existingProducts, $newProducts){
 
-    foreach ($newProducts as $newProd) {
-        $productFound = false;
+    foreach ($newProducts as &$newProd) {
+        foreach ($existingProducts as $exProd) {
+            if(strtolower($exProd["product"]) === strtolower($newProd["product"])){
 
-        foreach ($existingProducts as &$exProd) {
-            if($exProd["product"] === $newProd["product"]){
-
-                if($exProd["unit"] === $newProd["unit"]){
-                    $exProd["quantity"] += $newProd["quantity"];
-                    $productFound = true;
-                    break;
-                }
-                else{
+                if($exProd["unit"] !== $newProd["unit"]){
                     $prodToConvert = [
-                        "product" => $exProd["product"],
                         "from" => $newProd["unit"],
                         "quantity" => $newProd["quantity"],
                         "to" => $exProd["unit"]
                     ];
 
-                    $convertedResult = ai_request($prodToConvert);
-                    if(isset($convertedResult["result"])){
-                        $exProd["quantity"] += $convertedResult["result"];
-                        $productFound = true;
-                        break;
+                    $result = convertUnit($prodToConvert);
+                    if(isset($result)){
+                        $newProd["quantity"] = $result;
+                        $newProd["unit"] = $prodToConvert["to"];
                     }
+                  
+                    break;
                 }
             }
         }
-        unset($exProd);
-        if(!$productFound){
-            $existingProducts[] = $newProd;
+    }
+    return $newProducts;
+}
+
+function convertUnit($prod){
+
+    $from = strtolower($prod["from"]);
+    $to = strtolower($prod["to"]);
+    $quantity = $prod["quantity"];
+
+    $systems = [
+        "metric" => [
+            "units" => ["kg","g","mg","l","dl","ml","tbsp","tsp","pcs"],
+        ],
+        "imperial" => [
+            "units" => ["oz","lb","gal","qt","pt","cup","tbsp","tsp","pcs"],
+        ]
+    ];
+
+    $conversions = [
+        "metric" => [
+            "weight" => [
+                "mg" => 0.001,
+                "g"  => 1,
+                "kg" => 1000
+            ],
+            "volume" => [
+                "ml" => 1,
+                "dl" => 100,
+                "l"  => 1000,
+                "tsp"  => 5,
+                "tbsp" => 15
+            ],
+            "count" => [
+                "pcs" => 1
+            ]
+        ],
+        "imperial" => [
+            "weight" => [
+                "oz" => 1,
+                "lb" => 16
+            ],
+            "volume" => [
+                "tsp" => 1,
+                "tbsp" => 3,
+                "cup" => 48,
+                "pt"  => 96,
+                "qt"  => 192,
+                "gal" => 768
+            ],
+            "count" => [
+                "pcs" => 1
+            ]
+        ]
+    ];
+
+    $detectedSystem = null;
+
+    foreach ($systems as $systemName => $systemData) {
+        if (in_array($from, $systemData["units"]) &&
+            in_array($to, $systemData["units"])) {
+            $detectedSystem = $systemName;
+            break;
         }
     }
-    return $existingProducts;
+
+    if (!$detectedSystem) {
+        return null;
+    }
+
+    $selectedType = null;
+
+    foreach ($conversions[$detectedSystem] as $typeName => $units) {
+        if (isset($units[$from]) && isset($units[$to])) {
+            $selectedType = $typeName;
+            break;
+        }
+    }
+
+    if (!$selectedType) {
+        return null;;
+    }
+
+    $units = $conversions[$detectedSystem][$selectedType];
+    $valueInBase = $quantity * $units[$from];
+    $converted = $valueInBase / $units[$to];
+
+    return $converted;
 }
 
 ?>
