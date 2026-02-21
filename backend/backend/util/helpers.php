@@ -136,13 +136,12 @@ function normalizeBasketItems($existingProducts, $newProducts){
                 }
                 else{
                     $prodToConvert = [
-                        "product" => $exProd["product"],
                         "from" => $newProd["unit"],
                         "quantity" => $newProd["quantity"],
                         "to" => $exProd["unit"]
                     ];
 
-                    $convertedResult = ai_request($prodToConvert);
+                    $convertedResult = convertUnit($prodToConvert);
                     if(isset($convertedResult["result"])){
                         $exProd["quantity"] += $convertedResult["result"];
                         $productFound = true;
@@ -157,6 +156,98 @@ function normalizeBasketItems($existingProducts, $newProducts){
         }
     }
     return $existingProducts;
+}
+
+function convertUnit(array $prod)
+{
+    $from = strtolower($prod["from"]);
+    $to = strtolower($prod["to"]);
+    $quantity = $prod["quantity"];
+
+    // Define allowed systems exactly like your frontend
+    $systems = [
+        "metric" => [
+            "units" => ["kg","g","mg","l","dl","ml","tbsp","tsp","pcs"],
+        ],
+        "imperial" => [
+            "units" => ["oz","lb","gal","qt","pt","cup","tbsp","tsp","pcs"],
+        ]
+    ];
+
+    // Conversion tables per system and type
+    $conversions = [
+        "metric" => [
+            "weight" => [
+                "mg" => 0.001,
+                "g"  => 1,
+                "kg" => 1000
+            ],
+            "volume" => [
+                "ml" => 1,
+                "dl" => 100,
+                "l"  => 1000,
+                "tsp"  => 5,
+                "tbsp" => 15
+            ],
+            "count" => [
+                "pcs" => 1
+            ]
+        ],
+        "imperial" => [
+            "weight" => [
+                "oz" => 1,
+                "lb" => 16
+            ],
+            "volume" => [
+                "tsp" => 1,
+                "tbsp" => 3,
+                "cup" => 48,
+                "pt"  => 96,
+                "qt"  => 192,
+                "gal" => 768
+            ],
+            "count" => [
+                "pcs" => 1
+            ]
+        ]
+    ];
+
+    // 1️⃣ Detect system
+    $detectedSystem = null;
+
+    foreach ($systems as $systemName => $systemData) {
+        if (in_array($from, $systemData["units"]) &&
+            in_array($to, $systemData["units"])) {
+            $detectedSystem = $systemName;
+            break;
+        }
+    }
+
+    if (!$detectedSystem) {
+        throw new Exception("Units belong to different systems or are unsupported.");
+    }
+
+    // 2️⃣ Detect type (weight, volume, count)
+    $selectedType = null;
+
+    foreach ($conversions[$detectedSystem] as $typeName => $units) {
+        if (isset($units[$from]) && isset($units[$to])) {
+            $selectedType = $typeName;
+            break;
+        }
+    }
+
+    if (!$selectedType) {
+        throw new Exception("Incompatible unit types.");
+    }
+
+    $units = $conversions[$detectedSystem][$selectedType];
+
+    // 3️⃣ Convert through base (first unit acts as base)
+    $valueInBase = $quantity * $units[$from];
+    $converted = $valueInBase / $units[$to];
+
+    return $converted;
 }
 
 ?>
