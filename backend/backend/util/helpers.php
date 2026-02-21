@@ -120,7 +120,6 @@ function createCurlOptions($prompt, $apiKey){
 
     return $options;
 }
-/**UNUSED FUNCTION CURRENTLY */
 function normalizeBasketItems($existingProducts, $newProducts){
 
     foreach ($newProducts as &$newProd) {
@@ -148,13 +147,12 @@ function normalizeBasketItems($existingProducts, $newProducts){
     return $newProducts;
 }
 
-function convertUnit($prod)
-{
+function convertUnit($prod){
+
     $from = strtolower($prod["from"]);
     $to = strtolower($prod["to"]);
     $quantity = $prod["quantity"];
 
-    // Define allowed systems exactly like your frontend
     $systems = [
         "metric" => [
             "units" => ["kg","g","mg","l","dl","ml","tbsp","tsp","pcs"],
@@ -164,7 +162,6 @@ function convertUnit($prod)
         ]
     ];
 
-    // Conversion tables per system and type
     $conversions = [
         "metric" => [
             "weight" => [
@@ -202,7 +199,6 @@ function convertUnit($prod)
         ]
     ];
 
-    // 1️⃣ Detect system
     $detectedSystem = null;
 
     foreach ($systems as $systemName => $systemData) {
@@ -217,7 +213,6 @@ function convertUnit($prod)
         return null;
     }
 
-    // 2️⃣ Detect type (weight, volume, count)
     $selectedType = null;
 
     foreach ($conversions[$detectedSystem] as $typeName => $units) {
@@ -232,8 +227,6 @@ function convertUnit($prod)
     }
 
     $units = $conversions[$detectedSystem][$selectedType];
-
-    // 3️⃣ Convert through base (first unit acts as base)
     $valueInBase = $quantity * $units[$from];
     $converted = $valueInBase / $units[$to];
 
