@@ -39,7 +39,7 @@ const deriveViewState = (itemToInspect, fullRecipes) => {
  * @param {Object} itemToInspect inspectable item (dish or recipe)
  * @returns UI for inspecting an item
  */
-export default function ItemInspectView({itemToInspect}){
+export default function ItemInspectView({itemToInspect, onlyDetails}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
     const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
@@ -56,7 +56,7 @@ export default function ItemInspectView({itemToInspect}){
         setViewState(deriveViewState(itemToInspect, fullRecipes));
     }, [itemToInspect])
 
-    //console.log("item to inspect, given parameter", itemToInspect)
+    console.log("item to inspect, given parameter", itemToInspect)
     //console.log("item list", viewState.list)
     //console.log("inspectableItem, useState", viewState);
     //console.log("isFavorite", isFavorite);
@@ -177,10 +177,12 @@ export default function ItemInspectView({itemToInspect}){
 
     return(
         <div className={containerStyle}>
+            {!onlyDetails && 
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
                         handleModify={handleModify} handleAddCart={handleAddCart} 
                         handleFavorite={handleFavorite}
                         fav={Number(isFavorite) === 1 ? "fav" : ""} fetching={isFetchingData} recipe={viewState.isRecipe && viewState.item}/>
+            }
             <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={scalingFunctions} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>

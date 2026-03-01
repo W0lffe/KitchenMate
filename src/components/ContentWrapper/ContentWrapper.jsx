@@ -21,7 +21,7 @@ export default function ContentWrapper(){
     const content = renderContent(activeSection, mode, activeDish, activeRecipe, editStatus);
 
     return(
-            <div className={getContainerStyle(isMobile)} >
+            <div className={getContainerStyle(isMobile)} id="content-wrapper" >
                {content}
             </div>
         )
