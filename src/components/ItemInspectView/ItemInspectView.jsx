@@ -180,7 +180,7 @@ export default function ItemInspectView({itemToInspect}){
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
                         handleModify={handleModify} handleAddCart={handleAddCart} 
                         handleFavorite={handleFavorite}
-                        fav={Number(isFavorite) === 1 ? "fav" : ""} fetching={isFetchingData}/>
+                        fav={Number(isFavorite) === 1 ? "fav" : ""} fetching={isFetchingData} recipe={viewState.isRecipe && viewState.item}/>
             <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={scalingFunctions} />
             <div className={bottomSection}>
                 <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>

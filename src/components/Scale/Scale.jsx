@@ -65,6 +65,7 @@ export default function Scale({ itemToScale, scaleFunctions }) {
         }
         const {portions, ingredients} = scaleRecipe(scaleParams)
         setScaledTo({portions})
+        console.log(scaledTo)
         setScaledState(ingredients);
     }
 

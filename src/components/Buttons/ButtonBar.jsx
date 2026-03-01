@@ -3,11 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, 
         faPenToSquare, 
         faStar,
-        faCartPlus } from "@fortawesome/free-solid-svg-icons";
+        faCartPlus,
+        faFilePdf} from "@fortawesome/free-solid-svg-icons";
 import { getIconStyle, topButtonBar } from "../ItemInspectView/inspectStyles";
 import IconButton from "./IconButton";
 import Button from "./Button";
 
+import { exportRecipePDF } from "../../util/exportPdf";
 
 /**
  * Component rendering a bar of buttons for item actions
@@ -17,17 +19,26 @@ import Button from "./Button";
  * @param {function} handleFavorite function to handle favorite action
  * @param {function} handleAddCart function to handle add to cart action
  * @param {string} fav indicates if the item is favorited
+ * @param {Object} recipe object of currently displayed recipe item, forwarded to PDF exporting
  * @returns 
  */
-export default function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handleAddCart, fav}){
+export default function ButtonBar({isMobile, handleDelete, handleModify, handleFavorite, handleAddCart, fav, recipe}){
 
     return(
         <span className={topButtonBar + `${isMobile ? " sticky top-0 bg-gray-950/90" : ""}`}>
+            
             <IconButton func={handleDelete}>
                 <FontAwesomeIcon icon={faTrash} 
                                     className={getIconStyle("del")}
                 />
             </IconButton>
+            {recipe && 
+            <IconButton func={() => exportRecipePDF(recipe)}>
+                <FontAwesomeIcon icon={faFilePdf} 
+                                    className={getIconStyle()}
+                />
+             </IconButton>
+            }
             <IconButton func={handleModify}>
                 <FontAwesomeIcon icon={faPenToSquare} 
                                     className={getIconStyle()}
@@ -43,7 +54,8 @@ export default function ButtonBar({isMobile, handleDelete, handleModify, handleF
                                     className={getIconStyle()}
             />
             </IconButton>
-                {isMobile && <Button use={"close"}/>}
+
+            {isMobile && <Button use={"close"}/>}
             </span>
     )
 }
