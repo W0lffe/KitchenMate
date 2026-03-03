@@ -37,6 +37,7 @@ const deriveViewState = (itemToInspect, fullRecipes) => {
 /**
  * Component for inspecting an item (dish or recipe).
  * @param {Object} itemToInspect inspectable item (dish or recipe)
+ * @param {boolean} onlyDetails boolean value to determine if component should mount ButtonBar
  * @returns UI for inspecting an item
  */
 export default function ItemInspectView({itemToInspect, onlyDetails}){
@@ -56,7 +57,7 @@ export default function ItemInspectView({itemToInspect, onlyDetails}){
         setViewState(deriveViewState(itemToInspect, fullRecipes));
     }, [itemToInspect])
 
-    console.log("item to inspect, given parameter", itemToInspect)
+    //console.log("item to inspect, given parameter", itemToInspect)
     //console.log("item list", viewState.list)
     //console.log("inspectableItem, useState", viewState);
     //console.log("isFavorite", isFavorite);
@@ -185,7 +186,7 @@ export default function ItemInspectView({itemToInspect, onlyDetails}){
             }
             <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={scalingFunctions} />
             <div className={bottomSection}>
-                <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
+                <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list} isMobile={isMobile}/>
                 {viewState.isRecipe && <ItemInstructionSection instructions={viewState.item.instructions} />}
             </div>
         </div>

@@ -1,21 +1,20 @@
 import { combineProductData } from "../../util/util";
 import { listSection, getListStyle } from "./inspectStyles";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import ItemHoverPopup from "../ItemHoverPopup/ItemHoverPopup";
-import { KitchenContext } from "../../context/KitchenContext";
 
 /**
  * Component displaying the list of ingredients/components for the inspected item.
  * @param {boolean} isRecipe indicates if the item is a recipe
  * @param {Array} list list of ingredients/components to display
  * @param {Object} state current form state containing valid inputs
+ * @param {boolean} isMobile boolean value from context to indicate if running on mobile device
  * @returns component UI for item list section
  */
-export default function ItemListSection({ isRecipe, list, state, isProf }) {
+export default function ItemListSection({ isRecipe, list, state, isProf, isMobile }) {
 
     const [activeItem, setActiveItem] = useState(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
-    const {isMobile} = useContext(KitchenContext)
 
     const isPreview = state !== undefined;
 
@@ -31,21 +30,23 @@ export default function ItemListSection({ isRecipe, list, state, isProf }) {
     const style = isRecipe && "ingredients";
 
     const handleClick = (e, item) => {
+        if(isRecipe){
+            return;
+        }
+
         e.stopPropagation();
 
         if (activeItem === item) {
             setActiveItem(null);
             return;
         }
-
+    
         const rect = e.currentTarget.getBoundingClientRect();
-        console.log(e.currentTarget.get)
-        console.log(rect)
 
         setActiveItem(item);
         setPosition({
-            x: rect.left + 10,
-            y: rect.bottom  // small spacing under element
+            x: rect.left + 15,
+            y: rect.bottom
         });
     };
 
@@ -61,7 +62,7 @@ export default function ItemListSection({ isRecipe, list, state, isProf }) {
                 {isRecipe ? "Ingredients" : `${isProf ? "Components" : "Recipes"}`}
             </label>
 
-            <ul className={getListStyle(style)}>
+            <ul className={getListStyle(style)}id="list">
                 {gotList?.length > 0 ? (
                     gotList.map((listItem, i) => (
                         <li key={i} className="flex w-2/3 justify-between">
