@@ -49,7 +49,7 @@
     - [ ] Rework product and instruction adding/removing in creation 
     - [ ] Tags
 4. Inspection Improvements
-    - [ ] Show recipes from dish inspection
+    - [x] [Show recipes from dish inspection](https://github.com/W0lffe/KitchenMate/pull/80)
 5. Cooking Mode
     - [ ] Cooking Mode view
         - Opens up from recipe inspection
