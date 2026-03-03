@@ -37,9 +37,10 @@ const deriveViewState = (itemToInspect, fullRecipes) => {
 /**
  * Component for inspecting an item (dish or recipe).
  * @param {Object} itemToInspect inspectable item (dish or recipe)
+ * @param {boolean} onlyDetails boolean value to determine if component should mount ButtonBar
  * @returns UI for inspecting an item
  */
-export default function ItemInspectView({itemToInspect}){
+export default function ItemInspectView({itemToInspect, onlyDetails}){
 
     const {activeSection, isMobile, setModalState, setActiveRecipe, handleRequest, setActiveDish, fullRecipes, isFetchingData}  = useContext(KitchenContext);
     const [viewState, setViewState] = useState(deriveViewState(itemToInspect, fullRecipes))
@@ -177,13 +178,15 @@ export default function ItemInspectView({itemToInspect}){
 
     return(
         <div className={containerStyle}>
+            {!onlyDetails && 
             <ButtonBar isMobile={isMobile} handleDelete={handleDelete} 
                         handleModify={handleModify} handleAddCart={handleAddCart} 
                         handleFavorite={handleFavorite}
                         fav={Number(isFavorite) === 1 ? "fav" : ""} fetching={isFetchingData} recipe={viewState.isRecipe && viewState.item}/>
+            }
             <ItemInfoSection isRecipe={viewState.isRecipe} item={viewState.item} scaleFunctions={scalingFunctions} />
             <div className={bottomSection}>
-                <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list}/>
+                <ItemListSection isRecipe={viewState.isRecipe} list={viewState.list} isMobile={isMobile}/>
                 {viewState.isRecipe && <ItemInstructionSection instructions={viewState.item.instructions} />}
             </div>
         </div>

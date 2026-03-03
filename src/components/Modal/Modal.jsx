@@ -38,7 +38,7 @@ export default function Modal(){
     }, [modalIsOpen])
 
     return createPortal(
-            <dialog ref={modal} className="backdrop:bg-gray-900/90">
+            <dialog ref={modal} className="backdrop:bg-gray-900/90" id="active-dialog">
                 {modalIsOpen && <Toaster />}
                 {!useConfirm ? (
                     <ContentModal section={section} editStatus={editStatus}/>
