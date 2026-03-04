@@ -50,5 +50,5 @@ KitchenMate started as thought of managing recipes, creating dishes/meals and ge
 
 #### What is already done?
 
-Check out the [old README.]()
+Check out the [old README.](https://github.com/W0lffe/KitchenMate/blob/master/docs/README_old2.md)
 ### Checkout my [Github Project](https://github.com/users/W0lffe/projects/3/views/6)!
