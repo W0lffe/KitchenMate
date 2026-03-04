@@ -41,7 +41,11 @@ export default function ItemListSection({ isRecipe, list, state, isProf, isMobil
             return;
         }
     
-        const rect = e.currentTarget.getBoundingClientRect();
+        let rect = e.currentTarget.getBoundingClientRect();
+        if(isMobile){
+            rect = document.getElementById("section-list-item0").getBoundingClientRect();
+        }
+
 
         setActiveItem(item);
         setPosition({
@@ -70,6 +74,7 @@ export default function ItemListSection({ isRecipe, list, state, isProf, isMobil
                             <label
                                 className="w-30 cursor-pointer"
                                 onClick={(e) => handleClick(e, listItem)}
+                                id={`section-list-item${i}`}
                             >
                                 {listItem.name || listItem.product}
                             </label>
