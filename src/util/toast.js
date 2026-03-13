@@ -24,12 +24,12 @@ export const handleToast = ({
 }) => {
     
     if(error){
-        toast.error(error)
+        toast.error(error, {duration: 1500})
         return;
     }
 
     if(success){
-        toast.success(success);
+        toast.success(success, {duration: 1500});
     }
 
     if(close){
